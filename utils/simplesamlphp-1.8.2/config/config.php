@@ -57,7 +57,7 @@ $config = array (
 	 * This password will give access to the installation page of simpleSAMLphp with
 	 * metadata listing and diagnostics pages.
 	 */
-	'auth.adminpassword'		=> '123',
+	'auth.adminpassword'		=> 'adminpassword', // A CHANGER
 	'admin.protectindexpage'	=> false,
 	'admin.protectmetadata'		=> false,
 
@@ -69,15 +69,15 @@ $config = array (
 	 * A possible way to generate a random salt is by running the following command from a unix shell:
 	 * tr -c -d '0123456789abcdefghijklmnopqrstuvwxyz' </dev/urandom | dd bs=32 count=1 2>/dev/null;echo
 	 */
-	'secretsalt' => 'defaultsecretsalt',
+	'secretsalt' => 'md27tq55v6miemzd8vld3jfud6m1vcin', // A CHANGER
 	
 	/*
 	 * Some information about the technical persons running this installation.
 	 * The email address will be used as the recipient address for error reports, and
 	 * also as the technical contact in generated metadata.
 	 */
-	'technicalcontact_name'     => 'Administrator',
-	'technicalcontact_email'    => 'na@example.org',
+	'technicalcontact_name'     => 'Admin CAP-TIC',      // A CHANGER
+	'technicalcontact_email'    => 'support@cap-tic.fr', // A CHANGER
 
 	/*
 	 * The timezone of the server. This option should be set to the timezone you want
@@ -138,7 +138,7 @@ $config = array (
 	 * one of the functionalities below, but in some cases you could run multiple functionalities.
 	 * In example when you are setting up a federation bridge.
 	 */
-	'enable.saml20-idp'		=> false,
+	'enable.saml20-idp'		=> true,
 	'enable.shib13-idp'		=> false,
 	'enable.adfs-idp'		=> false,
 	'enable.wsfed-sp'		=> false,

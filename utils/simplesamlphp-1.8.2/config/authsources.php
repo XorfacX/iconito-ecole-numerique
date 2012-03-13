@@ -30,15 +30,48 @@ $config = array(
 	),
 
 
-	/*
-	'example-sql' => array(
+	'iconito-sql' => array(
 		'sqlauth:SQL',
-		'dsn' => 'pgsql:host=sql.example.org;port=5432;dbname=simplesaml',
-		'username' => 'simplesaml',
-		'password' => 'secretpassword',
-		'query' => 'SELECT "username", "name", "email" FROM "users" WHERE "username" = :username AND "password" = :password',
+		'dsn' => 'mysql:host=localhost;port=8889;dbname=iconito_en_git',
+		'username' => 'root',
+		'password' => 'root',
+		// 'query' => 'SELECT login_dbuser AS username, login_dbuser as name, \'pas_de_mail@example.com\' AS email FROM dbuser WHERE login_dbuser = :username AND password_dbuser = MD5(:password)',
+		'query' => 'SELECT
+			dbuser.id_dbuser AS id_dbuser,
+			dbuser.login_dbuser AS login_dbuser,
+			CASE kernel_link_bu2user.bu_type
+				WHEN "USER_ELE" THEN kernel_bu_eleve.nom
+				WHEN "USER_RES" THEN kernel_bu_responsable.nom
+				WHEN "USER_ENS" THEN kernel_bu_personnel.nom
+				WHEN "USER_VIL" THEN kernel_bu_personnel.nom
+				WHEN "USER_EXT" THEN kernel_ext_user.nom
+				ELSE "inconnu"
+			END AS nom,
+			CASE kernel_link_bu2user.bu_type
+				WHEN "USER_ELE" THEN kernel_bu_eleve.prenom1
+				WHEN "USER_RES" THEN kernel_bu_responsable.prenom1
+				WHEN "USER_ENS" THEN kernel_bu_personnel.prenom1
+				WHEN "USER_VIL" THEN kernel_bu_personnel.prenom1
+				WHEN "USER_EXT" THEN kernel_ext_user.prenom
+				ELSE "inconnu"
+			END AS prenom,
+			CASE kernel_link_bu2user.bu_type
+				WHEN "USER_ELE" THEN "eleve"
+				WHEN "USER_RES" THEN "responsable"
+				WHEN "USER_ENS" THEN "enseignant"
+				WHEN "USER_VIL" THEN "agent_ville"
+				WHEN "USER_EXT" THEN "personne_ext"
+				ELSE "inconnu"
+			END AS role
+
+			FROM dbuser
+			JOIN kernel_link_bu2user ON dbuser.id_dbuser=kernel_link_bu2user.user_id
+			LEFT JOIN kernel_bu_eleve ON kernel_bu_eleve.idEleve=kernel_link_bu2user.bu_id
+			LEFT JOIN kernel_bu_responsable ON kernel_bu_responsable.numero=kernel_link_bu2user.bu_id
+			LEFT JOIN kernel_bu_personnel ON kernel_bu_personnel.numero=kernel_link_bu2user.bu_id
+			LEFT JOIN kernel_ext_user ON kernel_ext_user.id=kernel_link_bu2user.bu_id
+			WHERE dbuser.login_dbuser=:username AND dbuser.password_dbuser = MD5(:password)',
 	),
-	*/
 
 	/*
 	'example-static' => array(
