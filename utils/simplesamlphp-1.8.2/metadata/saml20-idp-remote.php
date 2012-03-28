@@ -7,6 +7,17 @@
  * See: https://rnd.feide.no/content/idp-remote-metadata-reference
  */
 
+$metadata['http://ecolenumerique.fmossmann.cdc'] = array(
+	'name' => array(
+		'en' => 'Iconito IdP',
+	),
+	'description'          => 'Welcome to my Iconito IdP !',
+
+	'SingleSignOnService'  => 'http://ecolenumerique.fmossmann.cdc/simplesaml/saml2/idp/SSOService.php',
+	'SingleLogoutService'  => 'http://ecolenumerique.fmossmann.cdc/simplesaml/saml2/idp/SingleLogoutService.php',
+	'certFingerprint'      => 'c9ed4dfb07caf13fc21e0fec1572047eb8a7a4cb'
+);
+
 /*
  * Guest IdP. allows users to sign up and register. Great for testing!
  */

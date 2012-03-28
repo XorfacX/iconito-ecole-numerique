@@ -27,6 +27,9 @@ $config = array(
 		// The URL to the discovery service.
 		// Can be NULL/unset, in which case a builtin discovery service will be used.
 		'discoURL' => NULL,
+
+		'privateKey' => 'saml.pem',
+		'certificate' => 'saml.crt',
 	),
 
 
