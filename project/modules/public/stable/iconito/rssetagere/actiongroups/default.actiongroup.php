@@ -19,7 +19,7 @@
             $ppo = new CopixPPO();
             
             if(!$this->service->loadxml()){
-                return $this->error('rssetagere.notfound', '||');
+                return $this->error('rssetagere.notfound', true, '||');
             }
             
             $ppo->title = $this->service->getTitle();
