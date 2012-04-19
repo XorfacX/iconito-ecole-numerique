@@ -505,15 +505,36 @@ class ActionGroupExport extends EnicActionGroup {
 
 			$xml_attributes_attr = $xml_attributes->addChild('attr');
 			$xml_attributes_attr->addAttribute('name','personalTitle');
-			if( id_sexe_eleve == 1 ) {
-				$xml_attributes_attr->addChild('value','M.');
+			if( $item->id_sexe_eleve == 1 ) {
+				$xml_attributes_attr->addChild('value','Monsieur');
 			} else {
-				$xml_attributes_attr->addChild('value','Mme');
+				$xml_attributes_attr->addChild('value','Madame');
 			}
+
+			$sql = "SELECT * FROM kernel_bu_responsables WHERE type_beneficiaire='ELEVE' AND id_beneficiaire=:id_beneficiaire AND type='responsable'";
+			$list_resp = _doQuery ($sql, array(':id_beneficiaire'=>$item->id_eleve));
+			// if(count($list_resp)>1) { echo "<pre>"; print_r($list_resp); die("</pre>"); }
+			foreach( $list_resp AS $list_resp_item ) {
+				if( $list_resp_item->auth_parentale ) {
+					$xml_attributes_attr = $xml_attributes->addChild('attr');
+					$xml_attributes_attr->addAttribute('name','ENTEleveParents');
+					$xml_attributes_attr->addChild('value','resp-'.$list_resp_item->id_responsable);
+				}
+				if( $list_resp_item->id_par <= 2 ) {
+					$xml_attributes_attr = $xml_attributes->addChild('attr');
+					$xml_attributes_attr->addAttribute('name','ENTEleveAutoriteParentale');
+					$xml_attributes_attr->addChild('value','resp-'.$list_resp_item->id_responsable);
+				}
+			}
+
+// id_rel 	id_beneficiaire 	type_beneficiaire 	id_responsable 	type 	auth_parentale 	id_par
 
 			/* TODO
 			$xml_attributes_attr = $xml_attributes->addChild('attr');
 			$xml_attributes_attr->addAttribute('name','ENTEleveParents');
+			$xml_attributes_attr->addChild('value','');
+			$xml_attributes_attr = $xml_attributes->addChild('attr');
+			$xml_attributes_attr->addAttribute('name','ENTEleveAutoriteParentale');
 			$xml_attributes_attr->addChild('value','');
 			*/
 
@@ -547,7 +568,7 @@ class ActionGroupExport extends EnicActionGroup {
 
 			$xml_attributes_attr = $xml_attributes->addChild('attr');
 			$xml_attributes_attr->addAttribute('name','ENTEleveClasses');
-			$xml_attributes_attr->addChild('value','');
+			$xml_attributes_attr->addChild('value','ecole-'.$item->ecole_id.'$'.$item->classe_id);
 
 			// $xml_request->addAttribute('id',$item->id);
 		}
@@ -617,6 +638,128 @@ class ActionGroupExport extends EnicActionGroup {
 		
 		header ("Content-Type:text/xml");
 		die($export_xml);
+	}
+
+	public function processMenesr_persreleleve () {
+		$sql = "
+			SELECT
+				kernel_bu_responsable.numero,
+				kernel_bu_responsable.nom,
+				kernel_bu_responsable.prenom1,
+				kernel_bu_responsable.civilite,
+				kernel_bu_responsable.id_sexe,
+				kernel_bu_responsable.tel_dom,
+				kernel_bu_responsable.tel_gsm,
+				kernel_bu_responsable.tel_pro,
+				kernel_bu_responsable.mel
+				
+			FROM kernel_bu_responsable
+		";
+		$list = _doQuery ($sql);
+
+// echo "<pre>"; print_r($list); die("</pre>");
+
+		$xmlstr = '<ficAlimMENESR></ficAlimMENESR>';
+		$export = new SimpleXMLElement($xmlstr);
+		
+		foreach( $list AS $item ) {
+			$xml_request = $export->addChild('addRequest');
+
+			$xml_operational = $xml_request->addChild('operationalAttributes');
+			$xml_operational_attr = $xml_operational->addChild('attr');
+			$xml_operational_attr->addAttribute('name','categoriePersonne');
+			$xml_operational_attr->addChild('value','PersRelEleve');
+
+			$xml_identifier = $xml_request->addChild('identifier');
+			$xml_identifier->addChild('id','resp-'.$item->numero);
+
+			$xml_attributes = $xml_request->addChild('attributes');
+
+			$xml_attributes_attr = $xml_attributes->addChild('attr');
+			$xml_attributes_attr->addAttribute('name','ENTPersonJointure');
+			$xml_attributes_attr->addChild('value','resp-'.$item->numero);
+
+			$xml_attributes_attr = $xml_attributes->addChild('attr');
+			$xml_attributes_attr->addAttribute('name','sn');
+			$xml_attributes_attr->addChild('value',$item->nom);
+
+			$xml_attributes_attr = $xml_attributes->addChild('attr');
+			$xml_attributes_attr->addAttribute('name','givenName');
+			$xml_attributes_attr->addChild('value',$item->prenom1);
+
+			$xml_attributes_attr = $xml_attributes->addChild('attr');
+			$xml_attributes_attr->addAttribute('name','personalTitle');
+			if( $item->id_sexe == 1 ) {
+				$xml_attributes_attr->addChild('value','Monsieur');
+			} else {
+				$xml_attributes_attr->addChild('value','Madame');
+			}
+		}
+
+		$export_xml = $export->asXML();
+		
+		header ("Content-Type:text/xml");
+		die($export_xml);
+		
+	}
+
+	public function processMenesr_perseducnat () {
+		$sql = "
+			SELECT kernel_bu_personnel.*,kernel_bu_personnel_entite.reference AS etablissement
+			FROM kernel_bu_personnel
+			JOIN kernel_bu_personnel_entite
+				ON kernel_bu_personnel.numero=kernel_bu_personnel_entite.id_per AND type_ref='ECOLE' AND role IN (1,2)
+			GROUP BY kernel_bu_personnel.numero";
+		$list = _doQuery ($sql);
+
+		// echo "<pre>"; print_r($list); die("</pre>");
+
+		$xmlstr = '<ficAlimMENESR></ficAlimMENESR>';
+		$export = new SimpleXMLElement($xmlstr);
+		
+		foreach( $list AS $item ) {
+			$xml_request = $export->addChild('addRequest');
+
+			$xml_operational = $xml_request->addChild('operationalAttributes');
+			$xml_operational_attr = $xml_operational->addChild('attr');
+			$xml_operational_attr->addAttribute('name','categoriePersonne');
+			$xml_operational_attr->addChild('value','PersEducNat');
+
+			$xml_identifier = $xml_request->addChild('identifier');
+			$xml_identifier->addChild('id','pers-'.$item->numero);
+
+			$xml_attributes = $xml_request->addChild('attributes');
+
+			$xml_attributes_attr = $xml_attributes->addChild('attr');
+			$xml_attributes_attr->addAttribute('name','ENTPersonJointure');
+			$xml_attributes_attr->addChild('value','pers-'.$item->numero);
+
+			$xml_attributes_attr = $xml_attributes->addChild('attr');
+			$xml_attributes_attr->addAttribute('name','sn');
+			$xml_attributes_attr->addChild('value',$item->nom);
+
+			$xml_attributes_attr = $xml_attributes->addChild('attr');
+			$xml_attributes_attr->addAttribute('name','givenName');
+			$xml_attributes_attr->addChild('value',$item->prenom1);
+
+			$xml_attributes_attr = $xml_attributes->addChild('attr');
+			$xml_attributes_attr->addAttribute('name','personalTitle');
+			if( $item->id_sexe == 1 ) {
+				$xml_attributes_attr->addChild('value','Monsieur');
+			} else {
+				$xml_attributes_attr->addChild('value','Madame');
+			}
+
+			$xml_attributes_attr = $xml_attributes->addChild('attr');
+			$xml_attributes_attr->addAttribute('name','ENTPersonStructRattach');
+			$xml_attributes_attr->addChild('value','ecole-'.$item->etablissement);
+		}
+
+		$export_xml = $export->asXML();
+		
+		header ("Content-Type:text/xml");
+		die($export_xml);
+		
 	}
 }
 

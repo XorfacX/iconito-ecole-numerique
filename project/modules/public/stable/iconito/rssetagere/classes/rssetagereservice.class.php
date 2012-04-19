@@ -20,7 +20,7 @@
 
             $this->rssUrl = $this->helpers->config('rssetagere|rss_url');
 
-            $this->rssUrl = $this->rssUrl.'?classe='.$ppo->url_classe.'&siren='.$ppo->url_ecole;
+            $this->rssUrl = $this->rssUrl.'?classe='.$ppo->url_classe.'&siren='.$ppo->url_ecole.($ppo->targetType=="BU_CLASSE"?'&classeId='.$ppo->targetId:'');
             $this->xml = @simplexml_load_file($this->rssUrl);
 
             if($this->xml == false)
