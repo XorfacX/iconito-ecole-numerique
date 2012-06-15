@@ -12,7 +12,6 @@
 <ul class="resource">
 {foreach from=$ppo->items item=itemR}
 <li class="">
-    <h3><a href="{$itemR->link}" target="_blank">{$itemR->title}</a></h3>
     <div class="content-panel">
         <a href="{$itemR->link}" target="_blank" class="illustration"><img src="{$itemR->pic.url}" alt="{$itemR->title}" /></a>
         <p>{$itemR->desc}</p>
