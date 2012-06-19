@@ -24,6 +24,9 @@ h2 a {font-weight:normal;}
     min-height:74px;
     display: block;
 }
+.resource li a.content-panel:hover {
+	background-color: #EEE;
+}
 .resource .illustration {
     float:left;
     margin:0 10px 5px 0;
