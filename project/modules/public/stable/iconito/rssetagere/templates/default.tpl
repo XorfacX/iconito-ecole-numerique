@@ -5,18 +5,17 @@
 {/if}
 </h2>
 
-<p>
-    {$ppo->desc}
-</p>
-
+{if $ppo->items|@count}
 <ul class="resource">
 {foreach from=$ppo->items item=itemR}
 <li class="">
-    <div class="content-panel">
-        <a href="{$itemR->link}" target="_blank" class="illustration"><img src="{$itemR->pic.url}" alt="{$itemR->title}" /></a>
+    <a class="content-panel" href="{$itemR->link}" target="_blank">
+        <img src="{$itemR->pic.url}" alt="{$itemR->title}" class="illustration" />
         <p>{$itemR->desc}</p>
-        <a class="button button-continue" target="_blank" href="{$itemR->link}">{i18n key="rssetagere.link"}</a>
-    </div>
+    </a>
 </li>
 {/foreach}
 </ul>
+{else}
+<p>{i18n key="rssetagere.aucuneressource"}</p>
+{/if}

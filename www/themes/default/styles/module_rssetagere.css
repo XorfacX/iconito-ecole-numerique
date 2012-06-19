@@ -22,6 +22,7 @@ h2 a {font-weight:normal;}
 }
 .resource li .content-panel {
     min-height:74px;
+    display: block;
 }
 .resource .illustration {
     float:left;
