@@ -30,7 +30,12 @@ $metadata['google.com'] = array(
 );
 */
 
-$metadata['http://ecolenumerique.fmossmann.cdc'] = array(
-	'AssertionConsumerService' => 'http://ecolenumerique.fmossmann.cdc/simplesaml/module.php/saml/sp/saml2-acs.php/iconito-sql',
-	'SingleLogoutService' => 'http://ecolenumerique.fmossmann.cdc/simplesaml/module.php/saml/sp/saml2-logout.php/iconito-sql',
+$metadata['http://ecolenumerique.fmossmann.cap/simplesaml/module.php/saml/sp/metadata.php/iconito-sql'] = array(
+	'AssertionConsumerService' => 'http://ecolenumerique.fmossmann.cap/simplesaml/module.php/saml/sp/saml2-acs.php/iconito-sql',
+	'SingleLogoutService' => 'http://ecolenumerique.fmossmann.cap/simplesaml/module.php/saml/sp/saml2-logout.php/iconito-sql',
+);
+
+$metadata['http://ecolenumerique.fmossmann.cap/simplesaml/saml2/sp/metadata.php'] = array(
+	'AssertionConsumerService' => 'http://ecolenumerique.fmossmann.cap/simplesaml/module.php/saml/sp/saml2-acs.php/iconito-sql',
+	'SingleLogoutService' => 'http://ecolenumerique.fmossmann.cap/simplesaml/module.php/saml/sp/saml2-logout.php/iconito-sql',
 );

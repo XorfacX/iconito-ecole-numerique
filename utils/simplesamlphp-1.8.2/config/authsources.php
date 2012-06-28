@@ -74,7 +74,31 @@ $config = array(
 			LEFT JOIN kernel_bu_personnel ON kernel_bu_personnel.numero=kernel_link_bu2user.bu_id
 			LEFT JOIN kernel_ext_user ON kernel_ext_user.id=kernel_link_bu2user.bu_id
 			WHERE dbuser.login_dbuser=:username AND dbuser.password_dbuser = MD5(:password)',
+		
+		'entityID' => 'http://ecolenumerique.fmossmann.cap/',
+		'privateKey' => 'saml.pem',
+		'certificate' => 'saml.crt',
 	),
+
+	'iconito-sp' => array(
+		'saml:SP',
+
+		// The entity ID of this SP.
+		// Can be NULL/unset, in which case an entity ID is generated based on the metadata URL.
+		'entityID' => NULL,
+
+		// The entity ID of the IdP this should SP should contact.
+		// Can be NULL/unset, in which case the user will be shown a list of available IdPs.
+		'idp' => NULL,
+
+		// The URL to the discovery service.
+		// Can be NULL/unset, in which case a builtin discovery service will be used.
+		'discoURL' => NULL,
+
+		'privateKey' => 'saml.pem',
+		'certificate' => 'saml.crt',
+	),
+
 
 	/*
 	'example-static' => array(

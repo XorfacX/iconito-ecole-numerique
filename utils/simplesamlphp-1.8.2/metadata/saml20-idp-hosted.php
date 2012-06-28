@@ -5,6 +5,7 @@
  * See: https://rnd.feide.no/content/idp-hosted-metadata-reference
  */
 
+// $metadata['http://ecolenumerique.fmossmann.cap/simplesaml/module.php/saml/sp/metadata.php/iconito-sql'] = array(
 $metadata['__DYNAMIC:1__'] = array(
 	/*
 	 * The hostname of the server (VHOST) that will use this SAML entity.
@@ -24,12 +25,10 @@ $metadata['__DYNAMIC:1__'] = array(
 	'auth' => 'iconito-sql',
 
 	/* Uncomment the following to use the uri NameFormat on attributes. */
-	/*
 	'AttributeNameFormat' => 'urn:oasis:names:tc:SAML:2.0:attrname-format:uri',
 	'authproc' => array(
 		// Convert LDAP names to oids.
 		100 => array('class' => 'core:AttributeMap', 'name2oid'),
 	),
-	*/
 
 );

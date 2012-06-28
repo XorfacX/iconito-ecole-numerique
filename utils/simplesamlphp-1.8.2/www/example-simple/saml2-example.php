@@ -72,8 +72,7 @@ $t->data['header'] = '{status:header_saml20_sp}';
 $t->data['remaining'] = $session->getAuthData('saml2', 'Expire') - time();
 $t->data['sessionsize'] = $session->getSize();
 $t->data['attributes'] = $attributes;
-$t->data['logouturl'] = '/' . $config->getBaseURL() . 'saml2/sp/initSLO.php?RelayState=/' .
-	$config->getBaseURL() . 'logout.php';
+$t->data['logouturl'] = '/' . $config->getBaseURL() . 'saml2/sp/initSLO.php?RelayState=/' . $config->getBaseURL() . 'logout.php';
 $t->show();
 
 
