@@ -36,6 +36,6 @@ $metadata['http://ecolenumerique.fmossmann.cap/simplesaml/module.php/saml/sp/met
 );
 
 $metadata['http://ecolenumerique.fmossmann.cap/simplesaml/saml2/sp/metadata.php'] = array(
-	'AssertionConsumerService' => 'http://ecolenumerique.fmossmann.cap/simplesaml/module.php/saml/sp/saml2-acs.php/default-sp',
-	'SingleLogoutService' => 'http://ecolenumerique.fmossmann.cap/simplesaml/module.php/saml/sp/saml2-logout.php/default-sp',
+	'AssertionConsumerService' => 'http://ecolenumerique.fmossmann.cap/simplesaml/module.php/saml/sp/saml2-acs.php/iconito-sql',
+	'SingleLogoutService' => 'http://ecolenumerique.fmossmann.cap/simplesaml/module.php/saml/sp/saml2-logout.php/iconito-sql',
 );
