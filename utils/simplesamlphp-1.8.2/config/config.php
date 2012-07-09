@@ -12,6 +12,7 @@ $config = array (
 	 * See the user manual for more details.
 	 */
 	'baseurlpath'           => 'simplesaml/',
+	// 'baseurlpath'           => '',
 	'certdir'               => 'cert/',
 	'loggingdir'            => 'log/',
 	'datadir'               => 'data/',
@@ -21,7 +22,7 @@ $config = array (
 	 *
 	 * SimpleSAMLphp will attempt to create this directory if it doesn't exist.
 	 */
-	'tempdir'               => '/tmp/simplesaml',
+	'tempdir'               => '/tmp/simplesaml', // A_MODIFIER
 	
 
 	/*
@@ -57,7 +58,7 @@ $config = array (
 	 * This password will give access to the installation page of simpleSAMLphp with
 	 * metadata listing and diagnostics pages.
 	 */
-	'auth.adminpassword'		=> 'adminpassword', // A CHANGER
+	'auth.adminpassword'		=> 'adminpassword', // A_MODIFIER
 	'admin.protectindexpage'	=> false,
 	'admin.protectmetadata'		=> false,
 
@@ -69,15 +70,15 @@ $config = array (
 	 * A possible way to generate a random salt is by running the following command from a unix shell:
 	 * tr -c -d '0123456789abcdefghijklmnopqrstuvwxyz' </dev/urandom | dd bs=32 count=1 2>/dev/null;echo
 	 */
-	'secretsalt' => 'md27tq55v6miemzd8vld3jfud6m1vcin', // A CHANGER
+	'secretsalt' => 'md27tq55v6miemzd8vld3jfud6m1vcin',  // A_MODIFIER
 	
 	/*
 	 * Some information about the technical persons running this installation.
 	 * The email address will be used as the recipient address for error reports, and
 	 * also as the technical contact in generated metadata.
 	 */
-	'technicalcontact_name'     => 'Admin CAP-TIC',      // A CHANGER
-	'technicalcontact_email'    => 'support@cap-tic.fr', // A CHANGER
+	'technicalcontact_name'     => 'Admin CAP-TIC',       // A_MODIFIER
+	'technicalcontact_email'    => 'support@cap-tic.fr',  // A_MODIFIER
 
 	/*
 	 * The timezone of the server. This option should be set to the timezone you want
@@ -201,7 +202,7 @@ $config = array (
 	/*
 	 * Options to override the default settings for php sessions.
 	 */
-	'session.phpsession.cookiename'  => null,
+	'session.phpsession.cookiename'  => 'Copix',
 	'session.phpsession.savepath'    => null,
 	'session.phpsession.httponly'    => FALSE,
 	

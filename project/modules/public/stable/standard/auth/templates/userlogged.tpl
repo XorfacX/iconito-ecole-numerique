@@ -20,6 +20,8 @@
     <div class="userlogon">
     {if $ppo->conf_Cas_actif}
         <a href="{copixurl dest="auth|cas|login"}" class="button button-confirm cas-login">Connectez-vous !</a>
+    {elseif $ppo->conf_Saml_actif}
+        <a href="{copixurl dest="auth|saml|login"}" class="button button-confirm cas-login">Connectez-vous !</a>
     {else}
         {if (false || $canNewAccount) } {*// TODO: lire conf pour savoir si on autorise la demande de compte, sur cette ligne et 4 lignes plus haut *}
             <div class="loginNew">

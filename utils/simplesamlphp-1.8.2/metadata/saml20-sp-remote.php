@@ -30,12 +30,17 @@ $metadata['google.com'] = array(
 );
 */
 
+/*
+$metadata['http://ecolenumerique.fmossmann.cap/simplesaml/module.php/saml/sp/metadata.php/default-sp'] = 
 $metadata['http://ecolenumerique.fmossmann.cap/simplesaml/module.php/saml/sp/metadata.php/iconito-sql'] = array(
-	'AssertionConsumerService' => 'http://ecolenumerique.fmossmann.cap/simplesaml/module.php/saml/sp/saml2-acs.php/iconito-sql',
-	'SingleLogoutService' => 'http://ecolenumerique.fmossmann.cap/simplesaml/module.php/saml/sp/saml2-logout.php/iconito-sql',
+	'AssertionConsumerService' => 'http://ecolenumerique.fmossmann.cap/simplesaml/module.php/saml/sp/saml2-acs.php/default-sp',
+	'SingleLogoutService' => 'http://ecolenumerique.fmossmann.cap/simplesaml/module.php/saml/sp/saml2-logout.php/default-sp',
 );
+*/
 
+/*
 $metadata['http://ecolenumerique.fmossmann.cap/simplesaml/saml2/sp/metadata.php'] = array(
-	'AssertionConsumerService' => 'http://ecolenumerique.fmossmann.cap/simplesaml/module.php/saml/sp/saml2-acs.php/iconito-sql',
-	'SingleLogoutService' => 'http://ecolenumerique.fmossmann.cap/simplesaml/module.php/saml/sp/saml2-logout.php/iconito-sql',
+	'AssertionConsumerService' => 'http://ecolenumerique.fmossmann.cap/simplesaml/module.php/saml/sp/saml2-acs.php/default-sp',
+	'SingleLogoutService' => 'http://ecolenumerique.fmossmann.cap/simplesaml/module.php/saml/sp/saml2-logout.php/default-sp',
 );
+*/

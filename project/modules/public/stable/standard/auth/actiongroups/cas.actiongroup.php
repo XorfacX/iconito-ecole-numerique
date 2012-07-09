@@ -30,10 +30,10 @@ class ActionGroupCas extends EnicActionGroup {
                          */
                         $this->user->forceReload();
                         if(!$this->service('charte|CharteService')->checkUserValidation()){
-                            $this->flash->redirect = $urlReturn;
+                            $this->flash->redirect = $url_return;
                             return $this->go('charte|charte|valid');
                         }
-			return _arRedirect ($urlReturn);
+			return _arRedirect ($url_return);
 			//return new CopixActionReturn (COPIX_AR_REDIRECT, $url_return);
 		} else {
 			

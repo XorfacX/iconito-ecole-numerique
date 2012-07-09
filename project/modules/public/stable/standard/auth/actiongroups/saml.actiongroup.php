@@ -16,58 +16,51 @@
  */
 class ActionGroupSaml extends EnicActionGroup {
 	
-	public function processTest () {
-		require_once(COPIX_UTILS_PATH.'../../simplesamlphp/www/_include.php');
-		
-		session_cache_limiter('nocache');
-		
-		$config = SimpleSAML_Configuration::getInstance();
-		$session = SimpleSAML_Session::getInstance();
-		
-		if (!$session->isValid('saml2') ) {
-			SimpleSAML_Utilities::redirect(
-				'/' . $config->getBaseURL() . 'saml2/sp/initSSO.php',
-				array('RelayState' => SimpleSAML_Utilities::selfURL())
-			);
-		}
-		
-		echo "<pre>"; print_r($config); echo "</pre>";
-		echo "<pre>"; print_r($session); echo "</pre>";
-		die('ok');
-	}
-	
 	public function processLogin (){
-		include_once (COPIX_UTILS_PATH.'../../CAS-1.2.2/CAS.php');
 		
-                $_SESSION['chartValid'] = false;
-                
+		require_once(COPIX_UTILS_PATH.'../../simplesamlphp/lib/_autoload.php');
+		
+		$asId = 'iconito-sql';
+		$as = new SimpleSAML_Auth_Simple($asId);
+		
+		
+		
+		
+		
+		
+		
+		
+		$_SESSION['chartValid'] = false;
 		$ppo = new CopixPPO ();
 		$ppo->user = _currentUser();
 		if($ppo->user->isConnected()){
 			$url_return = CopixUrl::get ('kernel||doSelectHome');
-                        /*
-                         * PATCH FOR CHARTE
-                         */
-                        $this->user->forceReload();
-                        if(!$this->service('charte|CharteService')->checkUserValidation()){
-                            $this->flash->redirect = $urlReturn;
-                            return $this->go('charte|charte|valid');
-                        }
-			return _arRedirect ($urlReturn);
+			/*
+			 * PATCH FOR CHARTE
+			 */
+			$this->user->forceReload();
+			if(!$this->service('charte|CharteService')->checkUserValidation()){
+				$this->flash->redirect = $url_return;
+				return $this->go('charte|charte|valid');
+			}
+			return _arRedirect ($url_return);
 			//return new CopixActionReturn (COPIX_AR_REDIRECT, $url_return);
 		} else {
 			
-			$conf_Cas_host = CopixConfig::get ('default|conf_Cas_host');
-			$conf_Cas_port = CopixConfig::get ('default|conf_Cas_port');
-			$conf_Cas_path = CopixConfig::get ('default|conf_Cas_path');
+			$as->requireAuth();
 			
-			phpCAS::client(CAS_VERSION_2_0,$conf_Cas_host,(int)$conf_Cas_port,$conf_Cas_path, false);
-			phpCAS::setNoCasServerValidation();
-			phpCAS::forceAuthentication();
-			$ppo->cas_user = phpCAS::getUser();
-			if($ppo->cas_user) {
+			$attributes = $as->getAttributes();
+			
+			/*
+			echo "<pre>";
+			print_r($attributes);
+			die();
+			*/
+			
+			$ppo->saml_user = $attributes['login_dbuser'][0];
+			if($ppo->saml_user) {
 
-				$ppo->iconito_user = Kernel::getUserInfo( "LOGIN", $ppo->cas_user );
+				$ppo->iconito_user = Kernel::getUserInfo( "LOGIN", $ppo->saml_user );
 				
 				if($ppo->iconito_user['login']) {
 					_currentUser()->login(array('login'=>$ppo->iconito_user['login'], 'assistance'=>true));
@@ -84,31 +77,36 @@ class ActionGroupSaml extends EnicActionGroup {
 			}
 		}
 		
-		$ppo = new CopixPPO ();
-		$ppo->TITLE_PAGE = $pTitle;
-		
-		
-		phpCAS::setDebug();
-		
-		$conf_Cas_host = CopixConfig::get ('default|conf_Cas_host');
-		$conf_Cas_port = CopixConfig::get ('default|conf_Cas_port');
-		$conf_Cas_path = CopixConfig::get ('default|conf_Cas_path');
-		
-		phpCAS::client(CAS_VERSION_2_0,$conf_Cas_host,(int)$conf_Cas_port,$conf_Cas_path, false);
-	
-		phpCAS::setNoCasServerValidation();
-		phpCAS::forceAuthentication();
-		if (isset($_REQUEST['logout'])) {
-			phpCAS::logout();
-		}
-		die(phpCAS::getUser());
 
-		die('ok');
-		return _arPpo ($ppo, 'handlers.list.tpl');
+
+
+		// $as->getLoginURL();
+		
+		/*
+		if (!$as->isAuthenticated()) {
+			$url = SimpleSAML_Module::getModuleURL('core/authenticate.php', array('as' => $asId));
+			$params = array(
+				'ErrorURL' => CopixUrl::get ('auth|saml|test_error'),
+				'ReturnTo' => CopixUrl::get ('auth|saml|test_ok'),
+			);
+			$as->login($params);
+		}
+		*/
+		
+		/*
+		$attributes = $as->getAttributes();
+		
+		echo "<pre>";
+		print_r($attributes);
+		die();
+		*/
 	}
 	
 	public function processLogout (){
-		include_once (COPIX_UTILS_PATH.'../../CAS-1.2.2/CAS.php');
+		require_once(COPIX_UTILS_PATH.'../../simplesamlphp/lib/_autoload.php');
+		
+		$asId = 'iconito-sql';
+		$as = new SimpleSAML_Auth_Simple($asId);
 		
 		$ppo = new CopixPPO ();
 		$ppo->user = _currentUser();
@@ -119,17 +117,7 @@ class ActionGroupSaml extends EnicActionGroup {
 			CopixSession::destroyNamespace('default');
 		}
 
-		phpCAS::setDebug();
-		
-		$conf_Cas_host = CopixConfig::get ('default|conf_Cas_host');
-		$conf_Cas_port = CopixConfig::get ('default|conf_Cas_port');
-		$conf_Cas_path = CopixConfig::get ('default|conf_Cas_path');
-		
-		phpCAS::client(CAS_VERSION_2_0,$conf_Cas_host,(int)$conf_Cas_port,$conf_Cas_path, false);
-		
-		phpCAS::setNoCasServerValidation();
-		phpCAS::forceAuthentication();
-		phpCAS::logout();
+		$as->logout(_url ('||'));
 		
 		return _arRedirect (CopixRequest::get ('auth_url_return', _url ('||')));
 		
