@@ -489,7 +489,7 @@ class ActionGroupExport extends EnicActionGroup {
 
 			$xml_attributes_attr = $xml_attributes->addChild('attr');
 			$xml_attributes_attr->addAttribute('name','ENTPersonDateNaissance');
-			if( preg_match('/(?<year>[0-9][0-9][0-9][0-9])-(?<month>[0-9][0-9])-(?<day>[0-9][0-9])/',$item->date_nais_eleve, $date) ) {
+			if( preg_match('/(?P<year>[0-9][0-9][0-9][0-9])-(?P<month>[0-9][0-9])-(?P<day>[0-9][0-9])/',$item->date_nais_eleve, $date) ) {
 				$xml_attributes_attr->addChild('value',$date['day']."/".$date['month']."/".$date['year']);
 			} else {
 				$xml_attributes_attr->addChild('value','');
