@@ -303,6 +303,91 @@ class ActionGroupDefault extends CopixActionGroup
 
 
 
+    public function processTestApi ()
+    {
+        $api_class = & CopixClassesFactory::Create ('kernel|kernel_api');
+
+		/*
+		$ville = new CopixPPO();
+		$ville->nom = "Ville de test";
+		$ville->nom_canonique = "ville_de_test";
+		$id_ville = $api_class->creerVille( 1, $ville );
+		die("ok : $id_ville");
+		*/
+		
+		/*
+		$api_class->supprimerVille(4);
+		*/
+		
+		/*
+		$ville = new CopixPPO();
+		$ville->nom = "Ville de test 2";
+		$ville->nom_canonique = "ville_de_test";
+		$api_class->modifierVille( 3, $ville );
+		*/
+		
+		/*
+		$ecole = new CopixPPO();
+		$ecole->nom = "Ecole de test";
+		$ecole->type = "Primaire";
+		$ecole->rne = "1234567";
+		$ecole->adresse->numRue = '123';
+		$ecole->adresse->numSeq = 'bis';
+		$ecole->adresse->adresse1 = 'avenue de l\'Europe';
+		$ecole->adresse->adresse2 = 'adresse 2';
+		$ecole->adresse->codePostal = '67300';
+		$ecole->adresse->commune = 'Schiltigheim';
+		$api_class->creerEcole( 3, $ecole );
+		*/
+		
+		/*
+		$ecole = new CopixPPO();
+		$ecole->nom = "Ecole de test (modif)";
+		$ecole->type = "Primaire (modif)";
+		$ecole->rne = "7654321";
+		$ecole->adresse->numRue = '456';
+		$ecole->adresse->numSeq = 'ter';
+		$ecole->adresse->adresse1 = 'avenue de l\'Europe (modif)';
+		$ecole->adresse->adresse2 = 'adresse 2 (modif)';
+		$ecole->adresse->codePostal = '67301';
+		$ecole->adresse->commune = 'Schiltigheim (modif)';
+		$api_class->modifierEcole( 9, $ecole );
+		*/
+		
+		/*
+		$api_class->supprimerEcole( 8 );
+		*/
+		
+		/*
+		$classe = new CopixPPO();
+		$classe->nom = "Ma classe";
+		$classe->anneeScolaire = "2012";
+		$classe->niveaux = array();
+		$niveau = new CopixPPO();
+		$niveau->niveau = 3;
+		$niveau->type = 11;
+		$classe->niveaux[] = clone $niveau;
+		$niveau->niveau = 6;
+		$niveau->type = 12;
+		$classe->niveaux[] = clone $niveau;
+		$api_class->creerClasse( 9, $classe );
+		*/
+		
+		$classe = new CopixPPO();
+		$classe->nom = "Ma classe (modif)";
+		$classe->anneeScolaire = "2011";
+		$classe->niveaux = array();
+		$niveau = new CopixPPO();
+		$niveau->niveau = 5;
+		$niveau->type = 15;
+		$classe->niveaux[] = clone $niveau;
+		$niveau->niveau = 4;
+		$niveau->type = 14;
+		$classe->niveaux[] = clone $niveau;
+		$api_class->modifierClasse( 9, $classe );
+		
+		die('<p>Fin de processTestApi</p>');
+    }
 
 
 }
