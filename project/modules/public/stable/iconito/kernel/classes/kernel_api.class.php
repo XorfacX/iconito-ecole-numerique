@@ -21,7 +21,7 @@ class Kernel_API extends enicService
 
     /**
      * @param integer $id_grville Id du groupe de ville de rattachement
-     * @param object $infos Information sur la ville
+     * @param object $infos Informations sur la ville
      * @return integer Id de la ville
      */
     public function creerVille( $id_grville, $infos )
@@ -48,6 +48,9 @@ class Kernel_API extends enicService
         return ($this->db->lastId);
     }
     
+    /**
+     * @param integer $id_ville Id de la ville
+     */
     public function supprimerVille( $id_ville )
     {
         $this->db->delete( 'kernel_bu_ville', 'id_vi='.$this->db->quote($id_ville) );
@@ -55,6 +58,10 @@ class Kernel_API extends enicService
         return (true);
     }
     
+    /**
+     * @param integer $id_ville Id de la ville
+     * @param object $infos Informations sur la ville
+     */
     public function modifierVille( $id_ville, $infos )
     {
         $test_canon = $this->db->query( 'SELECT id_vi FROM kernel_bu_ville WHERE canon='.$this->db->quote($infos->nomCanonique) )->toArray();
@@ -67,9 +74,11 @@ class Kernel_API extends enicService
         return (true);
     }
     
-    
-    // kernel_bu_ecole : numero     RNE     code_ecole_vaccination  type    nom     num_rue     num_seq     adresse1    adresse2    code_postal     commune     
-    // tel  web     mail    num_intranet    numordre    num_plan_interactif     id_ville
+    /**
+     * @param integer $id_ville Id de la ville de rattachement
+     * @param object $infos Informations sur l'école
+     * @return integer Id de l'école
+     */
     public function creerEcole( $id_ville, $infos )
     {
         $test_ville = $this->db->query( 'SELECT id_vi FROM kernel_bu_ville WHERE id_vi='.$this->db->quote($id_ville) )->toArray();
@@ -82,7 +91,7 @@ class Kernel_API extends enicService
             array(
                 'id_ville'    => $this->db->quote($id_ville),
                 'nom'         => $this->db->quote($infos->nom),
-				'RNE'         => $this->db->quote($infos->rne),
+                'RNE'         => $this->db->quote($infos->rne),
                 'type'        => $this->db->quote($infos->type), // Primaire, Elémentaire, Maternelle
                 'num_rue'     => $this->db->quote($infos->adresse->numRue),
                 'num_seq'     => $this->db->quote($infos->adresse->numSeq), // bis, ter
@@ -95,7 +104,10 @@ class Kernel_API extends enicService
         
         return ($this->db->lastId);
     }
-    
+
+    /**
+     * @param integer $id_ecole Id de l'école
+     */
     public function supprimerEcole( $id_ecole )
     {
         $this->db->delete( 'kernel_bu_ecole', 'numero='.$this->db->quote($id_ecole) );
@@ -103,10 +115,14 @@ class Kernel_API extends enicService
         return (true);
     }
     
+    /**
+     * @param integer $id_ecole Id de l'école
+     * @param object $infos Informations sur l'école
+     */
     public function modifierEcole( $id_ecole, $infos )
     {
         $this->db->query( 'UPDATE kernel_bu_ecole SET nom='.$this->db->quote($infos->nom                ).',
-		                                              RNE='.$this->db->quote($infos->rne                ).',
+                                                      RNE='.$this->db->quote($infos->rne                ).',
                                                      type='.$this->db->quote($infos->type               ).',
                                                   num_rue='.$this->db->quote($infos->adresse->numRue    ).',
                                                   num_seq='.$this->db->quote($infos->adresse->numSeq    ).',
@@ -119,7 +135,11 @@ class Kernel_API extends enicService
         return (true);
     }
     
-
+    /**
+     * @param integer $id_ecole Id de l'école de rattachement
+     * @param object $infos Informations sur la classe
+     * @return integer Id de la classe
+     */
     public function creerClasse( $id_ecole, $infos )
     {
         $test_ecole = $this->db->query( 'SELECT numero FROM kernel_bu_ecole WHERE numero='.$this->db->quote($id_ecole) )->toArray();
@@ -142,8 +162,6 @@ class Kernel_API extends enicService
         
         foreach( $infos->niveaux AS $niveau )
         {
-            // $niveau->niveau
-            // $niveau->type
             $this->db->create(
                 'kernel_bu_ecole_classe_niveau',
                 array(
@@ -157,6 +175,9 @@ class Kernel_API extends enicService
         return ($id_classe);
     }
     
+    /**
+     * @param integer $id_classe Id de la classe
+     */
     public function supprimerClasse( $id_classe )
     {
         $this->db->delete( 'kernel_bu_ecole_classe', 'id='.$this->db->quote($id_classe) );
@@ -164,6 +185,10 @@ class Kernel_API extends enicService
         return (true);
     }
     
+    /**
+     * @param integer $id_classe Id de la classe
+     * @param object $infos Informations sur la classe
+     */
     public function modifierClasse( $id_classe, $infos )
     {
         $this->db->query( 'UPDATE kernel_bu_ecole_classe SET nom='.$this->db->quote($infos->nom).',

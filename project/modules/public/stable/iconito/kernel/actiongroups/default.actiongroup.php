@@ -373,6 +373,7 @@ class ActionGroupDefault extends CopixActionGroup
 		$api_class->creerClasse( 9, $classe );
 		*/
 		
+		/*
 		$classe = new CopixPPO();
 		$classe->nom = "Ma classe (modif)";
 		$classe->anneeScolaire = "2011";
@@ -385,6 +386,7 @@ class ActionGroupDefault extends CopixActionGroup
 		$niveau->type = 14;
 		$classe->niveaux[] = clone $niveau;
 		$api_class->modifierClasse( 9, $classe );
+		*/
 		
 		die('<p>Fin de processTestApi</p>');
     }
