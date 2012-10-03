@@ -388,6 +388,16 @@ class ActionGroupDefault extends CopixActionGroup
 		$api_class->modifierClasse( 9, $classe );
 		*/
 		
+		/*
+		try {
+		    $api_class->testException();
+		} catch (Kernel_API_testException $e) {
+		    print "Kernel_API_testException";
+		} catch (Exception $e) {
+		    print "Exception";
+		}
+		*/
+		
 		die('<p>Fin de processTestApi</p>');
     }
 

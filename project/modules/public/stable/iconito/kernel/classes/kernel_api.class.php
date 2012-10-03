@@ -28,12 +28,12 @@ class Kernel_API extends enicService
     {
         $test_grville = $this->db->query( 'SELECT id_grv FROM kernel_bu_groupe_villes WHERE id_grv='.$this->db->quote($id_grville) )->toArray();
         if( count($test_grville) == 0 ) {
-            // Erreur : Groupe de ville inexistant
+            throw new Kernel_API_creerVille_noGrville("Groupe de ville inexistant");
         }
         
         $test_canon = $this->db->query( 'SELECT id_vi FROM kernel_bu_ville WHERE canon='.$this->db->quote($infos->nomCanonique) )->toArray();
         if( count($test_canon) > 0 ) {
-            // Erreur : Nom canonique existant
+            throw new Kernel_API_creerVille_dupNomCanon("Nom canonique déjà utilisé");
         }
         
         $this->db->create(
@@ -53,6 +53,12 @@ class Kernel_API extends enicService
      */
     public function supprimerVille( $id_ville )
     {
+    
+        $test_ville = $this->db->query( 'SELECT id_vi FROM kernel_bu_ville WHERE id_vi='.$this->db->quote($this->db->quote($id_ville)) )->toArray();
+        if( count($test_ville) == 0 ) {
+            throw new Kernel_API_supprimerVille_noVille("Ville inexistante");
+        }
+    
         $this->db->delete( 'kernel_bu_ville', 'id_vi='.$this->db->quote($id_ville) );
         
         return (true);
@@ -66,8 +72,14 @@ class Kernel_API extends enicService
     {
         $test_canon = $this->db->query( 'SELECT id_vi FROM kernel_bu_ville WHERE canon='.$this->db->quote($infos->nomCanonique) )->toArray();
         if( count($test_canon) > 0 ) {
-            // Erreur : Nom canonique existant
+            throw new Kernel_API_modifierVille_dupNomCanon("Nom canonique déjà utilisé");
         }
+
+        $test_ville = $this->db->query( 'SELECT id_vi FROM kernel_bu_ville WHERE id_vi='.$this->db->quote($this->db->quote($id_ville)) )->toArray();
+        if( count($test_ville) == 0 ) {
+            throw new Kernel_API_modifierVille_noVille("Ville inexistante");
+        }
+
         
         $this->db->query( 'UPDATE kernel_bu_ville SET nom='.$this->db->quote($infos->nom).', canon='.$this->db->quote($infos->nomCanonique).' WHERE id_vi='.$this->db->quote($id_ville) );
         
@@ -83,7 +95,7 @@ class Kernel_API extends enicService
     {
         $test_ville = $this->db->query( 'SELECT id_vi FROM kernel_bu_ville WHERE id_vi='.$this->db->quote($id_ville) )->toArray();
         if( count($test_ville) == 0 ) {
-            // Erreur : Ville inexistante
+            throw new Kernel_API_creerEcole_noVille("Ville inexistante");
         }
         
         $this->db->create(
@@ -110,6 +122,11 @@ class Kernel_API extends enicService
      */
     public function supprimerEcole( $id_ecole )
     {
+        $test_ecole = $this->db->query( 'SELECT numero FROM kernel_bu_ecole WHERE numero='.$this->db->quote($this->db->quote($id_ecole)) )->toArray();
+        if( count($test_ecole) == 0 ) {
+            throw new Kernel_API_supprimerEcole_noEcole("Ecole inexistante");
+        }
+        
         $this->db->delete( 'kernel_bu_ecole', 'numero='.$this->db->quote($id_ecole) );
         
         return (true);
@@ -121,6 +138,11 @@ class Kernel_API extends enicService
      */
     public function modifierEcole( $id_ecole, $infos )
     {
+        $test_ecole = $this->db->query( 'SELECT numero FROM kernel_bu_ecole WHERE numero='.$this->db->quote($this->db->quote($id_ecole)) )->toArray();
+        if( count($test_ecole) == 0 ) {
+            throw new Kernel_API_modifierEcole_noEcole("Ecole inexistante");
+        }
+        
         $this->db->query( 'UPDATE kernel_bu_ecole SET nom='.$this->db->quote($infos->nom                ).',
                                                       RNE='.$this->db->quote($infos->rne                ).',
                                                      type='.$this->db->quote($infos->type               ).',
@@ -144,7 +166,7 @@ class Kernel_API extends enicService
     {
         $test_ecole = $this->db->query( 'SELECT numero FROM kernel_bu_ecole WHERE numero='.$this->db->quote($id_ecole) )->toArray();
         if( count($test_ecole) == 0 ) {
-            // Erreur : Ecole inexistante
+            throw new Kernel_API_creerClasse_noEcole("Ecole inexistante");
         }
         
         $this->db->create(
@@ -180,6 +202,11 @@ class Kernel_API extends enicService
      */
     public function supprimerClasse( $id_classe )
     {
+        $test_classe = $this->db->query( 'SELECT id FROM kernel_bu_ecole_classe WHERE id='.$this->db->quote($this->db->quote($id_classe)) )->toArray();
+        if( count($test_classe) == 0 ) {
+            throw new Kernel_API_supprimerClasse_noClasse("Classe inexistante");
+        }
+        
         $this->db->delete( 'kernel_bu_ecole_classe', 'id='.$this->db->quote($id_classe) );
         
         return (true);
@@ -191,6 +218,11 @@ class Kernel_API extends enicService
      */
     public function modifierClasse( $id_classe, $infos )
     {
+        $test_classe = $this->db->query( 'SELECT id FROM kernel_bu_ecole_classe WHERE id='.$this->db->quote($this->db->quote($id_classe)) )->toArray();
+        if( count($test_classe) == 0 ) {
+            throw new Kernel_API_modifierClasse_noClasse("Classe inexistante");
+        }
+    
         $this->db->query( 'UPDATE kernel_bu_ecole_classe SET nom='.$this->db->quote($infos->nom).',
                                                       annee_scol='.$this->db->quote($infos->anneeScolaire).'
             WHERE id='.$this->db->quote($id_classe) );
@@ -217,6 +249,11 @@ class Kernel_API extends enicService
     
     public function creerDirecteur( $id_ecole, $infos )
     {
+        $test_ecole = $this->db->query( 'SELECT numero FROM kernel_bu_ecole WHERE numero='.$this->db->quote($id_ecole) )->toArray();
+        if( count($test_ecole) == 0 ) {
+            throw new Kernel_API_creerDirecteur_noEcole("Ecole inexistante");
+        }
+        
         
         return ($id_directeur);
     }
@@ -239,6 +276,17 @@ class Kernel_API extends enicService
         return (true);
     }
     
-    
-    
 }
+
+class Kernel_API_creerVille_noGrville extends Exception { }
+class Kernel_API_creerVille_dupNomCanon extends Exception { }
+class Kernel_API_supprimerVille_noVille extends Exception { }
+class Kernel_API_modifierVille_dupNomCanon extends Exception { }
+class Kernel_API_modifierVille_noVille extends Exception { }
+class Kernel_API_creerEcole_noVille extends Exception { }
+class Kernel_API_supprimerEcole_noEcole extends Exception { }
+class Kernel_API_modifierEcole_noEcole extends Exception { }
+class Kernel_API_creerClasse_noEcole extends Exception { }
+class Kernel_API_supprimerClasse_noClasse extends Exception { }
+class Kernel_API_modifierClasse_noClasse extends Exception { }
+class Kernel_API_creerDirecteur_noEcole extends Exception { }
