@@ -54,7 +54,7 @@ class Kernel_API extends enicService
     public function supprimerVille( $id_ville )
     {
     
-        $test_ville = $this->db->query( 'SELECT id_vi FROM kernel_bu_ville WHERE id_vi='.$this->db->quote($this->db->quote($id_ville)) )->toArray();
+        $test_ville = $this->db->query( 'SELECT id_vi FROM kernel_bu_ville WHERE id_vi='.$this->db->quote($id_ville) )->toArray();
         if( count($test_ville) == 0 ) {
             throw new Kernel_API_supprimerVille_noVille("Ville inexistante");
         }
@@ -75,7 +75,7 @@ class Kernel_API extends enicService
             throw new Kernel_API_modifierVille_dupNomCanon("Nom canonique déjà utilisé");
         }
 
-        $test_ville = $this->db->query( 'SELECT id_vi FROM kernel_bu_ville WHERE id_vi='.$this->db->quote($this->db->quote($id_ville)) )->toArray();
+        $test_ville = $this->db->query( 'SELECT id_vi FROM kernel_bu_ville WHERE id_vi='.$this->db->quote($id_ville) )->toArray();
         if( count($test_ville) == 0 ) {
             throw new Kernel_API_modifierVille_noVille("Ville inexistante");
         }
@@ -122,7 +122,7 @@ class Kernel_API extends enicService
      */
     public function supprimerEcole( $id_ecole )
     {
-        $test_ecole = $this->db->query( 'SELECT numero FROM kernel_bu_ecole WHERE numero='.$this->db->quote($this->db->quote($id_ecole)) )->toArray();
+        $test_ecole = $this->db->query( 'SELECT numero FROM kernel_bu_ecole WHERE numero='.$this->db->quote($id_ecole) )->toArray();
         if( count($test_ecole) == 0 ) {
             throw new Kernel_API_supprimerEcole_noEcole("Ecole inexistante");
         }
@@ -138,7 +138,7 @@ class Kernel_API extends enicService
      */
     public function modifierEcole( $id_ecole, $infos )
     {
-        $test_ecole = $this->db->query( 'SELECT numero FROM kernel_bu_ecole WHERE numero='.$this->db->quote($this->db->quote($id_ecole)) )->toArray();
+        $test_ecole = $this->db->query( 'SELECT numero FROM kernel_bu_ecole WHERE numero='.$this->db->quote($id_ecole) )->toArray();
         if( count($test_ecole) == 0 ) {
             throw new Kernel_API_modifierEcole_noEcole("Ecole inexistante");
         }
@@ -202,7 +202,7 @@ class Kernel_API extends enicService
      */
     public function supprimerClasse( $id_classe )
     {
-        $test_classe = $this->db->query( 'SELECT id FROM kernel_bu_ecole_classe WHERE id='.$this->db->quote($this->db->quote($id_classe)) )->toArray();
+        $test_classe = $this->db->query( 'SELECT id FROM kernel_bu_ecole_classe WHERE id='.$this->db->quote($id_classe) )->toArray();
         if( count($test_classe) == 0 ) {
             throw new Kernel_API_supprimerClasse_noClasse("Classe inexistante");
         }
@@ -218,7 +218,7 @@ class Kernel_API extends enicService
      */
     public function modifierClasse( $id_classe, $infos )
     {
-        $test_classe = $this->db->query( 'SELECT id FROM kernel_bu_ecole_classe WHERE id='.$this->db->quote($this->db->quote($id_classe)) )->toArray();
+        $test_classe = $this->db->query( 'SELECT id FROM kernel_bu_ecole_classe WHERE id='.$this->db->quote($id_classe) )->toArray();
         if( count($test_classe) == 0 ) {
             throw new Kernel_API_modifierClasse_noClasse("Classe inexistante");
         }
@@ -246,13 +246,42 @@ class Kernel_API extends enicService
         return (true);
     }
     
-    
+    // kernel_bu_personnel : numero     nom     nom_jf  prenom1     civilite    id_sexe  tel_dom    tel_gsm     tel_pro     mel     id_ville    pays
+    // kernel_bu_personnel_entite : id_per  reference=$id_ecole     type_ref=ECOLE  role=2
     public function creerDirecteur( $id_ecole, $infos )
     {
-        $test_ecole = $this->db->query( 'SELECT numero FROM kernel_bu_ecole WHERE numero='.$this->db->quote($id_ecole) )->toArray();
+        $test_ecole = $this->db->query( 'SELECT numero, id_ville FROM kernel_bu_ecole WHERE numero='.$this->db->quote($id_ecole) )->toArray();
         if( count($test_ecole) == 0 ) {
             throw new Kernel_API_creerDirecteur_noEcole("Ecole inexistante");
         }
+
+        $this->db->create(
+            'kernel_bu_personnel',
+            array(
+                'nom'      => $this->db->quote($infos->nom),
+                'nom_jf'   => $this->db->quote($infos->nomJf),
+                'prenom1'  => $this->db->quote($infos->prenom),
+                'civilite' => $this->db->quote($infos->civilite),
+                'id_sexe'  => $this->db->quote($infos->idSexe),
+                'tel_dom'  => $this->db->quote($infos->telDom),
+                'tel_gsm'  => $this->db->quote($infos->telGsm),
+                'tel_pro'  => $this->db->quote($infos->telPro),
+                'mel'      => $this->db->quote($infos->mail),
+                'id_ville' => $this->db->quote($test_ecole[0]['id_ville']),
+            )
+        );
+        
+        $id_directeur = $this->db->lastId;
+        
+        $this->db->create(
+            'kernel_bu_personnel_entite',
+            array(
+                'id_per'      => $this->db->quote($id_directeur),
+                'reference'   => $this->db->quote($id_ecole),
+                'type_ref'  => $this->db->quote('ECOLE'),
+                'role' => $this->db->quote(2),
+            )
+        );
         
         
         return ($id_directeur);
@@ -260,21 +289,45 @@ class Kernel_API extends enicService
     
     public function supprimerDirecteur( $id_directeur )
     {
+        $this->db->query( 'DELETE FROM kernel_bu_personnel_entite WHERE id_per='.$this->db->quote($id_directeur) )->toArray();
+        $this->db->query( 'DELETE FROM kernel_bu_personnel        WHERE numero='.$this->db->quote($id_directeur) )->toArray();
         
         return (true);
     }
     
     public function modifierDirecteur( $id_directeur, $infos )
     {
+        $test_directeur = $this->db->query( 'SELECT numero FROM kernel_bu_personnel WHERE numero='.$this->db->quote($id_directeur) )->toArray();
+        if( count($test_directeur) == 0 ) {
+            throw new Kernel_API_modifierDirecteur_noDirecteur("Directeur inexistant");
+        }
+        
+        $this->db->query( 'UPDATE kernel_bu_personnel SET nom='.$this->db->quote($infos->nom      ).',
+                                                       nom_jf='.$this->db->quote($infos->nomJf    ).',
+                                                      prenom1='.$this->db->quote($infos->prenom   ).',
+                                                     civilite='.$this->db->quote($infos->civilite ).',
+                                                      id_sexe='.$this->db->quote($infos->idSexe   ).',
+                                                      tel_dom='.$this->db->quote($infos->telDom   ).',
+                                                      tel_gsm='.$this->db->quote($infos->telGsm   ).',
+                                                      tel_pro='.$this->db->quote($infos->telPro   ).',
+                                                          mel='.$this->db->quote($infos->mail     ).'
+            WHERE numero='.$this->db->quote($id_directeur) );
         
         return (true);
     }
     
-    public function modifierDirecteurPassword( $id_directeur, $password )
+    public function creerLogin( $user_type, $user_id )
     {
         
         return (true);
     }
+
+    public function modifierPassword( $user_type, $user_id )
+    {
+        
+        return (true);
+    }
+
     
 }
 
@@ -290,3 +343,4 @@ class Kernel_API_creerClasse_noEcole extends Exception { }
 class Kernel_API_supprimerClasse_noClasse extends Exception { }
 class Kernel_API_modifierClasse_noClasse extends Exception { }
 class Kernel_API_creerDirecteur_noEcole extends Exception { }
+class Kernel_API_modifierDirecteur_noDirecteur extends Exception { }

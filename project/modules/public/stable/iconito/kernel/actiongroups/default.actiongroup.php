@@ -398,6 +398,43 @@ class ActionGroupDefault extends CopixActionGroup
 		}
 		*/
 		
+		/*
+		try {
+			$directeur = new CopixPPO();
+			$directeur->nom = "Directeur_nom";
+			$directeur->prenom = "Directeur_prenom";
+			$directeur->civilite = "Monsieur";
+			$directeur->idSexe = 1;
+			$directeur->mail = "directeur@mon-ecole.fr";
+		    $api_class->creerDirecteur( 9, $directeur );
+		} catch (Kernel_API_creerDirecteur_noEcole $e) {
+		    print "Kernel_API_creerDirecteur_noEcole";
+		} catch (Exception $e) {
+		    print "Exception";
+		}
+		*/
+		
+		/*
+		try {
+			$directeur = new CopixPPO();
+			$directeur->nom = "Directrice_nom (mod)";
+			$directeur->prenom = "Directrice_prenom (mod)";
+			$directeur->civilite = "Madame";
+			$directeur->idSexe = 2;
+			$directeur->mail = "directrice@mon-ecole.fr";
+		    $api_class->modifierDirecteur( 7, $directeur );
+		} catch (Kernel_API_modifierDirecteur_noDirecteur $e) {
+		    print "Kernel_API_modifierDirecteur_noDirecteur";
+		} catch (Exception $e) {
+		    print "Exception";
+		}
+		*/
+		
+		/*
+		$api_class->supprimerDirecteur(13);
+		*/
+		
+		
 		die('<p>Fin de processTestApi</p>');
     }
 
