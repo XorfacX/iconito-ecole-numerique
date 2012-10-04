@@ -434,6 +434,22 @@ class ActionGroupDefault extends CopixActionGroup
 		$api_class->supprimerDirecteur(13);
 		*/
 		
+		/*
+		try {
+			$api_class->creerLogin( "USER_ENS", 14, "mon.-_09ilogicn", "monpassword" );
+		} catch (Exception $e) {
+			print "Kernel_API_creerLogin_* : ".$e->getMessage();
+		}
+		*/
+		
+		/*
+		try {
+			$api_class->modifierPassword( "USER_ENS", 14, "monpassword2" );
+		} catch (Exception $e) {
+			print "Kernel_API_modifierPassword_* : ".$e->getMessage();
+		}
+		*/
+		
 		
 		die('<p>Fin de processTestApi</p>');
     }

@@ -316,14 +316,71 @@ class Kernel_API extends enicService
         return (true);
     }
     
-    public function creerLogin( $user_type, $user_id )
+    public function creerLogin( $user_type, $user_id, $login, $password )
     {
+        $test_login = $this->db->query( 'SELECT login_dbuser FROM dbuser WHERE login_dbuser='.$this->db->quote($login) )->toArray();
+        if( count($test_login) > 0 ) {
+            throw new Kernel_API_creerLogin_dupLogin("Login déjà utilisé");
+        }
+        if( strlen($login) < 2 ) {
+            throw new Kernel_API_creerLogin_shortLogin("Login trop court");
+        }
+        if( preg_match('/[^a-zA-Z0-9\.\-_]/',$login) ) {
+            throw new Kernel_API_creerLogin_badLogin("Caractère interdit dans le login (Autorisé : a-z A-Z 0-9 . - _ )");
+        }
+        if( strlen($password) < 6 ) {
+            throw new Kernel_API_creerLogin_shortPassword("Mot de passe trop court");
+        }
+        if($user_type=='USER_ENS' || $user_type=='USER_VIL') {
+            $test_personnel = $this->db->query( 'SELECT numero FROM kernel_bu_personnel WHERE numero='.$this->db->quote($user_id) )->toArray();
+            if( count($test_personnel) == 0 ) {
+                throw new Kernel_API_creerLogin_noUser("Personnel inexistant");
+            }
+        } else {
+            throw new Kernel_API_creerLogin_badUserType("Type de personne inconnu");
+        }
+        $test_oldlogin = $this->db->query( 'SELECT user_id FROM kernel_link_bu2user WHERE bu_type='.$this->db->quote($user_type).' AND bu_id='.$this->db->quote($user_id) )->toArray();
+        if( count($test_oldlogin) > 0 ) {
+            throw new Kernel_API_creerLogin_oldLogin("Login déjà créé");
+        }
+
+
+        $this->db->create(
+            'dbuser',
+            array(
+                'login_dbuser' => $this->db->quote($login),
+                'password_dbuser' => $this->db->quote(md5($password)),
+                'enabled_dbuser' => 1,
+            )
+        );
         
+        $id_user = $this->db->lastId;
+
+        $this->db->create(
+            'kernel_link_bu2user',
+            array(
+                'user_id' => $id_user,
+                'bu_type' => $this->db->quote($user_type),
+                'bu_id'   => $this->db->quote($user_id),
+            )
+        );
+
         return (true);
     }
 
-    public function modifierPassword( $user_type, $user_id )
+    public function modifierPassword( $user_type, $user_id, $password )
     {
+        $test_bu2user = $this->db->query( 'SELECT user_id FROM kernel_link_bu2user WHERE bu_type='.$this->db->quote($user_type).' AND bu_id='.$this->db->quote($user_id) )->toArray();
+        if( count($test_bu2user) == 0 ) {
+            throw new Kernel_API_modifierPassword_noLogin("Pas de login associé");
+        }
+        $test_login = $this->db->query( 'SELECT login_dbuser FROM dbuser WHERE id_dbuser='.$this->db->quote($test_bu2user[0]['user_id']) )->toArray();
+        if( count($test_login) == 0 ) {
+            throw new Kernel_API_modifierPassword_noLogin("Login inexistant");
+        }
+
+        $this->db->query( 'UPDATE dbuser SET password_dbuser='.$this->db->quote(md5($password)).'
+            WHERE id_dbuser='.$this->db->quote($test_bu2user[0]['user_id']) );
         
         return (true);
     }
@@ -344,3 +401,10 @@ class Kernel_API_supprimerClasse_noClasse extends Exception { }
 class Kernel_API_modifierClasse_noClasse extends Exception { }
 class Kernel_API_creerDirecteur_noEcole extends Exception { }
 class Kernel_API_modifierDirecteur_noDirecteur extends Exception { }
+class Kernel_API_creerLogin_dupLogin extends Exception { }
+class Kernel_API_creerLogin_shortLogin extends Exception { }
+class Kernel_API_creerLogin_shortPassword extends Exception { }
+class Kernel_API_creerLogin_noUser extends Exception { }
+class Kernel_API_creerLogin_badUserType extends Exception { }
+class Kernel_API_creerLogin_oldLogin extends Exception { }
+class Kernel_API_creerLogin_badLogin extends Exception { }
