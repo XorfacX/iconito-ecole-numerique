@@ -5,25 +5,28 @@
 * @subpackage Classeur
 */
 
-class DAORecordClasseur {
-  
-  public function __toString () {
-	
-		return $this->titre;
-	}
-	
-	/**
+class DAORecordClasseur
+{
+  public function __toString ()
+  {
+        return $this->titre;
+    }
+
+    /**
    * Indique si le classeur a des dossiers
-   * Retourne true s'il y a des dossiers, false sinon
+   *
+   * @param bool  $withLockers Prendre en compte les dossiers du type "casier"
+   *
+   * @return bool
    */
-	public function hasDossiers () {
-	  
-	  $dossierDAO = _ioDAO('classeur|classeurdossier');
-	  
-	  return count($dossierDAO->getEnfantsDirects($this->id)->fetchAll()) > 0 ? true : false;
-	}
+    public function hasDossiers ($withLockers = true)
+    {
+      $dossierDAO = _ioDAO('classeur|classeurdossier');
+
+      return count($dossierDAO->getEnfantsDirects($this->id, null, $withLockers)->fetchAll()) > 0 ? true : false;
+    }
 }
 
-class DAOClasseur {
-  
+class DAOClasseur
+{
 }

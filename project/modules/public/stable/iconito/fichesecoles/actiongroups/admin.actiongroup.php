@@ -2,15 +2,16 @@
 
 /**
  * Actiongroup du module Fichesecoles - Back office
- * 
+ *
  * @package	Iconito
  * @subpackage fichesecole
  */
 _classInclude('fichesecoles|fichesecolesservice');
 
-class ActionGroupAdmin extends CopixActionGroup {
-
-    public function beforeAction() {
+class ActionGroupAdmin extends enicActionGroup
+{
+    public function beforeAction()
+    {
         _currentUser()->assertCredential('group:[current_user]');
     }
 
@@ -21,8 +22,8 @@ class ActionGroupAdmin extends CopixActionGroup {
      * @since 2008/09/03
      * @param integer $id Id de l'ecole
      */
-    function form() {
-
+    public function form()
+    {
         $id = $this->getRequest('id', null);
         $save = $this->getRequest('save', null);
 
@@ -218,13 +219,15 @@ class ActionGroupAdmin extends CopixActionGroup {
         $tplForm = new CopixTpl ();
         $tplForm->assign('rEcole', $rEcole);
         $tplForm->assign('rForm', $rForm);
-        $tplForm->assign('form_horaires', CopixZone::process('kernel|edition', array('field' => 'horaires', 'format' => 'htmlnl2br', 'content' => $rForm->horaires, 'class' => 'zone_horaires')));
-        $tplForm->assign('form_zone1_texte', CopixZone::process('kernel|edition', array('field' => 'zone1_texte', 'format' => 'htmlnl2br', 'content' => $rForm->zone1_texte, 'class' => 'zone_texte')));
-        $tplForm->assign('form_zone2_texte', CopixZone::process('kernel|edition', array('field' => 'zone2_texte', 'format' => 'htmlnl2br', 'content' => $rForm->zone2_texte, 'class' => 'zone_texte')));
-        $tplForm->assign('form_zone3_texte', CopixZone::process('kernel|edition', array('field' => 'zone3_texte', 'format' => 'htmlnl2br', 'content' => $rForm->zone3_texte, 'class' => 'zone_texte')));
-        $tplForm->assign('form_zone4_texte', CopixZone::process('kernel|edition', array('field' => 'zone4_texte', 'format' => 'htmlnl2br', 'content' => $rForm->zone4_texte, 'class' => 'zone_texte')));
+        $formats = CopixConfig::get ('blog|blog.formats_articles');
+        $tplForm->assign('form_horaires', CopixZone::process('kernel|edition', array('field' => 'horaires', 'format' => 'ckeditor', 'content' => $rForm->horaires, 'class' => 'zone_horaires', 'object' => array('type' =>'BU_ECOLE', 'id' => $id))));
+        $tplForm->assign('form_zone1_texte', CopixZone::process('kernel|edition', array('field' => 'zone1_texte', 'format' => 'ckeditor', 'content' => $rForm->zone1_texte, 'class' => 'zone_texte', 'object' => array('type' =>'BU_ECOLE', 'id' => $id))));
+        $tplForm->assign('form_zone2_texte', CopixZone::process('kernel|edition', array('field' => 'zone2_texte', 'format' => 'ckeditor', 'content' => $rForm->zone2_texte, 'class' => 'zone_texte', 'object' => array('type' =>'BU_ECOLE', 'id' => $id))));
+        $tplForm->assign('form_zone3_texte', CopixZone::process('kernel|edition', array('field' => 'zone3_texte', 'format' => 'ckeditor', 'content' => $rForm->zone3_texte, 'class' => 'zone_texte', 'object' => array('type' =>'BU_ECOLE', 'id' => $id))));
+        $tplForm->assign('form_zone4_texte', CopixZone::process('kernel|edition', array('field' => 'zone4_texte', 'format' => 'ckeditor', 'content' => $rForm->zone4_texte, 'class' => 'zone_texte', 'object' => array('type' =>'BU_ECOLE', 'id' => $id))));
+
         if ($canModifyVille)
-            $tplForm->assign('form_zone_ville_texte', CopixZone::process('kernel|edition', array('field' => 'zone_ville_texte', 'format' => 'htmlnl2br', 'content' => $rForm->zone_ville_texte, 'height' => 80, 'width' => 780)));
+            $tplForm->assign('form_zone_ville_texte', CopixZone::process('kernel|edition', array('field' => 'zone_ville_texte', 'format' => 'ckeditor', 'content' => $rForm->zone_ville_texte, 'height' => 80, 'width' => 780, 'object' => array('type' =>'BU_ECOLE', 'id' => $id))));
 
         $tplForm->assign('photoMaxWidth', $photoMaxWidth);
         $tplForm->assign('errors', $errors);
@@ -254,7 +257,8 @@ class ActionGroupAdmin extends CopixActionGroup {
      * @param string $file Chemin complet de l'image
      * @param integer $maxWidth Largeur maximale autorisee
      */
-    function _resizeImage($file, $maxWidth) {
+    public function _resizeImage($file, $maxWidth)
+    {
         if ($size = getimagesize($file)) {
             //$type = exif_imagetype ($file);
             $type = $size[2];
@@ -301,4 +305,3 @@ class ActionGroupAdmin extends CopixActionGroup {
 
 }
 
-?>

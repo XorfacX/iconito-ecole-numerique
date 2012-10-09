@@ -51,7 +51,7 @@ input[type="password"] {
 	line-height: 11px;
 	font-weight: bold;
 	padding: 4px 0 4px 3px;
-	margin: 3px 2px 0 0;
+	margin: 1px 2px 0 0;
 	width:104px;
     height: 14px;
     vertical-align: top;
@@ -364,6 +364,10 @@ p.mesgInfo {
 	border-color:#49BFCD;
 	background:url(../../../themes/default/images/button-action/action_info.png) no-repeat 5px 50% #fff; color:#49BFCD;
 }
+#contentmain > p.mesgSuccess, #contentmain > p.mesgInfo, #contentmain > p.mesgError {
+	margin:25px 25px 15px;
+	font-size:1.1em;
+}
 
 /************************************************
  * MODAL MESSAGES
@@ -430,6 +434,28 @@ p.mesgInfo {
 /************************************************
  * FORMS
  ***********************************************/
+form.edit p {margin:0;}
+form.edit .field {
+	clear:both;
+	margin-bottom:5px;
+}
+form.edit .field > label, form.edit .field > p.label {
+	float:left;
+	margin:0 1% 0 0;
+	width:40%;
+	text-align:right;
+	line-height:1.8em;
+}
+form.edit .submit {
+	margin:15px 0 0 41%;
+}
+form.edit .submit input {
+	margin-left:5px;
+}
+form.edit .input {
+	margin:0 0 0 41%;
+}
+
 input.form_button {
 	border: solid 1px #333333;
 	border-radius: 4px;
@@ -504,6 +530,10 @@ form select.multicombo {
 	height: 120px;
 }
 
+form fieldset {
+	border-color:#ddd;
+	-moz-border-radius:8px; -webkit-border-radius:8px; -o-border-radius:8px; border-radius:8px;
+}
 #content-popup .option-bar {
 	border-top: solid 1px #f0f4f0;
 	border-bottom: solid 1px #f0f4f0;
@@ -535,33 +565,40 @@ input[required] {
 	font-size:0px;
 	vertical-align:top;
 }
+form .format {
+	padding:0 0 0 .5em;
+	color:#777;
+	font-size:0.85em; font-style:italic;
+}
 
 /************************************************
  * Prise de controle
  ***********************************************/
 
-div.prise_controle {
-	width: 30%;
-	margin: 0px;
-	margin: auto;
-	background-color: red;
-	padding: 2px;
-	padding-left: 20px;
-	padding-right: 20px;
-	font-weight: bold;
-	-moz-border-radius: 8px;
-	-webkit-border-radius: 8px;
-	border-radius: 8px;
-	/*behavior: url(/htc/PIE.htc);*/
+.prise_controle {
+	width:40%;
+	margin:0 auto;
 }
-
-div.prise_controle div.message {
-	line-height: 90%;
+.prise_controle .message {
+	padding:5px 5px 5px 28px;
+	border:1px solid #f00;
+	background:url(../../../themes/default/images/button-action/action_warning.png) no-repeat 5px 50% #fff; color:#f00;
+	-moz-border-radius:8px; -webkit-border-radius:8px; border-radius:8px;
+	box-shadow:0 0 5px rgba(255,255,255,0.7);
+	font-weight:bold;
 }
-
-div.prise_controle a.stopper {
-	color: #000;
-	text-shadow: none;
+.prise_controle a {
+	margin-top:0.4em;
+	font-size:1em;
 }
+.prise_controle a:link {color:#000;}
+.prise_controle a:hover {color:#f00; text-decoration:underline;}
 
 
+/************************************************
+ * FANCYBOX LINK
+ ***********************************************/
+ a.fancyframe {
+	 display:inline-block;
+	 margin:0.5em 0;
+ }

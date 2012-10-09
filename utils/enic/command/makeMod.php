@@ -8,18 +8,21 @@ $nomModule = $argv[1];
 $default_actiongroup = <<<EOT
 <?php
 
-    class ActionGroupDefault extends enicActionGroup {
-
-        public function __construct(){
+    class ActionGroupDefault extends enicActionGroup
+    {
+        public function __construct()
+        {
             parent::__construct();
             \$this->service =& \$this->service('${nomModule}Service');
         }
 
-        public function beforeAction (){
-		_currentUser()->assertCredential ('group:[current_user]');
+        public function beforeAction ()
+        {
+        _currentUser()->assertCredential ('group:[current_user]');
         }
 
-        public function processDefault(){
+        public function processDefault()
+        {
             \$ppo = new CopixPPO();
 
             return _arPPO(\$ppo, 'default.tpl');
@@ -37,6 +40,7 @@ $default_moduleservice = <<<EOT
 EOT;
 
 $default_properties = <<<EOT
+   <
 EOT;
 
 $default_template = <<<EOT
@@ -50,7 +54,7 @@ $default_modulexml = <<<EOT
         <default name="${nomModule}" />
     </general>
     <parameters>
-	   </parameters>
+       </parameters>
 </moduledefinition>
 EOT;
 
@@ -58,23 +62,24 @@ $dir = array('actiongroups', 'classes', 'resources', 'templates', 'zones');
 $rootDir = '../../../project/modules/public/stable/iconito/';
 
 //makes dir
-if(!mkdir($rootDir.strtolower($nomModule)))
-    die('fail to create root directory'.PHP_EOL);
+if(!is_dir($rootDir))
+    if(!mkdir($rootDir.strtolower($nomModule)))
+        die('fail to create root directory'.PHP_EOL);
 
 $projectDir = $rootDir.strtolower($nomModule).'/';
 
 foreach($dir as $d){
-    if(!mkdir($projectDir.$d))
-        die('fail to create '.$d.PHP_EOL);
+    if(!is_dir($projectDir.$d))
+        if(!mkdir($projectDir.$d))
+            die('fail to create '.$d.PHP_EOL);
 }
 
 //push datas :
 file_put_contents($projectDir.'actiongroups/default.actiongroup.php', $default_actiongroup);
 file_put_contents($projectDir.'classes/'.strtolower($nomModule).'service.class.php', $default_moduleservice);
-file_put_contents($projectDir.'ressources/'.  strtolower($nomModule).'_fr.properties', $default_properties);
+file_put_contents($projectDir.'resources/'.  strtolower($nomModule).'_fr.properties', $default_properties);
 file_put_contents($projectDir.'templates/default.tpl', $default_template);
 file_put_contents($projectDir.'module.xml', $default_modulexml);
-echo 'opération réussi, il vous reste à ajouter la ligne kernel.codes.mod_NomDeVotreModule dans le fichier kernel_fr.properties '.PHP_EOL;
+echo 'opération réussi, il vous reste à ajouter la ligne "kernel.codes.mod_'.$nomModule.'" dans le fichier kernel_fr.properties '.PHP_EOL;
 
 
-?>

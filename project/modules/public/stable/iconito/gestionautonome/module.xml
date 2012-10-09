@@ -4,23 +4,24 @@
 		<default name="gestionautonome" description="Iconito : gestion autonome"/>
 		<package name="copixdivers" version="2.2" />
 	</general>
-	
+
 	<parameters>
 		<parameter name="moduleTitle" caption="Titre des pages du module" default="Gestion de la structure scolaire" />
 		<parameter name="gradesManagementTitle" caption="Titre des pages de la gestion des annÃ©es" default="Gestion des annÃ©es scolaires" />
 		<parameter name="personInChargeLinkingEnabled" caption="FonctionnalitÃ© de rattachement des parents Ã  un Ã©lÃ¨ve activÃ©e" default="0" />
+		<parameter name="directorGlobalAffectation" caption="Les directeurs ont accès à toutes les villes/écoles de l'ENT pour gérer les affectations" default="0" />
 	</parameters>
-	
+
 	<grouphandlers>
 		<grouphandler name='iconitogrouphandler' />
 	</grouphandlers>
-	
+
 	<credentialhandlers>
 	 	<credentialhandler name='iconitomodulecredentialhandler' stopOnSuccess='true' stopOnFailure='false'>
 	 		<handle name='module' />
 		</credentialhandler>
 	</credentialhandlers>
-	
+
 	<credentials>
 		<credential name="cities_group">
 			<value name="create" level="1" />

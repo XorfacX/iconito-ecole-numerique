@@ -34,14 +34,13 @@ div.dashpanel {
 	background: url(../../../themes/default/images/dash_shadow.png) 50% 100% repeat-y;
 	}
 
-div.dashpanel div.title {
-	position: relative;
-	padding: 4px 4px 2px 8px;
-	margin: 0 0 0 16px;
-	background: #bad521;
+div.dashpanel .title {
+	position:relative;
+	margin:0 0 0 16px; padding:4px 4px 2px 8px; border:0;
+	font-size:1em;
+	background:#bad521;
 	}
-	
-div.dashpanel div.title span {
+div.dashpanel .title span {
 	font-size: 160%;
 	text-transform:uppercase;
 	}
@@ -135,6 +134,7 @@ div.dashpanel div.toolset-expand ul li a span.label {
 
 div.kernel_dash div.dashpanel div.toolset {
 	right: -34px;
+	border:1px solid transparent;
 	}
 
 div.kernel_dash div.dashpanel div.toolset-expand {
@@ -197,7 +197,7 @@ div.tools_right div.dashpanel div.wcontrol {
 	float: right;
 	}
 
-div.tools_right div.dashpanel div.title {
+div.tools_right div.dashpanel .title {
 	height: 25px;
 	padding: 4px 4px;
 	margin: 0px;
@@ -208,7 +208,7 @@ div.tools_right div.dashpanel div.content {
 	border-top: 0px;
 	}
 
-div.tools_right div.dashpanel div.title .groupname {
+div.tools_right div.dashpanel .title .groupname {
 	padding-top: 2px;
 	font-size: 110%;
 	line-height: 85%;
@@ -218,12 +218,12 @@ div.tools_right div.dashpanel div.title .groupname {
 	text-align: left;
 	}
 
-div.tools_right div.dashpanel div.title div.mcontrol {
+div.tools_right div.dashpanel .title div.mcontrol {
 	width: 25px;
 	margin-right: 32px;
 	}
 
-div.tools_right div.dashpanel div.title div.wcontrol {
+div.tools_right div.dashpanel .title div.wcontrol {
 	width: 25px;
 	margin-left: -25px;
 	}
@@ -266,18 +266,41 @@ div.tools_right div.dashpanel div.toolset ul li a {
 	}
 
 /* SET GROUPTYPES CONTEXT COLORS */
-div.dashboard div.bu_classe div.title	{ background: #7fc3d2; }
+div.dashboard div.bu_classe .title	{ background: #7fc3d2; }
 div.dashboard div.bu_classe div.content	{ border: 2px solid #7fc3d2; }
 div.dashboard div.bu_classe div.toolset	{ background: #7fc3d2; }
 
-div.dashboard div.bu_ecole div.title 	{ background: #7cd54f; }
+div.dashboard div.bu_ecole .title 	{ background: #7cd54f; }
 div.dashboard div.bu_ecole div.content 	{ border: 2px solid #7cd54f; }
 div.dashboard div.bu_ecole div.toolset 	{ background: #7cd54f; }
 
-div.dashboard div.club div.title	{ background: #ffb94e; }
+div.dashboard div.club .title	{ background: #ffb94e; }
 div.dashboard div.club div.content	{ border: 2px solid #ffb94e; }
 div.dashboard div.club div.toolset	{ background: #ffb94e; }
 
-div.dashboard div.user_ele div.title	{ background: #7fc3d2; }
+div.dashboard div.user_ele .title	{ background: #7fc3d2; }
 div.dashboard div.user_ele div.content	{ border: 2px solid #7fc3d2; }
 div.dashboard div.user_ele div.toolset	{ background: #7fc3d2; }
+
+div#kernel div.dashpanel div.toolset a.counter span.counter-text {
+    color: #333333;
+    display: block;
+    font-size: 8.5px;
+    font-weight: bold;
+    letter-spacing: -0.1em;
+    padding-top: 3px;
+    text-align: center;
+    width: 18px;
+}
+
+
+div#kernel div.dashpanel div.toolset a.counter {
+    background: url("../../../themes/default/images/mod_user_mail_badge.png") no-repeat scroll 0 0 transparent;
+    display: block;
+    height: 20px;
+    margin: 4px 0 0 4px;
+    padding: 12px 0 0 12px;
+    position: absolute;
+    width: 20px;
+}
+

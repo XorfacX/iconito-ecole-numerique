@@ -5,12 +5,11 @@
  * @copyright (c) 2010 CAP-TIC
  */
 
-class enicActionGroup extends CopixActionGroup {
-
+class enicActionGroup extends CopixActionGroup
+{
     //enic attributes
     protected $user;
     protected $matrix;
-    // protected $menu;
     protected $options;
     protected $model;
     protected $js;
@@ -22,10 +21,8 @@ class enicActionGroup extends CopixActionGroup {
     /*
      * CONSTRUCTOR
      */
-    public function __construct(){
-        //test the user connexion, desactivate for public access
-	//_currentUser()->assertCredential ('group:[current_user]');
-
+    public function __construct()
+    {
         //pre-load enic classes
         enic::to_load('matrix');
 
@@ -33,7 +30,6 @@ class enicActionGroup extends CopixActionGroup {
         $this->user         =& enic::get('user');
         $this->options      =& enic::get('options');
         $this->matrix       =& enic::get('matrixCache');
-        // $this->menu         =& enic::get('menu');
         $this->model        =& enic::get('model');
         $this->db           =& enic::get('model');
         $this->js           =& enic::get('javascript');
@@ -42,7 +38,7 @@ class enicActionGroup extends CopixActionGroup {
         $this->flash        =& enic::get('flash');
         $this->html         =& enic::get('html');
         $this->helpers      =& enic::get('helpers');
-        
+
         //define properties :
         $this->module   = $this->helpers->module;
         $this->actiongroup   = $this->helpers->actiongroup;
@@ -55,47 +51,58 @@ class enicActionGroup extends CopixActionGroup {
      *
      */
 
-    protected function addCss($iPathToJs){
+    protected function addCss($iPathToJs)
+    {
         $this->css->addFile($iPathToJs);
     }
 
-    protected function addJs($iPathToJs){
+    protected function addJs($iPathToJs)
+    {
         $this->js->addFile($iPathToJs);
     }
 
-    protected function service($iService){
+    protected function service($iService)
+    {
         return $this->helpers->service($iService);
     }
 
-    protected function request($iName, $iType = 'other', $default = null){
+    protected function request($iName, $iType = 'other', $default = null)
+    {
         return $this->helpers->request($iName, $iType, $default);
     }
 
-    protected function i18n($iKey){
+    protected function i18n($iKey)
+    {
         return $this->helpers->i18n($iKey);
     }
 
-    protected function url($iUrl, $iParams = array()){
+    protected function url($iUrl, $iParams = array())
+    {
          return $this->helpers->url($iUrl, $iParams);
     }
 
-    protected function error($iMsg, $i18n = true, $iBack = null){
+    protected function error($iMsg, $i18n = true, $iBack = null)
+    {
        return $this->helpers->error($iMsg, $i18n, $iBack);
     }
 
-    protected function redirect($iUrl = 'default', $iParams = array()){
+    protected function redirect($iUrl = 'default', $iParams = array())
+    {
         return $this->helpers->go($iUrl, $iParams);
     }
 
-    protected function go($iUrl = 'default', $iParams = array()){
+    protected function go($iUrl = 'default', $iParams = array())
+    {
         return $this->helpers->go($iUrl, $iParams);
     }
 
-    protected function istyReq($iVar){
+    protected function istyReq($iVar)
+    {
         return $this->helpers->istyReq($iVar);
     }
 
-    protected function addImg($iPath){
+    protected function addImg($iPath)
+    {
         $this->html->addImg($iPath);
     }
 

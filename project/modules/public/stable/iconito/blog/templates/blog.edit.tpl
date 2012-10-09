@@ -23,7 +23,7 @@
    <tr>
       <th>{i18n key='dao.blog.fields.logo_blog'}</th>
 	  	<td>
- 			{if $blog->logo_blog!=''}<img alt="{$blog->logo_blog}" src="{copixurl dest="blog||logo" id_blog=$blog->id_blog}" border="0" /><br />{/if}
+ 			{if $blog->logo_blog!=''}<img alt="{$blog->logo_blog}" src="{copixurl dest="blog||logo" id_blog=$blog->id_blog}" /><br />{/if}
             <input size="35" type="file" name="logoFile" /><br/><em>{i18n key='blog.logo.messages.instructions' nb=$logo_max_width}</em>
 			</td>
    </tr>
@@ -51,12 +51,14 @@
       <th>{i18n key='dao.blog.fields.type_moderation_comments'}</th>
 	  	<td>{html_radios name="type_moderation_comments" values=$type_moderation_comments.values output=$type_moderation_comments.output checked=$blog->type_moderation_comments}</td>
    </tr>
-
-   <tr>
-      <th>{i18n key='dao.blog.fields.default_format_articles'}</th>
-	  	<td>{html_radios name="default_format_articles" values=$default_format_articles.values output=$default_format_articles.output checked=$blog->default_format_articles}</td>
-   </tr>
-
+{if $can_format_articles}
+    <tr>
+        <th>{i18n key='dao.blog.fields.default_format_articles'}</th>
+        <td>{html_radios name="default_format_articles" values=$default_format_articles.values output=$default_format_articles.output checked=$blog->default_format_articles}</td>
+    </tr>
+{else}
+    <input type="hidden" name="default_format_articles" value="{$default_format_articles}" />
+{/if}
 	 <tr><td></td>
      <td>
 <input type="hidden" name="id_blog" value="{$blog->id_blog}" />

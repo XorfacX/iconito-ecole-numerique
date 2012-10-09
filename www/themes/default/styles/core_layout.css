@@ -27,10 +27,6 @@ body.debug .debug, body.debug .debug a, body.debug .debug a:visited  {
 	color: #BBB;
 }
 
-body.nodebug .debug-layout {
-	display: none;
-	}
-
 body.nodebug .debug, body.nodebug .debug a, body.nodebug .debug a:visited  {
 	display: none;
 }
@@ -55,6 +51,7 @@ body {
 .show 	{ visibility:visible; }
 .hidden { visibility: hidden; display: none; }
 .displayNone { display: none; }
+.hiddenClean {position:absolute; top:-999em; left:-999em;}
 
 .left 	{ text-align: left; }
 .center	{ text-align: center; }
@@ -62,6 +59,8 @@ body {
 
 .floatleft 	{ float: left; }
 .floatright { float: right; }
+
+a img {border:0;}
 
 .opacity100 {
 	opacity : 1;
@@ -216,6 +215,7 @@ body {
 body.thm		{ background: #bad521 url(../../../themes/default/images/thm_body_BG.gif) repeat-x scroll 0 0; }
 
 #page .thm-logo	{ position: relative; height: 54px; background: url(../../../themes/default/images/thm_header_logo.png) no-repeat 0 5px; }
+#page .thm-logo h1 {margin:0; border:0;}
 #page .thm-logo a.logo { position: absolute; width:170px; height:50px; z-index: 1; }
 #page .thm-HL	{ position: relative; background: url(../../../themes/default/images/thm_page_HL.png) no-repeat left top; }
 #page .thm-HR	{ position: relative; background: url(../../../themes/default/images/thm_page_HR.png) no-repeat right top; }
@@ -238,3 +238,45 @@ body.thm		{ background: #bad521 url(../../../themes/default/images/thm_body_BG.g
 div.fixed {
   clear:both;
 }
+
+
+
+/* Affichage des tableaux */
+table.viewItems {
+	margin:3px 0; padding:2px; -moz-border-radius:6px; -webkit-border-radius:6px; border-radius:6px;
+	width:100%;
+	background:#FFFFFF;
+        table-layout:fixed;
+}
+table.viewItems tr.even {
+	background:#F5F5F5;
+}
+table.viewItems th {
+	background:#eee;
+	text-align:center;
+}
+table.viewItems th.actions {
+	width:200px;
+}
+table.viewItems th.extraSmall {width:30px;}
+table.viewItems td {
+    max-width:50%;
+    overflow:hidden;
+}
+table.viewItems td a.button:link, 
+table.viewItems td a.button:visited {
+	border:1px solid #ddd;
+}
+table.viewItems ul {
+	margin:0; padding:.3em 0 .3em 2em;
+}
+
+table.editItems {
+	margin:3px 0; padding:2px;
+	width:100%;
+}
+table.editItems th {
+	text-align:right;
+	width:40%;
+}
+table.editItems .submit input {margin:5px 10px;}

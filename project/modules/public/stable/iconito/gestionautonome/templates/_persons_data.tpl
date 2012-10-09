@@ -1,6 +1,10 @@
 {if $ppo->parent.nom}
   <h2>{$ppo->parent.nom}</h2>
 
+  {if $ppo->type eq 'BU_ECOLE'}
+    {assign var='hasCredentialStudentUpdate' value=$ppo->user->testCredential("module:school|`$ppo->parent.id`|student|update@gestionautonome")}
+    {assign var='hasCredentialTeacherUpdate' value=$ppo->user->testCredential("module:school|`$ppo->parent.id`|teacher|update@gestionautonome")}
+  {/if}
   {if $ppo->type eq 'BU_CLASSE'}
     {assign var='hasCredentialStudentCreate' value=$ppo->user->testCredential("module:classroom|`$ppo->parent.id`|student|create@gestionautonome")}
     {assign var='hasCredentialStudentUpdate' value=$ppo->user->testCredential("module:classroom|`$ppo->parent.id`|student|update@gestionautonome")}
@@ -198,7 +202,7 @@
                 <a href="{copixurl dest="gestionautonome||removePersonnel" nodeId=$ppo->parent.id nodeType=$ppo->parent.type personnelId=$person->numero userId=$person->id_dbuser type=$person->bu_type}" onclick="return confirm('&Ecirc;tes-vous sûr de vouloir retirer le rôle de directeur à cette personne ?')"><img src="{copixurl}themes/default/images/icon-16/action-exit.png" title="Supprimer le rôle de directeur de cette personne" /></a>
               {else}
                 {if $person->hasTeacherRoleInSchool eq 1}
-                  <img src="{copixurl}themes/default/images/icon-16/action-exit-off.png" title="{customi18n key="gestionautonome|%%definite__structure_element_staff_person%%stillaffectto%%indefinite__structure_element%%" catalog=$ppo->vocabularyCatalog->id_vc} ({$person->classrooms})" />
+                  <img src="{copixurl}themes/default/images/icon-16/action-exit-off.png" title="{customi18n key="gestionautonome|gestionautonome.message.%%definite__structure_element_staff_person%%stillaffectto%%indefinite__structure_element%%" catalog=$ppo->vocabularyCatalog->id_vc} ({$person->classrooms})" />
                 {else}
                   <a href="{copixurl dest="gestionautonome||removePersonnel" nodeId=$ppo->parent.id nodeType=$ppo->parent.type personnelId=$person->numero userId=$person->id_dbuser type=$person->bu_type}" onclick="return confirm('{customi18n key="gestionautonome|gestionautonome.message.confirmremovepersonfrom%%definite__structure%%" catalog=$ppo->vocabularyCatalog->id_vc}')"><img src="{copixurl}themes/default/images/icon-16/action-exit.png" title="Supprimer le rôle de cette personne" /></a>
                 {/if}
@@ -221,14 +225,14 @@
   {if $ppo->parent.type == 'BU_GRVILLE'}
       {if $ppo->user->testCredential ("module:cities_group|`$ppo->parent.id`|cities_group_agent|create@gestionautonome")}
           <a href="{copixurl dest="gestionautonome||createPersonnel" parentId=$ppo->parent.id parentType=$ppo->parent.type role=5}" class="button button-add">Créer un agent de groupes de villes</a>
-          <a href="{copixurl dest="gestionautonome||addExistingPersonnel" parentId=$ppo->parent.id parentType=$ppo->parent.type role=5}" class="button button-next">Affecter une personne</a>
+          <a href="{copixurl dest="gestionautonome||addExistingPersonnel" parentId=$ppo->parent.id parentType=$ppo->parent.type role=5}" class="button button-next">{i18n key="gestionautonome|gestionautonome.message.affect"}</a>
         {copixzone process=gestionautonome|getpasswordslist notxml=true}
       {/if}
 
   {elseif $ppo->parent.type == 'BU_VILLE'}
       {if $ppo->user->testCredential ("module:city|`$ppo->parent.id`|city_agent|create@gestionautonome")}
         <a href="{copixurl dest="gestionautonome||createPersonnel" parentId=$ppo->parent.id parentType=$ppo->parent.type role=4}" class="button button-add">Créer un agent de ville</a>
-        <a href="{copixurl dest="gestionautonome||addExistingPersonnel" parentId=$ppo->parent.id parentType=$ppo->parent.type role=4}" class="button button-next">Affecter une personne</a>
+        <a href="{copixurl dest="gestionautonome||addExistingPersonnel" parentId=$ppo->parent.id parentType=$ppo->parent.type role=4}" class="button button-next">{i18n key="gestionautonome|gestionautonome.message.affect"}</a>
         {copixzone process=gestionautonome|getpasswordslist notxml=true}
       {/if}
 
@@ -243,6 +247,12 @@
         <a href="{copixurl dest="gestionautonome||addExistingPersonnel" parentId=$ppo->parent.id parentType=$ppo->parent.type role=3}" class="button button-next">{customi18n key="gestionautonome.message.affect%%indefinite__structure_element_administration_staff%%" catalog=$ppo->vocabularyCatalog->id_vc}</a>
         {assign var=hasCredential value=1}
       {/if}
+      {if $hasCredentialTeacherUpdate || $hasCredentialStudentUpdate}
+        {if $ppo->nextGrade}
+          <br /><a href="{copixurl dest="gestionautonome||manageAssignments" nodeId=$ppo->parent.id nodeType=BU_ECOLE}" class="button button-next">{i18n key="gestionautonome|gestionautonome.message.preparenextgrade"}</a>
+        {/if}
+      <br /><a href="{copixurl dest="gestionautonome||changeClassroom" nodeId=$ppo->parent.id nodeType=BU_ECOLE}" class="button button-next">{i18n key="gestionautonome|gestionautonome.message.changeClassroom"}</a>
+      {/if}
       {if $hasCredential eq 1}
         {copixzone process=gestionautonome|getpasswordslist notxml=true}
       {/if}
@@ -250,28 +260,24 @@
   {elseif $ppo->parent.type == 'BU_CLASSE'}
       {if $hasCredentialTeacherCreate}
         <a href="{copixurl dest="gestionautonome||createPersonnel" parentId=$ppo->parent.id parentType=$ppo->parent.type role=1}" class="button button-add">{customi18n key="gestionautonome|gestionautonome.message.add%%indefinite__structure_element_staff_person%%" catalog=$ppo->vocabularyCatalog->id_vc}</a>
-        <a href="{copixurl dest="gestionautonome||addExistingPersonnel" parentId=$ppo->parent.id parentType=$ppo->parent.type role=1}" class="button button-next">Affecter une personne</a>
+        <a href="{copixurl dest="gestionautonome||addExistingPersonnel" parentId=$ppo->parent.id parentType=$ppo->parent.type role=1}" class="button button-next">Affecter un enseignant</a>
       {/if}
       {if $hasCredentialStudentCreate}
         <a href="{copixurl dest="gestionautonome||createStudent" parentId=$ppo->parent.id parentType=$ppo->parent.type}" class="button button-add">{customi18n key="gestionautonome|gestionautonome.message.add%%indefinite__structure_element_person%%" catalog=$ppo->vocabularyCatalog->id_vc}</a>
-        <a href="{copixurl dest="gestionautonome||addMultipleStudents" parentId=$ppo->parent.id parentType=$ppo->parent.type}" class="button button-upload">{customi18n key="gestionautonome|gestionautonome.message.import%%indefinite__structure_element_persons%%" catalog=$ppo->vocabularyCatalog->id_vc}</a>
       {/if}
-      {if $hasCredentialTeacherUpdate || $hasCredentialStudentUpdate || $hasCredentialPersonInChargeUpdate}
-        <br /><a href="{copixurl dest="gestionautonome||resetClassroomPasswords" nodeId=$ppo->parent.id}" class="button button-save">Gérer les mots de passe</a>
+      {if $hasCredentialTeacherUpdate || $hasCredentialStudentUpdate}
+        {if $ppo->nextGrade}
+          <br /><a href="{copixurl dest="gestionautonome||manageAssignments" nodeId=$ppo->parent.id nodeType=BU_CLASSE}" class="button button-next">{i18n key="gestionautonome|gestionautonome.message.preparenextgrade"}</a>
+        {/if}
+      <br /><a href="{copixurl dest="gestionautonome||changeClassroom" nodeId=$ppo->parent.id nodeType=BU_CLASSE}" class="button button-next">{i18n key="gestionautonome|gestionautonome.message.changeClassroom"}</a>
       {/if}
       {if $hasCredentialStudentCreate}
+        <h3>Gestion</h3>
+        <a href="{copixurl dest="gestionautonome||addMultipleStudents" parentId=$ppo->parent.id parentType=$ppo->parent.type}" class="button button-upload">{customi18n key="gestionautonome|gestionautonome.message.import%%indefinite__structure_element_persons%%" catalog=$ppo->vocabularyCatalog->id_vc}</a>
         {copixzone process=gestionautonome|getpasswordslist notxml=true}
       {/if}
-      {if $hasCredentialStudentCreate || $hasCredentialStudentUpdate}
-        <h3>{customi18n key="gestionautonome|gestionautonome.message.affect%%indefinite__structure_element_persons%%" catalog=$ppo->vocabularyCatalog->id_vc}</h3>
-        {if $hasCredentialStudentUpdate}
-            <a href="{copixurl dest="gestionautonome||changeStudentsAffect" parentId=$ppo->parent.id parentType=$ppo->parent.type}" class="button button-next">{customi18n key="gestionautonome|gestionautonome.message.to%%indefinite__another_structure_element%%" catalog=$ppo->vocabularyCatalog->id_vc}</a>
-        {/if}
-        {if $hasCredentialStudentCreate}
-          <a href="{copixurl dest="gestionautonome||addExistingStudent" parentId=$ppo->parent.id parentType=$ppo->parent.type}" class="button button-next">{customi18n key="gestionautonome|gestionautonome.message.from%%indefinite__another_structure_element%%" catalog=$ppo->vocabularyCatalog->id_vc}</a>
-          <a href="{copixurl dest="gestionautonome||setStudentsToClass" nodeId=$ppo->parent.id}" class="button button-next">Pour la nouvelle année scolaire</a>
-          {assign var=hasCredential value=1}
-        {/if}
+      {if $hasCredentialTeacherUpdate || $hasCredentialStudentUpdate || $hasCredentialPersonInChargeUpdate}
+        <a href="{copixurl dest="gestionautonome||resetClassroomPasswords" nodeId=$ppo->parent.id}" class="button button-save">{i18n key="gestionautonome|gestionautonome.message.managepasswords"}</a>
       {/if}
   {/if}
 {else}

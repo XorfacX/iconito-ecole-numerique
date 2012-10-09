@@ -16,7 +16,7 @@
 		   </tr>
 	   <tr>
 	      <th>{i18n key='dao.blog.fields.logo_blog'}</th>
-		  	<td>{if $blog->logo_blog!=''}<img src="{copixurl dest="blog||logo" id_blog=$blog->id_blog}" border="0"><br /><a class="button button-delete" href="{copixurl dest="blog|admin|deleteLogoBlog" id_blog=$blog->id_blog kind=$kind}" title="{i18n key="blog.buttons.delete.logo"}">{i18n key="blog.buttons.delete.logo"}</a>{else}{i18n key="blog.nofound.logo"}{/if}</td>		
+		  	<td>{if $blog->logo_blog!=''}<img src="{copixurl dest="blog||logo" id_blog=$blog->id_blog}" alt=""><br /><a class="button button-delete" href="{copixurl dest="blog|admin|deleteLogoBlog" id_blog=$blog->id_blog kind=$kind}" title="{i18n key="blog.buttons.delete.logo"}">{i18n key="blog.buttons.delete.logo"}</a>{else}{i18n key="blog.nofound.logo"}{/if}</td>		
 	   </tr>
 		   <tr>
 		      <th>{i18n key='dao.blog.fields.is_public'}</th>
@@ -34,12 +34,14 @@
 		      <th>{i18n key='dao.blog.fields.type_moderation_comments'}</th>
 			  	<td>{if $blog->type_moderation_comments eq 'POST'}{i18n key="blog.type_moderation_comments.post"}{else}{i18n key="blog.type_moderation_comments.pre"}{/if}</td>
 		   </tr>
+        {if $can_format_articles}
 		   <tr>
 		      <th>{i18n key='dao.blog.fields.default_format_articles'}</th>
 			  	<td>
 					{assign var="key" value="blog.default_format_articles."|cat:$blog->default_format_articles}
 					{i18n key="$key"}</td>
 		   </tr>
+        {/if}
 		   {if $magicmail_infos}
 		   <tr>
 		      <th>{i18n key='dao.blog.fields.magicmail'}</th>

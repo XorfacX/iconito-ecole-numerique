@@ -77,18 +77,18 @@
 <input type="hidden" name="id_bact" value="{$article->id_bact}">
 <input type="hidden" name="url_bact" value="{$article->url_bact}">
 <input type="hidden" name="authorid_bacc" value="{$toEdit->authorid_bacc}">
-<table class="" cellspacing=1 cellpadding=1 border="0">
+<table class="" style="border:0;">
    <tr>
       <td>{i18n key='dao.blogarticlecomment.fields.authorname_bacc'}</td>
 	  <td><input type="text" name="authorname_bacc" value="{$toEdit->authorname_bacc|escape}" class="text"></td>
    </tr>
    <tr>
       <td>{i18n key='dao.blogarticlecomment.fields.authoremail_bacc'}</td>
-	  <td><input type="text" name="authoremail_bacc" value="{$toEdit->authoremail_bacc|escape}" class="text"></td>
+	  <td><input type="email" name="authoremail_bacc" value="{$toEdit->authoremail_bacc|escape}" class="text" ></td>
    </tr>
    <tr>
       <td>{i18n key='dao.blogarticlecomment.fields.authorweb_bacc'}</td>
-	  <td><input type="text" name="authorweb_bacc" value="{$toEdit->authorweb_bacc|escape}" class="text"></td>
+	  <td><input type="url" name="authorweb_bacc" value="{$toEdit->authorweb_bacc|escape}" class="text" placeholder="http://www.iconito.fr"></td>
    </tr>
    <tr class="hidden">
       <td>{i18n key='dao.blogarticlecomment.fields.authorweb_bacc'}</td>

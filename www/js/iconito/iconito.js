@@ -211,3 +211,24 @@ function setDatePicker (iDiv) {
 }
 
 
+
+$(document).ready(function($){
+    
+    $('a.fancyboxClose').live('click',function(e){
+        e.preventDefault();
+        parent.jQuery.fancybox.close();
+    });
+    
+});
+
+
+Array.prototype.inArray = function(p_val) {
+    var l = this.length;
+    for(var i = 0; i < l; i++) {
+        if(this[i] == p_val) {
+            return true;
+        }
+    }
+    return false;
+}
+

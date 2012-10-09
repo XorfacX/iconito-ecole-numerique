@@ -28,7 +28,9 @@ padding: 3px;
 #loginForm input[type="text"], #loginForm input[type="password"]  {
 	width: 14em;	
 }
-
+#loginBar {
+	width:260px;
+}
 #loginBar .loginPrompt {
 	float:right;
 }
@@ -46,11 +48,13 @@ padding: 3px;
 #loginBar label {
 	display:block;
 	padding-left:2px;
+	width:105px;
 	text-align:left;
-	font-size:1.1em; font-weight:bold;
+	font-size:1em; font-weight:bold;
 }
 #loginBar #submitUserLogin {
 	float:right;
+	margin:10px 2px 0;
 }
 
 #loginLabelMask, #passwordLabelMask {

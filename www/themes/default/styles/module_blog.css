@@ -176,13 +176,23 @@
 	font-weight: normal;
 	font-size: 100%;
 }
-#listArticles DIV.postInfo A {
+#listArticles div.postInfo a {
 	color: #888;
+	text-decoration:underline;
+}
+#listArticles div.postInfo a:hover {
+	text-decoration:none;
 }
 /* Article (chapo ou entier) */
 #listArticles DIV.postContent {
 	margin-left: 0px;
 	margin-bottom: 2em;
+}
+#listArticles div.postContent a {
+	text-decoration:underline;
+}
+#listArticles div.postContent a:hover {
+	text-decoration:none;
 }
 #listArticles DIV.postContent .suite {
 	padding-left: 20px;
@@ -213,8 +223,12 @@
 	font-weight: normal;
 	font-size: 100%;
 }
-#article DIV.postInfo A {
+#article DIV.postInfo a {
 	color: #888;
+	text-decoration:underline;
+}
+#article div.postInfo a:hover {
+	text-decoration:none;
 }
 /* Chapo */
 #article DIV.postSummary {
@@ -236,6 +250,12 @@
 }
 #article DIV.postContent TD, #article DIV.postSummary TD, #listArticles DIV.postContent TD {
 	border: 0;
+}
+#article DIV.postSummary a, #article div.postContent a {
+	text-decoration:underline;
+}
+#article div.postSummary a:hover, #article div.postContent a:hover {
+	text-decoration:none;
 }
 
 
@@ -296,20 +316,6 @@
 }
 
 /* Affichage des tableaux */
-table.viewItems {
-	margin:3px 0; padding:2px; -moz-border-radius:6px; -webkit-border-radius:6px; border-radius:6px;
-	width:100%;
-	background:#FFFFFF;
-        table-layout:fixed;
-}
-table.viewItems th {
-	background:#eee;
-	text-align:center;
-}
-table.viewItems td {
-    max-width:50%;
-    overflow:hidden;
-}
 table.viewItems td.action {width:90px; text-align:center;}
 table.viewItems tr.list_line1 td.action {padding:4px 0;}
 table.viewItems td.comment {width:120px; text-align:center;}
