@@ -55,6 +55,11 @@ class ActionGroupCas extends EnicActionGroup
                     $url_return = CopixUrl::get ('kernel||doSelectHome');
                     // $url_return = CopixUrl::get ('assistance||users');
 
+                        $this->user->forceReload();
+                        if(!$this->service('charte|CharteService')->checkUserValidation()){
+                            $this->flash->redirect = $url_return;
+                            return $this->go('charte|charte|valid');
+                        }
 
 
                     return new CopixActionReturn (COPIX_AR_REDIRECT, $url_return);
