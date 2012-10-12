@@ -14,9 +14,9 @@
  *
  * @category  Zend
  * @package   Zend_Validate
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
- * @version   $Id: Exists.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version   $Id: Exists.php 24593 2012-01-05 20:35:02Z matthew $
  */
 
 /**
@@ -29,7 +29,7 @@ require_once 'Zend/Validate/Abstract.php';
  *
  * @category  Zend
  * @package   Zend_Validate
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Validate_File_Exists extends Zend_Validate_Abstract
@@ -69,9 +69,9 @@ class Zend_Validate_File_Exists extends Zend_Validate_Abstract
     {
         if ($directory instanceof Zend_Config) {
             $directory = $directory->toArray();
-        } elseif (is_string($directory)) {
+        } else if (is_string($directory)) {
             $directory = explode(',', $directory);
-        } elseif (!is_array($directory)) {
+        } else if (!is_array($directory)) {
             require_once 'Zend/Validate/Exception.php';
             throw new Zend_Validate_Exception ('Invalid options to validator provided');
         }
@@ -121,7 +121,7 @@ class Zend_Validate_File_Exists extends Zend_Validate_Abstract
 
         if (is_string($directory)) {
             $directory = explode(',', $directory);
-        } elseif (!is_array($directory)) {
+        } else if (!is_array($directory)) {
             require_once 'Zend/Validate/Exception.php';
             throw new Zend_Validate_Exception ('Invalid options to validator provided');
         }
@@ -161,7 +161,7 @@ class Zend_Validate_File_Exists extends Zend_Validate_Abstract
         $directories = $this->getDirectory(true);
         if (($file !== null) and (!empty($file['destination']))) {
             $directories[] = $file['destination'];
-        } elseif (!isset($file['name'])) {
+        } else if (!isset($file['name'])) {
             $file['name'] = $value;
         }
 

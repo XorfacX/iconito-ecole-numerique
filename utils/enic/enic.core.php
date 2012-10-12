@@ -96,15 +96,15 @@ class enic
     public static function sanitize($name)
     {
         $str = strtr(strtolower(trim($name)), "àáâãäåòóôõöøèéêëçìíîïùúûüÿñ","aaaaaaooooooeeeeciiiiuuuuyn");
-    $str = preg_replace('#([^.a-z0-9]+)#i', '_', $str);
+        $str = preg_replace('#([^.a-z0-9]+)#i', '_', $str);
         $str = preg_replace('#_{2,}#','_',$str);
         $str = preg_replace('#_$#','',$str);
-//        $str = preg_replace('#^_#','',$str);
-    return $str;
+        return $str;
     }
 
     public static function zend_load($name)
     {
+        set_include_path(ENIC_PATH.'lib');
         $classPath = ENIC_PATH.'/lib/Zend/'.$name.'.php';
 
         require_once $classPath;

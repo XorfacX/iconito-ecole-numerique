@@ -16,8 +16,8 @@
  * @category   Zend
  * @package    Zend_Http
  * @subpackage Client
- * @version    $Id: Client.php 24461 2011-09-11 19:25:08Z padraic $
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @version    $Id: Client.php 24593 2012-01-05 20:35:02Z matthew $
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -60,7 +60,7 @@ require_once 'Zend/Http/Response/Stream.php';
  * @package    Zend_Http
  * @subpackage Client
  * @throws     Zend_Http_Client_Exception
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Http_Client
@@ -268,7 +268,7 @@ class Zend_Http_Client
      *
      * @var resource
      */
-    protected static $_fileInfoDb = null;
+    static protected $_fileInfoDb = null;
 
     /**
      * Constructor method. Will create a new HTTP client. Accepts the target
@@ -759,7 +759,7 @@ class Zend_Http_Client
             'ctype'    => $ctype,
             'data'     => $data
         );
-
+        
         $this->body_field_order[$formname] = self::VTYPE_FILE;
 
         return $this;
@@ -939,7 +939,7 @@ class Zend_Http_Client
      */
     public function getAdapter()
     {
-         if (null === $this->adapter) {
+        if (null === $this->adapter) {
             $this->setAdapter($this->config['adapter']);
         }
 
@@ -1454,8 +1454,7 @@ class Zend_Http_Client
      * @param array $headers Associative array of optional headers @example ("Content-Transfer-Encoding" => "binary")
      * @return string
      */
-    public static function encodeFormData($boundary, $name, $value, $filename = null, $headers = array())
-    {
+    public static function encodeFormData($boundary, $name, $value, $filename = null, $headers = array()) {
         $ret = "--{$boundary}\r\n" .
             'Content-Disposition: form-data; name="' . $name .'"';
 
@@ -1530,7 +1529,7 @@ class Zend_Http_Client
      * @param  string $prefix
      * @return array
      */
-    protected static function _flattenParametersArray($parray, $prefix = null)
+    static protected function _flattenParametersArray($parray, $prefix = null)
     {
         if (! is_array($parray)) {
             return $parray;
