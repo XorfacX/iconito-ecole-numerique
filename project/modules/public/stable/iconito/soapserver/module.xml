@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<moduledefinition>
+    <general>
+        <default name="soapserver" />
+    </general>
+    <parameters>
+        <parameter name="client_ip" captioni18n="soapserver.client.ip" default="127.0.0.1" />
+    </parameters>
+</moduledefinition>
