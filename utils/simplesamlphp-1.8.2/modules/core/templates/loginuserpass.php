@@ -41,7 +41,7 @@ if ($this->data['forceUsername']) {
 ?>
 			</td>
 			<td style="padding: .4em;" rowspan="3">
-				<input type="submit" tabindex="4" value="<?php echo $this->t('{login:login_button}'); ?>" />
+				<input type="submit" tabindex="4" value="<?php echo $this->t('{login:login_button}'); ?>" class="button button-continue" />
 			</td>
 		</tr>
 		<tr>
@@ -84,6 +84,8 @@ foreach ($this->data['organizations'] as $orgId => $orgDesc) {
 
 	</table>
 
+<div class="retour"><a href="../../../" class="button button-back">Retour &agrave; la page d'accueil</a></div>
+
 <?php
 foreach ($this->data['stateparams'] as $name => $value) {
 	echo('<input type="hidden" name="' . htmlspecialchars($name) . '" value="' . htmlspecialchars($value) . '" />');
@@ -105,8 +107,10 @@ if(!empty($this->data['links'])) {
 
 
 
+echo('<div class="help">');
 echo('<h2>' . $this->t('{login:help_header}') . '</h2>');
 echo('<p>' . $this->t('{login:help_text}') . '</p>');
+echo('</div>');
 
 $this->includeAtTemplateBase('includes/footer.php');
 ?>

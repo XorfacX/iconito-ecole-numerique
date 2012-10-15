@@ -99,6 +99,99 @@ if(array_key_exists('head', $this->data)) {
 	echo '<!-- head -->' . $this->data['head'] . '<!-- /head -->';
 }
 ?>
+
+<link rel="stylesheet" href="../../../themes/default/styles/core_deprecated.css" type="text/css"/>
+<link rel="stylesheet" href="../../../themes/default/styles/core_layout.css" type="text/css"/>
+<link rel="stylesheet" href="../../../themes/default/styles/core_typography.css" type="text/css"/>
+<link rel="stylesheet" href="../../../themes/default/styles/core_buttons.css" type="text/css"/>
+
+<link rel="stylesheet" href="../../../themes/default/styles/core_zones.css" type="text/css"/>
+<link rel="stylesheet" href="../../../themes/default/styles/jquerycss/default/jquery-ui-1.8.2.custom.css" type="text/css"/>
+<link rel="stylesheet" href="../../../js/fancybox/jquery.fancybox-1.3.4.css" type="text/css"/>
+<link rel="stylesheet" href="../../../themes/default/styles/module_kernel.css" type="text/css"/>
+
+<link rel="stylesheet" href="../../../js/jquery/jquery.tooltip.css" type="text/css"/>
+
+<link rel="stylesheet" href="../../../themes/default/styles/print.css" type="text/css" media="print"/>
+
+<link rel="stylesheet" href="../../../themes/default/styles/module_welcome.css" type="text/css"/>
+<link rel="stylesheet" href="../../../themes/default/styles/core_custom.css" type="text/css" />
+
+        <script type="text/javascript">var urlBase = '/'; getRessourcePathImg = urlBase+'themes/default/img/';</script>
+<script type="text/javascript" src="../../../js/jquery/jquery.tools.min.js"></script>
+
+<script type="text/javascript" src="../../../js/iconito/iconito.js"></script>
+
+<script type="text/javascript" src="../../../js/iconito/lang_fr.js"></script>
+<script type="text/javascript" src="../../../flvplayer/ufo.js"></script>
+<script type="text/javascript" src="../../../js/jquery-1.4.4.min.js"></script>
+<script type="text/javascript" src="../../../js/jquery-ui-1.8.custom.min.js"></script>
+
+<script type="text/javascript" src="../../../js/fancybox/jquery.fancybox-1.3.4.js"></script>
+<script type="text/javascript" src="../../../js/fancybox/jquery.easing-1.3.pack.js"></script>
+<script type="text/javascript" src="../../../js/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
+
+<script src="../../../js/jquery/jquery.bgiframe.js" type="text/javascript"></script>
+<script src="../../../js/jquery/jquery.tooltip.min.js" type="text/javascript"></script>
+
+<style>
+<!--
+form input[type="text"], form input[type="url"], form input[type="email"], form input[type="date"], input[type="password"], form textarea {
+    border: 1px solid #F0F4F0;
+    border-radius: 6px 6px 6px 6px;
+    padding: 3px;
+}
+form input[type="text"]:hover, form input[type="url"]:hover, form input[type="email"]:hover, form input[type="date"]:hover, input[type="password"]:hover, form textarea:hover {
+    border: 1px solid #BAD521;
+    border-radius: 6px 6px 6px 6px;
+}
+
+
+body, input, textarea, input[type="password"], input[type="text"] {
+    font-family: 'DroidSans',Lucida grande,Arial,Helvetica,sans-serif;
+    font-size: 12px;
+    letter-spacing: 0;
+    text-align: justify;
+}
+
+div.help {
+    margin-top: 30px;
+}
+
+#main-wrapper {
+    width: 600px;
+}
+
+#content {
+    margin: 30px;
+    padding: 0px;
+    min-height: 0;
+}
+#page {
+    margin-top: 30px;
+}
+
+div.retour {
+    margin-top: 20px;
+    text-align: center;
+}
+
+
+a, a:link, a:link, a:link, a:hover, a:visited {
+    border-bottom: none;
+    color: #777777;
+    font-weight: normal;
+    text-decoration: none;
+}
+
+.button:hover {
+    background-color: #F0F4F0;
+    border: none;
+}
+
+-->
+</style>
+
 </head>
 <?php
 $onLoad = '';
@@ -113,80 +206,40 @@ if($onLoad !== '') {
 	$onLoad = ' onload="' . $onLoad . '"';
 }
 ?>
-<body<?php echo $onLoad; ?>>
+<body class="thm nodebug"<?php echo $onLoad; ?>>
 
-<div id="wrap">
-	
-	<div id="header">
-		<h1><a style="text-decoration: none; color: white" href="/<?php echo $this->data['baseurlpath']; ?>"><?php 
-			echo (isset($this->data['header']) ? $this->data['header'] : 'simpleSAMLphp'); 
-		?></a></h1>
-	</div>
+<div id="divUserProfil" onclick="hideUser();"></div>
+<div id="ajaxDiv"></div>
 
-	
-	<?php 
-	
-	$includeLanguageBar = TRUE;
-	if (!empty($_POST)) 
-		$includeLanguageBar = FALSE;
-	if (isset($this->data['hideLanguageBar']) && $this->data['hideLanguageBar'] === TRUE) 
-		$includeLanguageBar = FALSE;
-	
-	if ($includeLanguageBar) {
-		
-		
-		echo '<div id="languagebar">';
-		$languages = $this->getLanguageList();
-		$langnames = array(
-					'no' => 'Bokmål',
-					'nn' => 'Nynorsk',
-					'se' => 'Sámegiella',
-					'sam' => 'Åarjelh-saemien giele',
-					'da' => 'Dansk',
-					'en' => 'English',
-					'de' => 'Deutsch',
-					'sv' => 'Svenska',
-					'fi' => 'Suomeksi',
-					'es' => 'Español',
-					'fr' => 'Français',
-					'it' => 'Italiano',
-					'nl' => 'Nederlands',
-					'lb' => 'Luxembourgish', 
-					'cs' => 'Czech',
-					'sl' => 'Slovenščina', // Slovensk
-					'lt' => 'Lietuvių kalba', // Lithuanian
-					'hr' => 'Hrvatski', // Croatian
-					'hu' => 'Magyar', // Hungarian
-					'pl' => 'Język polski', // Polish
-					'pt' => 'Português', // Portuguese
-					'pt-BR' => 'Português brasileiro', // Portuguese
-					'tr' => 'Türkçe',
-					'el' => 'ελληνικά',
-					'ja' => '日本語',
-					'zh-tw' => '中文',
-		);
-		
-		$textarray = array();
-		foreach ($languages AS $lang => $current) {
-			if ($current) {
-				$textarray[] = $langnames[$lang];
-			} else {
-				$textarray[] = '<a href="' . htmlspecialchars(SimpleSAML_Utilities::addURLparameter(SimpleSAML_Utilities::selfURL(), array('language' => $lang))) . '">' .
-					$langnames[$lang] . '</a>';
-			}
-		}
-		echo join(' | ', $textarray);
-		echo '</div>';
+<div id="main-wrapper" class="wrapper" style="">
 
-	}
+<div id="absolute"></div>
+<div id="page">
+    <div id="page-header">
 
+        <div class="thm-HL"><div class="thm-HR"><div class="thm-HM">
+            <div class="thm-logo padder"><h1><a class="logo" href="../../.."><span class="hiddenClean">ICONITO &Eacute;cole Num&eacute;rique</span></a></h1>
+            <div id="top"><div class="collapse"></div></div>
+            <div id="menu">
+                <div id="menucenter"><div class="collapse"></div></div>
+                <div id="menuleft"><div class="filler"></div></div>
+                <div id="menuright"><div class="welcome userlogged"></div></div>
+            </div>
+            </div>
+        </div></div></div>
+        <div id="welcome_bienvenue"></div>    </div>
+    <div id="page-middle">
 
+        <div class="thm-ML"><div class="thm-MR"><div class="thm-MTL"><div class="thm-MTR">
+        <div class="marger">
+            <div id="breadcrumb"><div class="welcome breadcrumb">Accueil</div></div>
+            <div class="wrapper-expander">
+                <div id="left"><div class="collapse"></div></div>
+                <div class="wrapper-shifter">
+                    <div id="content">
+                        <div id="contenttop"><div class="collapse"></div></div>
 
-	?>
-	<div id="content">
-
-
-
+                        <div id="contentmain">
 <?php
 
 if(!empty($this->data['htmlinject']['htmlContentPre'])) {
