@@ -12,6 +12,11 @@
  */
 class soapserverservice
 {
+    
+    public function __construct()
+    {
+        $this->accountService = enic::get('helpers')->service('accountservice');
+    }
 
     /**
      * Create :
@@ -24,7 +29,22 @@ class soapserverservice
      */
     public function createAccount(soapAccountModel $account)
     {
-
+        try{
+        //make an account
+        $this->accountService->create($account);
+        
+        //make or get the school's city
+        $account->school->address->cityId = $this->cityService->GetOrCreate($account->school->address->city);
+        
+        //create the school
+        $this->schoolService->create($account->school);
+        
+        }catch(accountException $e){
+            throw new SoapFault('server', $e->getMessage);
+        }catch(schoolException $e){
+            throw new SoapFault('server', $e->getMessage);
+        }
+        
     }
     
     /**
