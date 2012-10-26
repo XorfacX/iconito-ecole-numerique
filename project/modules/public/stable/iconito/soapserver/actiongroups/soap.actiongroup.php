@@ -54,14 +54,57 @@
             $class->level = 7;
             $class->type = 8;
             
+            $directeur = new soapDirectorModel();
+            $directeur->name ="jeanClaude";
+            $directeur->surname ="leCompte";
+            $directeur->mail = "lecompte@caramail.fr";
+            $directeur->gender = 1;
+            
+            $adress = new soapAddressModel();
+            $adress->address ="4 rue des cochons";
+            $adress->additionalAddress = "";
+            $adress->city = "Larochelle";
+            $adress->postalCode = "76788";
+            
+            $school = new soapSchoolModel();
+            $school->name = "DesChamps";
+            $school->address = $adress;
+            $school->director = $directeur;
+            
+            $account = new soapAccountModel();
+            $account->id = 1;
+            $account->school = $school;
+            
             try{
+                
+                $j = $client->createAccount($account);
                 $i = $client->createClass($class);
+                
             }catch (Exception $e){
-                echo 1;
                 echo $e;
             }
             echo '===';
-            echo $i;
+            var_dump($i);
+            var_dump($j);
+            return _arNone();
+        }
+        
+        public function processMyTest()
+        {
+            $this->myservice = enic::get('helpers')->service('soapserver|soapserverservice');
+            $class = new soapClassModel();
+            $class->name = 'Vasi Tavue';
+            $class->accountId = 1;
+            $class->classId = 6;
+            $class->level = 7;
+            $class->type = 8;
+            try{
+            $this->myservice->createClass($class);
+            }
+            catch (Exception $e){
+                echo $e;
+            }
+            
             return _arNone();
         }
         

@@ -87,6 +87,15 @@ class Kernel_API extends enicService
     }
     
     /**
+     * @param string nom de la ville
+     * @return array
+     */
+    public function existeVille($ville)
+    {
+        return $this->db->query('SELECT id_vi FROM kernel_bu_ville WHERE nom='.$this->db->quote($ville))->toInt();
+    }
+    
+    /**
      * @param integer $id_ville Id de la ville de rattachement
      * @param object $infos Informations sur l'école
      * @return integer Id de l'école
@@ -158,6 +167,16 @@ class Kernel_API extends enicService
     }
     
     /**
+     * @param string $nom
+     * @param string $ville
+     * @return array
+     */
+    public function existeEcole($nom, $ville)
+    {
+        return $this->db->query('SELECT numero FROM kernel_bu_ecole WHERE nom='.$this->db->quote($nom).' AND commune='.$this->db->quote($ville))->toInt();
+    }
+    
+    /**
      * @param integer $id_ecole Id de l'école de rattachement
      * @param object $infos Informations sur la classe
      * @return integer Id de la classe
@@ -165,6 +184,7 @@ class Kernel_API extends enicService
     public function creerClasse( $id_ecole, $infos )
     {
         $test_ecole = $this->db->query( 'SELECT numero FROM kernel_bu_ecole WHERE numero='.$this->db->quote($id_ecole) )->toArray();
+
         if( count($test_ecole) == 0 ) {
             throw new Kernel_API_creerClasse_noEcole("Ecole inexistante");
         }
@@ -182,6 +202,7 @@ class Kernel_API extends enicService
 
         $id_classe = $this->db->lastId;
         
+        
         foreach( $infos->niveaux AS $niveau )
         {
             $this->db->create(
@@ -193,7 +214,6 @@ class Kernel_API extends enicService
                 )
             );
         }
-        
         return ($id_classe);
     }
     
@@ -316,6 +336,20 @@ class Kernel_API extends enicService
         return (true);
     }
     
+    /**
+     * @param string surname
+     * @param string name
+     * @return integer id du directeur si il existe
+     */
+    public function existeDirecteur ($nom, $prenom)
+    {
+        $id = $this->db->query('SELECT numero FROM kernel_bu_personnel WHERE nom='.$this->db->quote($nom).' AND prenom1='.$this->db->quote($prenom))->toInt();
+        $role = $this->db->query('SELECT role FROM kernel_bu_personnel_entite WHERE id_per='.$this->db->quote($id).' AND role=2');
+        if(!empty($role))
+                return $id;
+        
+    }
+    
     public function creerLogin( $user_type, $user_id, $login, $password )
     {
         $test_login = $this->db->query( 'SELECT login_dbuser FROM dbuser WHERE login_dbuser='.$this->db->quote($login) )->toArray();
@@ -384,7 +418,6 @@ class Kernel_API extends enicService
         
         return (true);
     }
-
     
 }
 
