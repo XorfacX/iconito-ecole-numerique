@@ -119,11 +119,20 @@ class soapserverservice {
             }
             
             /*
-             * Creates the entry in the link table
+             * Creates the entry in the link table if it does not exists
              */
-            $res = $this->accountService->creerAccount($account->id, $school_id, $school_director_id);
+            $id_account_linkTable;
             
-            return $res;
+            $id_account_linkTable = $this->accountService->existeAccount($account->id, $school_id, $school_director_id);
+           
+            
+            
+            if(empty($id_account_linkTable))
+            {
+                $id_account_linkTable = $this->accountService->creerAccount($account->id, $school_id, $school_director_id);
+            }
+            
+            return $id_account_linkTable;
             
         } catch (accountException $e) {
             throw new SoapFault('server', $e->getMessage);
@@ -143,17 +152,15 @@ class soapserverservice {
         
         $class_data = new stdClass();
         $class_data->nom = $class->name;
-        $class_data->anneeScolaire = "";
+        $class_data->anneeScolaire = $class->year;
         $class_data->niveaux = array($class->level);
          
         $class_school_id = $this->accountService->getSchoolFromAccount($class->accountId);
+        
 
         $class_id = $this->kernelAPI->creerClasse($class_school_id, $class_data);
-        
-        var_dump($class->accountId);
-        var_dump($class->classId);
          
-        $this->accountService->creerAccountClass($class->accountId, $class_id);
+        $this->accountService->creerAccountClass($class->accountId, $class_id, $class);
         
         return $class_id;
     }
@@ -164,8 +171,11 @@ class soapserverservice {
      * @param soapClassModel $class
      * @return int
      */
-    public function validateClass(soapClassModel $class) {
+    public function validateClass(soapClassModel $class) 
+    {
+        $this->accountService->validerClass($class);
         
+        return 1;
     }
 
 }
@@ -302,6 +312,18 @@ class soapClassModel {
      * @var int
      */
     public $classId;
+    
+    /**
+     * Class' year
+     * @var int
+     */
+    public $year;
+    
+    /**
+     * class' validity date
+     * @var string
+     */
+    public $validityDate;
 
     /**
      * Class' level

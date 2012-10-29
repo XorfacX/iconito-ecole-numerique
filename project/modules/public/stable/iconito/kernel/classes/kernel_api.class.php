@@ -266,6 +266,16 @@ class Kernel_API extends enicService
         return (true);
     }
     
+   /**
+    * Return the ID of the class if exists
+    * @param soapClassModel
+    * @return integer
+    */
+    public function existeClasse($classe)
+    {
+        return $this->db->query('SELECT id FROM kernel_bu_ecole_class WHERE id ='.$classe->class_id);
+    }
+    
     // kernel_bu_personnel : numero     nom     nom_jf  prenom1     civilite    id_sexe  tel_dom    tel_gsm     tel_pro     mel     id_ville    pays
     // kernel_bu_personnel_entite : id_per  reference=$id_ecole     type_ref=ECOLE  role=2
     public function creerDirecteur( $id_ecole, $infos )

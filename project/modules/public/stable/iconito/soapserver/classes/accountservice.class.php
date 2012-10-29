@@ -17,7 +17,7 @@ class accountservice extends enicService
         
     }
     
-        /*
+    /*
      * Creer l'account dans la table de liens
      */
     public function creerAccount($account_id, $school_id, $director_id) {
@@ -42,17 +42,43 @@ class accountservice extends enicService
     /*
      * Creer la classe dans la table de lien
      */
-    public function creerAccountClass ($account_id, $class_id)
+    public function creerAccountClass ($account_id, $class_id, $class)
     {
+        
         $this->db->create(
              'module_account_class', array(
                  'id_account' => $this->db->quote($account_id),
                  'id_class' => $this->db->quote($class_id),
+                 'id_class_EN' => $this->db->quote($class->classId),
                  'creation_date' => 'CURDATE()',
-                 'validity_date' => 'CURDATE()'
+                 'validity_date' => 'ADDDATE(CURDATE(), 60)'
              )
         );
         
+    }
+    
+    /*
+     * Test d'existence dans la table de liens module_account
+     */
+    public function existeAccount($account, $school, $director)
+    {
+            return $this->db->query('
+            SELECT id 
+            FROM module_account 
+            WHERE id_account='.$account.' AND id_school='.$school.' AND id_director='.$director);
+    }
+    
+    /*
+     * Validation de la classe
+     */
+    public function validerClass($class)
+    {
+            $this->db->query('
+            UPDATE module_account_class
+            SET validity_date='.$this->db->quote($class->validityDate).'
+            WHERE id_account='.$this->db->quote($class->accountId).' AND id_class_EN='.$this->db->quote($class->classId));
+        
+        return 1;
     }
 }
 
