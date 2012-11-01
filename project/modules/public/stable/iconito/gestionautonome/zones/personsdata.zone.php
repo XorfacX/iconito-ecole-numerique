@@ -83,6 +83,11 @@ class ZonePersonsData extends CopixZone
                         $ppo->isTeachersLimitByClassroomReached = count($ppo->persons) >= CopixConfig::get('gestionautonome|teachersLimitByClassroom');
                     }
                     
+                    $ppo->isStudentsLimitByClassroomReached = false;
+                    if (GestionAutonomeService::hasStudentsLimitByClassroom()) {
+                        $ppo->isStudentsLimitByClassroomReached = count($ppo->students) >= CopixConfig::get('gestionautonome|studentsLimitByClassroom');
+                    }
+                    
                     break;
             }
         }

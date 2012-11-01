@@ -2227,7 +2227,16 @@ class ActionGroupDefault extends enicActionGroup
 
             return CopixActionGroup::process('generictools|Messages::getError', array('message' => "Une erreur est survenue.", 'back' => CopixUrl::get('gestionautonome||showTree')));
         }
-
+        
+        // Contrôle de la limite d'élève par classe
+        _classInclude('gestionautonome|GestionAutonomeService');
+        if (GestionAutonomeService::isStudentsLimitByClassroomReached($ppo->nodeId)) {
+            return CopixActionGroup::process('generictools|Messages::getError', array(
+                'message' => "Vous ne pouvez plus ajouter d'élève pour cette classe.",
+                'back' => CopixUrl::get('gestionautonome||showTree')
+            ));
+        }
+        
         _currentUser()->assertCredential('module:classroom|'.$ppo->nodeId.'|student|create@gestionautonome');
 
         // Remise à zéro des sessions tmp
@@ -2287,7 +2296,16 @@ class ActionGroupDefault extends enicActionGroup
 
             return CopixActionGroup::process('generictools|Messages::getError', array('message' => "Une erreur est survenue.", 'back' => CopixUrl::get('gestionautonome||showTree')));
         }
-
+        
+        // Contrôle de la limite d'élève par classe
+        _classInclude('gestionautonome|GestionAutonomeService');
+        if (GestionAutonomeService::isStudentsLimitByClassroomReached($ppo->nodeId)) {
+            return CopixActionGroup::process('generictools|Messages::getError', array(
+                'message' => "Vous ne pouvez plus ajouter d'élève pour cette classe.",
+                'back' => CopixUrl::get('gestionautonome||showTree')
+            ));
+        }
+        
         $classroomDAO = _ioDAO('kernel|kernel_bu_ecole_classe');
         if (!$classroom = $classroomDAO->get($ppo->nodeId)) {
 
@@ -5500,28 +5518,24 @@ class ActionGroupDefault extends enicActionGroup
         // Affectation d'un élève
         _classInclude('gestionautonome|GestionAutonomeService');
         if ($userType == 'USER_ELE') {
+            // Contrôle de la limite d'enseignants par classe
+            if (!GestionAutonomeService::isStudentsLimitByClassroomReached($classroomId)) {
+                // Contrôle des droits
+                _currentUser()->assertCredential('module:classroom|'.$classroomId.'|student|update@gestionautonome');
+                if ($filters['mode'] == 'changeClassroom') {
+                    GestionAutonomeService::removeStudentAssignments($userId, $classroom->annee_scol);
+                }
 
-            // Contrôle des droits
-            _currentUser()->assertCredential('module:classroom|'.$classroomId.'|student|update@gestionautonome');
-
-            if ($filters['mode'] == 'changeClassroom') {
-
-                GestionAutonomeService::removeStudentAssignments($userId, $classroom->annee_scol);
+                GestionAutonomeService::addStudentAssignment($userId, $classroom, $classroomLevel);
             }
-
-            GestionAutonomeService::addStudentAssignment($userId, $classroom, $classroomLevel);
         }
         // Affectation d'un enseignant
         else {
-            
             // Contrôle de la limite d'enseignants par classe
-            _classInclude('gestionautonome|GestionAutonomeService');
             if (!GestionAutonomeService::isTeachersLimitByClassroomReached($classroomId)) {
                 // Contrôle des droits
                 _currentUser()->assertCredential('module:classroom|'.$classroomId.'|teacher|update@gestionautonome');
-
                 $personEntityDAO = _ioDAO('kernel|kernel_bu_personnel_entite');
-
                 GestionAutonomeService::addPersonAssignmentOnClassroom($userId, $classroom, DAOKernel_bu_personnel_entite::ROLE_TEACHER);
             }
         }

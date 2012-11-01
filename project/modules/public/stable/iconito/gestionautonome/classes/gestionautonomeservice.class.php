@@ -235,4 +235,33 @@ class GestionAutonomeService
        
        return count($teachers) >= CopixConfig::get('gestionautonome|teachersLimitByClassroom');
     }
+    
+    /**
+     * Retourne vrai s'il y a une limite d'élèves par classe
+     *
+     * @return boolean
+     */
+    public static function hasStudentsLimitByClassroom()
+    {
+        return CopixConfig::exists('gestionautonome|studentsLimitByClassroom') && CopixConfig::get('gestionautonome|studentsLimitByClassroom') > 0;
+    }
+    
+    /**
+     * Retourne vrai si la limite d'élèves par classe est atteinte
+     *
+     * @param int $id ID de la classe
+     *
+     * @return boolean
+     */
+    public static function isStudentsLimitByClassroomReached($id)
+    {
+       if (!self::hasTeachersLimitByClassroom()) {
+           return false;
+       }
+       
+       $studentDAO = _ioDAO('kernel|kernel_bu_ele');
+       $students = $studentDAO->getStudentsByClass($id);
+              
+       return count($students) >= CopixConfig::get('gestionautonome|studentsLimitByClassroom');
+    }
 }
