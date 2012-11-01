@@ -258,7 +258,14 @@ class ZoneManageAssignments extends CopixZone
             $ppo->classrooms[$destinationAssignment->id_classe] = $destinationAssignment->nom_classe;
             $ppo->classroomLevels[$destinationAssignment->id_niveau] = $destinationAssignment->nom_niveau;
         }
-
+        
+        if ($ppo->filters['originUserType'] == 'USER_ENS') {
+            _classInclude('gestionautonome|GestionAutonomeService');
+            $ppo->teachersLimitByClassroom = 0;
+            if (GestionAutonomeService::hasTeachersLimitByClassroom()) {
+                $ppo->teachersLimitByClassroom = CopixConfig::get('gestionautonome|teachersLimitByClassroom');
+            }
+        }
         $toReturn = $this->_usePPO($ppo, '_manage_assignments.tpl');
     }
 

@@ -1,83 +1,84 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <moduledefinition>
-	<general>
-		<default name="gestionautonome" description="Iconito : gestion autonome"/>
-		<package name="copixdivers" version="2.2" />
-	</general>
+    <general>
+        <default name="gestionautonome" description="Iconito : gestion autonome"/>
+        <package name="copixdivers" version="2.2" />
+    </general>
 
-	<parameters>
-		<parameter name="moduleTitle" caption="Titre des pages du module" default="Gestion de la structure scolaire" />
-		<parameter name="gradesManagementTitle" caption="Titre des pages de la gestion des années" default="Gestion des années scolaires" />
-		<parameter name="personInChargeLinkingEnabled" caption="Fonctionnalité de rattachement des parents à un élève activée" default="0" />
-		<parameter name="directorGlobalAffectation" caption="Les directeurs ont acc�s � toutes les villes/�coles de l'ENT pour g�rer les affectations" default="0" />
-	</parameters>
+    <parameters>
+        <parameter name="moduleTitle" caption="Titre des pages du module" default="Gestion de la structure scolaire" />
+        <parameter name="gradesManagementTitle" caption="Titre des pages de la gestion des années" default="Gestion des années scolaires" />
+        <parameter name="personInChargeLinkingEnabled" caption="Fonctionnalité de rattachement des parents à un élève activée" default="0" />
+        <parameter name="directorGlobalAffectation" caption="Les directeurs ont accés à toutes les villes/écoles de l'ENT pour gérer les affectations" default="0" />
+        <parameter name="teachersLimitByClassroom" caption="Nombre d'enseignants maximum par classe" default="0" />
+    </parameters>
 
-	<grouphandlers>
-		<grouphandler name='iconitogrouphandler' />
-	</grouphandlers>
+    <grouphandlers>
+        <grouphandler name='iconitogrouphandler' />
+    </grouphandlers>
 
-	<credentialhandlers>
-	 	<credentialhandler name='iconitomodulecredentialhandler' stopOnSuccess='true' stopOnFailure='false'>
-	 		<handle name='module' />
-		</credentialhandler>
-	</credentialhandlers>
+    <credentialhandlers>
+         <credentialhandler name='iconitomodulecredentialhandler' stopOnSuccess='true' stopOnFailure='false'>
+             <handle name='module' />
+        </credentialhandler>
+    </credentialhandlers>
 
-	<credentials>
-		<credential name="cities_group">
-			<value name="create" level="1" />
-			<value name="update" level="2" />
-			<value name="delete" level="3" />
-		</credential>
-		<credential name="city">
-			<value name="create" level="1" />
-			<value name="update" level="2" />
-			<value name="delete" level="3" />
-		</credential>
-		<credential name="school">
-			<value name="create" level="1" />
-			<value name="update" level="2" />
-			<value name="delete" level="3" />
-		</credential>
-		<credential name="classroom">
-			<value name="create" level="1" />
-			<value name="update" level="2" />
-			<value name="delete" level="3" />
-		</credential>
-		<credential name="cities_group_agent">
-			<value name="create" level="1" />
-			<value name="update" level="2" />
-			<value name="delete" level="3" />
-		</credential>
-		<credential name="city_agent">
-			<value name="create" level="1" />
-			<value name="update" level="2" />
-			<value name="delete" level="3" />
-		</credential>
-		<credential name="administration_staff">
-			<value name="create" level="1" />
-			<value name="update" level="2" />
-			<value name="delete" level="3" />
-		</credential>
-		<credential name="principal">
-			<value name="create" level="1" />
-			<value name="update" level="2" />
-			<value name="delete" level="3" />
-		</credential>
-		<credential name="teacher">
-			<value name="create" level="1" />
-			<value name="update" level="2" />
-			<value name="delete" level="3" />
-		</credential>
-		<credential name="student">
-			<value name="create" level="1" />
-			<value name="update" level="2" />
-			<value name="delete" level="3" />
-		</credential>
-		<credential name="person_in_charge">
-			<value name="create" level="1" />
-			<value name="update" level="2" />
-			<value name="delete" level="3" />
-		</credential>
-		<credential name="access" />
-	</credentials>
+    <credentials>
+        <credential name="cities_group">
+            <value name="create" level="1" />
+            <value name="update" level="2" />
+            <value name="delete" level="3" />
+        </credential>
+        <credential name="city">
+            <value name="create" level="1" />
+            <value name="update" level="2" />
+            <value name="delete" level="3" />
+        </credential>
+        <credential name="school">
+            <value name="create" level="1" />
+            <value name="update" level="2" />
+            <value name="delete" level="3" />
+        </credential>
+        <credential name="classroom">
+            <value name="create" level="1" />
+            <value name="update" level="2" />
+            <value name="delete" level="3" />
+        </credential>
+        <credential name="cities_group_agent">
+            <value name="create" level="1" />
+            <value name="update" level="2" />
+            <value name="delete" level="3" />
+        </credential>
+        <credential name="city_agent">
+            <value name="create" level="1" />
+            <value name="update" level="2" />
+            <value name="delete" level="3" />
+        </credential>
+        <credential name="administration_staff">
+            <value name="create" level="1" />
+            <value name="update" level="2" />
+            <value name="delete" level="3" />
+        </credential>
+        <credential name="principal">
+            <value name="create" level="1" />
+            <value name="update" level="2" />
+            <value name="delete" level="3" />
+        </credential>
+        <credential name="teacher">
+            <value name="create" level="1" />
+            <value name="update" level="2" />
+            <value name="delete" level="3" />
+        </credential>
+        <credential name="student">
+            <value name="create" level="1" />
+            <value name="update" level="2" />
+            <value name="delete" level="3" />
+        </credential>
+        <credential name="person_in_charge">
+            <value name="create" level="1" />
+            <value name="update" level="2" />
+            <value name="delete" level="3" />
+        </credential>
+        <credential name="access" />
+    </credentials>
 </moduledefinition>

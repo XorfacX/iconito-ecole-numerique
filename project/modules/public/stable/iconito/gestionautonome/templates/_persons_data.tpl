@@ -259,8 +259,12 @@
 
   {elseif $ppo->parent.type == 'BU_CLASSE'}
       {if $hasCredentialTeacherCreate}
-        <a href="{copixurl dest="gestionautonome||createPersonnel" parentId=$ppo->parent.id parentType=$ppo->parent.type role=1}" class="button button-add">{customi18n key="gestionautonome|gestionautonome.message.add%%indefinite__structure_element_staff_person%%" catalog=$ppo->vocabularyCatalog->id_vc}</a>
-        <a href="{copixurl dest="gestionautonome||addExistingPersonnel" parentId=$ppo->parent.id parentType=$ppo->parent.type role=1}" class="button button-next">Affecter un enseignant</a>
+        {if $ppo->isTeachersLimitByClassroomReached}
+          <p class="help">{i18n key="gestionautonome|gestionautonome.message.teacherslimitbyclassroomreached"}</p>
+        {else}
+            <a href="{copixurl dest="gestionautonome||createPersonnel" parentId=$ppo->parent.id parentType=$ppo->parent.type role=1}" class="button button-add">{customi18n key="gestionautonome|gestionautonome.message.add%%indefinite__structure_element_staff_person%%" catalog=$ppo->vocabularyCatalog->id_vc}</a>
+            <a href="{copixurl dest="gestionautonome||addExistingPersonnel" parentId=$ppo->parent.id parentType=$ppo->parent.type role=1}" class="button button-next">Affecter un enseignant</a>
+        {/if}
       {/if}
       {if $hasCredentialStudentCreate}
         <a href="{copixurl dest="gestionautonome||createStudent" parentId=$ppo->parent.id parentType=$ppo->parent.type}" class="button button-add">{customi18n key="gestionautonome|gestionautonome.message.add%%indefinite__structure_element_person%%" catalog=$ppo->vocabularyCatalog->id_vc}</a>
@@ -292,12 +296,12 @@
 //<![CDATA[
   
   jQuery(document).ready(function(){
- 	
- 	  jQuery("#tabs").tabs();
- 	  if ({/literal}{$ppo->tab}{literal}) {
- 	    
- 	    jQuery("#tabs").tabs({ selected: {/literal}{$ppo->tab}{literal}});
- 	  }
+  
+    jQuery("#tabs").tabs();
+    if ({/literal}{$ppo->tab}{literal}) {
+      
+      jQuery("#tabs").tabs({ selected: {/literal}{$ppo->tab}{literal}});
+    }
   });
   
 //]]> 

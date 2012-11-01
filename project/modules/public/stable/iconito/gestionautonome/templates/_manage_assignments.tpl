@@ -61,6 +61,10 @@
               </li>
             {/foreach}
           </ul>
+          
+          {if $ppo->filters.originUserType eq "USER_ENS" && $ppo->teachersLimitByClassroom > 0 && $persons|count >= $ppo->teachersLimitByClassroom}
+            <p class="help">{i18n key="gestionautonome|gestionautonome.message.teacherslimitbyclassroomreached"}</p>
+          {/if}
         {/if}
       </div>
       </li>
