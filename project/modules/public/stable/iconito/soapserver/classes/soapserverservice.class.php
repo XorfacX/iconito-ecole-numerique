@@ -24,120 +24,70 @@ class soapserverservice {
      *  Director
      * 
      * @param soapAccountModel $account
-     * @return int
+     * @return returnSoapAccount
      */
     public function createAccount(soapAccountModel $account) {
         try {
             
             /*
-             * Storing useful structures
+             * City process
              */
-            $school = $account->school;
-            $school_id;
+            $schoolCityId = $this->kernelAPI->existeVille($this->school->address->city);
             
-            $school_director = $school->director;
-            $school_director_id;
+            if(empty($schoolCityId))
+                $schoolCityId = $this->kernelAPI->creerVille(
+                    1, 
+                    $this->accountService->cityDatasProxy($account->school->address->city)
+                );
+                        
+            /*
+             * School process
+             */
+            $schoolId = $this->kernelAPI->existeEcole($account->school->name, $account->school->address->city);
             
-            $school_adress = $account->school->address;
-            
-            $school_city = $school_adress->city;
-            $school_city_id;
-            
-            
-            
-           /*
-            * Creating an object for creerEcole() purposes
-            */
-            $adresse = new stdClass();
-            $adresse->numRue = "";
-            $adresse->numSeq = "";
-            $adresse->adresse1 = $school_adress->address;
-            $adresse->adresse2 = $school_adress->additionalAddress ;
-            $adresse->codePostal = $school_adress->postalCode ;
-            $adresse->commune = $school_city ;
+            if(empty($schoolId))
+                $schoolId = $this->kernelAPI->creerEcole(
+                    $this->accountService->schoolDatasProxy($account->school),
+                    $schoolCityId
+                );
             
             /*
-             * Creating an object for creerVille() purposes
+             * Director process
              */
-            $villeObj = new stdClass();
-            $villeObj->nom = $school_city;
-            $villeObj->nomCanonique = $school_city;
+            $directorId = $this->kernelAPI->existeDirecteur($account->school->director->surname, $account->school->director->name);
             
-            /*
-             * Creating the city if it does not exists
-             * and storing it's id
-             */
-            $school_city_id = $this->kernelAPI->existeVille($school_city);
-            
-            if(empty($school_city_id))
-                $school_city_id = $this->kernelAPI->creerVille(1, $villeObj);
-            
-            /*
-             * Getting the school's id if exists
-             */
-            $school_id = $this->kernelAPI->existeEcole($school->name, $school_city);
-            
-            /*
-             * Testing entries and creating the school if it does not exists
-             */
-            if(empty($school_id))
-            {
+            if(empty($directorId)){
+                $directorId = $this->kernelAPI->creerDirecteur(
+                    $schoolId, 
+                    $this->accountService->directorDatasProxy($account->school->director)
+                );
                 
-                $school_data = new stdClass();
-                $school_data->nom = $school->name;
-                $school_data->rne = $school->rne;
-                $school_data->type = '';
-                $school_data->adresse = $adresse;
+                $directorLogin = $this->accountService->makeDirectorLogin($account->school->director);
                 
-                $school_id = $this->kernelAPI->creerEcole($school_city_id, $school_data);
-            }      
-            
-            /*
-             * Getting the school's associated director's id if exists
-             */
-            $school_director_id = $this->kernelAPI->existeDirecteur($school_director->surname, $school_director->name);
-            
-            /*
-             * Creating the director if it does not exists
-             */
-            if(empty($school_director_id))
-            {
-                
-                $director_data = new stdClass();
-                $director_data->nom = $school_director->surname;
-                $director_data->nomjf = ""; //TODO
-                $director_data->prenom = $school_director->name;
-                $director_data->civilite = ($school_director->gender == 1) ? 'Monsieur' : 'Madame';
-                $director_data->idSexe = $school_director->gender;
-                $director_data->telDom = ""; //TODO
-                $director_data->telGsm = ""; //TODO
-                $director_data->telPro = $school_director->phone; //TODO
-                $director_data->mail = $school_director->mail;
-                
-                
-                $school_director_id = $this->kernelAPI->creerDirecteur($school_id, $director_data);
+                $this->kernelAPI->creerLogin(
+                        'USER_DIR', 
+                        $directorId, 
+                        $directorLogin,
+                        $account->school->director->password,
+                        false
+                );
             }
-            
-            /*
-             * Creates the entry in the link table if it does not exists
-             */
-            
-            $id_account_linkTable = $this->accountService->existeAccount($account->id, $school_id, $school_director_id);
            
+            /*
+             * Account process
+             */
+            $idAccount = $this->accountService->existsAccount($account->id, $schoolId, $directorId);
             
+            if(empty($idAccount))
+                $idAccount = $this->accountService->create($account->id, $schoolId, $directorId);
             
-            if(empty($id_account_linkTable))
-            {
-                $id_account_linkTable = $this->accountService->creerAccount($account->id, $school_id, $school_director_id);
-            }
+            $return = new returnSoapAccount;
+            $return->returnSoapDirector->login = $directorLogin;
+            $return->returnSoapDirector->id = $directorId;
             
-            return $id_account_linkTable;
+            return $return;
             
-        } catch (accountException $e) {
-            throw new SoapFault('server', $e->getMessage());
-        } catch (schoolException $e) {
-            throw new SoapFault('server', $e->getMessage());
-        } catch (Exception $e){
+        }catch (Exception $e){
             throw new SoapFault('server', $e->getMessage());
         }
     }
@@ -150,21 +100,15 @@ class soapserverservice {
      * @return int
      */
     public function createClass(soapClassModel $class) {
-        
-        $class_data = new stdClass();
-        $class_data->nom = $class->name;
-        $class_data->anneeScolaire = $class->year;
-        $class_data->niveaux = array($class->level);
-        $class_data->validityDate = $class->validityDate;
-         
-        $class_school_id = $this->accountService->getSchoolFromAccount($class->accountId);
-        
 
-        $class_id = $this->kernelAPI->creerClasse($class_school_id, $class_data);
+        $classId = $this->kernelAPI->creerClasse(
+            $this->accountService->getSchoolFromAccount($class->accountId), 
+            $this->accountService->classDatasProxy($class)
+        );
          
-        $this->accountService->creerAccountClass($class->accountId, $class_id, $class);
+        $this->accountService->createClass($class->accountId, $class_id, $class);
         
-        return $class_id;
+        return $classId;
     }
 
     /**
@@ -175,7 +119,7 @@ class soapserverservice {
      */
     public function validateClass(soapClassModel $class) 
     {
-        $this->accountService->validerClass($class);
+        $this->accountService->validateClass($class);
         
         return 1;
     }
@@ -237,6 +181,12 @@ class soapDirectorModel {
      * @var string
      */
     public $phone;
+    
+    /**
+     * Director's password (md5 string)
+     * @var string
+     */
+    public $password;
 
 }
 
@@ -265,6 +215,12 @@ class soapSchoolModel {
      * @var soapDirectorModel
      */
     public $director;
+    
+    /**
+     * School's siret number
+     * @var string
+     */
+    public $siret;
 
     public function __construct() {
         $this->address = new soapAddressModel();
@@ -345,6 +301,34 @@ class soapClassModel {
      */
     public $type;
 
+}
+
+class returnSoapAccount
+{
+    /**
+     * @var returnSoapDirector
+     */
+    public $returnSoapDirector;
+    
+    public function __construct()
+    {
+        $this->returnSoapDirector = new returnSoapDirector();
+    }
+}
+
+class returnSoapDirector
+{
+    /**
+     * Director's Login
+     * @var string 
+     */
+    public $login;
+    
+    /**
+     * Director's Id
+     * @var int
+     */
+    public $id;
 }
 
 ?>

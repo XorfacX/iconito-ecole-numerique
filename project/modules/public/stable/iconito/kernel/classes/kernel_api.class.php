@@ -360,7 +360,7 @@ class Kernel_API extends enicService
         
     }
     
-    public function creerLogin( $user_type, $user_id, $login, $password )
+    public function creerLogin( $user_type, $user_id, $login, $password, $md5 = true )
     {
         $test_login = $this->db->query( 'SELECT login_dbuser FROM dbuser WHERE login_dbuser='.$this->db->quote($login) )->toArray();
         if( count($test_login) > 0 ) {
@@ -388,12 +388,13 @@ class Kernel_API extends enicService
             throw new Kernel_API_creerLogin_oldLogin("Login déjà créé");
         }
 
-
+        $password = ($md5) ? md5($password) : $password;
+        
         $this->db->create(
             'dbuser',
             array(
                 'login_dbuser' => $this->db->quote($login),
-                'password_dbuser' => $this->db->quote(md5($password)),
+                'password_dbuser' => $this->db->quote($password),
                 'enabled_dbuser' => 1,
             )
         );

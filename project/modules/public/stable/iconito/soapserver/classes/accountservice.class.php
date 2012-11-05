@@ -12,15 +12,10 @@ class accountservice extends enicService
         parent::__construct();
     }
     
-    public function create(soapAccountModel $account)
-    {
-        
-    }
-    
     /*
-     * Creer l'account dans la table de liens
+     * insert in db account's datas
      */
-    public function creerAccount($account_id, $school_id, $director_id) {
+    public function create($account_id, $school_id, $director_id) {
         $this->db->create(
                 'module_account', array(
                     'id_account' => $this->db->quote($account_id),
@@ -32,6 +27,78 @@ class accountservice extends enicService
     }
     
     /*
+     * insert in db class account datas
+     */
+    public function createClass ($account_id, $class_id, $class)
+    {
+        $this->db->create(
+             'module_account_class', array(
+                 'id_account' => (int)$account_id,
+                 'id_class' => (int)$class_id,
+                 'id_class_EN' => (int)$class->classId,
+                 'creation_date' => 'CURDATE()',
+                 'validity_date' => $this->db->quote($class->validityDate)
+             )
+        );
+    }
+    
+    public function cityDatasProxy($soapCity)
+    {
+        $city = new stdClass();
+        $city->nom = $soapCity;
+        $city->nomCanonique = $soapCity;
+    }
+    
+    public function schoolDatasProxy(soapSchoolModel $soapSchool)
+    {
+        $school = new stdClass();
+        $school_data->nom = $soapSchool->name;
+        $school_data->rne = $soapSchool->rne;
+        $school_data->type = '';
+        $school->adresse = $this->addressDatasProxy($soapSchool->address);
+        
+        return $school;
+    }
+    
+    protected function addressDatasProxy(soapAddressModel $soapAddress)
+    {
+        $address = new stdClass();
+        $adresse->numRue = "";
+        $adresse->numSeq = "";
+        $adresse->adresse1 = $school_adress->address;
+        $adresse->adresse2 = $school_adress->additionalAddress ;
+        $adresse->codePostal = $school_adress->postalCode ;
+        $adresse->commune = $school_city ;
+        return $address;
+    }
+    
+    public function directorDatasProxy(soapDirectorModel $soapDirector)
+    {
+        $director = new stdClass();
+        $director->nom = $soapDirector->surname;
+        $director->nomjf = ""; //TODO
+        $director->prenom = $soapDirector->name;
+        $director->civilite = ($soapDirector->gender == 1) ? 'Monsieur' : 'Madame';
+        $director->idSexe = $soapDirector->gender;
+        $director->telDom = ""; //TODO
+        $director->telGsm = ""; //TODO
+        $director->telPro = $soapDirector->phone; //TODO
+        $director->mail = $soapDirector->mail;
+        return $director;
+    }
+    
+    public function classDatasProxy(soapClassModel $soapClass)
+    {
+        $classDatas = new stdClass();
+        $classDatas->nom = $soapClass->name;
+        $classDatas->anneeScolaire = $soapClass->year;
+        $classDatas->niveaux = (is_array($soapClass->level)) ? $soapClass->level : array($soapClass->level);
+        $classDatas->validityDate = $soapClass->validityDate; 
+        
+        return $classDatas;
+    }
+    
+    /*
      * Recupere l'id de l'ecole liée a l'account
      */
     public function getSchoolFromAccount ($account_id)
@@ -40,46 +107,34 @@ class accountservice extends enicService
     }
     
     /*
-     * Creer la classe dans la table de lien
-     */
-    public function creerAccountClass ($account_id, $class_id, $class)
-    {
-        
-        $this->db->create(
-             'module_account_class', array(
-                 'id_account' => $this->db->quote($account_id),
-                 'id_class' => $this->db->quote($class_id),
-                 'id_class_EN' => $this->db->quote($class->classId),
-                 'creation_date' => 'CURDATE()',
-                 'validity_date' => $this->db->quote($class->validityDate)
-             )
-        );
-        
-    }
-    
-    /*
      * Test d'existence dans la table de liens module_account
      */
-    public function existeAccount($account, $school, $director)
+    public function existsAccount($account, $school, $director)
     {
             return $this->db->query('
-            SELECT id 
-            FROM module_account 
-            WHERE id_account='.$account.' AND id_school='.$school.' AND id_director='.$director);
+                SELECT id 
+                FROM module_account 
+                WHERE id_account='.$account.' AND id_school='.$school.' AND id_director='.$director
+            );
     }
     
     /*
      * Validation de la classe
      */
-    public function validerClass($class)
+    public function validateClass($class)
     {
             $this->db->query('
-            UPDATE module_account_class
-            SET validity_date='.$this->db->quote($class->validityDate).'
-            WHERE id_account='.$this->db->quote($class->accountId).' AND id_class_EN='.$this->db->quote($class->classId));
-        
-        return 1;
+                UPDATE module_account_class
+                SET validity_date='.$this->db->quote($class->validityDate).'
+                WHERE id_account='.$this->db->quote($class->accountId).' AND id_class_EN='.$this->db->quote($class->classId)
+            );
     }
+    
+    public function makeDirectorLogin(soapDirectorModel $director)
+    {
+        return Kernel::createLogin(array('nom' => $director->name, 'prenom' => $director->surname, 'type' => 'USER_DIR'));
+    }
+    
 }
 
 ?>
