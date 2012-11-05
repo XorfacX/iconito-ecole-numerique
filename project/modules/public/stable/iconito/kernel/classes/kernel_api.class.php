@@ -113,6 +113,7 @@ class Kernel_API extends enicService
                 'id_ville'    => $this->db->quote($id_ville),
                 'nom'         => $this->db->quote($infos->nom),
                 'RNE'         => $this->db->quote($infos->rne),
+                'siret'       => $this->db->quote($infos->siret),
                 'type'        => $this->db->quote($infos->type), // Primaire, Elémentaire, Maternelle
                 'num_rue'     => $this->db->quote($infos->adresse->numRue),
                 'num_seq'     => $this->db->quote($infos->adresse->numSeq), // bis, ter

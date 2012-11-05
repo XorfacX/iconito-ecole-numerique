@@ -93,7 +93,8 @@ class accountservice extends enicService
         $classDatas->nom = $soapClass->name;
         $classDatas->anneeScolaire = $soapClass->year;
         $classDatas->niveaux = (is_array($soapClass->level)) ? $soapClass->level : array($soapClass->level);
-        $classDatas->validityDate = $soapClass->validityDate; 
+        $classDatas->validityDate = $soapClass->validityDate;
+        $classDatas->siret = $soapClass->siret;
         
         return $classDatas;
     }
