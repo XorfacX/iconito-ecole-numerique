@@ -86,7 +86,7 @@ class soapserverservice {
                 $school_data = new stdClass();
                 $school_data->nom = $school->name;
                 $school_data->rne = $school->rne;
-                $school_data->type = "";
+                $school_data->type = '';
                 $school_data->adresse = $adresse;
                 
                 $school_id = $this->kernelAPI->creerEcole($school_city_id, $school_data);
@@ -107,11 +107,11 @@ class soapserverservice {
                 $director_data->nom = $school_director->surname;
                 $director_data->nomjf = ""; //TODO
                 $director_data->prenom = $school_director->name;
-                $director_data->civilite = ""; //TODO
+                $director_data->civilite = ($school_director->gender == 1) ? 'Monsieur' : 'Madame';
                 $director_data->idSexe = $school_director->gender;
                 $director_data->telDom = ""; //TODO
                 $director_data->telGsm = ""; //TODO
-                $director_data->telPro = ""; //TODO
+                $director_data->telPro = $school_director->phone; //TODO
                 $director_data->mail = $school_director->mail;
                 
                 
@@ -121,7 +121,6 @@ class soapserverservice {
             /*
              * Creates the entry in the link table if it does not exists
              */
-            $id_account_linkTable;
             
             $id_account_linkTable = $this->accountService->existeAccount($account->id, $school_id, $school_director_id);
            
@@ -135,9 +134,11 @@ class soapserverservice {
             return $id_account_linkTable;
             
         } catch (accountException $e) {
-            throw new SoapFault('server', $e->getMessage);
+            throw new SoapFault('server', $e->getMessage());
         } catch (schoolException $e) {
-            throw new SoapFault('server', $e->getMessage);
+            throw new SoapFault('server', $e->getMessage());
+        } catch (Exception $e){
+            throw new SoapFault('server', $e->getMessage());
         }
     }
     
@@ -154,6 +155,7 @@ class soapserverservice {
         $class_data->nom = $class->name;
         $class_data->anneeScolaire = $class->year;
         $class_data->niveaux = array($class->level);
+        $class_data->validityDate = $class->validityDate;
          
         $class_school_id = $this->accountService->getSchoolFromAccount($class->accountId);
         
@@ -229,6 +231,12 @@ class soapDirectorModel {
      * @var string
      */
     public $mail;
+    
+    /**
+     * Director's phoneNumber
+     * @var string
+     */
+    public $phone;
 
 }
 

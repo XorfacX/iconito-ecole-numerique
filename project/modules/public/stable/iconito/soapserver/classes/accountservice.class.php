@@ -51,7 +51,7 @@ class accountservice extends enicService
                  'id_class' => $this->db->quote($class_id),
                  'id_class_EN' => $this->db->quote($class->classId),
                  'creation_date' => 'CURDATE()',
-                 'validity_date' => 'ADDDATE(CURDATE(), 60)'
+                 'validity_date' => $this->db->quote($class->validityDate)
              )
         );
         
