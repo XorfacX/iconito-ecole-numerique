@@ -23,9 +23,9 @@ CREATE TABLE `module_account` (
 
 CREATE TABLE `module_account_class` (
   `id_account` int(11) unsigned NOT NULL,
-  `id_class` int(11) unsigned NOT NULL,
+  `id_class_SUB` int(11) unsigned NOT NULL,
   `id_class_EN` int(11) unsigned NOT NULL,
   `creation_date` date NOT NULL,
   `validity_date` date NOT NULL,
-  KEY `id_account` (`id_account`,`id_class`,`id_class_EN`)
+  KEY `id_account` (`id_account`,`id_class_SUB`,`id_class_EN`)
 );

@@ -203,8 +203,7 @@ class Kernel_API extends enicService
 
         $id_classe = $this->db->lastId;
         
-        
-        foreach( $infos->niveaux AS $niveau )
+        foreach( $infos->niveaux as $niveau )
         {
             $this->db->create(
                 'kernel_bu_ecole_classe_niveau',

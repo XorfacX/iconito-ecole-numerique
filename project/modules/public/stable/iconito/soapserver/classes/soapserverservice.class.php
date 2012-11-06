@@ -45,9 +45,6 @@ class soapserverservice
             /*
              * School process
              */
-            $schoolId = $this->kernelAPI->existeEcole($account->school->name, $account->school->address->city);
-
-            if (empty($schoolId))
                 $schoolId = $this->kernelAPI->creerEcole(
                         $schoolCityId, $this->accountService->schoolDatasProxy($account->school)
                 );
@@ -55,19 +52,15 @@ class soapserverservice
             /*
              * Director process
              */
-            $directorId = $this->kernelAPI->existeDirecteur($account->school->director->name, $account->school->director->surname);
-            
-            if (empty($directorId)) {
-                $directorId = $this->kernelAPI->creerDirecteur(
-                        $schoolId, $this->accountService->directorDatasProxy($account->school->director)
-                );
+            $directorId = $this->kernelAPI->creerDirecteur(
+                    $schoolId, $this->accountService->directorDatasProxy($account->school->director)
+            );
 
-                $directorLogin = $this->accountService->makeDirectorLogin($account->school->director);
+            $directorLogin = $this->accountService->makeDirectorLogin($account->school->director);
 
-                $this->kernelAPI->creerLogin(
-                        'USER_ENS', $directorId, $directorLogin, $account->school->director->password, false
-                );
-            }
+            $this->kernelAPI->creerLogin(
+                    'USER_ENS', $directorId, $directorLogin, $account->school->director->password, false
+            );
 
             /*
              * Account process
@@ -80,6 +73,7 @@ class soapserverservice
             $return = new returnSoapAccount;
             $return->returnSoapDirector->login = $directorLogin;
             $return->returnSoapDirector->id = $directorId;
+            $return->schoolId = $schoolId;
             return $return;
         } catch (Exception $e) {
             throw new SoapFault('server', $e->getMessage());
@@ -314,6 +308,11 @@ class returnSoapAccount
      * @var returnSoapDirector
      */
     public $returnSoapDirector;
+
+    /**
+     * @var int
+     */
+    public $schoolId;
 
     public function __construct()
     {

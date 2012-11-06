@@ -39,8 +39,8 @@ class accountservice extends enicService
                 'module_account_class', 
                 array(
                     'id_account' => (int) $account_id,
-                    'id_class' => (int) $class_id,
-                    'id_class_EN' => (int) $class->classId,
+                    'id_class_SUB' => (int) $class->classId,
+                    'id_class_EN' => (int) $class_id,
                     'creation_date' => 'CURDATE()',
                     'validity_date' => $this->db->quote($class->validityDate)
                 )
@@ -105,10 +105,14 @@ class accountservice extends enicService
 
         return $classDatas;
     }
+	
+	public function getDirectorLogin($directorId)
+	{
+	}
 
     public function makeClassLevels(soapClassModel $soapClass)
     {
-        $soapLevels = (is_array($soapClass->level)) ? $soapClass->level : array($soapClass->level);
+		$soapLevels = (is_array($soapClass->level->item)) ? $soapClass->level->item : array($soapClass->level->item);
         foreach ($soapLevels as $soapLevel) {
             $level = new stdClass();
             $level->niveau = $soapLevel;
@@ -136,7 +140,7 @@ class accountservice extends enicService
             SELECT id 
             FROM module_account 
             WHERE id_account=' . $account . ' AND id_school=' . $school . ' AND id_director=' . $director
-        );
+        )->toInt();
     }
 
     /*
@@ -147,7 +151,7 @@ class accountservice extends enicService
         $this->db->query('
             UPDATE module_account_class
             SET validity_date=' . $this->db->quote($class->validityDate) . '
-            WHERE id_account=' . $this->db->quote($class->accountId) . ' AND id_class_EN=' . $this->db->quote($class->classId)
+            WHERE id_account=' . $this->db->quote($class->accountId) . ' AND id_class_SUB' . $this->db->quote($class->classId)
         );
     }
 
