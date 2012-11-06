@@ -2962,5 +2962,20 @@ if(DEBUG) {
         return CopixSession::get('flash|'.$type);
     }
 
+    /**
+     * Récupération de la date de validité d'une classe
+     *
+     * @author Frédéric Mossmann <fmossmann@cap-tic.fr>
+     * @since 2012/11/06
+     * @param integer $class_id : Identifiant EcoleNumérique de la classe
+     * @return integer Timestamp de la date de validité
+     */
+    public function getValidityDateForClass( $class_id )
+    {
+        $res=false;
+        $sql = "SELECT UNIX_TIMESTAMP(validity_date) AS validity_date FROM module_account_class WHERE id_class_EN=:id_class_EN";
+        if ($ar = _doQuery ($sql, array(':id_class_EN'=>$class_id))) $res = $ar[0]->validity_date;
+        return $res;
+    }
 
 }

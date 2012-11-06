@@ -9,6 +9,7 @@
 	<div class="dashpanel {$node_type|lower}">
 		<h1 class="title">
 			<span>{if $node_data.type eq "USER_ELE"}{$node_data.prenom|escape} {$node_data.nom|escape} {if !empty($node_data.nom_classe)}({$node_data.nom_classe|escape}){/if}{else}{$node_data.nom|escape}{/if}</span>
+			{if $use_class_validity}{if $node_data.validity_date>0}<span class="validitydate">{i18n key="kernel|kernel.expires_at" date=$node_data.validity_date}</span>{/if}{/if}
 		</h1>
 		<div class="content">
                     {$node_data.content}

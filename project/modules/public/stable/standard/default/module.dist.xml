@@ -71,6 +71,8 @@
 			<parameter name="can_pref_assistance"          caption="Activation du module Assistance"                       default="1" />
 			<parameter name="can_module_ressources"        caption="Autorise le module Ressouces"                          default="1" />
 			<parameter name="can_module_rssfeed"           caption="Autorise le module Flux RSS agrégé"                    default="1" />
+			
+			<parameter name="use_class_validity"           caption="Utilise la date de validité des classes"               default="0" />
 		</group>
 	</parameters>
 </moduledefinition>
