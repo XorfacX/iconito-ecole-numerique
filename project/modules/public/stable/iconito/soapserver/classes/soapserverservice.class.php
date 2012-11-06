@@ -54,7 +54,7 @@ class soapserverservice {
             /*
              * Director process
              */
-            $directorId = $this->kernelAPI->existeDirecteur($account->school->director->surname, $account->school->director->name);
+            $directorId = $this->kernelAPI->existeDirecteur($account->school->director->name, $account->school->director->surname);
             
             if(empty($directorId)){
                 $directorId = $this->kernelAPI->creerDirecteur(
