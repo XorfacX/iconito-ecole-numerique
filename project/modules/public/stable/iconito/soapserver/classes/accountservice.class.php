@@ -7,79 +7,84 @@
  */
 class accountservice extends enicService
 {
+
     public function __construct()
     {
         parent::__construct();
     }
-    
+
     /*
      * insert in db account's datas
      */
-    public function create($account_id, $school_id, $director_id) {
+
+    public function create($account_id, $school_id, $director_id)
+    {
         $this->db->create(
                 'module_account', array(
-                    'id_account' => $this->db->quote($account_id),
-                    'id_school' => $this->db->quote($school_id),
-                    'id_director' => $this->db->quote($director_id)
+                'id_account' => $this->db->quote($account_id),
+                'id_school' => $this->db->quote($school_id),
+                'id_director' => $this->db->quote($director_id)
                 )
         );
         return 1;
     }
-    
+
     /*
      * insert in db class account datas
      */
-    public function createClass ($account_id, $class_id, $class)
+
+    public function createClass($account_id, $class_id, $class)
     {
         $this->db->create(
-             'module_account_class', array(
-                 'id_account' => (int)$account_id,
-                 'id_class' => (int)$class_id,
-                 'id_class_EN' => (int)$class->classId,
-                 'creation_date' => 'CURDATE()',
-                 'validity_date' => $this->db->quote($class->validityDate)
-             )
+                'module_account_class', 
+                array(
+                    'id_account' => (int) $account_id,
+                    'id_class' => (int) $class_id,
+                    'id_class_EN' => (int) $class->classId,
+                    'creation_date' => 'CURDATE()',
+                    'validity_date' => $this->db->quote($class->validityDate)
+                )
         );
     }
-    
+
     public function cityDatasProxy($soapCity)
     {
         $city = new stdClass();
         $city->nom = utf8_decode($soapCity);
         $city->nomCanonique = Kernel::createCanon($city->nom);
 
-		return $city;
+        return $city;
     }
-    
+
     public function schoolDatasProxy(soapSchoolModel $soapSchool)
     {
         $school = new stdClass();
         $school->nom = utf8_decode($soapSchool->name);
         $school->rne = $soapSchool->rne;
         $school->type = utf8_decode('Elémentaire');
-		$school->siret = $soapSchool->siret;
+        $school->siret = $soapSchool->siret;
         $school->adresse = $this->addressDatasProxy($soapSchool->address);
-        
+
         return $school;
     }
-    
+
     protected function addressDatasProxy(soapAddressModel $soapAddress)
     {
         $address = new stdClass();
         $address->numRue = "";
         $address->numSeq = "";
         $address->adresse1 = utf8_decode($soapAddress->address);
-        $address->adresse2 = utf8_decode($soapAddress->additionalAddress) ;
-        $address->codePostal = $soapAddress->postalCode ;
+        $address->adresse2 = utf8_decode($soapAddress->additionalAddress);
+        $address->codePostal = $soapAddress->postalCode;
         $address->commune = utf8_decode($soapAddress->city);
         return $address;
     }
-    
+
     public function directorDatasProxy(soapDirectorModel $soapDirector)
     {
         $director = new stdClass();
         $director->nom = utf8_decode($soapDirector->name);
-        $director->nomjf = ""; //TODO
+        $director->nomJf = ""; //TODO
         $director->prenom = utf8_decode($soapDirector->surname);
         $director->civilite = ($soapDirector->gender == 1) ? 'Monsieur' : 'Madame';
         $director->idSexe = $soapDirector->gender;
@@ -89,7 +94,7 @@ class accountservice extends enicService
         $director->mail = $soapDirector->mail;
         return $director;
     }
-    
+
     public function classDatasProxy(soapClassModel $soapClass)
     {
         $classDatas = new stdClass();
@@ -97,14 +102,14 @@ class accountservice extends enicService
         $classDatas->anneeScolaire = $soapClass->year;
         $classDatas->niveaux = $this->makeClassLevels($soapClass);
         $classDatas->validityDate = $soapClass->validityDate;
-        
+
         return $classDatas;
     }
-    
+
     public function makeClassLevels(soapClassModel $soapClass)
     {
         $soapLevels = (is_array($soapClass->level)) ? $soapClass->level : array($soapClass->level);
-        foreach($soapLevels as $soapLevel){
+        foreach ($soapLevels as $soapLevel) {
             $level = new stdClass();
             $level->niveau = $soapLevel;
             $level->type = $soapClass->type;
@@ -113,44 +118,44 @@ class accountservice extends enicService
         unset($level);
         return $levels;
     }
-    
+
     /*
      * Recupere l'id de l'ecole liée a l'account
      */
-    public function getSchoolFromAccount ($account_id)
+    public function getSchoolFromAccount($account_id)
     {
-        return $this->db->query('SELECT id_school FROM module_account WHERE id_account='.$this->db->quote($account_id))->toInt ();
+        return $this->db->query('SELECT id_school FROM module_account WHERE id_account=' . $this->db->quote($account_id))->toInt();
     }
-    
+
     /*
      * Test d'existence dans la table de liens module_account
      */
     public function existsAccount($account, $school, $director)
     {
-            return $this->db->query('
-                SELECT id 
-                FROM module_account 
-                WHERE id_account='.$account.' AND id_school='.$school.' AND id_director='.$director
-            );
+        return $this->db->query('
+            SELECT id 
+            FROM module_account 
+            WHERE id_account=' . $account . ' AND id_school=' . $school . ' AND id_director=' . $director
+        );
     }
-    
+
     /*
      * Validation de la classe
      */
     public function validateClass($class)
     {
-            $this->db->query('
-                UPDATE module_account_class
-                SET validity_date='.$this->db->quote($class->validityDate).'
-                WHERE id_account='.$this->db->quote($class->accountId).' AND id_class_EN='.$this->db->quote($class->classId)
-            );
+        $this->db->query('
+            UPDATE module_account_class
+            SET validity_date=' . $this->db->quote($class->validityDate) . '
+            WHERE id_account=' . $this->db->quote($class->accountId) . ' AND id_class_EN=' . $this->db->quote($class->classId)
+        );
     }
-    
+
     public function makeDirectorLogin(soapDirectorModel $director)
     {
         return Kernel::createLogin(array('nom' => $director->name, 'prenom' => $director->surname, 'type' => 'USER_ENS'));
     }
-    
+
 }
 
 ?>
