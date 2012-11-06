@@ -45,16 +45,19 @@ class accountservice extends enicService
     public function cityDatasProxy($soapCity)
     {
         $city = new stdClass();
-        $city->nom = $soapCity;
-        $city->nomCanonique = $soapCity;
+        $city->nom = utf8_decode($soapCity);
+        $city->nomCanonique = Kernel::createCanon($city->nom);
+
+		return $city;
     }
     
     public function schoolDatasProxy(soapSchoolModel $soapSchool)
     {
         $school = new stdClass();
-        $school_data->nom = $soapSchool->name;
-        $school_data->rne = $soapSchool->rne;
-        $school_data->type = '';
+        $school->nom = utf8_decode($soapSchool->name);
+        $school->rne = $soapSchool->rne;
+        $school->type = utf8_decode('Elémentaire');
+		$school->siret = $soapSchool->siret;
         $school->adresse = $this->addressDatasProxy($soapSchool->address);
         
         return $school;
@@ -63,21 +66,21 @@ class accountservice extends enicService
     protected function addressDatasProxy(soapAddressModel $soapAddress)
     {
         $address = new stdClass();
-        $adresse->numRue = "";
-        $adresse->numSeq = "";
-        $adresse->adresse1 = $school_adress->address;
-        $adresse->adresse2 = $school_adress->additionalAddress ;
-        $adresse->codePostal = $school_adress->postalCode ;
-        $adresse->commune = $school_city ;
+        $address->numRue = "";
+        $address->numSeq = "";
+        $address->adresse1 = utf8_decode($soapAddress->address);
+        $address->adresse2 = utf8_decode($soapAddress->additionalAddress) ;
+        $address->codePostal = $soapAddress->postalCode ;
+        $address->commune = utf8_decode($soapAddress->city);
         return $address;
     }
     
     public function directorDatasProxy(soapDirectorModel $soapDirector)
     {
         $director = new stdClass();
-        $director->nom = $soapDirector->surname;
+        $director->nom = utf8_decode($soapDirector->name);
         $director->nomjf = ""; //TODO
-        $director->prenom = $soapDirector->name;
+        $director->prenom = utf8_decode($soapDirector->surname);
         $director->civilite = ($soapDirector->gender == 1) ? 'Monsieur' : 'Madame';
         $director->idSexe = $soapDirector->gender;
         $director->telDom = ""; //TODO
@@ -90,11 +93,10 @@ class accountservice extends enicService
     public function classDatasProxy(soapClassModel $soapClass)
     {
         $classDatas = new stdClass();
-        $classDatas->nom = $soapClass->name;
+        $classDatas->nom = utf8_decode($soapClass->name);
         $classDatas->anneeScolaire = $soapClass->year;
         $classDatas->niveaux = (is_array($soapClass->level)) ? $soapClass->level : array($soapClass->level);
         $classDatas->validityDate = $soapClass->validityDate;
-        $classDatas->siret = $soapClass->siret;
         
         return $classDatas;
     }
@@ -133,7 +135,7 @@ class accountservice extends enicService
     
     public function makeDirectorLogin(soapDirectorModel $director)
     {
-        return Kernel::createLogin(array('nom' => $director->name, 'prenom' => $director->surname, 'type' => 'USER_DIR'));
+        return Kernel::createLogin(array('nom' => $director->name, 'prenom' => $director->surname, 'type' => 'USER_ENS'));
     }
     
 }

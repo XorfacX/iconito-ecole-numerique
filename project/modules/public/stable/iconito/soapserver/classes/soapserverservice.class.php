@@ -32,25 +32,25 @@ class soapserverservice {
             /*
              * City process
              */
-            $schoolCityId = $this->kernelAPI->existeVille($this->school->address->city);
+            $schoolCityId = $this->kernelAPI->existeVille($account->school->address->city);
             
             if(empty($schoolCityId))
                 $schoolCityId = $this->kernelAPI->creerVille(
                     1, 
                     $this->accountService->cityDatasProxy($account->school->address->city)
                 );
-                        
+				
             /*
              * School process
              */
             $schoolId = $this->kernelAPI->existeEcole($account->school->name, $account->school->address->city);
-            
+
             if(empty($schoolId))
                 $schoolId = $this->kernelAPI->creerEcole(
-                    $this->accountService->schoolDatasProxy($account->school),
-                    $schoolCityId
+                    $schoolCityId,
+                    $this->accountService->schoolDatasProxy($account->school)
                 );
-            
+
             /*
              * Director process
              */
@@ -65,14 +65,14 @@ class soapserverservice {
                 $directorLogin = $this->accountService->makeDirectorLogin($account->school->director);
                 
                 $this->kernelAPI->creerLogin(
-                        'USER_DIR', 
+                        'USER_ENS', 
                         $directorId, 
                         $directorLogin,
                         $account->school->director->password,
                         false
                 );
             }
-           
+
             /*
              * Account process
              */
@@ -84,7 +84,6 @@ class soapserverservice {
             $return = new returnSoapAccount;
             $return->returnSoapDirector->login = $directorLogin;
             $return->returnSoapDirector->id = $directorId;
-            
             return $return;
             
         }catch (Exception $e){
@@ -100,15 +99,18 @@ class soapserverservice {
      * @return int
      */
     public function createClass(soapClassModel $class) {
-
-        $classId = $this->kernelAPI->creerClasse(
-            $this->accountService->getSchoolFromAccount($class->accountId), 
-            $this->accountService->classDatasProxy($class)
-        );
+        try{
+            $classId = $this->kernelAPI->creerClasse(
+                $this->accountService->getSchoolFromAccount($class->accountId), 
+                $this->accountService->classDatasProxy($class)
+            );
          
-        $this->accountService->createClass($class->accountId, $class_id, $class);
+            $this->accountService->createClass($class->accountId, $classId, $class);
         
-        return $classId;
+            return $classId;
+		}catch(Exception $e){
+			throw new SoapFault('server', $e->getMessage());
+		}
     }
 
     /**
