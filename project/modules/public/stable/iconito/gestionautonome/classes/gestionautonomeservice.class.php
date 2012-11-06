@@ -39,14 +39,12 @@ class GestionAutonomeService
         // Récupération de l'affectation de l'élève à la classe pour passage du flag current à 0
         $studentAssignmentDAO = _ioDAO('kernel|kernel_bu_ele_affect');
         if ($studentAssignment = $studentAssignmentDAO->getByStudentAndClass($studentId, $classroom->id, 1)) {
-
             $studentAssignment->affect_current = 0;
             $studentAssignmentDAO->update($studentAssignment);
         }
 
         // Si l'utilisateur n'a pas d'autres affectations dans cette école : passage du flag inscr_current à 0
         if (!$studentAssignmentDAO->countCurrentAffectInSchool($studentId, $classroom->ecole) > 0) {
-
             $studentRegistrationDAO = _ioDAO('kernel|kernel_bu_eleve_inscription');
             $studentRegistration = $studentRegistrationDAO->getByStudentAndSchool($studentId, $classroom->ecole);
 
@@ -68,7 +66,6 @@ class GestionAutonomeService
         // Récupération des affectations de l'élève pour passage du flag current à 0
         $studentAssignments = $studentAssignmentDAO->getByStudent($studentId, $grade);
         foreach ($studentAssignments as $studentAssignment) {
-
             self::removeStudentAssignment($studentId, $studentAssignment->affect_classe);
         }
     }
@@ -85,7 +82,6 @@ class GestionAutonomeService
         $personEntityDAO = _ioDAO('kernel|kernel_bu_personnel_entite');
 
         if ($personEntity = $personEntityDAO->getByIdReferenceAndType($personId, $reference, $type_ref)) {
-
             // Si on se trouve sur une ecole et que la personne (directeur) a une affectation dans une des classes
             if ($type_ref == 'ECOLE'
                 && $personEntityDAO->hasTeacherRoleInSchool($personId, $reference, true)
@@ -96,7 +92,6 @@ class GestionAutonomeService
 
                 return 'principalRemoved';
             } else {
-
                 // Suppression de l'affectation
                 $personEntityDAO->delete($personId, $reference, $type_ref);
 
@@ -120,7 +115,6 @@ class GestionAutonomeService
         $studentRegistrationDAO = _ioDAO('kernel|kernel_bu_eleve_inscription');
 
         if (!$studentRegistration = $studentRegistrationDAO->getByStudentAndSchool($studentId, $classroom->ecole)) {
-
             $studentRegistration = _record('kernel|kernel_bu_eleve_inscription');
 
             $studentRegistration->eleve = $studentId;
@@ -144,7 +138,6 @@ class GestionAutonomeService
 
         // Admission de l'élève dans l'école
         if (!$studentAdmission = $studentAdmissionDAO->getByStudentAndSchool($studentId, $classroom->ecole, DAOKernel_bu_eleve_admission::STATE_NEW)) {
-
             $studentAdmission = _record('kernel|kernel_bu_eleve_admission');
 
             $studentAdmission->admission_eleve = $studentId;
@@ -161,7 +154,6 @@ class GestionAutonomeService
         }
 
         if ($studentAssignment = $studentAssignmentDAO->getByStudentAndClass($studentId, $classroom->id, 1)) {
-
             $studentAssignment->affect_current = 0;
             $studentAssignmentDAO->update($studentAssignment);
         }
@@ -190,7 +182,6 @@ class GestionAutonomeService
     {
         $personEntityDAO = _ioDAO('kernel|kernel_bu_personnel_entite');
         if (!$personEntityDAO->getByIdReferenceAndType($personId, $classroom->id, 'CLASSE')) {
-
             // Création de l'association kernel_bu_personnel_entite
             $newPersonEntity = _record('kernel|kernel_bu_personnel_entite');
 
@@ -203,7 +194,6 @@ class GestionAutonomeService
         }
 
         if (!$personEntityDAO->getByIdReferenceAndType($personId, $classroom->ecole, 'ECOLE')) {
-
             // Création de l'association kernel_bu_personnel_entite ecole (pour les enseignants)
             $newPersonEntity = _record('kernel|kernel_bu_personnel_entite');
 
@@ -215,5 +205,63 @@ class GestionAutonomeService
             $personEntityDAO->insert($newPersonEntity);
         }
     }
-
+    
+    
+    /**
+     * Retourne vrai s'il y a une limite d'enseignants par classe
+     *
+     * @return boolean
+     */
+    public static function hasTeachersLimitByClassroom()
+    {
+        return CopixConfig::exists('gestionautonome|teachersLimitByClassroom') && CopixConfig::get('gestionautonome|teachersLimitByClassroom') > 0;
+    }
+    
+    /**
+     * Retourne vrai si la limite d'enseignants par classe est atteinte
+     *
+     * @param int $id ID de la classe
+     *
+     * @return boolean
+     */
+    public static function isTeachersLimitByClassroomReached($id)
+    {
+       if (!self::hasTeachersLimitByClassroom()) {
+           return false;
+       }
+       
+       $personnelDAO = _ioDAO('kernel|kernel_bu_personnel');
+       $teachers = $personnelDAO->findTeachersByClassroomId($id);
+       
+       return count($teachers) >= CopixConfig::get('gestionautonome|teachersLimitByClassroom');
+    }
+    
+    /**
+     * Retourne vrai s'il y a une limite d'élèves par classe
+     *
+     * @return boolean
+     */
+    public static function hasStudentsLimitByClassroom()
+    {
+        return CopixConfig::exists('gestionautonome|studentsLimitByClassroom') && CopixConfig::get('gestionautonome|studentsLimitByClassroom') > 0;
+    }
+    
+    /**
+     * Retourne vrai si la limite d'élèves par classe est atteinte
+     *
+     * @param int $id ID de la classe
+     *
+     * @return boolean
+     */
+    public static function isStudentsLimitByClassroomReached($id)
+    {
+       if (!self::hasTeachersLimitByClassroom()) {
+           return false;
+       }
+       
+       $studentDAO = _ioDAO('kernel|kernel_bu_ele');
+       $students = $studentDAO->getStudentsByClass($id);
+              
+       return count($students) >= CopixConfig::get('gestionautonome|studentsLimitByClassroom');
+    }
 }
