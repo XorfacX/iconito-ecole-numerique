@@ -151,7 +151,7 @@ class accountservice extends enicService
         $this->db->query('
             UPDATE module_account_class
             SET validity_date=' . $this->db->quote($class->validityDate) . '
-            WHERE id_account=' . $this->db->quote($class->accountId) . ' AND id_class_SUB' . $this->db->quote($class->classId)
+            WHERE id_account=' . $this->db->quote($class->accountId) . ' AND id_class_SUB =' . $this->db->quote($class->classId)
         );
     }
 

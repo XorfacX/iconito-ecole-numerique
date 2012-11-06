@@ -110,9 +110,13 @@ class soapserverservice
      */
     public function validateClass(soapClassModel $class)
     {
-        $this->accountService->validateClass($class);
-
-        return 1;
+        try {
+            $this->accountService->validateClass($class);
+            return 1;
+        } catch (Exception $e) {
+            throw new SoapFault('server', $e->getMessage());
+        }
+        
     }
 
 }
