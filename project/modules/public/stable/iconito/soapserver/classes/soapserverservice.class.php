@@ -10,9 +10,11 @@
  *
  * @author alemaire
  */
-class soapserverservice {
+class soapserverservice
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->accountService = enic::get('helpers')->service('soapserver|accountservice');
         $this->kernelAPI = enic::get('helpers')->service('kernel|kernel_api');
     }
@@ -26,29 +28,28 @@ class soapserverservice {
      * @param soapAccountModel $account
      * @return returnSoapAccount
      */
-    public function createAccount(soapAccountModel $account) {
+    public function createAccount(soapAccountModel $account)
+    {
         try {
-            
+
             /*
              * City process
              */
             $schoolCityId = $this->kernelAPI->existeVille($account->school->address->city);
-            
-            if(empty($schoolCityId))
+
+            if (empty($schoolCityId))
                 $schoolCityId = $this->kernelAPI->creerVille(
-                    1, 
-                    $this->accountService->cityDatasProxy($account->school->address->city)
+                        1, $this->accountService->cityDatasProxy($account->school->address->city)
                 );
-				
+
             /*
              * School process
              */
             $schoolId = $this->kernelAPI->existeEcole($account->school->name, $account->school->address->city);
 
-            if(empty($schoolId))
+            if (empty($schoolId))
                 $schoolId = $this->kernelAPI->creerEcole(
-                    $schoolCityId,
-                    $this->accountService->schoolDatasProxy($account->school)
+                        $schoolCityId, $this->accountService->schoolDatasProxy($account->school)
                 );
 
             /*
@@ -56,20 +57,15 @@ class soapserverservice {
              */
             $directorId = $this->kernelAPI->existeDirecteur($account->school->director->name, $account->school->director->surname);
             
-            if(empty($directorId)){
+            if (empty($directorId)) {
                 $directorId = $this->kernelAPI->creerDirecteur(
-                    $schoolId, 
-                    $this->accountService->directorDatasProxy($account->school->director)
+                        $schoolId, $this->accountService->directorDatasProxy($account->school->director)
                 );
-                
+
                 $directorLogin = $this->accountService->makeDirectorLogin($account->school->director);
-                
+
                 $this->kernelAPI->creerLogin(
-                        'USER_ENS', 
-                        $directorId, 
-                        $directorLogin,
-                        $account->school->director->password,
-                        false
+                        'USER_ENS', $directorId, $directorLogin, $account->school->director->password, false
                 );
             }
 
@@ -77,20 +73,19 @@ class soapserverservice {
              * Account process
              */
             $idAccount = $this->accountService->existsAccount($account->id, $schoolId, $directorId);
-            
-            if(empty($idAccount))
+
+            if (empty($idAccount))
                 $idAccount = $this->accountService->create($account->id, $schoolId, $directorId);
-            
+
             $return = new returnSoapAccount;
             $return->returnSoapDirector->login = $directorLogin;
             $return->returnSoapDirector->id = $directorId;
             return $return;
-            
-        }catch (Exception $e){
+        } catch (Exception $e) {
             throw new SoapFault('server', $e->getMessage());
         }
     }
-    
+
     /**
      * Create :
      *  Class with trial period
@@ -98,19 +93,19 @@ class soapserverservice {
      * @param soapClassModel $class
      * @return int
      */
-    public function createClass(soapClassModel $class) {
-        try{
+    public function createClass(soapClassModel $class)
+    {
+        try {
             $classId = $this->kernelAPI->creerClasse(
-                $this->accountService->getSchoolFromAccount($class->accountId), 
-                $this->accountService->classDatasProxy($class)
+                    $this->accountService->getSchoolFromAccount($class->accountId), $this->accountService->classDatasProxy($class)
             );
-         
+
             $this->accountService->createClass($class->accountId, $classId, $class);
-        
+
             return $classId;
-		}catch(Exception $e){
-			throw new SoapFault('server', $e->getMessage());
-		}
+        } catch (Exception $e) {
+            throw new SoapFault('server', $e->getMessage());
+        }
     }
 
     /**
@@ -119,16 +114,17 @@ class soapserverservice {
      * @param soapClassModel $class
      * @return int
      */
-    public function validateClass(soapClassModel $class) 
+    public function validateClass(soapClassModel $class)
     {
         $this->accountService->validateClass($class);
-        
+
         return 1;
     }
 
 }
 
-class soapAccountModel {
+class soapAccountModel
+{
 
     /**
      * Account's ID
@@ -145,13 +141,15 @@ class soapAccountModel {
     /**
      * @return void
      */
-    public function __construct() {
+    public function __construct()
+    {
         $this->school = new soapSchoolModel();
     }
 
 }
 
-class soapDirectorModel {
+class soapDirectorModel
+{
 
     /**
      * Director's name
@@ -177,13 +175,13 @@ class soapDirectorModel {
      * @var string
      */
     public $mail;
-    
+
     /**
      * Director's phoneNumber
      * @var string
      */
     public $phone;
-    
+
     /**
      * Director's password (md5 string)
      * @var string
@@ -192,14 +190,15 @@ class soapDirectorModel {
 
 }
 
-class soapSchoolModel {
+class soapSchoolModel
+{
 
     /**
      * School's name
      * @var string
      */
     public $name;
-    
+
     /**
      * School's RNE
      * @var string
@@ -217,21 +216,23 @@ class soapSchoolModel {
      * @var soapDirectorModel
      */
     public $director;
-    
+
     /**
      * School's siret number
      * @var string
      */
     public $siret;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->address = new soapAddressModel();
         $this->director = new soapDirectorModel();
     }
 
 }
 
-class soapAddressModel {
+class soapAddressModel
+{
 
     /**
      * Address default line
@@ -259,7 +260,8 @@ class soapAddressModel {
 
 }
 
-class soapClassModel {
+class soapClassModel
+{
 
     /**
      * Class' name
@@ -278,13 +280,13 @@ class soapClassModel {
      * @var int
      */
     public $classId;
-    
+
     /**
      * Class' year
      * @var int
      */
     public $year;
-    
+
     /**
      * class' validity date
      * @var string
@@ -307,30 +309,34 @@ class soapClassModel {
 
 class returnSoapAccount
 {
+
     /**
      * @var returnSoapDirector
      */
     public $returnSoapDirector;
-    
+
     public function __construct()
     {
         $this->returnSoapDirector = new returnSoapDirector();
     }
+
 }
 
 class returnSoapDirector
 {
+
     /**
      * Director's Login
      * @var string 
      */
     public $login;
-    
+
     /**
      * Director's Id
      * @var int
      */
     public $id;
+
 }
 
 ?>
