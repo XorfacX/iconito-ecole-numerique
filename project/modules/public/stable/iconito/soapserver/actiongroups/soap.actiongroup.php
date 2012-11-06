@@ -103,7 +103,7 @@
             return _arNone();
         }
         
-        public function processMyTest()
+        public function processLocalTest()
         {
             $this->myservice = enic::get('helpers')->service('soapserver|soapserverservice');
             
@@ -122,6 +122,8 @@
             $directeur->surname ="leCompte";
             $directeur->mail = "lecompte@caramail.fr";
             $directeur->gender = 1;
+            $directeur->password = md5(123456);
+            $directeur->phone = '0123456742';
             
             $adress = new soapAddressModel();
             $adress->address ="4 rue des cochons";
@@ -133,10 +135,13 @@
             $school->name = "DesChamps";
             $school->address = $adress;
             $school->director = $directeur;
+            $school->rne = 123456789;
+            $school->siret = '1234567898';
             
             $account = new soapAccountModel();
             $account->id = 1;
             $account->school = $school;
+            var_dump($this->myservice->accountService->create(1,2,3));
             try{
             $j = $this->myservice->createAccount($account);
             $i = $this->myservice->createClass($class);

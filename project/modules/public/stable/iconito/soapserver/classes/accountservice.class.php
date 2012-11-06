@@ -95,10 +95,23 @@ class accountservice extends enicService
         $classDatas = new stdClass();
         $classDatas->nom = utf8_decode($soapClass->name);
         $classDatas->anneeScolaire = $soapClass->year;
-        $classDatas->niveaux = (is_array($soapClass->level)) ? $soapClass->level : array($soapClass->level);
+        $classDatas->niveaux = $this->makeClassLevels($soapClass);
         $classDatas->validityDate = $soapClass->validityDate;
         
         return $classDatas;
+    }
+    
+    public function makeClassLevels(soapClassModel $soapClass)
+    {
+        $soapLevels = (is_array($soapClass->level)) ? $soapClass->level : array($soapClass->level);
+        foreach($soapLevels as $soapLevel){
+            $level = new stdClass();
+            $level->niveau = $soapLevel;
+            $level->type = $soapClass->type;
+            $levels[] = $level;
+        }
+        unset($level);
+        return $levels;
     }
     
     /*
