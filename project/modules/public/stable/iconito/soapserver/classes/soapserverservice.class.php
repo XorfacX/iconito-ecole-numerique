@@ -35,7 +35,7 @@ class soapserverservice
             /*
              * City process
              */
-            $schoolCityId = $this->kernelAPI->existeVille($account->school->address->city);
+            $schoolCityId = $this->kernelAPI->existeVille(utf8_decode($account->school->address->city));
 
             if (empty($schoolCityId))
                 $schoolCityId = $this->kernelAPI->creerVille(
