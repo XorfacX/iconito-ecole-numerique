@@ -42,7 +42,7 @@
             
         }
         
-        public function processTest()
+        private function processTest()
         {
             
             $client = new Zend_Soap_Client($this->url('soapserver|soap|WSDL'));
@@ -103,7 +103,7 @@
             return _arNone();
         }
         
-        public function processLocalTest()
+        private function processLocalTest()
         {
             $this->myservice = enic::get('helpers')->service('soapserver|soapserverservice');
             
