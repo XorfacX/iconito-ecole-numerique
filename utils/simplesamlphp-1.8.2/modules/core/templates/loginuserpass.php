@@ -36,7 +36,7 @@ if ($this->data['errorcode'] !== NULL) {
 if ($this->data['forceUsername']) {
 	echo '<strong style="font-size: medium">' . htmlspecialchars($this->data['username']) . '</strong>';
 } else {
-	echo '<input type="text" id="username" tabindex="1" name="username" value="' . htmlspecialchars($this->data['username']) . '" />';
+	echo '<input type="text" id="username" tabindex="1" name="username" value="' . htmlspecialchars($this->data['username']) . '" autocomplete="off" />';
 }
 ?>
 			</td>
@@ -46,7 +46,7 @@ if ($this->data['forceUsername']) {
 		</tr>
 		<tr>
 			<td style="padding: .3em;"><?php echo $this->t('{login:password}'); ?></td>
-			<td><input id="password" type="password" tabindex="2" name="password" /></td>
+			<td><input id="password" type="password" tabindex="2" name="password" autocomplete="off" /></td>
 		</tr>
 
 <?php
