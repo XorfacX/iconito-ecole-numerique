@@ -122,14 +122,13 @@ class AnnuaireService extends enicService
             $groupes = _ioDAO('kernel|kernel_bu_groupe_villes')->findAllOrderByName();
         }
 
-
         foreach ($groupes as $child) {
-            if (isset($options['droit']) && $options['droit']) {
+           /* if (isset($options['droit']) && $options['droit']) {
                 $droit = $matrix->grville($child->id_grv)->_right->count->$options['droit'];
                 if (!$droit) {
                     continue;
                 }
-            }
+            }*/
             $node = Kernel::getNodeInfo ('BU_GRVILLE', $child->id_grv, $getNodeInfo_full);
             $grvilles[] = array('id'=>$child->id_grv, 'nom'=>$node['nom']);
         }
