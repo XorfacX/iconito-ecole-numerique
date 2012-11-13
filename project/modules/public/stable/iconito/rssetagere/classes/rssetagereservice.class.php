@@ -22,7 +22,10 @@
             $this->rssUrl = $this->helpers->config('rssetagere|rss_url');
 
             // $this->rssUrl = $this->rssUrl.'?classe='.$ppo->url_classe.'&siren='.$ppo->url_ecole.($ppo->targetType=="BU_CLASSE"?'&classeId='.$ppo->targetId:'');
-            $this->rssUrl = $this->rssUrl.'?classe='.$ppo->url_classe.'&siren='.str_pad($ppo->url_ecole,14,"0",STR_PAD_LEFT).($ppo->targetType=="BU_CLASSE"?'&classeId='.$ppo->targetId:'');
+            $this->rssUrl = $this->rssUrl.'?siren='.str_pad($ppo->url_ecole,14,"0",STR_PAD_LEFT).($ppo->targetType=="BU_CLASSE"?'&classe='.$ppo->targetId:'');
+            if( CopixConfig::exists('default|rssEtagereEnt') && ($ent=CopixConfig::get ('default|rssEtagereEnt')) ) {
+                $this->rssUrl .= '&ent='.urlencode($ent);
+            }
             $this->xml = @simplexml_load_file($this->rssUrl);
 
             if($this->xml == false)
