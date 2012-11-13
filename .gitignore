@@ -21,3 +21,4 @@
 /www/themes/*
 !/project/themes/default
 !/www/themes/default
+/utils/simplesamlphp/config/authsources.php
