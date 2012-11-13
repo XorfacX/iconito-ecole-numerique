@@ -136,6 +136,7 @@ if(array_key_exists('head', $this->data)) {
 
 <style>
 <!--
+
 form input[type="text"], form input[type="url"], form input[type="email"], form input[type="date"], input[type="password"], form textarea {
     border: 1px solid #F0F4F0;
     border-radius: 6px 6px 6px 6px;
@@ -171,11 +172,6 @@ div.help {
     margin-top: 30px;
 }
 
-div.retour {
-    margin-top: 20px;
-    text-align: center;
-}
-
 
 a, a:link, a:link, a:link, a:hover, a:visited {
     border-bottom: none;
@@ -183,12 +179,11 @@ a, a:link, a:link, a:link, a:hover, a:visited {
     font-weight: normal;
     text-decoration: none;
 }
-
-.button:hover {
-    background-color: #F0F4F0;
-    border: none;
+.mesgError span {font-weight:normal;}
+.button-back {
+	float:right;
+	margin-top:-4px;
 }
-
 -->
 </style>
 
