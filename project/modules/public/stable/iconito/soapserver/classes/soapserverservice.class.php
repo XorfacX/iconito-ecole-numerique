@@ -118,6 +118,23 @@ class soapserverservice
         }
         
     }
+	
+
+    /**
+     * Update director password
+     * 
+     * @param soapAccountModel $account
+     * @return int
+     */
+    public function updateAccount(soapAccountModel $account)
+    {
+        try {
+            $this->accountService->updateDirectorPassword($account->id, $account->school->director->password);
+            return 1;
+        } catch (Exception $e) {
+            throw new SoapFault('server', $e->getMessage());
+        }
+    }
 
 }
 

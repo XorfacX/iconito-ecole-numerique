@@ -155,6 +155,29 @@ class accountservice extends enicService
         );
     }
 
+    /*
+     * Modification du mot de passe du directeur
+     */
+    public function updateDirectorPassword($accountId, $password)
+    {
+		
+        $directorId = $this->db->query('
+            SELECT user_id
+            FROM module_account 
+            JOIN kernel_link_bu2user KLB2U ON KLB2U.bu_id=module_account.id_director 
+            WHERE KLB2U.bu_type = \'USER_ENS\'
+            AND id_account=' . $this->db->quote($accountId)
+        )->toInt();
+		if (empty($directorId))
+			throw new Exception ('Aucun directeur ne correspond');
+
+        $this->db->query('
+            UPDATE dbuser
+            SET password_dbuser=' . $this->db->quote($password) . '
+			WHERE id_dbuser=' . $directorId
+        );
+    }
+
     public function makeDirectorLogin(soapDirectorModel $director)
     {
         return Kernel::createLogin(array('nom' => $director->name, 'prenom' => $director->surname, 'type' => 'USER_ENS'));
