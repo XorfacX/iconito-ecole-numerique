@@ -5361,9 +5361,9 @@ class ActionGroupDefault extends enicActionGroup
         
         // Mode de recherche : par structure ou par nom
         $searchMode = _request('searchMode', 'byStructure');
-        if (in_array($searchMode, array('byStructure', 'byName'))) {
+        /*if (in_array($searchMode, array('byStructure', 'byName'))) {
           $ppo->filters['searchMode'] = $searchMode;
-        }
+        }*/
         
         // Contrôle des droits
         if ($nodeType == 'BU_CLASSE') {

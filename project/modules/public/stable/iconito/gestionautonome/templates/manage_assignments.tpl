@@ -13,7 +13,7 @@
 <form action="{copixurl dest="gestionautonome||filterAndDisplayAssignments"}" method="post" id="filter-form">
     <div id="origin" class="filterClass">
         
-        <ul class="originTab">
+        <!--<ul class="originTab">
             <li><a href="#originStructure">{i18n key="gestionautonome|gestionautonome.message.searchByStructure}</a></li>
             <li><a href="#originName">{i18n key="gestionautonome|gestionautonome.message.searchByName}</a></li>
         </ul>
@@ -21,7 +21,8 @@
         <select name="search_mode" id="search-mode" class="hiddenClean">
             <option value="byName">Par nom</option>
             <option value="byStructure" selected>Par structure</option>
-        </select>
+        </select>-->
+        <input type="hidden" name="search_mode" id="search-mode" value="byStructure" />
         
         <div id="originStructure">
             <h3>{i18n key="gestionautonome|gestionautonome.message.origin}</h3>
@@ -82,7 +83,7 @@
             </div>
         </div>
         
-        <div id="originName">
+        <!--<div id="originName">
             <h3>{i18n key="gestionautonome|gestionautonome.message.origin}</h3>
             <div class="field" id="origin-usertype-search">
                 <label for="origin_usertype_search">{i18n key="gestionautonome|gestionautonome.message.type"}</label>
@@ -104,7 +105,7 @@
                 <label for="origin_firstname_search">{i18n key="gestionautonome|gestionautonome.message.firstname"}</label>
                 <input type="text" name="origin_firstname_search" id="origin_firstname_search" value="{$ppo->filters.originFirstnameSearch}" />
             </div>
-        </div>
+        </div>-->
     </div>
   
   <div id="destination" class="filterClass">
