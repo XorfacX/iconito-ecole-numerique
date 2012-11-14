@@ -263,7 +263,6 @@
           <p class="help">{customi18n key="gestionautonome|gestionautonome.message.%%user_ens%%limitbyclassroomreached" catalog=$ppo->vocabularyCatalog->id_vc}</p>
         {else}
             <a href="{copixurl dest="gestionautonome||createPersonnel" parentId=$ppo->parent.id parentType=$ppo->parent.type role=1}" class="button button-add">{customi18n key="gestionautonome|gestionautonome.message.add%%indefinite__structure_element_staff_person%%" catalog=$ppo->vocabularyCatalog->id_vc}</a>
-            <a href="{copixurl dest="gestionautonome||addExistingPersonnel" parentId=$ppo->parent.id parentType=$ppo->parent.type role=1}" class="button button-next">Affecter un enseignant</a>
         {/if}
       {/if}
       {if $hasCredentialStudentCreate}
