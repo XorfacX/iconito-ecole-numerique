@@ -1101,8 +1101,9 @@ class ActionGroupDefault extends enicActionGroup
 
             return CopixActionGroup::process('generictools|Messages::getError', array('message' => "Une erreur est survenue.", 'back' => CopixUrl::get('gestionautonome||showTree')));
         }
-
-        _currentUser()->assertCredential('module:school|'.$ppo->parentId.'|classroom|create@gestionautonome');
+        
+        
+        _currentUser()->assertCredential('group:[Admin]');
 
         // Récupération des niveaux de classe
         $classLevelDAO = _ioDAO('kernel|kernel_bu_classe_niveau');
@@ -1164,8 +1165,8 @@ class ActionGroupDefault extends enicActionGroup
 
             return CopixActionGroup::process('generictools|Messages::getError', array('message' => "Une erreur est survenue.", 'back' => CopixUrl::get('gestionautonome||showTree')));
         }
-
-        _currentUser()->assertCredential('module:school|'.$ppo->parentId.'|classroom|create@gestionautonome');
+        
+        _currentUser()->assertCredential('group:[Admin]');
 
         // DAO
         $schoolClassLevelDAO = _ioDAO('kernel|kernel_bu_ecole_classe_niveau');
@@ -1494,8 +1495,8 @@ class ActionGroupDefault extends enicActionGroup
 
             return CopixActionGroup::process('generictools|Messages::getError', array('message' => "Une erreur est survenue.", 'back' => CopixUrl::get('gestionautonome||showTree')));
         }
-
-        _currentUser()->assertCredential('module:school|'.$class->ecole.'|classroom|update@gestionautonome');
+        
+        _currentUser()->assertCredential('group:[Admin]');
 
         // Mise en session du noeud parent
         _sessionSet('current', array('node_type' => 'BU_ECOLE', 'node_id' => $class->ecole));
