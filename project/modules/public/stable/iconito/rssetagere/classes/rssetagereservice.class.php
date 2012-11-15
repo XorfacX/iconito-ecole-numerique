@@ -15,17 +15,18 @@
 
             if( $ppo->targetType == "BU_CLASSE" ) {
                 $ppo->url_classe = urlencode($ppo->myNodeInfos['nom']);
-                $ppo->url_ecole = $ppo->myNodeInfos['ALL']->eco_numero;
+                $ppo->siret_ecole = $ppo->myNodeInfos['ALL']->eco_siret;
             }
         }
 
             $this->rssUrl = $this->helpers->config('rssetagere|rss_url');
 
             // $this->rssUrl = $this->rssUrl.'?classe='.$ppo->url_classe.'&siren='.$ppo->url_ecole.($ppo->targetType=="BU_CLASSE"?'&classeId='.$ppo->targetId:'');
-            $this->rssUrl = $this->rssUrl.'?siren='.str_pad($ppo->url_ecole,14,"0",STR_PAD_LEFT).($ppo->targetType=="BU_CLASSE"?'&classe='.$ppo->targetId:'');
+            $this->rssUrl = $this->rssUrl.'?siren='.$ppo->siret_ecole.($ppo->targetType=="BU_CLASSE"?'&classe='.$ppo->targetId:'');
             if( CopixConfig::exists('default|rssEtagereEnt') && ($ent=CopixConfig::get ('default|rssEtagereEnt')) ) {
                 $this->rssUrl .= '&ent='.urlencode($ent);
             }
+
             $this->xml = @simplexml_load_file($this->rssUrl);
 
             if($this->xml == false)
