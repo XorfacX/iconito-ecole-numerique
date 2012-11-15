@@ -83,6 +83,8 @@
             </div>
         </div>
         
+        {assign var='hasCredentialTeacherUpdate' value=$ppo->user->testCredential("module:school|`$ppo->filters.originSchool`|teacher|update@gestionautonome")}
+        <input type="hidden" name="origin_usertype_search" id="origin_usertype_search" value="{if isset($ppo->filters.originSchool) && $hasCredentialTeacherUpdate && $ppo->filters.originUserTypeSearch eq "USER_ENS"}USER_ENS{else}USER_ELE{/if}" />
         <!--<div id="originName">
             <h3>{i18n key="gestionautonome|gestionautonome.message.origin}</h3>
             <div class="field" id="origin-usertype-search">
@@ -90,7 +92,6 @@
                 <select class="form" name="origin_usertype_search" id="origin_usertype_search">
                     <option value="USER_ELE" label="Elève"{if $ppo->filters.originUserTypeSearch eq "USER_ELE"} selected="selected"{/if}>Elève</option>
                     {if isset($ppo->filters.originSchool)}
-                        {assign var='hasCredentialTeacherUpdate' value=$ppo->user->testCredential("module:school|`$ppo->filters.originSchool`|teacher|update@gestionautonome")}
                         {if $hasCredentialTeacherUpdate}
                             <option value="USER_ENS" label="Enseignant"{if $ppo->filters.originUserTypeSearch eq "USER_ENS"} selected="selected"{/if}>Enseignant</option>
                         {/if}
