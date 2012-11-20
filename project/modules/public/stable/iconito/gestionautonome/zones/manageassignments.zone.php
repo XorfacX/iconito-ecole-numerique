@@ -283,7 +283,11 @@ class ZoneManageAssignments extends CopixZone
                 $ppo->totalPersonsByClassroom[$classroomId] += count($persons);
             }
         }
-        
+        if (CopixConfig::exists('|can_search_by_name') && CopixConfig::get('|can_search_by_name')) {
+            $ppo->can_search_by_name = true;
+        } else {
+            $ppo->can_search_by_name = false;
+        }
         $toReturn = $this->_usePPO($ppo, '_manage_assignments.tpl');
     }
 
