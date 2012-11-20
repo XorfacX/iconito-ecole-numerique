@@ -396,6 +396,7 @@ class Kernel_API extends enicService
                 'login_dbuser' => $this->db->quote($login),
                 'password_dbuser' => $this->db->quote($password),
                 'enabled_dbuser' => 1,
+                'email_dbuser' => ''
             )
         );
         
