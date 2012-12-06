@@ -838,10 +838,17 @@ class ActionGroupDefault extends enicActionGroup
         $ppo->school->code_postal = _request('code_postal', null);
         $ppo->school->commune = _request('commune', null);
         $ppo->school->tel = _request('tel', null);
+        $ppo->school->uai = _request('uai', null);
+        $ppo->school->siret = _request('siret', null);
 
         // Traitement des erreurs
         $ppo->errors = array();
-
+        
+        $schoolDAO = _ioDAO('kernel|kernel_bu_ecole');
+        if(!$schoolDAO->validate($ppo->school)){
+            $ppo->errors = $schoolDAO->getErrorsMessages();
+        }
+        
         if (!$ppo->school->nom) {
 
             $ppo->errors[] = 'Saisissez un nom';
@@ -896,7 +903,7 @@ class ActionGroupDefault extends enicActionGroup
 
             return CopixActionGroup::process('generictools|Messages::getError', array('message' => "Une erreur est survenue.", 'back' => CopixUrl::get('gestionautonome||showTree')));
         }
-
+        
         _currentUser()->assertCredential('module:school|'.$ppo->school->numero.'|school|update@gestionautonome');
 
         // Mise en session du noeud courant
@@ -963,10 +970,18 @@ class ActionGroupDefault extends enicActionGroup
         $ppo->school->code_postal = _request('code_postal', null);
         $ppo->school->commune = _request('commune', null);
         $ppo->school->tel = _request('tel', null);
-
+        $ppo->school->uai = _request('uai', null);
+        $ppo->school->siret = _request('siret', null);
+        
         // Traitement des erreurs
         $ppo->errors = array();
-
+        
+        if(!$schoolDAO->validate($ppo->school)){
+            $ppo->errors = $schoolDAO->getErrorsMessages();
+        }
+        
+        
+    
         if (!$ppo->school->nom) {
 
             $ppo->errors[] = 'Saisissez un nom';
