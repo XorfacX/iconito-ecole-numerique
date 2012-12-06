@@ -164,6 +164,8 @@ class DAOKernel_bu_ecole extends enicService {
 
         $noError = true;
         foreach ($validationEntries as $validationEntry) {
+            if ($schoolDatas->$validationEntry == null)
+                continue;
             if (!$this->{'validate' . mb_strtoupper($validationEntry)}(
                             $schoolDatas->$validationEntry, $schoolDatas->numero
                     )
