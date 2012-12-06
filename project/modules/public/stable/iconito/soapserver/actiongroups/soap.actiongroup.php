@@ -32,7 +32,10 @@
         
         public function processServer()
         {
-            
+            if (!$_SERVER['REMOTE_ADDR'] == $this->helpers->config('client_ip')) {
+                header('HTTP/1.0 403 Forbidden');
+                return _arNone();
+            }
             $soap = new Zend_Soap_Server($this->url('soapserver|soap|WSDL'));
             $soap->setUri($this->url('soapserver|soap|Server'));
             $soap->setClass('soapserverservice');
