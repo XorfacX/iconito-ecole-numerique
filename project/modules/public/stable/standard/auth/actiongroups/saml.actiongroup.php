@@ -124,11 +124,15 @@ class ActionGroupSaml extends EnicActionGroup {
 	}
 	
 	public function processLogout_Cas () {
-		CopixHTMLHeader::addOthers ('<meta HTTP-EQUIV="REFRESH" content="3; url='._url('||').'"');
 
 		$ppo = new CopixPPO();
 
 		$ppo->conf_Saml_CasLogoutUrl = (CopixConfig::exists('default|conf_Saml_caslogouturl')?CopixConfig::get ('default|conf_Saml_caslogouturl'):0);
+
+		if($ppo->conf_Saml_CasLogoutUrl) {
+			CopixHTMLHeader::addOthers ('<meta HTTP-EQUIV="REFRESH" content="3; url='._url('||').'"');
+		}
+
 		return _arPpo ($ppo, 'saml_logout_cas.tpl');
 	}
 	
