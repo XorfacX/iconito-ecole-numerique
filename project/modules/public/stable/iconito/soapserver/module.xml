@@ -4,6 +4,6 @@
         <default name="soapserver" />
     </general>
     <parameters>
-        <parameter name="client_ip" captioni18n="soapserver.client.ip" default="127.0.0.1" />
+        <parameter name="client_ip" caption="soapserver.client.ip" default="127.0.0.1" />
     </parameters>
 </moduledefinition>
