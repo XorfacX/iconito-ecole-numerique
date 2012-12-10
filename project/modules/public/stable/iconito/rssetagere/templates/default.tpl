@@ -17,5 +17,12 @@
 {/foreach}
 </ul>
 {else}
-<p>{i18n key="rssetagere.aucuneressource"}</p>
+    {if $ppo->isEns}
+        <p>{i18n key="rssetagere.emptyIdentity" noEscape=1}</p>
+        <div class="center"><img src="{copixresource path="img/rssetagere/identity.png"}" alt="" /></div>
+        <p>{i18n key="rssetagere.failIdentity" noEscape=1}</p>
+        <div class="center"><img src="{copixresource path="img/rssetagere/fail-identity.png"}" alt="" /></div>
+    {else}
+        <p>{i18n key="rssetagere.empty"}</p>
+{/if}
 {/if}
