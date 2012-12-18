@@ -39,7 +39,7 @@ class soapserverservice
 
             if (empty($schoolCityId))
                 $schoolCityId = $this->kernelAPI->creerVille(
-                        1, $this->accountService->cityDatasProxy($account->school->address->city)
+                        1, $this->accountService->cityDatasProxy(utf8_decode($account->school->address->city))
                 );
 
             /*
