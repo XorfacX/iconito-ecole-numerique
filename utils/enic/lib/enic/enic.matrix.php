@@ -11,6 +11,7 @@ enic::to_load('nodeMatrix');
 
 class enicMatrixCache extends enicCache
 {
+
     public function __construct()
     {
         $this->storage = 'file';
@@ -26,6 +27,7 @@ class enicMatrixCache extends enicCache
 
 class enicMatrixHelpers
 {
+
     private $listTypeComm;
     private $listTypeVoir;
 
@@ -37,7 +39,7 @@ class enicMatrixHelpers
 
     public function iCanTalkToThisType($user_type_out)
     {
-        if(empty($this->listTypeComm))
+        if (empty($this->listTypeComm))
             $this->listTypeComm = $this->db->query('SELECT user_type_out FROM module_rightmatrix WHERE user_type_in =' . $this->db->quote($this->user->type) . ' AND `right` = \'COMM\'')->toArray();
 
         return $this->iCanDoToThisType($this->listTypeComm, $user_type_out);
@@ -45,11 +47,12 @@ class enicMatrixHelpers
 
     public function startExec()
     {
+        
     }
 
     public function iCanSeeThisType($user_type_out)
     {
-        if(empty($this->listTypeVoir))
+        if (empty($this->listTypeVoir))
             $this->listTypeVoir = $this->db->query('SELECT user_type_out FROM module_rightmatrix WHERE user_type_in =' . $this->db->quote($this->user->type) . ' AND `right` = \'VOIR\'')->toArray();
 
         return $this->iCanDoToThisType($this->listTypeVoir, $user_type_out);
@@ -75,6 +78,7 @@ enic::to_load('nodeMatrix');
 
 class enicMatrix extends enicList
 {
+
     public function startExec()
     {
         $options = & enic::get('options');
@@ -217,10 +221,10 @@ class enicMatrix extends enicList
             $html .= (isset($this->$child->id)) ? '<li>Id : ' . $this->$child->id . '</li>' : '';
             $html .= (isset($this->$child->type)) ? '<li>Type : ' . $this->$child->type . '</li>' : '';
             $html .= '<li>-----</li>';
-            $html .= '<li> Admin : ' . (($this->$child->admin_of) ? 'true' : 'false' ) . '</li>';
-            $html .= '<li> Member : ' . (($this->$child->member_of) ? 'true' : 'false' ) . '</li>';
-            $html .= '<li> Director : ' . (($this->$child->director_of) ? 'true' : 'false' ) . '</li>';
-            $html .= '<li> Descendant : ' . (($this->$child->descendant_of) ? 'true' : 'false' ) . '</li>';
+            $html .= '<li> Admin : ' . (($this->$child->admin_of) ? '<b>TRUE</b>' : 'false' ) . '</li>';
+            $html .= '<li> Member : ' . (($this->$child->member_of) ? '<b>TRUE</b>' : 'false' ) . '</li>';
+            $html .= '<li> Director : ' . (($this->$child->director_of) ? '<b>TRUE</b>' : 'false' ) . '</li>';
+            $html .= '<li> Descendant : ' . (($this->$child->descendant_of) ? '<b>TRUE</b>' : 'false' ) . '</li>';
             $html .= '<li> Childrens : ' . implode(' ,', $this->$child->kernelChildren) . '</li>';
             $html .= '<li> Parent : ' . $this->$child->kernelParent . '</li>';
             foreach ($this->$child->_right as $key => $right) {
@@ -234,7 +238,7 @@ class enicMatrix extends enicList
                             $html .= '<li>' . $keyi . ' : ' . $righti . '</li>';
                             continue;
                         }
-                        $html .= '<li>' . $keyi . ' : ' . (($righti) ? 'true' : 'false' ) . '</li>';
+                        $html .= '<li>' . $keyi . ' : ' . (($righti) ? '<b>TRUE</b>' : 'false' ) . '</li>';
                     }
                 } else {
                     $html .= '<li>No RIGHT </li>';
@@ -270,34 +274,28 @@ class rightMatrixHelpers
         //get kernel
         $kernel = new Kernel();
 
-        //get parent real node (not user node) special case for USER_RES
-        if ($user->type == 'USER_RES') {
-            $userNodes = array();
-            $currentIdNode = array();
-            $parentNodes = $kernel->getNodeParents($type, $id);
+        switch ($user->type) {
 
-            //get childs parent node :
-            foreach ($parentNodes as $parentNode) {
-                if ($parentNode['type'] != 'USER_ELE') {
-                    $userNodes[] = $parentNode;
-                    continue;
-                }
+            //for parent user, get the children nodes
+            case 'USER_RES':
+                $userNodes = rightMatrixHelpers::getUserResParentNodes($type, $id);
+                break;
 
-                $currentNodes = $kernel->getNodeParents($parentNode['type'], $parentNode['id']);
-
-                foreach ($currentNodes as $currentNode) {
-                    if (!in_array($currentNode['id'], $currentIdNode)) {
-                        $userNodes[] = $currentNode;
-                        $currentIdNode[] = $currentNode['id'];
-                    }
-                }
-            }
-        } else {
-            $userNodes = $kernel->getNodeParents($type, $id);
+            default:
+                $userNodes = $kernel->getNodeParents($type, $id);
+                break;
         }
 
-        //free memory space
-        unset($currentIdNode, $currentNode, $currentNodes, $parentNode, $parentNodes);
+        if (empty($userNodes)) {
+            $userNodes = array(
+                array(
+                    'type' => 'ROOT',
+                    'id' => 0,
+                    'droit' => 0
+                ),
+            );
+        }
+
 
         //list parents and add each at the tree
         foreach ($userNodes as $userNode) {
@@ -342,8 +340,42 @@ class rightMatrixHelpers
             }
 
             //reccursive
-            self::completeUp($userNode['type'], $userNode['id'], false);
+            if ($userNode['type'] != 'ROOT')
+                self::completeUp($userNode['type'], $userNode['id'], false);
         }
+    }
+
+    public function getUserResParentNodes($type, $id)
+    {
+        if (empty(self::$kernel))
+            self::$kernel = new Kernel();
+        $kernel = self::$kernel;
+
+        $userNodes = array();
+        $currentIdNode = array();
+        $parentNodes = $kernel->getNodeParents($type, $id);
+
+        //get childs parent node :
+        foreach ($parentNodes as $parentNode) {
+            if ($parentNode['type'] != 'USER_ELE') {
+                $userNodes[] = $parentNode;
+                continue;
+            }
+
+            $currentNodes = $kernel->getNodeParents($parentNode['type'], $parentNode['id']);
+
+            foreach ($currentNodes as $currentNode) {
+                if (!in_array($currentNode['id'], $currentIdNode)) {
+                    $userNodes[] = $currentNode;
+                    $currentIdNode[] = $currentNode['id'];
+                }
+            }
+        }
+
+        //Free memory
+        unset($currentIdNode, $currentNode, $currentNodes, $parentNode, $parentNodes);
+
+        return $userNodes;
     }
 
     /*
@@ -422,12 +454,28 @@ class rightMatrixHelpers
         //load right only on descendant_of node :
         foreach ($datas as $data) {
             $node = $matrix->$data['node_type']();
-            foreach ($node->_children as $child) {
-                if ($node->$child->member_of !== true && $node->$child->descendant_of !== true && $user->type != 'USER_EXT')
-                    continue;
-                $node->$child->_right->$data['right']->$data['user_type_out'] = true;
-                $node->$child->_right->$data['user_type_out']->$data['right'] = true;
-                $node->$child->_right->count->$data['right']++;
+            switch ($data['node_type']) {
+                case 'ROOT':
+                case 'root':
+                    $matrix->villes->_other->_right->$data['right']->$data['user_type_out'] = true;
+                    $matrix->villes->_other->_right->$data['user_type_out']->$data['right'] = true;
+                    $matrix->villes->_other->_right->count->$data['right']++;
+
+                    foreach ($matrix->villes->_children as $child) {
+                        $matrix->villes->$child->_right->$data['right']->$data['user_type_out'] = true;
+                        $matrix->villes->$child->_right->$data['user_type_out']->$data['right'] = true;
+                    }
+                    break;
+
+                default:
+                    foreach ($node->_children as $child) {
+                        if ($node->$child->member_of !== true && $node->$child->descendant_of !== true && $user->type != 'USER_EXT')
+                            continue;
+                        $node->$child->_right->$data['right']->$data['user_type_out'] = true;
+                        $node->$child->_right->$data['user_type_out']->$data['right'] = true;
+                        $node->$child->_right->count->$data['right']++;
+                    }
+                    break;
             }
         }
     }
