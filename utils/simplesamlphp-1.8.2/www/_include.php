@@ -1,5 +1,8 @@
 <?php
 
+
+//Get mysql conf from copix
+
 /* Remove magic quotes. */
 if(get_magic_quotes_gpc()) {
 	foreach(array('_GET', '_POST', '_COOKIE', '_REQUEST') as $a) {

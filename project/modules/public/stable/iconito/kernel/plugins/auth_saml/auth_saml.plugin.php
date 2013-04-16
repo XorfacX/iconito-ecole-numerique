@@ -2,7 +2,9 @@
 class PluginAuth_Saml extends CopixPlugin {
     public function beforeSessionStart (){}
     public function beforeProcess (& $action){
-	
+  
+                if(CopixConfig::get('conf_Saml_actif') != 1)
+                    return;
 		require_once(COPIX_UTILS_PATH.'../../simplesamlphp/lib/_autoload.php');
 		
 		$asId = 'iconito-sql';

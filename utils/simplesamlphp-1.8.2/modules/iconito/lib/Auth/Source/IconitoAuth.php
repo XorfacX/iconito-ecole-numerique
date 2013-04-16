@@ -5,7 +5,7 @@ class sspmod_iconito_Auth_Source_IconitoAuth extends sspmod_core_Auth_UserPassBa
 		assert('is_string($username)');
 		assert('is_string($password)');
 
-		if ($username !== 'user' || $password !== 'pass') {
+		if (($username !== 'user') || ($password !== 'pass')) {
 			throw new SimpleSAML_Error_Error('WRONGUSERPASS');
 		}
 
