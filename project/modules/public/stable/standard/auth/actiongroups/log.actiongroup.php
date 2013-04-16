@@ -127,6 +127,9 @@ class ActionGroupLog extends enicActionGroup
         }
 
         $ppo->createUser = Copixconfig::get('auth|createUser');
+
+        $ppo->conf_Saml_actif = (CopixConfig::exists('default|conf_Saml_actif')?CopixConfig::get ('default|conf_Saml_actif'):0);
+
         return _arPPO ($ppo, 'login.form.php');
     }
 }

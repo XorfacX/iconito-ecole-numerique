@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Validate
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Ip.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id: Ip.php 24593 2012-01-05 20:35:02Z matthew $
  */
 
 /**
@@ -27,7 +27,7 @@ require_once 'Zend/Validate/Abstract.php';
 /**
  * @category   Zend
  * @package    Zend_Validate
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Validate_Ip extends Zend_Validate_Abstract
@@ -63,7 +63,7 @@ class Zend_Validate_Ip extends Zend_Validate_Abstract
     {
         if ($options instanceof Zend_Config) {
             $options = $options->toArray();
-        } elseif (!is_array($options)) {
+        } else if (!is_array($options)) {
             $options = func_get_args();
             $temp['allowipv6'] = array_shift($options);
             if (!empty($options)) {
@@ -142,8 +142,7 @@ class Zend_Validate_Ip extends Zend_Validate_Abstract
      *
      * @param string $value
      */
-    protected function _validateIPv4($value)
-    {
+    protected function _validateIPv4($value) {
         $ip2long = ip2long($value);
         if($ip2long === false) {
             return false;
@@ -159,8 +158,7 @@ class Zend_Validate_Ip extends Zend_Validate_Abstract
      * @return boolean True when $value is a valid ipv6 address
      *                 False otherwise
      */
-    protected function _validateIPv6($value)
-    {
+    protected function _validateIPv6($value) {
         if (strlen($value) < 3) {
             return $value == '::';
         }

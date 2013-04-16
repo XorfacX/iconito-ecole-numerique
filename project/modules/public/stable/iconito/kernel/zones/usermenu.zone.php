@@ -108,6 +108,8 @@ class ZoneUserMenu extends CopixZone
 
                 if( CopixConfig::exists('default|conf_Cas_actif') && CopixConfig::get ('default|conf_Cas_actif') ) {
                     $logout["url"] = CopixUrl::get ('auth|cas|logout');
+                } elseif( CopixConfig::exists('default|conf_Saml_actif') && CopixConfig::get ('default|conf_Saml_actif') ) {
+                    $logout["url"] = CopixUrl::get ('auth|saml|logout');
                 } else {
                     $logout["url"] = CopixUrl::get ('auth|log|out');
                 }

@@ -5,6 +5,7 @@
 
 <div id="ecole_infos" class="block">
 
+{if $displayComboEcoles}
 <div class="right">
 
 <form name="formGo" id="formGo" action="{copixurl dest="annuaire||getAnnuaireEcole"}" method="get">
@@ -13,7 +14,7 @@
 </form>
 
 </div>
-
+{/if}
 <b>{$ecole.nom|escape}</b>{if $ecole.desc} ({$ecole.desc|escape}){/if}<br />
 
     

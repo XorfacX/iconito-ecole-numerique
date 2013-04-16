@@ -14,9 +14,9 @@
  *
  * @category   Zend
  * @package    Zend_Feed_Writer
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Feed.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version    $Id: Feed.php 24593 2012-01-05 20:35:02Z matthew $
  */
 
 /**
@@ -59,7 +59,7 @@ require_once 'Zend/Feed/Writer/Feed/FeedAbstract.php';
 /**
  * @category   Zend
  * @package    Zend_Feed_Writer
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Feed_Writer_Feed extends Zend_Feed_Writer_Feed_FeedAbstract
@@ -259,7 +259,7 @@ implements Iterator, Countable
      * Attempt to build and return the feed resulting from the data set
      *
      * @param string $type             The feed type "rss" or "atom" to export as
-         * @param bool   $ignoreExceptions
+		 * @param bool   $ignoreExceptions
      * @return string
      */
     public function export($type, $ignoreExceptions = false)
