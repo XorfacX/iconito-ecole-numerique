@@ -31,7 +31,7 @@ use constant {
 my %opts;
 
 my $usage = <<USAGE
-Usage: syn.pl -H URI -b basedn -D binddn -w passwd -L logdir -d level -o organizationName -y year -f
+Usage: sync.pl -H URI -b basedn -D binddn -w passwd -L logdir -d level -o organizationName -y year -f
 USAGE
   ;
 
@@ -171,6 +171,22 @@ sub log_h {
 
 sub iconito_config {
     my $config_file = "../../../var/config/db_profiles.conf.php";
+    my ($db, $host, $user, $password) = ('', "localhost", "root", "root");
 
-    return ("dbi:mysql:iconito_EN;host=fmadrolle.cap", "root", "root");
+    open(FH, $config_file);
+    while (<FH>) {
+        if ($_ =~ /'connectionString'\s*=>\s*'dbname=(.*);host=(.*)'/) {
+            $db = $1;
+            if (defined $2) {
+                $host = $2;
+            }
+        }
+        if ($_ =~ /'user'\s*=>\s*'(.*)'/) {
+            $user = $1;
+        }
+        if ($_ =~ /'password'\s*=>\s*'(.*)'/) {
+            $password = $1;
+        }
+    }
+    return ("dbi:mysql:$db;host=$host", $user, $password);
 }
