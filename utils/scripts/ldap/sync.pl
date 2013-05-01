@@ -24,10 +24,6 @@ use constant OTHER_OPTS => qw(d L o f);
 
 use constant {
 	VERSION_ATTRIBUTE => 'gidNumber',
-	DSN_ATTRIBUTE     => 'labeledUri',
-	MODULE_ATTRIBUTE  => 'description',
-	USER_ATTRIBUTE    => 'uid',
-	PWD_ATTRIBUTE     => 'userPassword',
 	MIN_ATTRIBUTE     => 'shadowMin',
 	MAX_ATTRIBUTE     => 'shadowMax',
 };
@@ -51,8 +47,10 @@ my $log_dir;
 
 if ( defined $opts{'L'} ) {
 	$log_dir = $opts{'L'};
-	make_path($log_dir);
+} else {
+    $log_dir = "../../../temp/log/ldap";
 }
+make_path($log_dir);
 
 my $corree = Net::LDAP->new( $opts{'H'} );
 
@@ -83,11 +81,7 @@ croak 'An error occurred during search : ' . $mesg->error if $mesg->is_error;
 while ( my $entry = $mesg->pop_entry ) {
 	my $o = $entry->get_value('o');
 
-	my $module = get_attr( $entry, MODULE_ATTRIBUTE, $o ) or next;
-
-	my $min = get_attr( $entry, MIN_ATTRIBUTE, $o );
-
-	next if not defined $min;
+	my $min = get_attr( $entry, MIN_ATTRIBUTE, $o ) or next;
 
 	my $ts = get_attr( $entry, "modifyTimestamp", $o );
 	
@@ -105,19 +99,13 @@ while ( my $entry = $mesg->pop_entry ) {
 		local $Log::Message::Simple::ERROR_FH = $err_fh;
 		local $Log::Message::Simple::DEBUG_FH = $dbg_fh;
 
-		my $dsn = get_attr( $entry, DSN_ATTRIBUTE, $o ) or next;
-
-		my $user = get_attr( $entry, USER_ATTRIBUTE, $o ) or next;
-
-		my $password = get_attr( $entry, PWD_ATTRIBUTE, $o );
-
-		next if not defined $password;
+        my ($dsn, $user, $password) = iconito_config();
 
 		my $sdet = Corree::Sdet->new( $corree, $entry->dn );
 
 		$sdet->prepare();
 
-		my $class = 'Corree::Ent::' . $module;
+		my $class = 'Corree::Ent::Iconito';
 
 		try {
 			load $class;
@@ -179,4 +167,10 @@ sub log_h {
 	else {
 		return \*STDERR;
 	}
+}
+
+sub iconito_config {
+    my $config_file = "../../../var/config/db_profiles.conf.php";
+
+    return ("dbi:mysql:iconito_EN;host=fmadrolle.cap", "root", "root");
 }
