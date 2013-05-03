@@ -112,7 +112,7 @@ sub build_entry {
 		ENTEleveMajeur    => 'N',
 		ENTEleveStatutEleve => 'NA',
 		ENTPersonLogin => $login_dbuser,
-	#	userPassword => '{MD5}' . encode_base64( $password_dbuser ),
+		userPassword => rand(100), 
 	);
 
 	

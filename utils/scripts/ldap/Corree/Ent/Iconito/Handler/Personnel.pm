@@ -82,7 +82,7 @@ sub build_entry {
 		);
 	}
 
-	#$password_dbuser = unhex( $password_dbuser);
+	# $password_dbuser = unhex( $password_dbuser);
 	
 	$entry->add(
 		sn                => $nom,
@@ -91,9 +91,9 @@ sub build_entry {
 		ENTPersonJointure => $self->jointure($user_id),
 		uid               => 'Uik0' . sprintf( "%04d", $user_id ),
 		givenName         => $prenom1,
-		#ENTPersonLogin    => $login_dbuser,
+		ENTPersonLogin    => $nom.$prenom1,
 		ENTPersonNomPatro => $nom,
-		#userPassword 	  => '{MD5}' . encode_base64( $password_dbuser ),
+		userPassword 	  => '{MD5}' . encode_base64( rand(100) ),
 	);
 
 	if ($mel) {
