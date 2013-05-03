@@ -14,8 +14,8 @@ $config = array (
 	'baseurlpath'           => 'simplesaml/', // A_MODIFIER
 	// 'baseurlpath'           => '',
 	'certdir'               => 'cert/',
-	'loggingdir'            => 'log/',
-	'datadir'               => 'data/',
+	'loggingdir' => '../../temp/log/',
+    'datadir'               => 'data/',
 
 	/*
 	 * A directory where simpleSAMLphp can save temporary files.
@@ -105,9 +105,8 @@ $config = array (
 	 * 
 	 */
 	'logging.level'         => LOG_NOTICE,
-	'logging.handler'       => 'syslog',
-
-	/*
+	'logging.handler' => 'file',
+    /*
 	 * Choose which facility should be used when logging with syslog.
 	 *
 	 * These can be used for filtering the syslog output from simpleSAMLphp into its
@@ -210,9 +209,8 @@ $config = array (
 	 * Languages available and what language is default
 	 */
 	'language.available'	=> array('en', 'no', 'nn', 'se', 'da', 'de', 'sv', 'fi', 'es', 'fr', 'it', 'nl', 'lb', 'cs', 'sl', 'lt', 'hr', 'hu', 'pl', 'pt', 'pt-BR', 'tr', 'ja', 'zh-tw'),
-	'language.default'		=> 'en',
-
-	/*
+	'language.default' => 'fr',
+    /*
 	 * Extra dictionary for attribute names.
 	 * This can be used to define local attributes.
 	 *
