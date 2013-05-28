@@ -88,17 +88,6 @@ class Kernel
         $cache_getLevel_key = $node_type.'|'.$node_id.'|'.$user_type.'|'.$user_id;
         if( isset(self::$cache_getLevel[$cache_getLevel_key])) { return(self::$cache_getLevel[$cache_getLevel_key]); }
         
-        //print_r("getLevel ($node_type, $node_id, $user_type, $user_id)<br/>");
-        /*
-        define ('PROFILE_CCV_NONE',     0);
-        define ('PROFILE_CCV_SHOW',     10);
-        define ('PROFILE_CCV_READ',     20);
-        define ('PROFILE_CCV_WRITE',    30);
-        define ('PROFILE_CCV_VALID',    40);
-        define ('PROFILE_CCV_PUBLISH',  50);
-        define ('PROFILE_CCV_MODERATE', 60);
-        define ('PROFILE_CCV_ADMIN',    70);
-        */
         $level = 0;
         if( $user_type=="-1" && $user_id=="-1" ) {
             if( (_currentUser()->getExtra('type')) && (_currentUser()->getExtra('id')) ) {
@@ -106,8 +95,6 @@ class Kernel
                 $user_id=_currentUser()->getExtra('id');
             }
         }
-
-
 
         if( preg_match( "/^MOD_(.+)$/", $node_type ) ) {
             $level = Kernel::getModRight( $node_type, $node_id, $user_type, $user_id );
@@ -118,7 +105,7 @@ class Kernel
                 $level=$val["droit"];
             }
         }
-        //Kernel::deb("getLevel=$level");
+
         self::$cache_getLevel[$cache_getLevel_key] = $level;
         return( $level );
     }
@@ -129,7 +116,6 @@ class Kernel
 
         if( $droit==0 ) {
             $dao->delete( $user_type, $user_id, $node_type, $node_id );
-            //			die("$node_type, $node_id, $user_type, $user_id");
         } else {
             $nouveau_droit = _record("kernel|kernel_link_user2node");
             $nouveau_droit->user_type = $user_type;
@@ -311,21 +297,16 @@ class Kernel
      */
     public function getNodeParents ( $type, $id )
     {
-if(DEBUG) {
-    $backtrace = debug_backtrace();
-    $backtrace_array = array();
-    $continue = true;
-    foreach( $backtrace AS $backtrace_item ) {
-        $backtrace_array[] = $backtrace_item['class']."::".$backtrace_item['function'];
-        if( $backtrace_item['class'] != 'Kernel' ) break;
-    }
-    file_put_contents('/tmp/iconito.log', date("Y-m-d H:i:s -- ").implode(" >> ", array_reverse($backtrace_array))." ($type, $id)"."\n", FILE_APPEND );
-}
-// if(DEBUG) file_put_contents('/tmp/iconito.log', "getNodeParents($type, $id)\n", FILE_APPEND );
-        //print_r ("getNodeParents( $type, $id )<br>");
-        //die();
-
-        if (1) { //La donnee níest pas en cache, on traite la demande.
+            if(DEBUG) {
+                $backtrace = debug_backtrace();
+                $backtrace_array = array();
+                $continue = true;
+                foreach( $backtrace AS $backtrace_item ) {
+                    $backtrace_array[] = $backtrace_item['class']."::".$backtrace_item['function'];
+                    if( $backtrace_item['class'] != 'Kernel' ) break;
+                }
+                file_put_contents('/tmp/iconito.log', date("Y-m-d H:i:s -- ").implode(" >> ", array_reverse($backtrace_array))." ($type, $id)"."\n", FILE_APPEND );
+            }
 
             $return = array();
             switch( $type ) {
@@ -527,7 +508,6 @@ if(DEBUG) {
                 $return[$key][$info_key] = $info_val;
             }
 
-        }
 
         // Suppression des classes dans les annees scolaires passees...
         foreach( $return AS $key=>$val ) {
@@ -688,16 +668,6 @@ if(DEBUG) {
                 }
                 break;
 
-                /*
-                 case "USER_ELE": // A FINIR !!!
-                 // BÈnÈficiaire --(n)--> Responsable
-                 $dao = _dao("kernel|kernel_bu_res2ele");
-                 $res = $dao->getByBeneficiaire("USER_ELE", $id);
-                 foreach( $res AS $key=>$val ) {
-                    $return[]=array("type"=>"USER_RES", "id"=>$val->res2ele_id_responsable, "res2ele_type"=>$val->res2ele_type, "res2ele_auth_parentale"=>$val->res2ele_auth_parentale);
-                    }
-                    break;
-                    */
         }
 
         //skip get user infos
@@ -753,18 +723,11 @@ if(DEBUG) {
                 foreach( $userext_list as $userext_key=>$userext_val ) {
                     if( isset($userext_old[$userext_val->ext_id]) ) continue;
                     $userext_new = array(
-                    'type' => 'USER_EXT',
-                    'id' => $userext_val->ext_id,
-                    'droit' => 0,
-                    'debut' => '',
-                    'fin' => '',
-                    /*
-                     user_id' => '',
-                     'login' => '',
-                     'nom' => $userext_val->ext_nom,
-                     'prenom' => $userext_val->ext_prenom,
-                     'ALL' => $userext_val,
-                     */
+                        'type' => 'USER_EXT',
+                        'id' => $userext_val->ext_id,
+                        'droit' => 0,
+                        'debut' => '',
+                        'fin' => '',
                     );
 
                     $return_add[] = $userext_new;
@@ -1447,16 +1410,8 @@ if(DEBUG) {
                 if( $parent[0]['droit']>=30 ) {
                     $parent_modules = Kernel::getModEnabled( $parent[0]['type'], $parent[0]['id'], $node_type, $node_id );
 
-                    /*
-                     echo '<li>$parent[0][] = '.$parent[0]['type']."/".$parent[0]['id']."</li>";
-                     echo '<li>$node_* = '.$node_type."/".$node_id."</li>";
-                     */
-
                     foreach( $parent_modules AS $parent_module ) {
-                        /*
-                         $perso->node_type   = $parent[0]['type'];
-                         $perso->node_id     = $parent[0]['id'];
-                         */
+
                         $perso->node_type   = $node_type;
                         $perso->node_id     = $node_id;
 
@@ -1481,7 +1436,6 @@ if(DEBUG) {
 
                 }
             }
-            // _dump($modules);
 
             if($notification) Kernel::getModlistNotifications($modules);
 
@@ -1496,9 +1450,6 @@ if(DEBUG) {
             $v->module_nom	 = Kernel::Code2Name ($v->module_type);
             $modules[] = clone $v;
         }
-        // _dump($modules);
-
-        //print_r($modules);
 
         if( $user_type == "USER_ENS" &&
         $node_type == "BU_CLASSE" &&
@@ -1751,11 +1702,6 @@ if(DEBUG) {
             return Kernel::getModRight ($mod_parents[0]->node_type, $mod_parents[0]->node_id, $user_type, $user_id);
         }
 
-
-        //print_r("getModRight( $mod_type, $mod_id, $user_type, $user_id)<br/>");
-
-        //print_r($mod_parents);
-
         foreach( $mod_parents AS $mod_key=>$mod_val ) {
 
             // Check user -> admin
@@ -1763,7 +1709,7 @@ if(DEBUG) {
 
             // Rustine CB 25/08/2010 Si c'est un droit d'un module du groupe d'assistance
             if( CopixConfig::exists('kernel|groupeAssistance') && ($groupeAssistance=CopixConfig::get('kernel|groupeAssistance')) && $mod_val->node_type=='CLUB' && $mod_val->node_id==$groupeAssistance) {
-                //print_r();
+
                 switch ($mod_type) {
                     case 'MOD_FORUM' : // Forum : on peut ecrire
                         $droit = PROFILE_CCV_MEMBER;
@@ -1797,23 +1743,14 @@ if(DEBUG) {
                         if ($node['type'] != 'BU_CLASSE') continue;
                         $node['droit'] = PROFILE_CCV_READ;
                         $user_parents[] = $node;
-                        //print_r($node);
-                        /*
-                        $child['classe'] = $node['nom'];
-                        $modules = Kernel::getModEnabled(
-                        $node['type'], $node['id'],
-                        $child["type"],   $child["id"]   );
-                        */
-                        //print_r($modules);
                     }
                 }
 
 
 
-                if( $mod_val->node_type==$user_val["type"] && $mod_val->node_id==$user_val["id"] ) $droit=max($droit,$user_val["droit"]);
-
-                //$droit = min();
-
+                if( $mod_val->node_type==$user_val["type"] && $mod_val->node_id==$user_val["id"] ) 
+                    $droit=max($droit,$user_val["droit"]);
+                
             }
         }
 
@@ -1821,7 +1758,6 @@ if(DEBUG) {
         $res = $dao->getByUser($user_type, $user_id);
         foreach( $res AS $key=>$val ) {
             // Utilisateurs --(n)--> Modules
-            // if( ereg( "^MOD_(.+)$", $val->node_type ) ) {
             if( $val->node_type == $mod_type && $val->node_id == $mod_id ) {
                 $ok = true;
                 if ($val->debut && $val->debut>date("Ymd")) $ok = false;
@@ -1831,9 +1767,7 @@ if(DEBUG) {
                 $droit=max($droit,$droit_module);
             }
         }
-
-        // die( "USER=".$user_type."/".$user_id."<br />"."MOD=".$mod_type."/".$mod_id."<br />".$droit."<pre>".print_r( $mod_parents, true )."</pre><hr /><pre>".print_r( $user_parents, true )."</pre>" );
-
+        
         return( $droit );
     }
 
@@ -1851,7 +1785,6 @@ if(DEBUG) {
         // Patch fmossmann 17/12/2012 : suppression du cache pour avoir les classeurs visibles après création de classe
         if (true || !CopixCache::exists($cache_id, $cache_type)) { //La donnee níest pas en cache, on traite la demande.
 
-            //var_dump("getMyNodes / type=$type / id=$id");
             $data = array();
 
             $data[0]->title = "Modules perso...";
@@ -1860,10 +1793,6 @@ if(DEBUG) {
             $data[0]->droit = 70;
             $data[0]->enabled = Kernel::getModEnabled( _currentUser()->getExtra('type'), _currentUser()->getExtra('id') );
             $data[0]->available_type = Kernel::getModAvailable( _currentUser()->getExtra('type') );
-
-            /* $data[0]->enabled = array_merge( $data[0]->enabled, $data[0]->available_type ); */
-
-            // die( "<pre>".print_r( $data[0]->enabled, true )."</pre>" );
 
             $i=1;
             $myTree = Kernel::getMyParents("USER", 0, array('bu_type'=>$bu_type, 'bu_id'=>$bu_id));
@@ -1877,8 +1806,6 @@ if(DEBUG) {
                     $data[$i]->droit = $droit;
                     $data[$i]->enabled = Kernel::getModEnabled( $node_type, $node_id, $bu_type, $bu_id );
                     $data[$i]->available_type = Kernel::getModAvailable( $node_type );
-
-                    /* $data[$i]->enabled = array_merge( $data[$i]->enabled, $data[$i]->available_type ); */
 
                     $i++;
                 }
@@ -1960,15 +1887,10 @@ if(DEBUG) {
 
         if ($node_type == 'CLUB') {
             foreach( $modavailable AS $module ) {
-                // echo "<li>".$module->module_type."</li>";
+
                 if( $module->module_type == 'MOD_MAGICMAIL' ) {
                     $modname = 'magicmail';
-
-                    // _dump($modinstalled);
-
-                    // if( array_search("mod_magicmail", $modinstalled)===false ) echo "magicmail ";
-                    // if( array_search("mod_blog", $modinstalled)!==false ) echo "blog ";
-
+                    
                     if( array_search("mod_magicmail", $modinstalled)===false && array_search("mod_blog", $modinstalled)!==false ) {
                         $file     = & CopixSelectorFactory::create($modname."|".$modname);
                         $filePath = $file->getPath() .COPIX_CLASSES_DIR."kernel".strtolower ($file->fileName).'.class.php' ;
@@ -1992,7 +1914,6 @@ if(DEBUG) {
         }
 
         foreach( $modavailable AS $module ) {
-            //var_dump($module);
 
             if( preg_match( "/^MOD_(.+)$/", $module->module_type, $modinfo ) ) {
                 $modname = strtolower( $modinfo[1] );
@@ -2000,7 +1921,7 @@ if(DEBUG) {
                 if( array_search("mod_".$modname, $modinstalled)===false ) {
                     $file     = & CopixSelectorFactory::create($modname."|".$modname);
                     $filePath = $file->getPath() .COPIX_CLASSES_DIR."kernel".strtolower ($file->fileName).'.class.php' ;
-                    //var_dump($filePath);
+
                     if (is_readable($filePath)){
                         $modservice = & CopixClassesFactory::Create ($modname.'|kernel'.$modname);
                         if( method_exists( $modservice, "create" ) ) {
@@ -2332,7 +2253,6 @@ if(DEBUG) {
         } else {
             return 'NONE';
         }
-        // kernel_conf_uservisibility
     }
 
     /**
@@ -2441,9 +2361,6 @@ if(DEBUG) {
     public function _validDateProperties ($value)
     {
         if (preg_match('/^([0-9]{1,2})\/([0-9]{1,2})\/([0-9]{1,2})$/', $value, $regs)) {
-            //Kernel::deb("value=$value");
-            //print_r($regs);
-
             if (strlen($regs[1])==1)
             $regs[1] = '0'.$regs[1];
             if (strlen($regs[2])==1)
@@ -2512,10 +2429,8 @@ if(DEBUG) {
                 } else
                 $node->ville_as_array = array();
             }
-            //var_dump($node);
             CopixCache::write ($cache_id, $node, $cache_type);
         }
-        //var_dump($node);
         if ($pField && $node != null && $node->$pField)
         $return = $node->$pField;
         elseif ($pField)
@@ -2586,11 +2501,6 @@ if(DEBUG) {
 
         $login_parts = array();
         switch( $user_infos['type'] ) {
-      // case 'USER_ELE': // Elèves : Prénom et initiale du nom
-      //  if( trim($prenom)   != '' ) $login_parts[] = $prenom;
-      //  // if( trim($nom_init) != '' ) $login_parts[] = $nom_init;
-      //  $login = implode( '', $login_parts );
-      //  break;
             case 'USER_VIL': // Officiels : prénom et nom séparés par un point
                 if( trim($prenom) != '' ) $login_parts[] = $prenom;
                 if( trim($nom)    != '' ) $login_parts[] = $nom;
@@ -2865,12 +2775,9 @@ if(DEBUG) {
 
     public static function getModlistNotifications( &$module_list )
     {
-// echo('+');
         foreach( $module_list AS &$module_item ) {
             Kernel::getModNotifications( $module_item );
         }
-
-        // echo "<pre>"; print_r($module_list);
 
         return($module_list);
     }
@@ -2878,7 +2785,6 @@ if(DEBUG) {
     public static function getModNotifications( &$module )
     {
         if( ! _currentUser()->getExtra("user_id") ) return $module;
-// echo('-');
 
         $module_name = preg_replace( '/^MOD_/', '', $module->module_type);
 
@@ -2891,14 +2797,10 @@ if(DEBUG) {
         );
 
         if(count($lastvisit)) { // Déjà une visite -> On vérifie le cache
-// echo "XXX";
             if( $lastvisit[0]->last_check && $lastvisit[0]->last_check >= date('YmdHis', strtotime("-10 sec")) ) { // Si le cache est encore valide -> On retourne les infos du cache
-// echo "cached($module_name/$module->module_id) ";
                 $module->notification_number = $lastvisit[0]->last_number;
                 $module->notification_message = $lastvisit[0]->last_message;
             } else { // S'il n'y a pas de cache ou qu'il est invalide -> On demande les infos au module
-// echo "not-cached($module_name/$module->module_id) ";
-
 
                 $arModulesPath = CopixConfig::instance ()->arModulesPath;
                 foreach( $arModulesPath AS $modulePath ) {
@@ -2915,17 +2817,10 @@ if(DEBUG) {
 
                         _dao ('kernel|kernel_notifications_lastvisit')->update($lastvisit[0]);
 
-                        /*
-                        echo "<pre>";
-                        print_r($module);
-                        print_r($lastvisit[0]);
-                        die();
-                        */
                     }
                 }
             }
         } else { // Pas encore de visite -> Pas de notif pour l'instant
-// echo "NOT_visited ";
             $module->notification_number = 0;
             $module->notification_message = '';
 
@@ -2939,10 +2834,6 @@ if(DEBUG) {
             $lastvisit->module_id = $module->module_id;
             _dao("kernel|kernel_notifications_lastvisit")->insert( $lastvisit );
         }
-
-        // [module_nom] => Agenda
-
-        // echo "<pre>"; print_r($module); die();
 
         return($module);
     }
