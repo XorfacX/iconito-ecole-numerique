@@ -1421,10 +1421,6 @@ class Kernel
                         $modules[] = clone $perso;
                     }
 
-                    /*
-                     $perso->node_type   = $parent[0]['type'];
-                     $perso->node_id     = $parent[0]['id'];
-                     */
                     $perso->node_type   = $node_type;
                     $perso->node_id     = $node_id;
 
@@ -1454,6 +1450,7 @@ class Kernel
         if( $user_type == "USER_ENS" &&
         $node_type == "BU_CLASSE" &&
         Kernel::getLevel( $node_type, $node_id ) >= 60 ) {
+            $carnetcorresp = new stdClass();
             $carnetcorresp->node_type   = $node_type;
             $carnetcorresp->node_id     = $node_id;
             $carnetcorresp->module_type = 'MOD_CARNET';
@@ -1462,9 +1459,12 @@ class Kernel
             if ($carnetDeLiaison)
                 $modules[] = clone $carnetcorresp;
         }
-
+        
+        //users having access to class node
+        $classUsers = array('USER_ELE', 'USER_ENS', 'USER_DIR', 'USER_DID');
+        
         //for KNE
-        if(in_array($user_type, array('USER_ELE', 'USER_ENS', 'USER_DIR', 'USER_DID')) && $node_type == 'BU_CLASSE' && CopixClassesFactory::create('kne|kneService')->active){
+        if(in_array($user_type, $classUsers) && $node_type == 'BU_CLASSE' && CopixClassesFactory::create('kne|kneService')->active){
             $modKne = new stdClass();
             $modKne->node_type = $node_type;
             $modKne->node_id = $node_id;
@@ -1475,19 +1475,17 @@ class Kernel
         }
 
                 //for Coreprim
-        if(in_array($user_type, array('USER_ELE', 'USER_ENS', 'USER_DIR', 'USER_DID')) && $node_type == 'BU_CLASSE' && CopixConfig::exists('default|rssEtagereEnabled') && CopixConfig::get('default|rssEtagereEnabled')){
-                    $modRssEtagere = new stdClass();
+        if(in_array($user_type, $classUsers) && $node_type == 'BU_CLASSE' && CopixConfig::exists('default|rssEtagereEnabled') && CopixConfig::get('default|rssEtagereEnabled')){
+            $modRssEtagere = new stdClass();
             $modRssEtagere->node_type = $node_type;
             $modRssEtagere->node_id = $node_id;
             $modRssEtagere->module_type = 'MOD_RSSETAGERE';
-            $modRssEtagere->module_id = $node_type."-".$node_id;
+            $modRssEtagere->module_id = $node_type."_".$node_id;
             $modRssEtagere->module_nom = kernel::Code2Name('MOD_RSSETAGERE');
             $modules[] = $modRssEtagere;
         }
 
-        if( CopixConfig::exists('|conf_ModTeleprocedures') && CopixConfig::get('|conf_ModTeleprocedures')==0 ) {
-            // Pas de module de tÈlÈprocÈdures...
-        } else {
+        if( !(CopixConfig::exists('|conf_ModTeleprocedures') && CopixConfig::get('|conf_ModTeleprocedures')==0 )) {
             if( $user_type == "USER_ENS" &&
             $node_type == "BU_ECOLE" &&
             Kernel::getLevel( $node_type, $node_id ) >= 60 ) {
@@ -1510,7 +1508,7 @@ class Kernel
         }
 
         // Cas particuliers : modules personnels sans numÈros
-        if( 0 == strncmp($node_type,"USER_",5) /* && 0 != strncmp($user_type,"USER_RES",8) */ ) {
+        if( 0 == strncmp($node_type,"USER_",5)) {
             $perso_list = array( 'MOD_ANNUAIRE', 'MOD_MINIMAIL', 'MOD_GROUPE', 'MOD_RESSOURCE' );
             foreach( $perso_list AS $perso_module ) {
                 $perso->node_type   = $node_type;
@@ -1569,9 +1567,6 @@ class Kernel
         }
 
         // Cas particulier : Gestion autonome
-        // if(    $user_type == "USER_EXT"
-        //    && $node_type == "ROOT"
-        //    && Kernel::getLevel( $node_type, $node_id ) >= 60 ) {
         if( CopixConfig::exists('kernel|gestionAutonomeEnabled') && CopixConfig::get('kernel|gestionAutonomeEnabled') ) {
             if( (
             ($node_type == "ROOT") ||
@@ -1612,8 +1607,6 @@ class Kernel
             $modules[] = clone $perso;
         }
 
-        // _dump($modules);
-
         if($notification) Kernel::getModlistNotifications($modules);
 
         reset($modules);
@@ -1622,7 +1615,6 @@ class Kernel
 
     public function getModParent( $type, $id )
     {
-        //echo "getModParent ($type,$id)";
         $dao = _dao("kernel|kernel_mod_enabled");
         $list = $dao->getByModule($type,$id);
         $result = array();
@@ -1781,38 +1773,30 @@ class Kernel
 
         $cache_type = 'getmynodes';
         $cache_id = $bu_type.'-'.$bu_id;
+        
+        $data = array();
 
-        // Patch fmossmann 17/12/2012 : suppression du cache pour avoir les classeurs visibles après création de classe
-        if (true || !CopixCache::exists($cache_id, $cache_type)) { //La donnee níest pas en cache, on traite la demande.
+        $data[0]->title = "Modules perso...";
+        $data[0]->type = $bu_type;
+        $data[0]->id = $bu_id;
+        $data[0]->droit = 70;
+        $data[0]->enabled = Kernel::getModEnabled( _currentUser()->getExtra('type'), _currentUser()->getExtra('id') );
+        $data[0]->available_type = Kernel::getModAvailable( _currentUser()->getExtra('type') );
 
-            $data = array();
+        $i=1;
+        $myTree = Kernel::getMyParents("USER", 0, array('bu_type'=>$bu_type, 'bu_id'=>$bu_id));
 
-            $data[0]->title = "Modules perso...";
-            $data[0]->type = $bu_type;
-            $data[0]->id = $bu_id;
-            $data[0]->droit = 70;
-            $data[0]->enabled = Kernel::getModEnabled( _currentUser()->getExtra('type'), _currentUser()->getExtra('id') );
-            $data[0]->available_type = Kernel::getModAvailable( _currentUser()->getExtra('type') );
+        foreach( $myTree["direct"] AS $node_type=>$node_val ) {
+            foreach( $node_val AS $node_id=>$droit ) {
+                $data[$i]->title = "Node ".$node_type."/".$node_id;
+                $data[$i]->type = $node_type;
+                $data[$i]->id = $node_id;
+                $data[$i]->droit = $droit;
+                $data[$i]->enabled = Kernel::getModEnabled( $node_type, $node_id, $bu_type, $bu_id );
+                $data[$i]->available_type = Kernel::getModAvailable( $node_type );
 
-            $i=1;
-            $myTree = Kernel::getMyParents("USER", 0, array('bu_type'=>$bu_type, 'bu_id'=>$bu_id));
-            //print_r($myTree);
-            //die();
-            foreach( $myTree["direct"] AS $node_type=>$node_val ) {
-                foreach( $node_val AS $node_id=>$droit ) {
-                    $data[$i]->title = "Node ".$node_type."/".$node_id;
-                    $data[$i]->type = $node_type;
-                    $data[$i]->id = $node_id;
-                    $data[$i]->droit = $droit;
-                    $data[$i]->enabled = Kernel::getModEnabled( $node_type, $node_id, $bu_type, $bu_id );
-                    $data[$i]->available_type = Kernel::getModAvailable( $node_type );
-
-                    $i++;
-                }
+                $i++;
             }
-            CopixCache::write ($cache_id, serialize($data), $cache_type);
-        } else { // En cache
-            $data = unserialize(CopixCache::read($cache_id, $cache_type));
         }
 
         return $data;
