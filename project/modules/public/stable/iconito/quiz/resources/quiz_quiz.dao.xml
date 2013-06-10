@@ -15,9 +15,9 @@
         <property name="description" type="string"/>
         <property name="help" type="string"/>
         <property name="pic" type="string"/>
-        <property name="opt_save" type="int" />
+        <property name="opt_save" type="string" />
         <property name="opt_show_results" type="string"/>
-        <property name="lock" type="int"/>
+        <property name="is_locked" type="int"/>
         <property name="gr_id" type="int"/>
     </properties>
     <methods>
@@ -30,7 +30,7 @@
                 <condition property="date_end" value="$date" operator="&lt;" />
                 <condition property="date_end" value="0" operator="=" logic="OR" />
                 <condition property="date_start" value="0" operator="=" logic="OR" />
-                <condition property="lock" value="0" operator="=" />
+                <condition property="is_locked" value="0" operator="=" />
             </conditions>
             <order>
                 <orderitem property="date_end" way="desc" />

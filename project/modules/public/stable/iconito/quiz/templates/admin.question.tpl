@@ -30,9 +30,9 @@ jQuery(document).ready(function($){
             $("#qf-answers li").each(function(){
                 //get the values :
                 var mainct = $(this).children(".qf-content").val();
-                var order = $(this).index("#qf-answers li");
+                var position = $(this).index("#qf-answers li");
                 var correct = ($(this).children(".qf-correct").is(":checked")) ? 1 : 0;
-                var finalValue = mainct+'###'+correct+'###'+order;
+                var finalValue = mainct+'###'+correct+'###'+position;
                 $(this).children(".qf-content").val(finalValue);
                 return true;
             });

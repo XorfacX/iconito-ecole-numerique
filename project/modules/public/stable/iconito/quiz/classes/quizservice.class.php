@@ -38,7 +38,7 @@ class QuizService
                                             WHERE
                                             (`date_start` < '.time().' AND `date_end` > '.time().') OR
                                             (`date_start` = 0 OR `date_end` = 0) AND
-                                            `lock` = 0
+                                            `is_locked` = 0
                                             ORDER BY date_end DESC')
                                     ->toArray();
     }
@@ -60,7 +60,7 @@ GROUP BY quiz.id
 
         //format date and check lock from date
         foreach($oReturn as $k => $v){
-            $oReturn[$k]['lock'] = ($v['lock'] != 1
+            $oReturn[$k]['is_locked'] = ($v['is_locked'] != 1
                                         && (($v['date_start'] > time() || $v['date_start'] == 0)
                                         && ( $v['date_end'] < time() || $v['date_end'] == 0))
                                     )  ? 0 : 1;
@@ -88,7 +88,7 @@ GROUP BY quiz.id
                                 LEFT JOIN module_quiz_choices AS choice ON question.id = choice.id_question
                                 WHERE question.id_quiz = '.$qId.'
                                 GROUP BY question.id
-                                ORDER BY `order` ASC')->toArray();
+                                ORDER BY `position` ASC')->toArray();
     }
 
     public function dateToTime($iDate)
@@ -162,14 +162,14 @@ GROUP BY quiz.id
         $form['description'] = $this->db->quote($form['description']);
         $form['help']  = $this->db->quote($form['help']);
         $form['optshow'] = $this->db->quote($form['optshow']);
-        $form['lock'] = $form['lock']*1;
+        $form['is_locked'] = $form['is_locked']*1;
         $form['id']  = $form['id']*1;
         $form['date_start'] = $form['date_start']*1;
         $form['date_end'] = $form['date_end']*1;
 
         //format datas
         $form['optshow'] = (empty($form['optshow'])) ? 'never' : $form['optshow'];
-        $form['lock'] = (empty($form['lock'])) ? 0 : $form['lock'];
+        $form['is_locked'] = (empty($form['is_locked'])) ? 0 : $form['is_locked'];
 
         //build final data's array with id information
         $datas['id'] = $form['id']*1;
@@ -182,7 +182,7 @@ GROUP BY quiz.id
         $datas['pic'] = 'null';
         $datas['opt_save'] = $this->db->quote('each');
         $datas['opt_show_results'] = $form['optshow'];
-        $datas['lock'] = $form['lock'];
+        $datas['is_locked'] = $form['is_locked'];
         $datas['gr_id'] = $session->load('id_gr_quiz');
 
         return $datas;
@@ -218,7 +218,7 @@ GROUP BY quiz.id
         $oReturn['opt_type'] = '"choice"';
         $oReturn['id'] = (isset($iDatas['id'])) ? $iDatas['id']*1 : null;
         $oReturn['id_quiz'] = $iDatas['id_quiz']*1;
-        $oReturn['order'] = 1;
+        $oReturn['position'] = 1;
 
         if ($iDatas['answer_detail']) {
             $oReturn['answer_detail'] = $this->db->quote($iDatas['answer_detail']);
@@ -234,7 +234,7 @@ GROUP BY quiz.id
             $oReturn[$key]['id_question'] = $datas['id_question']*1;
             $oReturn[$key]['content'] = $this->db->quote($datas['content']);
             $oReturn[$key]['correct'] = (isset($datas['correct'])) ? $datas['correct']*1 : 0;
-            $oReturn[$key]['order'] = $datas['order']*1;
+            $oReturn[$key]['position'] = $datas['position']*1;
         }
 
         return $oReturn;
@@ -375,7 +375,43 @@ GROUP BY quiz.id
 
     public function getChoices($iQid)
     {
-        return $this->db->query('SELECT * FROM module_quiz_choices WHERE id_question = '.$iQid.' ORDER BY `order`')->toArray();
+        return $this->db->query('SELECT * FROM module_quiz_choices WHERE id_question = '.$iQid.' ORDER BY `position`')->toArray();
     }
 
+    /**
+     * Copie un quiz et l'ajoute dans l'année en cours
+     * @param $quizId
+     */
+    public function renewQuiz($quizId)
+    {
+        // On vérifie que le quiz provient bien d'une année passée pour cette école
+        // On récupère le quiz, les questions et les réponses
+        $daoQuiz = _ioDAO('quiz_quiz');
+        $quiz = $daoQuiz->get($quizId);
+
+        $gradeDAO = _ioDAO('kernel|kernel_bu_annee_scolaire');
+        $currentYear = $gradeDAO->getCurrent();
+        $quiz->set
+        $daoQuiz->insert($quiz);
+
+        $daoQuestion = _ioDAO('quiz_questions');
+        $criteria = _daoSp ();
+        $criteria->addCondition ('id_quiz', '=', $quizId);
+        $questions = $daoQuestion->findBy($criteria);
+        foreach ($questions as $question) {
+            $questionId = $question->id;
+            $question->id_quiz = $quiz->id;
+            $daoQuestion->insert($question);
+
+            $daoChoice = _ioDAO('quiz_choices');
+
+            $criteria = _daoSp ();
+            $criteria->addCondition ('id_question', '=', $questionId);
+            $choices = $daoChoice->findBy($criteria);
+            foreach ($choices as $choice) {
+                $choice->id_question = $question->id;
+                $daoChoice->insert($choice);
+            }
+        }
+    }
 }

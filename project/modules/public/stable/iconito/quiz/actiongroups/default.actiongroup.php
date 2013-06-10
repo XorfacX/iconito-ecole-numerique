@@ -39,7 +39,7 @@ class ActionGroupDefault extends enicActionGroup
                                             WHERE
                                             ((`date_start` < '.time().' AND `date_end` > '.time().') OR
                                             (`date_start` = 0 OR `date_end` = 0)) AND
-                                            `lock` = 0 AND gr_id = '.$idGrQuiz.'
+                                            `is_locked` = 0 AND gr_id = '.$idGrQuiz.'
                                             ORDER BY date_end DESC')
                                     ->toArray();
 
@@ -92,7 +92,7 @@ class ActionGroupDefault extends enicActionGroup
             //description
             $desc = ($quizData->description == null) ? null : $quizData->description;
 
-            if($quizData->lock == 1)
+            if($quizData->is_locked == 1)
                 return CopixActionGroup::process('genericTools|Messages::getError', array ('message'=>CopixI18N::get ('quiz.errors.lock'), 'back'=>CopixUrl::get('quiz||')));
 
 //time test :
@@ -393,7 +393,7 @@ class ActionGroupDefault extends enicActionGroup
 
         //lock test
         $quizData = _dao('quiz_quiz')->get(qSession('id'));
-        if($quizData->lock == 1)
+        if($quizData->is_locked == 1)
             return CopixActionGroup::process('genericTools|Messages::getError', array ('message'=>CopixI18N::get ('quiz.errors.lock'), 'back'=>CopixUrl::get('quiz||')));
 
         $nextQ = $this->flash->nextAnsw;
@@ -477,7 +477,7 @@ class ActionGroupDefault extends enicActionGroup
         }
 
         //lock test
-        if($quizData->lock == 1)
+        if($quizData->is_locked == 1)
             return CopixActionGroup::process('genericTools|Messages::getError', array ('message'=>CopixI18N::get ('quiz.errors.lock'), 'back'=>CopixUrl::get('quiz||')));
 
         //get choices for question

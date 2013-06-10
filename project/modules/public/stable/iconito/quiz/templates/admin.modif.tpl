@@ -36,7 +36,7 @@
 			<label>{i18n key="quiz.form.publishState" noEscape=1}</label>
 			<select name="qf-lock" class="qf-publish">
 				<option value="0">{i18n key="quiz.form.published" noEscape=1}</option>
-				<option value="1" {if $ppo->quiz.lock == 1}selected="selected" {/if}>{i18n key="quiz.form.unpublished" noEscape=1}</option>
+				<option value="1" {if $ppo->quiz.is_locked == 1}selected="selected" {/if}>{i18n key="quiz.form.unpublished" noEscape=1}</option>
 			</select>
 
 			<label>{i18n key="quiz.form.datestart" noEscape=1}</label>
