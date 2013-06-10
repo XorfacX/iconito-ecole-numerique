@@ -782,7 +782,7 @@ class ActionGroupAdmin extends enicActionGroup
         // check if the quiz exists
         if(empty($quizDatas)) {
 
-            return $this->error('quiz.errors.noQuiz');
+            return $this->error('quiz.errors.inexistant');
         }
 
         // check if the quiz is owned by the current user
