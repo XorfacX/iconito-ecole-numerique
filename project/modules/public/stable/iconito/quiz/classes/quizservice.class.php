@@ -396,6 +396,8 @@ GROUP BY quiz.id
         // On redéfini le bon groupe
         $quiz->gr_id = enic::get('session')->load('id_gr_quiz');
 
+        $quiz->name = $quiz->name . ' - import&eacute;';
+
         // On insère le nouveau quiz
         $daoQuiz->insert($quiz);
 

@@ -1,3 +1,19 @@
+{if $ppo->successMessage}
+    <p class="mesgSuccess">{$ppo->successMessage}</p>
+{/if}
+
+<h2>Filtrer les quiz</h2>
+
+<div class="field">
+    <form name="search_form" id="search-form" method="post">
+        <label for="grade" class="form_libelle"> Année scolaire :</label>
+        <select class="form" name="grade" id="grade">
+            {html_options values=$ppo->gradesIds output=$ppo->gradesNames selected=$ppo->selectedGrade}
+        </select>
+        <input type="submit" class="button button-search" value="Voir" id="search-button" />
+    </form>
+</div>
+
 <h2>{i18n key="quiz.msg.import"}</h2>
 
 <table id="quiz-table">
