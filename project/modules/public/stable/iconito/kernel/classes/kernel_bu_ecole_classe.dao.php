@@ -145,4 +145,32 @@ class DAOKernel_bu_ecole_classe
 
     return new CopixDAORecordIterator (_doQuery ($sql), $this->getDAOId ());
     }
+
+    /**
+     * Retourne la classe en fonction du quiz
+     *
+     * @param $idQuiz L'identifiant du quiz
+     *
+     * @return mixed
+     */
+    public function getForQuiz($idQuiz)
+    {
+        $sql = <<<SQL
+          SELECT kbec.*
+            FROM kernel_bu_ecole_classe kbec
+            INNER JOIN kernel_mod_enabled kme ON (kme.node_type = 'BU_CLASSE' AND kme.node_id = kbec.id)
+            INNER JOIN module_quiz_quiz mqq ON (kme.module_type = 'MOD_QUIZ' AND kme.module_id = mqq.gr_id)
+            WHERE mqq.id = :quizz_id
+SQL;
+
+        $classes = new CopixDAORecordIterator(_doQuery($sql, array(
+            'quizz_id' => $idQuiz
+        )), $this->getDAOId());
+
+        if (count($classes)) {
+            return $classes[0];
+        }
+
+        return null;
+    }
 }

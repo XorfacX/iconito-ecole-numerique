@@ -733,8 +733,20 @@ class ActionGroupAdmin extends enicActionGroup
 
         // Récupération de tous les quiz que l'on peut importer
         $quizDao = _ioDAO('quiz|quiz_quiz');
-//        $ppo->quizList = $quizDao->findAll();
-        $ppo->quizList = $this->service('QuizService')->getQuizByGroupe($this->session->load('id_gr_quiz'));
+
+        $classInfos = CopixSession::get('myNode');
+
+        if ($classInfos['type'] !== 'BU_CLASSE') {
+            return $this->error('quiz.errors.badOperation');
+        }
+
+        $ppo->quizList = $quizDao->findQuizForClassroomOwnerAndYear($classInfos['id'], _currentUser()->getId(), '2011');
+//        var_dump($ppo->quizList);
+
+//        foreach ($ppo->quizList as $toto) {
+//            var_dump($toto->getClasse());
+//        }
+//        die;
 
 
         $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.listActive'),
