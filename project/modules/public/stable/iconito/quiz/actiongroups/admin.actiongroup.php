@@ -82,7 +82,6 @@ class ActionGroupAdmin extends enicActionGroup
 
         //init ppo object
         $ppo = new CopixPPO();
-        //$quizDatas = $this->service('QuizService')->renewQuiz($qId);
 
         //case of modification :
         if(!empty($action) && $action=='modif' && !$errors && !empty($qId)){
@@ -724,6 +723,12 @@ class ActionGroupAdmin extends enicActionGroup
      */
     public function processImport()
     {
+        // On contrôle que l'utilisateur est un enseignant
+        if(_currentUser()->getExtra('type') !== 'USER_ENS') {
+
+            return $this->error('quiz.admin.noRight');
+        }
+
         $ppo = new CopixPPO();
 
         // Récupération de tous les quiz que l'on peut importer
@@ -757,6 +762,10 @@ class ActionGroupAdmin extends enicActionGroup
         $grade = array_search(_request('grade'), $ppo->gradesIds);
         $ppo->selectedGrade = $ppo->gradesIds[false !== $grade ? $grade : 1];
 
+        if ($this->flash->has('successMessage')) {
+            $ppo->successMessage = $this->flash->successMessage;
+        }
+
         return _arPPO($ppo, 'admin.import.tpl');
     }
 
@@ -765,6 +774,34 @@ class ActionGroupAdmin extends enicActionGroup
      */
     public function processProcessImport()
     {
-        // TODO
+        $quizId = _request('quiz');
+
+        // On contrôle que le quiz existe
+        $quizDatas = $this->service('QuizService')->getQuizDatas($quizId);
+
+        // check if the quiz exists
+        if(empty($quizDatas)) {
+
+            return $this->error('quiz.errors.noQuiz');
+        }
+
+        // check if the quiz is owned by the current user
+        if($quizDatas['id_owner'] !== _currentUser()->getId()) {
+
+            return $this->error('quiz.admin.noRight');
+        }
+
+        // On contrôle que l'utilisateur est un enseignant
+        if(_currentUser()->getExtra('type') !== 'USER_ENS') {
+
+            return $this->error('quiz.admin.noRight');
+        }
+
+        // On copie le quiz
+        $this->service('QuizService')->importQuiz($quizId);
+
+        $this->flash->successMessage = 'Le quiz "' . $quizDatas['name'] . '" a été importé';
+
+        return $this->go('quiz|admin|import');
     }
 }

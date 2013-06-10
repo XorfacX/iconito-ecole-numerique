@@ -1,3 +1,7 @@
+{if $ppo->successMessage}
+    <p class="mesgSuccess">{$ppo->successMessage}</p>
+{/if}
+
 <h2>Filtrer les quiz</h2>
 
 <div class="field">
