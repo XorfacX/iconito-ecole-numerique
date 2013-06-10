@@ -31,6 +31,9 @@ class ActionGroupAdmin extends enicActionGroup
         $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.new'),
                             'type' => 'create',
                             'url' => $this->url('quiz|admin|modif', array('qaction' => 'new')));
+        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.import'),
+                             'type' => 'copy',
+                             'url' => $this->url('quiz|admin|import'));
 
         return _arPPO($ppo, 'admin.list.tpl');
     }
@@ -60,6 +63,9 @@ class ActionGroupAdmin extends enicActionGroup
         $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.new'),
                             'type' => 'create',
                             'url' => $this->url('quiz|admin|modif', array('qaction' => 'new')));
+        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.import'),
+                             'type' => 'copy',
+                             'url' => $this->url('quiz|admin|import'));
         return _arPPO($ppo, 'admin.quiz.tpl');
     }
 
@@ -707,6 +713,46 @@ class ActionGroupAdmin extends enicActionGroup
         $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.new'),
                             'type' => 'create',
                             'url' => $this->url('quiz|admin|modif', array('qaction' => 'new')));
+        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.import'),
+                             'type' => 'copy',
+                             'url' => $this->url('quiz|admin|import'));
         return _arPPO($ppo, 'admin.allresults.tpl');
+    }
+
+    /**
+     * Import des quiz des années précédentes
+     */
+    public function processImport()
+    {
+        $ppo = new CopixPPO();
+
+        // Récupération de tous les quiz que l'on peut importer
+        $quizDao = _ioDAO('quiz|quiz_quiz');
+//        $ppo->quizList = $quizDao->findAll();
+        $ppo->quizList = $this->service('QuizService')->getQuizByGroupe($this->session->load('id_gr_quiz'));
+
+
+        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.listActive'),
+                             'type' => 'list-active',
+                             'url' => $this->url('quiz|default|default', array('qaction' => 'list')));
+        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.listAll'),
+                             'type' => 'list',
+                             'url' => $this->url('quiz|admin|list'));
+        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.new'),
+                             'type' => 'create',
+                             'url' => $this->url('quiz|admin|modif', array('qaction' => 'new')));
+        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.import'),
+                             'type' => 'copy',
+                             'url' => $this->url('quiz|admin|import'));
+
+        return _arPPO($ppo, 'admin.import.tpl');
+    }
+
+    /**
+     * Effectue l'import d'un quiz
+     */
+    public function processProcessImport()
+    {
+        // TODO
     }
 }
