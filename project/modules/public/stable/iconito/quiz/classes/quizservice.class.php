@@ -439,7 +439,7 @@ GROUP BY quiz.id
      *
      * @param $quizId
      */
-    public function renewQuiz($quizId)
+    public function importQuiz($quizId)
     {
         // On vérifie que le quiz provient bien d'une année passée pour cette école
         // On récupère le quiz, les questions et les réponses
@@ -448,6 +448,11 @@ GROUP BY quiz.id
 
         $gradeDAO = _ioDAO('kernel|kernel_bu_annee_scolaire');
         $currentYear = $gradeDAO->getCurrent();
+
+        // On redéfini le bon groupe
+        $quiz->gr_id = enic::get('session')->load('id_gr_quiz');
+
+        // On insère le nouveau quiz
         $daoQuiz->insert($quiz);
 
         $daoQuestion = _ioDAO('quiz_questions');
