@@ -136,4 +136,29 @@ class DAOKernel_bu_ecole
 
     return new CopixDAORecordIterator (_doQuery ($sql), $this->getDAOId ());
     }
+
+    /**
+     * Retourne l'école en fonction de la classe
+     *
+     * @param $idClasse L'identifiant de la classe
+     */
+    public function findByClassroom ($idClasse)
+    {
+        $sql = <<<SQL
+          SELECT *
+          FROM kernel_bu_ecole kbe
+          INNER JOIN kernel_bu_ecole_classe kbec ON kbec.ecole = kbe.numero
+          WHERE kbec.id = :id_classe
+SQL;
+
+        $ecoles = new CopixDAORecordIterator (_doQuery($sql, array(
+            'id_classe' => $idClasse
+        )), $this->getDAOId ());
+
+        if (count($ecoles)) {
+            return $ecoles[0];
+        }
+
+        return null;
+    }
 }
