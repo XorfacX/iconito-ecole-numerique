@@ -76,6 +76,7 @@ class ActionGroupAdmin extends enicActionGroup
 
         //init ppo object
         $ppo = new CopixPPO();
+        //$quizDatas = $this->service('QuizService')->renewQuiz($qId);
 
         //case of modification :
         if(!empty($action) && $action=='modif' && !$errors && !empty($qId)){
@@ -248,7 +249,7 @@ class ActionGroupAdmin extends enicActionGroup
         $form['description']       = $this->request('qf-description');
         $form['help']       = $this->request('qf-help');
         $form['optshow']    = $this->request('qf-optshow');
-        $form['lock']       = $this->request('qf-lock');
+        $form['is_locked']       = $this->request('qf-lock');
         $form['id']         = $this->request('quizId');
         $form['date_start']  = $this->request('qf-datestart');
         $form['date_end']    = $this->request('qf-dateend');
@@ -517,7 +518,7 @@ class ActionGroupAdmin extends enicActionGroup
             $responses[$key]['id_question'] = $answId;
             $responses[$key]['content'] = $responseDatas[0];
             $responses[$key]['correct'] = $responseDatas[1];
-            $responses[$key]['order'] = $responseDatas[2];
+            $responses[$key]['position'] = $responseDatas[2];
         }
 
         //build global flash
@@ -708,5 +709,4 @@ class ActionGroupAdmin extends enicActionGroup
                             'url' => $this->url('quiz|admin|modif', array('qaction' => 'new')));
         return _arPPO($ppo, 'admin.allresults.tpl');
     }
-
 }
