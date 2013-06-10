@@ -60,6 +60,9 @@ class ActionGroupDefault extends enicActionGroup
         $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.new'),
                             'type' => 'create',
                             'url' => $this->url('quiz|admin|modif', array('qaction' => 'new')));
+        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.import'),
+                            'type' => 'copy',
+                            'url' => $this->url('quiz|admin|import'));
         }
         return _arPPO($ppo, 'quiz.tpl');
     }
@@ -194,6 +197,9 @@ class ActionGroupDefault extends enicActionGroup
         $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.new'),
                             'type' => 'create',
                             'url' => $this->url('quiz|admin|modif', array('qaction' => 'new')));
+        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.import'),
+                             'type' => 'copy',
+                             'url' => $this->url('quiz|admin|import'));
         }
 
         return _arPPO($ppo, 'accueil_quiz.tpl');
@@ -328,6 +334,9 @@ class ActionGroupDefault extends enicActionGroup
         $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.new'),
                             'type' => 'create',
                             'url' => $this->url('quiz|admin|modif', array('qaction' => 'new')));
+        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.import'),
+                             'type' => 'copy',
+                             'url' => $this->url('quiz|admin|import'));
         }
         $this->js->dialog('#qd-help', '#help-data');
         return _arPPO($ppo, 'question.tpl');
