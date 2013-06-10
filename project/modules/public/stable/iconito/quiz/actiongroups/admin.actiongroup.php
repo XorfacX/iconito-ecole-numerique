@@ -745,6 +745,18 @@ class ActionGroupAdmin extends enicActionGroup
                              'type' => 'copy',
                              'url' => $this->url('quiz|admin|import'));
 
+        // Récupération de la liste des années scolaires disponibles pour select
+        $gradesDAO = _ioDAO('kernel|kernel_bu_annee_scolaire');
+        $c = _daoSp();
+        $c->orderBy(array('id_as', 'DESC'));
+        $grades = $gradesDAO->findBy($c);
+        foreach ($grades as $grade) {
+            $ppo->gradesIds[] = $grade->id_as;
+            $ppo->gradesNames[] = $grade->anneeScolaire;
+        }
+        $grade = array_search(_request('grade'), $ppo->gradesIds);
+        $ppo->selectedGrade = $ppo->gradesIds[false !== $grade ? $grade : 1];
+
         return _arPPO($ppo, 'admin.import.tpl');
     }
 
