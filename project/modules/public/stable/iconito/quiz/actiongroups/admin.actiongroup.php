@@ -731,37 +731,6 @@ class ActionGroupAdmin extends enicActionGroup
 
         $ppo = new CopixPPO();
 
-        // Récupération de tous les quiz que l'on peut importer
-        $quizDao = _ioDAO('quiz|quiz_quiz');
-
-        $classInfos = CopixSession::get('myNode');
-
-        if ($classInfos['type'] !== 'BU_CLASSE') {
-            return $this->error('quiz.errors.badOperation');
-        }
-
-        $ppo->quizList = $quizDao->findQuizForClassroomOwnerAndYear($classInfos['id'], _currentUser()->getId(), '2011');
-//        var_dump($ppo->quizList);
-
-//        foreach ($ppo->quizList as $toto) {
-//            var_dump($toto->getClasse());
-//        }
-//        die;
-
-
-        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.listActive'),
-                             'type' => 'list-active',
-                             'url' => $this->url('quiz|default|default', array('qaction' => 'list')));
-        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.listAll'),
-                             'type' => 'list',
-                             'url' => $this->url('quiz|admin|list'));
-        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.new'),
-                             'type' => 'create',
-                             'url' => $this->url('quiz|admin|modif', array('qaction' => 'new')));
-        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.import'),
-                             'type' => 'copy',
-                             'url' => $this->url('quiz|admin|import'));
-
         // Récupération de la liste des années scolaires disponibles pour select
         $gradesDAO = _ioDAO('kernel|kernel_bu_annee_scolaire');
         $c = _daoSp();
@@ -777,6 +746,30 @@ class ActionGroupAdmin extends enicActionGroup
         if ($this->flash->has('successMessage')) {
             $ppo->successMessage = $this->flash->successMessage;
         }
+
+        // Récupération de tous les quiz que l'on peut importer
+        $quizDao = _ioDAO('quiz|quiz_quiz');
+
+        $classInfos = CopixSession::get('myNode');
+
+        if ($classInfos['type'] !== 'BU_CLASSE') {
+            return $this->error('quiz.errors.badOperation');
+        }
+
+        $ppo->quizList = $quizDao->findQuizForClassroomOwnerAndYear($classInfos['id'], _currentUser()->getId(), $ppo->selectedGrade);
+
+        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.listActive'),
+                             'type' => 'list-active',
+                             'url' => $this->url('quiz|default|default', array('qaction' => 'list')));
+        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.listAll'),
+                             'type' => 'list',
+                             'url' => $this->url('quiz|admin|list'));
+        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.new'),
+                             'type' => 'create',
+                             'url' => $this->url('quiz|admin|modif', array('qaction' => 'new')));
+        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.import'),
+                             'type' => 'copy',
+                             'url' => $this->url('quiz|admin|import'));
 
         return _arPPO($ppo, 'admin.import.tpl');
     }
