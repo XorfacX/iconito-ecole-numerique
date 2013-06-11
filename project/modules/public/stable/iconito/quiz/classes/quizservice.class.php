@@ -434,8 +434,8 @@ GROUP BY quiz.id
         return $responses;
     }
 
-    /*
-     * Copie un quiz et l'ajoute dans l'année en cours
+    /**
+     * Copie un quiz antérieur et l'ajoute dans l'année en cours
      *
      * @param $quizId
      */
