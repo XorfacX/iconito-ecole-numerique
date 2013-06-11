@@ -441,24 +441,20 @@ GROUP BY quiz.id
      */
     public function importQuiz($quizId)
     {
-        // On vérifie que le quiz provient bien d'une année passée pour cette école
-        // On récupère le quiz, les questions et les réponses
+        // Récupération du quiz
         $daoQuiz = _ioDAO('quiz_quiz');
         $quiz = $daoQuiz->get($quizId);
 
-        $gradeDAO = _ioDAO('kernel|kernel_bu_annee_scolaire');
-        $currentYear = $gradeDAO->getCurrent();
-
-        // On redéfini le bon groupe
+        // On redéfini les champs
         $quiz->gr_id = enic::get('session')->load('id_gr_quiz');
-
         $quiz->name = $quiz->name . ' - import&eacute;';
 
         // On insère le nouveau quiz
         $daoQuiz->insert($quiz);
 
+        // Traitement des questions
         $daoQuestion = _ioDAO('quiz_questions');
-        $criteria = _daoSp ();
+        $criteria = _daoSp();
         $criteria->addCondition ('id_quiz', '=', $quizId);
         $questions = $daoQuestion->findBy($criteria);
         foreach ($questions as $question) {
@@ -467,7 +463,6 @@ GROUP BY quiz.id
             $daoQuestion->insert($question);
 
             $daoChoice = _ioDAO('quiz_choices');
-
             $criteria = _daoSp ();
             $criteria->addCondition ('id_question', '=', $questionId);
             $choices = $daoChoice->findBy($criteria);

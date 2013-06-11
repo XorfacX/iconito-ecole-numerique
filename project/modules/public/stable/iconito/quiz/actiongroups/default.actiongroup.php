@@ -426,7 +426,7 @@ class ActionGroupDefault extends enicActionGroup
         );
 
         // lock test
-        if ($quizData->lock == 1) {
+        if ($quizData->is_locked == 1) {
             return CopixActionGroup::process('genericTools|Messages::getError', array ('message'=>CopixI18N::get ('quiz.errors.lock'), 'back'=>CopixUrl::get('quiz||')));
         }
 

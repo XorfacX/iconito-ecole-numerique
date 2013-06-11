@@ -725,7 +725,6 @@ class ActionGroupAdmin extends enicActionGroup
     {
         // On contrôle que l'utilisateur est un enseignant
         if(_currentUser()->getExtra('type') !== 'USER_ENS') {
-
             return $this->error('quiz.admin.noRight');
         }
 
@@ -736,12 +735,10 @@ class ActionGroupAdmin extends enicActionGroup
 
         $ppo->gradesIds = array_keys($grades);
         $ppo->gradesNames = array_values($grades);
-        $ppo->selectedGrade = null;
+        $ppo->selectedGrade = reset($ppo->gradesIds);
 
         // L'année scolaire de la requête
         $grade = array_search(_request('grade'), $ppo->gradesIds);
-
-        // Si invalide, on cherche l'année scolaire par défaut
         if (false === $grade) {
             $grade = array_search($this->service('QuizService')->getDefaultGradeForFilters(), $ppo->gradesIds);
         }
@@ -759,7 +756,6 @@ class ActionGroupAdmin extends enicActionGroup
         $quizDao = _ioDAO('quiz|quiz_quiz');
 
         $classInfos = CopixSession::get('myNode');
-
         if ($classInfos['type'] !== 'BU_CLASSE') {
             return $this->error('quiz.errors.badOperation');
         }
@@ -791,22 +787,17 @@ class ActionGroupAdmin extends enicActionGroup
 
         // On contrôle que le quiz existe
         $quizDatas = $this->service('QuizService')->getQuizDatas($quizId);
-
-        // check if the quiz exists
-        if(empty($quizDatas)) {
-
+        if (empty($quizDatas)) {
             return $this->error('quiz.errors.inexistant');
         }
 
         // check if the quiz is owned by the current user
-        if($quizDatas['id_owner'] !== _currentUser()->getId()) {
-
+        if ($quizDatas['id_owner'] !== _currentUser()->getId()) {
             return $this->error('quiz.admin.noRight');
         }
 
         // On contrôle que l'utilisateur est un enseignant
-        if(_currentUser()->getExtra('type') !== 'USER_ENS') {
-
+        if (_currentUser()->getExtra('type') !== 'USER_ENS') {
             return $this->error('quiz.admin.noRight');
         }
 
