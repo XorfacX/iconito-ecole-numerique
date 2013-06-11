@@ -728,17 +728,25 @@ class ActionGroupAdmin extends enicActionGroup
 
         $ppo = new CopixPPO();
 
-        // Récupération de la liste des années scolaires disponibles pour select
-        $gradesDAO = _ioDAO('kernel|kernel_bu_annee_scolaire');
-        $c = _daoSp();
-        $c->orderBy(array('id_as', 'DESC'));
-        $grades = $gradesDAO->findBy($c);
-        foreach ($grades as $grade) {
-            $ppo->gradesIds[] = $grade->id_as;
-            $ppo->gradesNames[] = $grade->anneeScolaire;
-        }
+        // On récupère toutes les années scolaires
+        $grades = $this->service('QuizService')->getGradesForFilters();
+
+        $ppo->gradesIds = array_keys($grades);
+        $ppo->gradesNames = array_values($grades);
+        $ppo->selectedGrade = null;
+
+        // L'année scolaire de la requête
         $grade = array_search(_request('grade'), $ppo->gradesIds);
-        $ppo->selectedGrade = $ppo->gradesIds[false !== $grade ? $grade : 1];
+
+        // Si invalide, on cherche l'année scolaire par défaut
+        if (false === $grade) {
+            $grade = array_search($this->service('QuizService')->getDefaultGradeForFilters(), $ppo->gradesIds);
+        }
+
+        // Si on a un résultat pour l'année scolaire sélectionnée, on la donne à la vue
+        if (false !== $grade) {
+            $ppo->selectedGrade = $ppo->gradesIds[$grade];
+        }
 
         if ($this->flash->has('successMessage')) {
             $ppo->successMessage = $this->flash->successMessage;
