@@ -47,6 +47,7 @@ class DAOQuiz_quiz
             WHERE mqq.id_owner = :owner
             AND kbec.ecole = :ecole
             AND kbec.annee_scol = :year
+            ORDER BY mqq.name ASC
 SQL;
 
         return new CopixDAORecordIterator (_doQuery($query, array(
