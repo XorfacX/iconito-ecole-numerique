@@ -477,4 +477,53 @@ GROUP BY quiz.id
             }
         }
     }
+
+    /**
+     * Retourne tous les choix d'années scolaire pour les filtres
+     *
+     * @return array
+     */
+    public function getGradesForFilters ()
+    {
+        // Récupération de la liste des années scolaires disponibles pour select
+        $gradesDAO = _ioDAO('kernel|kernel_bu_annee_scolaire');
+        $c = _daoSp();
+        $c->orderBy(array('id_as', 'DESC'));
+
+        $grades = array();
+
+        foreach ($gradesDAO->findBy($c) as $grade) {
+            $grades[$grade->id_as] = $grade->anneeScolaire;
+        }
+
+        return $grades;
+    }
+
+    /**
+     * Retourne l'année scolaire par défaut pour le formualire de filtre
+     * Equivaut à la dernière année scolaire juste avant la courante
+     *
+     * @return int|null
+     */
+    public function getDefaultGradeForFilters ()
+    {
+        $sql = <<<SQL
+            SELECT kbas.*
+            FROM kernel_bu_annee_scolaire kbas
+            WHERE kbas.id_as < (
+                SELECT kbas2.id_as
+                FROM kernel_bu_annee_scolaire kbas2
+                WHERE kbas2.current = 1
+            )
+            LIMIT 1
+SQL;
+
+        $results = _doQuery($sql);
+
+        if (count($results)) {
+            return $results[0]->id_as;
+        }
+
+        return null;
+    }
 }
