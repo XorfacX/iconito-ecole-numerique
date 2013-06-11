@@ -776,7 +776,7 @@ class ActionGroupAdmin extends enicActionGroup
      */
     public function processProcessImport()
     {
-        $quizId = _request('quiz');
+        $quizId = _request('id');
 
         // On contrôle que le quiz existe
         $quizDatas = $this->service('QuizService')->getQuizDatas($quizId);
