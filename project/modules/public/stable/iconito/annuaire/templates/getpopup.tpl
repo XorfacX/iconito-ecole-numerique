@@ -21,9 +21,9 @@
 
 <div class="annu_popup_zone">
 <b>{i18n key="annuaire.popup.browse"}</b> : <br/>
-<span id="select-grvilles">{i18n key="annuaire.grville"} : {$combogrvilles}<br/></span>
-{i18n key="annuaire.ville"} : {$combovilles}<br/>
-{if !$profil || $profil!='USER_VIL'}{i18n key="annuaire.ecole"} : {$comboecoles}<br/>{/if}
+<span id="select-grvilles" class="hiddenClean">{i18n key="annuaire.grville"} : {$combogrvilles}<br/></span>
+<span class="hiddenClean">{i18n key="annuaire.ville"} : {$combovilles}<br/></span>
+<span class="hiddenClean">{if !$profil || $profil!='USER_VIL'}{i18n key="annuaire.ecole"} : {$comboecoles}<br/>{/if}</span>
 {if !$profil || $profil!='USER_VIL'}{i18n key="annuaire.classe"} : {$comboclasses}<br/>{/if}
 {if $profil}<input type="submit" value="{i18n key="annuaire.btn.display"}" class="button button-confirm" /><br />{/if}
 </div>
@@ -35,10 +35,11 @@
 {if $visib.USER_ELE}<label for="profil_ELE">{i18n key="annuaire.eleves"}</label> <input type="checkbox" id="profil_ELE" {if $profils.ELE==1}checked="checked"{/if} name="profils[ELE]" value="1" /><br />{/if}
 {if $visib.USER_ENS}<label for="profil_PEC">{i18n key="annuaire.pec"}</label> <input type="checkbox" id="profil_PEC" {if $profils.PEC==1}checked="checked"{/if} name="profils[PEC]" value="1" /><br />{/if}
 {if $visib.USER_RES}<label for="profil_PAR">{i18n key="annuaire.parents"}</label> <input type="checkbox" id="profil_PAR" {if $profils.PAR==1}checked="checked"{/if} name="profils[PAR]" value="1" /><br />{/if}
+<span class="hiddenClean">
 {if $visib.USER_ADM}<label for="profil_ADM">{i18n key="annuaire.adm"}</label> <input type="checkbox" id="profil_ADM" {if $profils.ADM==1}checked="checked"{/if} name="profils[ADM]" value="1" /><br />{/if}
 {if $visib.USER_VIL}<label for="profil_VIL">{i18n key="annuaire.agents"}</label> <input type="checkbox" id="profil_VIL" {if $profils.VIL==1}checked="checked"{/if} name="profils[VIL]" value="1" /><br />{/if}
 {if $visib.USER_EXT}<label for="profil_EXT">{i18n key="annuaire.ext"}</label> <input type="checkbox" id="profil_EXT" {if $profils.EXT==1}checked="checked"{/if} name="profils[EXT]" value="1" /><br />{/if}
-
+</span>
 
 <input type="submit" value="{i18n key="annuaire.btn.display"}" class="button button-confirm" /><br/>
 {/if}

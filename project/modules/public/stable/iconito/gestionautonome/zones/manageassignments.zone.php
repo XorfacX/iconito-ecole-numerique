@@ -258,7 +258,36 @@ class ZoneManageAssignments extends CopixZone
             $ppo->classrooms[$destinationAssignment->id_classe] = $destinationAssignment->nom_classe;
             $ppo->classroomLevels[$destinationAssignment->id_niveau] = $destinationAssignment->nom_niveau;
         }
+        
+        // Gestion des limites
+        _classInclude('gestionautonome|GestionAutonomeService');
+        $ppo->personsLimitByClassroom = 0;
 
+        if ($ppo->filters['originUserType'] == 'USER_ENS') {
+            if (GestionAutonomeService::hasTeachersLimitByClassroom()) {
+                $ppo->personsLimitByClassroom = CopixConfig::get('gestionautonome|teachersLimitByClassroom');
+            }
+        }
+        elseif ($ppo->filters['originUserType'] == 'USER_ELE') {
+            if (GestionAutonomeService::hasStudentsLimitByClassroom()) {
+                $ppo->personsLimitByClassroom = CopixConfig::get('gestionautonome|studentsLimitByClassroom');
+            }
+        }
+        
+        $ppo->totalPersonsByClassroom = array();
+        foreach ($ppo->destinationAssignments as $level) {
+            foreach ($level as $classroomId => $persons) {
+                if (!array_key_exists($classroomId, $ppo->totalPersonsByClassroom)) {
+                    $ppo->totalPersonsByClassroom[$classroomId] = 0;
+                }
+                $ppo->totalPersonsByClassroom[$classroomId] += count($persons);
+            }
+        }
+        if (CopixConfig::exists('|can_search_by_name') && CopixConfig::get('|can_search_by_name')) {
+            $ppo->can_search_by_name = true;
+        } else {
+            $ppo->can_search_by_name = false;
+        }
         $toReturn = $this->_usePPO($ppo, '_manage_assignments.tpl');
     }
 

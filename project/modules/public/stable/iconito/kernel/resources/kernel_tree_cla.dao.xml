@@ -20,6 +20,7 @@
 
 		<!-- Ecoles -->
 		<property name="eco_numero"   fieldname="numero"   type="integer" table="kernel_bu_ecole" pk="yes"/>
+		<property name="eco_siret"   fieldname="siret"   type="string" table="kernel_bu_ecole" pk="no"/>
 		<property name="eco_type"     fieldname="type"     type="string"  table="kernel_bu_ecole" pk="no"/>
 		<property name="eco_nom"      fieldname="nom"      type="string"  table="kernel_bu_ecole" pk="no"/>
 		<property name="eco_id_ville" fieldname="id_ville" type="integer" table="kernel_bu_ecole" pk="no"/>

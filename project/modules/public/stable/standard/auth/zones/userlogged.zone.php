@@ -31,13 +31,14 @@ class ZoneUserLogged extends enicZone
             $vocabularyCatalog = $nodeVocabularyCatalogDAO->getCatalogForNode($myNode['type'], $myNode['id']);
         }
 
-      $ppo->vocabularyCatalogId = isset($vocabularyCatalog) ? $vocabularyCatalog->id_vc : CopixConfig::get('kernel|defaultVocabularyCatalog');
+        $ppo->vocabularyCatalogId = isset($vocabularyCatalog) ? $vocabularyCatalog->id_vc : CopixConfig::get('kernel|defaultVocabularyCatalog');
 
         $this->addJs('js/iconito/module_auth.js');
         $this->addCss('styles/module_auth.css');
 
         $ppo->conf_Cas_actif = (CopixConfig::exists('default|conf_Cas_actif')?CopixConfig::get ('default|conf_Cas_actif'):0);
-
+        $ppo->conf_Saml_actif = (CopixConfig::exists('default|conf_Saml_actif')?CopixConfig::get ('default|conf_Saml_actif'):0);
+        
         //load tpl
         $toReturn = $this->_usePPO ($ppo, 'userlogged.tpl');
     }

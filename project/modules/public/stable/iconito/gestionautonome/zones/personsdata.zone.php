@@ -76,7 +76,18 @@ class ZonePersonsData extends CopixZone
                     // Récupération des parents
                     $responsableDAO = _ioDAO('kernel|kernel_bu_res');
                     $ppo->responsables = $responsableDAO->getParentsInClasse($id);
-
+                    
+                    _classInclude('gestionautonome|GestionAutonomeService');
+                    $ppo->isTeachersLimitByClassroomReached = false;
+                    if (GestionAutonomeService::hasTeachersLimitByClassroom()) {
+                        $ppo->isTeachersLimitByClassroomReached = count($ppo->persons) >= CopixConfig::get('gestionautonome|teachersLimitByClassroom');
+                    }
+                    
+                    $ppo->isStudentsLimitByClassroomReached = false;
+                    if (GestionAutonomeService::hasStudentsLimitByClassroom()) {
+                        $ppo->isStudentsLimitByClassroomReached = count($ppo->students) >= CopixConfig::get('gestionautonome|studentsLimitByClassroom');
+                    }
+                    
                     break;
             }
         }

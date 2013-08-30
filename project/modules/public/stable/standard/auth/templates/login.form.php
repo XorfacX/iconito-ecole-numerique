@@ -8,6 +8,9 @@
     <p><a href="<?php echo _url("auth|usersregister|edit"); ?>">
     <?php echo _i18n('auth|auth.user.create'); ?></a></p>
     <?php } ?>
+<?php if($ppo->conf_Saml_actif) { ?>
+  <div class="center"><a class="button button-confirm cas-login" href="<?php echo _url("auth|saml|login"); ?>">Connectez-vous !</a></div>
+<?php } else { // !conf_Saml_actif ?>
   <form action="<?php echo _url("auth|log|in", ($ppo->noCredential) ? array('noCredential'=>true):array()); ?>" method="post" id="loginForm">
       <fieldset id="loginForm">
       <table>
@@ -45,6 +48,8 @@
 
        </fieldset>
    </form>
+<?php } // conf_Saml_actif ?>
+
 <?php }
       if ($ppo->user) {
 ?>
