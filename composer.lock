@@ -12,7 +12,7 @@
             "source": {
                 "type": "git",
                 "url": "git@git.cap-tic.fr:alviss/activity-stream-client.git",
-                "reference": "e89d436c654249a965690267945224e52b7dd4fe"
+                "reference": "0604cc48ab7467dc9a98f2b003aee3ee60787b92"
             },
             "require": {
                 "php": ">=5.3.3"
@@ -38,7 +38,7 @@
                 }
             ],
             "description": "Activity Stream client",
-            "time": "2013-06-28 15:37:07"
+            "time": "2013-09-04 12:53:31"
         },
         {
             "name": "symfony/event-dispatcher",
