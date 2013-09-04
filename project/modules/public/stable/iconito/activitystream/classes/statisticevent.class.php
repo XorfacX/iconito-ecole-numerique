@@ -24,7 +24,7 @@ class StatisticEvent extends StreamObjectEvent
      * @param ResourceInterface  $target
      * @param array              $targetScope
      */
-    public function __construct($counter, $period, ResourceInterface $actor, $verb, ResourceInterface $object, ResourceInterface $target = null, array $targetScope = null)
+    public function __construct($counter, $period, ResourceInterface $actor = null, $verb = null, ResourceInterface $object = null, ResourceInterface $target = null, array $targetScope = null)
     {
         $this->statistic = ActivityStreamManagerFactory::create()->createStatistic(
             $this->getApplicationId(),

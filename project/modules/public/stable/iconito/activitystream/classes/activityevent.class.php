@@ -22,12 +22,12 @@ class ActivityEvent extends StreamObjectEvent
      * @param ResourceInterface  $target
      * @param array              $targetScope
      */
-    public function __construct(ResourceInterface $actor, $verb, ResourceInterface $object, ResourceInterface $target = null, array $targetScope = null)
+    public function __construct($verb, ResourceInterface $actor = null, ResourceInterface $object = null, ResourceInterface $target = null, array $targetScope = null)
     {
         $this->activity = ActivityStreamManagerFactory::create()->createActivity(
             $this->getApplicationId(),
-            $actor,
             $verb,
+            $actor,
             $object,
             $target,
             $targetScope

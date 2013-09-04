@@ -5,17 +5,23 @@ use ActivityStream\Client\Model\Resource;
 
 class Test implements ResourceInterface
 {
-    protected $id;
+    protected $displayName;
 
-    protected $name;
+    protected $objectType;
+
+    protected $id;
 
     protected $url;
 
-    public function __construct($id, $name, $url)
+    protected $attributes;
+
+    public function __construct($displayName, $objectType, $id = null, $url = null, array $attributes = array())
     {
-        $this->id   = $id;
-        $this->name = $name;
-        $this->url  = $url;
+        $this->displayName = $displayName;
+        $this->objectType  = $objectType;
+        $this->id          = $id;
+        $this->url         = $url;
+        $this->attributes  = $attributes;
     }
 
     /**
@@ -25,15 +31,6 @@ class Test implements ResourceInterface
      */
     public function toResource()
     {
-        $resource = new Resource($this->name, get_class($this));
-
-        $resource->setId($this->id);
-        $resource->setUrl($this->url);
-        $resource->setAttributes(array(
-            'key1' => 'test1',
-            'key2' => 'test2'
-        ));
-
-        return $resource;
+        return new Resource($this->displayName, $this->objectType, $this->id, $this->url, $this->attributes);
     }
 }
