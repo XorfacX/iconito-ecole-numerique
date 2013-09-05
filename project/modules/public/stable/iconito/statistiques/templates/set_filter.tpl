@@ -1,0 +1,24 @@
+<h2>Sélectionnez un contexte, et délimitez une période</h2>
+
+<form action="{copixurl dest="statistiques|default|setFilter"}" method="post" class="copixForm">
+    <div class="field">
+        <label for="context" class="form_libelle"> Contexte :</label>
+        {copixzone process=statistiques|citiesGroup}
+    </div>
+
+    <div class="field">
+        <label for="dateBegin" class="form_libelle"> Du :</label>
+        <input type="text" name="publishedBeginDate" id="date_begin" value="{$filter->publishedBeginDateHR|escape}"/>
+    </div>
+
+    <div class="field">
+        <label for="dateEnd" class="form_libelle"> Au :</label>
+        <input type="text" name="publishedEndDate" id="date_end" value="{$filter->publishedBeginDateHR|escape}"/>
+    </div>
+
+    <input type="submit" class="button button-confirm" value="{i18n key=copix:common.buttons.save}" />
+</form>
+
+<script type="text/javascript">
+    setDatePicker('#date_begin, #date_end');
+</script>
