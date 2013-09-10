@@ -10,7 +10,7 @@ $this->includeAtTemplateBase('includes/header.php');
 
 ?>
 
-<h2><?php echo $this->t('{login:user_pass_header}'); ?> <a href="../../../" class="button button-back">Retour</a></h2>
+<h2 class="normal"><?php echo $this->t('{login:user_pass_header}'); ?></h2>
 
 
 <?php
@@ -43,6 +43,7 @@ if ($this->data['errorcode'] !== NULL) {
         <p class="input"><input id="password" type="password" tabindex="2" name="password" autocomplete="off" /></p>
     </div>
     <div class="submit">
+    	<a href="../../../" class="button button-back">Retour</a>
 		<input type="submit" tabindex="4" value="<?php echo $this->t('{login:login_button}'); ?>" class="button button-confirm" />
 	</div>
     

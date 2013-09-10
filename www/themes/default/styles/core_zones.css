@@ -94,7 +94,14 @@ input[type="password"] {
     width: 48px;
     padding-left: 2px;
     }
-    
+/* Login SAML */
+.userlogged {
+    margin:9px;
+}
+.userlogon a {
+    padding:6px 6px 6px 28px;
+    font-size:1.2em;
+}
 /************************************************
  * USERMENU
  ***********************************************/
