@@ -1,0 +1,1 @@
+Au {$ppo->filter->publishedEndDate->format('d/m/Y')}, {$ppo->result} minimails ont été envoyés.

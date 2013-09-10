@@ -1,0 +1,1 @@
+Du {$ppo->filter->publishedBeginDate->format('d/m/Y')} au {$ppo->filter->publishedEndDate->format('d/m/Y')}, {$ppo->result} connexion(s) ont été enregistrée(s) sur des statistiques annuelles.

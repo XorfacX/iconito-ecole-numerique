@@ -1,0 +1,2 @@
+Du {$ppo->filter->publishedBeginDate->format('d/m/Y')} au {$ppo->filter->publishedEndDate->format('d/m/Y')},
+{$ppo->result.total} discussions créées, soit {$ppo->result.average} discussions par groupe ayant le module forum activé.

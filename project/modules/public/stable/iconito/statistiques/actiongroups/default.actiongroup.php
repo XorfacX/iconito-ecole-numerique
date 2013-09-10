@@ -21,18 +21,18 @@ class ActionGroupDefault extends CopixActionGroup
 
         $ppo->user = _currentUser();
 
-//        $ppo->TITLE_PAGE = CopixConfig::get('statistiques|moduleTitle');
+        $ppo->TITLE_PAGE = CopixConfig::get('statistiques|moduleTitle');
 
         if (!$filter = $this->_getSessionConsolidationStatisticFilter()) {
-            ini_set('display_errors', true);
             $filter = new ConsolidatedStatisticFilter();
             $this->_setSessionConsolidationStatisticFilter($filter);
         }
 
-
-        //demande de mettre l'objet � jour en fonction des valeurs saisies dans le formulaire
-        $this->_validFromForm($filter);
-
+        if (_request('publishedBeginDate')) {
+            //demande de mettre l'objet � jour en fonction des valeurs saisies dans le formulaire
+            $this->_validFromForm($filter);
+            $this->_setSessionConsolidationStatisticFilter($filter);
+        }
         $ppo->filter = $filter;
 
         // Get vocabulary catalog to use
