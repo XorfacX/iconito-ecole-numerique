@@ -113,24 +113,73 @@ div.welcome .welcome_hr {
 	margin-bottom: 12px;
 	}
 	
-.welcome_photos .titre {
-	}
+
 	
-.welcome_photos .slider {
-    position: relative;
-/*	display: inline-block;*/
-	background: #dd8210 url('../../../themes/default/images/thm_photoslider_title.png') center right no-repeat;
-	padding:0px;
-	border: solid 6px #dd8210;
-	border-left: solid 12px #dd8210;
+/* @NOTE : slider */
+.slideshow {
+	position:relative; 
+	width: 380px;
+	height: 240px;
+	overflow: auto;
+	margin:0 auto; border:1px solid #ccc;
+	background:#fff;
+}
+
+.slideshow .slide {
+	position: absolute; 
+	top: 0; 
+	left: 0;
+	margin:0; padding:0;
+}
+
+.slideshow .slide li {
+	float:left;
+	width: 380px; 
 	height: 220px;
-	width: 420px;
-	overflow: visible;
-    -moz-border-radius: 8px;
-    -webkit-border-radius: 8px;
-	border-radius: 8px;
-        z-index:1;
-	}
+}
+.slideshow .slide .legend {
+	padding:0 5px;
+	background:#fff;
+	text-align:center; line-height:18px;
+}
+
+/* @NOTE : slider => navigation */
+.slider-nav > a {
+	position: absolute;
+	bottom: 15px;
+	z-index: 15;
+}
+
+#sliderprev { left: -7px; }
+#slidernext { right: -7px; }
+#slidercontrol {position:absolute; bottom:15px; left:38px;}
+/* @NOTE : slider => pagination */
+#sliderposition {
+	position: absolute;
+	bottom:22px;
+	z-index: 12;
+	left: 0;
+	right: 0;
+	text-align: center;
+	margin:0; padding:0;
+	list-style:none;
+}
+
+#sliderposition li {
+	display: inline-block;
+	width: 13px;
+	height: 13px;
+	border-radius: 50%;
+	background: #6c695a;
+	border: 2px solid #fff;
+	color: #6c695a;
+	font-size: 1px;
+}
+#sliderposition li.on {
+	color: #23201e;
+	background: #23201e;
+}
+
 	
 /* BOUTON BLOGS */
 .welcome_blogs a {
