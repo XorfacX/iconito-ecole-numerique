@@ -2,65 +2,76 @@
 
 class ApiMapping
 {
-    public function getFilters()
+    public function getFiltersCategories()
     {
         return array(
-            'Comptes et connexions' => array(
-                'nombreComptes'                 => array('label' => 'Nombre de comptes', 'class' => 'ApiUserRequest'),
-                'nombreConnexionsAnnuelles'     => array('label' => 'Nombre de connexions annuelles', 'class' => 'ApiUserRequest'),
-                'nombreConnexionsMensuelles'    => array('label' => 'Nombre de connexions mensuelles', 'class' => 'ApiUserRequest'),
-                'nombreConnexionsHebdomadaires' => array('label' => 'Nombre de connexions hebdomadaires', 'class' => 'ApiUserRequest'),
-                'nombreConnexionsJournalieres'  => array('label' => 'Nombre de connexions journalières', 'class' => 'ApiUserRequest'),
-            ),
-            'Agendas' => array(
-                'nombreAgendas' => array('label' => 'Nombre d\'agendas', 'class' => 'ApiAgendaRequest'),
-                'nombreEvenementsEtRatio' => array('label' => 'Nombre d\'événements', 'class' => 'ApiAgendaRequest'),
-            ),
-            'Minimails' => array(
-                'nombreMinimails' => array('label' => 'Nombre de minimails envoyés', 'class' => 'ApiMinimailRequest'),
-            ),
-            'Classeurs' => array(
-                'nombreClasseurs' => array('label' => 'Nombre de classeurs', 'class' => 'ApiClasseurRequest'),
-                'nombreDossiersEtRatio' => array('label' => 'Nombre de dossiers', 'class' => 'ApiClasseurRequest'),
-            ),
-            'Blogs' => array(
-                'nombreBlogs' => array('label' => 'Nombre de blogs', 'class' => 'ApiBlogRequest'),
-                'blogVisibleAnnuaireEtNonVisible' => array('label' => 'Nombre de blogs visibles dans l\annuaire, et non visibles', 'class' => 'ApiBlogRequest'),
-                'blogVisibleEtVisibilite' => array('label' => 'Nombre de blogs visibles selon visibilité', 'class' => 'ApiBlogRequest'),
-                'articlesRedigesSurPeriode' => array('label' => 'Nombre d\'articles rédigés sur la période', 'class' => 'ApiBlogRequest'),
-                'commentairesRedigesSurPeriode' => array('label' => 'Nombre de commentaires rédigés sur la période', 'class' => 'ApiBlogRequest'),
-            ),
-            'Cahiers de textes' => array(
-                'travailAfaire' => array('label' => 'Travail à faire', 'class' => 'ApiCahierDeTexteRequest'),
-                'travailEnClasse' => array('label' => 'Travail en classe', 'class' => 'ApiCahierDeTexteRequest'),
-                'memos' => array('label' => 'Mémos', 'class' => 'ApiCahierDeTexteRequest'),
-            ),
-            'Quiz' => array(
-                'quiz' => array('label' => 'Nombre de quiz', 'class' => 'ApiQuizRequest'),
-                'nombreQuestionsEtRatio' => array('label' => 'Questions', 'class' => 'ApiQuizRequest'),
-            ),
-            'Groupes de travail' => array(
-                'nombreMessagesEtRatio' => array('label' => 'Nombre de messages', 'class' => 'ApiGroupeDeTravailRequest'),
-                'nombreDiscussionsEtRatio' => array('label' => 'Nombre de discussions', 'class' => 'ApiGroupeDeTravailRequest'),
-            )
+            'comptesEtConnexions' => array('label' => 'Comptes et connexions', 'template' => 'requests/comptes_et_connexions.tpl', 'class' => function($filter) {_classInclude('statistiques|apiuserrequest'); return new ApiUserRequest($filter); }),
+            'agendas' => array('label' => 'Agendas', 'template' => 'requests/agendas.tpl', 'class' => function($filter) {_classInclude('statistiques|apiagendarequest'); return new ApiAgendaRequest($filter); }),
+            'minimails' => array('label' => 'Minimails', 'template' => 'requests/minimails.tpl', 'class' => function($filter) {_classInclude('statistiques|apiminimailrequest'); return new ApiMinimailRequest($filter); }),
+            'classeurs' => array('label' => 'Classeurs', 'template' => 'requests/classeurs.tpl', 'class' => function($filter) {_classInclude('statistiques|apiclasseurrequest'); return new ApiClasseurRequest($filter); }),
+            'blogs' => array('label' => 'Blogs', 'template' => 'requests/blogs.tpl', 'class' => function($filter) {_classInclude('statistiques|apiblogrequest'); return new ApiBlogRequest($filter); }),
+            'cahiersDeTextes' => array('label' => 'Cahiers de textes', 'template' => 'requests/cahiers_de_textes.tpl', 'class' => function($filter) {_classInclude('statistiques|apicahierdetexterequest'); return new ApiCahierDeTexteRequest($filter); }),
+            'quiz' => array('label' => 'Quiz', 'template' => 'requests/quiz.tpl', 'class' => function($filter) {_classInclude('statistiques|apiquizrequest'); return new ApiQuizRequest($filter); }),
+            'groupesDeTravail' => array('label' => 'Groupes de travail', 'template' => 'requests/groupes_de_travail.tpl', 'class' => function($filter) {_classInclude('statistiques|apigroupedetravailrequest'); return new ApiGroupeDeTravailRequest($filter); }),
         );
     }
 
     /**
      * Returns infos concering filter
      *
-     * @param $key the key o the filter
+     * @param string $key the key o the filter
+     *
+     * @throws Exception
      *
      * @return array
      */
-    public function getFilter($key)
+    public function getFilterCategory($key)
     {
-        $filters = array();
-        foreach ($this->getFilters() as $category)
-        {
-            $filters = array_merge($filters, $category);
+        $filters = $this->getFiltersCategories();
+
+        if (!isset($filters[$key])) {
+            throw new Exception('The requested key is invalid');
         }
 
         return $filters[$key];
+    }
+
+    /**
+     * Get label for selected key
+     *
+     * @param string $key
+     * @return array
+     */
+    public function getLabel($key)
+    {
+        $filter = $this->getFilterCategory($key);
+
+        return $filter['label'];
+    }
+
+    /**
+     * Get label for selected key
+     *
+     * @param string $key
+     * @return array
+     */
+    public function getTemplate($key)
+    {
+        $filter = $this->getFilterCategory($key);
+
+        return $filter['template'];
+    }
+
+    /**
+     * Get label for selected key
+     *
+     * @param string $key
+     * @return array
+     */
+    public function getClass($key, $baseFilter)
+    {
+        $filter = $this->getFilterCategory($key);
+
+        return $filter['class']($baseFilter);
     }
 }

@@ -1,2 +1,0 @@
-Du {$ppo->filter->publishedBeginDate->format('d/m/Y')} au {$ppo->filter->publishedEndDate->format('d/m/Y')},
-{$ppo->result.evenements} événements ont été créés, soit {$ppo->result.ratio} événements par agenda.

@@ -1,1 +1,0 @@
-Au {$ppo->filter->publishedEndDate->format('d/m/Y')}, il y avait {$ppo->result.visible_internet} blogs visibles sur internet, {$ppo->result.visible_membres_iconito} blogs visibles par les membres Iconito, et {$ppo->result.visible_membres_groupe} blogs visibles par les membres des groupes.

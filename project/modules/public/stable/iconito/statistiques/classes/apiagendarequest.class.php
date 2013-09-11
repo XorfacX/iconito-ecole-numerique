@@ -33,7 +33,10 @@ class ApiAgendaRequest extends ApiBaseRequest
             $sum += $result->counter;
         }
 
-        $ratio = $sum/$this->getNombreAgendas();
+        $agendas = $this->getNombreAgendas();
+        $agendas = $agendas ? $agendas : 1;
+
+        $ratio = $sum/$agendas;
 
         return array(
             'evenements' => $sum,

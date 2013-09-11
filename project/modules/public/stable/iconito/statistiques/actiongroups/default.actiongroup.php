@@ -1,6 +1,7 @@
 <?php
 
 _classInclude('statistiques|consolidatedstatisticfilter');
+_classInclude('statistiques|apimapping');
 
 /**
  * Actiongroup du module Statistiques
@@ -15,7 +16,7 @@ class ActionGroupDefault extends CopixActionGroup
         _currentUser()->assertCredential('module:*||access|@statistiques');
     }
 
-    public function processSetFilter ()
+    public function processIndex ()
     {
         $ppo = new CopixPPO ();
 
@@ -42,6 +43,8 @@ class ActionGroupDefault extends CopixActionGroup
         CopixHTMLHeader::addCSSLink (_resource("styles/module_agenda.css"));
 
         CopixHTMLHeader::addJSLink (_resource("js/jquery/jquery.ui.datepicker-fr.js"));
+
+        $ppo->stat = _request('stat');
 
         return _arPPO($ppo, 'set_filter.tpl');
     }
@@ -87,5 +90,16 @@ class ActionGroupDefault extends CopixActionGroup
                 $toUpdate->$elem($value);
             }
         }
+    }
+
+    /**
+     * @param string $str camelCased string
+     *
+     * @return string underscored string
+     */
+    function getUnderscoredString($str) {
+      $str[0] = strtolower($str[0]);
+      $func = create_function('$c', 'return "_" . strtolower($c[1]);');
+      return preg_replace_callback('/([A-Z])/', $func, $str);
     }
 }

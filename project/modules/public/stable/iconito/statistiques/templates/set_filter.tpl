@@ -1,6 +1,6 @@
 <h2>Sélectionnez un contexte, et délimitez une période</h2>
 
-<form action="{copixurl dest="statistiques|default|setFilter"}" method="post" class="copixForm">
+<form action="{copixurl dest="statistiques|default|index"}" method="post" class="copixForm">
     <div class="field">
         <label for="context" class="form_libelle"> Contexte :</label>
         {copixzone process=statistiques|citiesGroup}
@@ -18,6 +18,8 @@
 
     <input type="submit" class="button button-confirm" value="{i18n key=copix:common.buttons.save}" />
 </form>
+
+{copixzone process=statistiques|apiRequest stat=$ppo->stat filter=$ppo->filter}
 
 <script type="text/javascript">
     setDatePicker('#date_begin, #date_end');

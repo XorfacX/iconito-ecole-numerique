@@ -1,1 +1,0 @@
-Au {$ppo->filter->publishedEndDate->format('d/m/Y')}, il y avait {$ppo->result} classeurs(s).

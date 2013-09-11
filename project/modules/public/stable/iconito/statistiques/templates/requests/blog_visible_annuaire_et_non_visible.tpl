@@ -1,1 +1,0 @@
-Au {$ppo->filter->publishedEndDate->format('d/m/Y')}, il y avait {$ppo->result.visible_annuaire} blogs visibles dans l'annuaire, et {$ppo->result.non_visible} non-visibles.
