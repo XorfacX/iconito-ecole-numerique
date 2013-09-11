@@ -56,8 +56,7 @@ class ApiBlogRequest extends ApiBaseRequest
     /**
      * Récupère le nombre de blogs visbles dans l'annuaire et non visible
      *
-     * @param string $objectType
-     * @return mixed
+     * @return array
      */
     public function getBlogVisibleAnnuaireEtNonVisible()
     {
