@@ -18,4 +18,12 @@
         <parameter name="activity_stream_adapter_auth_password" captioni18n="activitystream.parameter.adapter_auth_password" />
     </parameters>
 
+    <events>
+        <listeners>
+            <listener name="ActivityStream">
+                <event name="login" />
+            </listener>
+        </listeners>
+    </events>
+
 </moduledefinition>
