@@ -13,6 +13,7 @@ class ApiMapping
             'cahiersDeTextes' => array('label' => 'Cahiers de textes', 'template' => 'requests/cahiers_de_textes.tpl', 'class' => function($filter) {_classInclude('statistiques|apicahierdetexterequest'); return new ApiCahierDeTexteRequest($filter); }),
             'quiz' => array('label' => 'Quiz', 'template' => 'requests/quiz.tpl', 'class' => function($filter) {_classInclude('statistiques|apiquizrequest'); return new ApiQuizRequest($filter); }),
             'groupesDeTravail' => array('label' => 'Groupes de travail', 'template' => 'requests/groupes_de_travail.tpl', 'class' => function($filter) {_classInclude('statistiques|apigroupedetravailrequest'); return new ApiGroupeDeTravailRequest($filter); }),
+            'test' => array('label' => 'Valeurs de test', 'template' => 'requests/test.tpl', 'class' => function($filter) {_classInclude('statistiques|apifakerequest'); return new ApiFakeRequest; }),
         );
     }
 
