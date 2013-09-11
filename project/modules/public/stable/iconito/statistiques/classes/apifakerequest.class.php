@@ -9,9 +9,13 @@ class ApiFakeRequest
      */
     private $fakeCount;
 
-    public function getFakeResult()
+    function __construct()
     {
         $this->fakeCount = rand(1, 100);
+    }
+
+    public function getFakeResult()
+    {
         return $this->fakeCount;
     }
 

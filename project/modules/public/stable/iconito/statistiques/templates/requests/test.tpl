@@ -1,14 +1,22 @@
 <h2>{$ppo->label}</h2>
-<p>Au {$ppo->filter->publishedEndDate->format('d/m/Y')}, il y avait :
-    <ul>
-        <li>{$ppo->requestClass->getFakeResult()} blogs ouverts.</li>
-    </ul>
-</p>
 
-<p>
-    Du {$ppo->filter->publishedBeginDate->format('d/m/Y')} au {$ppo->filter->publishedEndDate->format('d/m/Y')} :
-    <ul>
-        {assign var=fake value=$ppo->requestClass->getFakeCountAndAverage()}
-        <li>{$fake.total} articles ont été rédigés, soit {$fake.average} articles par blog.</li>
-    </ul>
-</p>
+{assign var=fake value=$ppo->requestClass->getFakeCountAndAverage()}
+
+<div class="statistics">
+    <table>
+        <tbody>
+        <tr>
+            <td>Nombre de blog ouvert :</td>
+            <td><span class="results">{$ppo->requestClass->getFakeResult()}</span></td>
+        </tr>
+        <tr>
+            <td>Nombre d'article rédigés :</td>
+            <td><span class="results">{$fake.total}</span></td>
+        </tr>
+        <tr>
+            <td>Nombre d'article par blog : </td>
+            <td><span class="results">{$fake.average}</span></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
