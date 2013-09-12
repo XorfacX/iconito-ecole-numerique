@@ -1,5 +1,55 @@
 <?php
 
+use \ActivityStream\Client\Model\Resource;
+use \ActivityStream\Client\Model\ResourceInterface;
+
+/**
+ * @package     iconito
+ * @subpackage  minimail
+ * @author      Jérémy Hubert <jeremy.hubert@infogroom.fr>
+ */
+class DAORecordMinimail_to implements ResourceInterface
+{
+  /**
+   * Return a resource from the current Object
+   *
+   * @return Resource
+   */
+  public function toResource()
+  {
+    $resource = new Resource(
+      $this->title,
+      get_class($this),
+      $this->id2
+    );
+
+    $attributes = array(
+      'id_message',
+      'to_id',
+      'date_read',
+      'is_read',
+      'is_replied',
+      'is_deleted',
+      'is_forwarded',
+      'id',
+      'from_id',
+      'message',
+      'date_send',
+      'attachment1',
+      'attachment2',
+      'attachment3',
+    );
+
+    $attributesValues = array();
+    foreach ($attributes as $attribute) {
+      $attributesValues[$attribute] = $this->$attribute;
+    }
+    
+    $resource->setAttributes($attributesValues);
+
+    return $resource;
+  }
+}
 
 class DAOMinimail_to
 {

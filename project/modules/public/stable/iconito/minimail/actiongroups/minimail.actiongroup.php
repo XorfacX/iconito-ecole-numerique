@@ -302,8 +302,6 @@ class ActionGroupMinimail extends EnicActionGroup
             }
         }
 
-
-
         $tplForm->assign("dest", $dest);
         $tplForm->assign("title", $title);
         $tplForm->assign("message", $message);

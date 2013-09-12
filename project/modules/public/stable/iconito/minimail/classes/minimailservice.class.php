@@ -72,6 +72,7 @@ class MinimailService
                     }
                 }
                 // ======= Fin alerte mail ===============
+
             }
             $res = $newMp->id;
             if ($res) {

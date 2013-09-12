@@ -1,5 +1,8 @@
 <?php
 
+use \ActivityStream\Client\Model\Resource;
+use \ActivityStream\Client\Model\ResourceInterface;
+
 require_once (COPIX_UTILS_PATH . 'CopixDateTime.class.php');
 
 /**
@@ -417,7 +420,48 @@ class DAOBlogArticle
 
 }
 
-class DAORecordblogarticle
+/**
+ * @author      Jérémy Hubert <jeremy.hubert@infogroom.fr>
+ */
+class DAORecordblogarticle implements ResourceInterface
 {
-}
+  /**
+   * Return a resource from the current Object
+   *
+   * @return Resource
+   */
+  public function toResource()
+  {
+    $resource = new Resource(
+      $this->name_bact,
+      get_class($this),
+      $this->id_bact
+    );
 
+    $attributes = array(
+      'id_blog',
+      'name_blog',
+      'url_blog',
+      'sumary_bact',
+      'sumary_html_bact',
+      'content_bact',
+      'content_html_bact',
+      'format_bact',
+      'author_bact',
+      'date_bact',
+      'time_bact',
+      'url_bact',
+      'sticky_bact',
+      'is_online',
+    );
+
+    $attributesValues = array();
+    foreach ($attributes as $attribute) {
+      $attributesValues[$attribute] = $this->$attribute;
+    }
+
+    $resource->setAttributes($attributesValues);
+
+    return $resource;
+  }
+}
