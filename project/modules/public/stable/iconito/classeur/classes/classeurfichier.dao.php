@@ -5,7 +5,10 @@
 * @subpackage Classeur
 */
 
-class DAORecordClasseurFichier
+use \ActivityStream\Client\Model\Resource;
+use \ActivityStream\Client\Model\ResourceInterface;
+
+class DAORecordClasseurFichier implements ResourceInterface
 {
   protected $imgTypes = array(
     'image/jpeg',
@@ -167,6 +170,43 @@ class DAORecordClasseurFichier
   public function getExtension ()
   {
     return strtolower(strtoupper(substr(strrchr($this->fichier, '.'), 1)));
+  }
+
+
+  /**
+   * Return a resource from the current Object
+   *
+   * @return Resource
+   */
+  public function toResource()
+  {
+    $resource = new Resource(
+      $this->titre,
+      get_class($this),
+      $this->id
+    );
+
+    $attributes = array(
+      'classeur_id',
+      'dossier_id',
+      'commentaire',
+      'fichier',
+      'taille',
+      'type',
+      'cle',
+      'date_upload',
+      'user_type',
+      'user_id',
+    );
+
+    $attributesValues = array();
+    foreach ($attributes as $attribute) {
+      $attributesValues[$attribute] = $this->$attribute;
+    }
+
+    $resource->setAttributes($attributesValues);
+
+    return $resource;
   }
 }
 

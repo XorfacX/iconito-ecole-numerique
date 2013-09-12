@@ -281,7 +281,8 @@ class ActionGroupEvent extends CopixActionGroup
                 $daoEvent->update ($record);
             } else{//on fait un ajout
                 $daoEvent->insert ($record);
-                CopixEventNotifier::notify ('createEvent', array ('event'=>$record));
+                // Todo: Trouver comment récupérer le contexte pour l'envoyer aussi
+                CopixEventNotifier::notify('createEvent', array('event'=>$record));
                 //if (!$record-id_event)
                 //	return CopixActionGroup::process('agenda|Event::getEdit', array('e'=>1, 'errors'=>$errors));
             }

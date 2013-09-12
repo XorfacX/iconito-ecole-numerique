@@ -42,6 +42,7 @@ class DAORecordEvent implements ResourceInterface
       'heure_deb_event' => $this->heuredeb_event,
       'heure_fin_event' => $this->heurefin_event,
       'place' => $this->place_event,
+      'id_agenda' => $this->id_agenda,
     ));
 
     return $resource;

@@ -1891,6 +1891,13 @@ class ActionGroupDefault extends enicActionGroup
 
         $fichierDAO->insert($ppo->fichier);
 
+        // On récupère le dossier root
+        $dossier = $ppo->dossier;
+        while ($dossier->parent) {
+          $dossier = $dossierDAO->get($dossier->parent_id);
+        }
+        CopixEventNotifier::notify('createFile', array('file'=>$ppo->fichier, 'folder'=>$dossier));
+
         $extension = strtolower(strrchr($_FILES['fichiers']['name'][0], '.'));
         $fichierPhysique = $dir.$ppo->fichier->id.'-'.$ppo->fichier->cle.$extension;
           if (!file_exists(dirname($fichierPhysique))) {
