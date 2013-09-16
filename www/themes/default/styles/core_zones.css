@@ -289,7 +289,7 @@ div.legals a {
  * JQueryUI HACKS
  ***********************************************/
 img.ui-datepicker-trigger {
-	vertical-align: bottom;
+	vertical-align:middle;
 	}
 	
 p.ui-state-error {
@@ -565,7 +565,7 @@ input[required] {
 	font-size:0px;
 	vertical-align:top;
 }
-form .format {
+form .format, form .ui-datepicker-append {
 	padding:0 0 0 .5em;
 	color:#777;
 	font-size:0.85em; font-style:italic;
