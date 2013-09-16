@@ -27,6 +27,8 @@
                 <event name="createFile" />
                 <event name="createArticle" />
                 <event name="createComment" />
+                <event name="createQuiz" />
+                <event name="createQuestion" />
             </listener>
         </listeners>
     </events>

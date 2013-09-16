@@ -596,7 +596,19 @@ class ClasseurService
         }
         
         $fichierDAO->insert($fichier);
-        
+
+        $dossierDAO = _ioDAO('classeur|classeurdossier');
+        CopixEventNotifier::notify('createFile', array('file'=>$fichier, 'folder'=>$dossier));
+        if ($dossier) {
+          while ($dossier->parent) {
+            $dossier = $dossierDAO->get($dossier->parent_id);
+          }
+        } else {
+          $dossier = null;
+        }
+
+        CopixEventNotifier::notify('createFile', array('file'=>$fichier, 'folder'=>$dossier));
+
         copy($file, $dir.$fichier->id.'-'.$fichier->cle.$extension);
 
         ClasseurService::doAutoRotateJpegByOrientation( $dir.$fichier->id.'-'.$fichier->cle.$extension, $extension );

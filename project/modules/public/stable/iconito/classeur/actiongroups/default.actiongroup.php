@@ -542,7 +542,7 @@ class ActionGroupDefault extends enicActionGroup
                         $ppo->fichier->fichier = $ppo->fichier->titre.'_'.$user['prenom'].'_'.$user['nom'].$extension;
                     }
                 }
-                
+
                 // Mise à jour de l'enregistrement fichier
                 $fichierDAO->update($ppo->fichier);
                 $confirmMessage = CopixI18N::get ('classeur|classeur.message.confirmUpdate');
@@ -576,7 +576,7 @@ class ActionGroupDefault extends enicActionGroup
                 if (!file_exists($dir)) {
                     mkdir($dir, 0755, true);
                 }
-                
+
                 // Traitement de l'upload multiple (prédomine sur l'upload simple)
                 if (!empty($uploadedFiles)) {
                     foreach ($uploadedFiles as $folder) {
@@ -641,7 +641,7 @@ class ActionGroupDefault extends enicActionGroup
                                         $fichier->user_id       = _currentUser()->getExtra('id');
                                         
                                         $fichierDAO->insert($fichier);
-                                        
+
                                         if (isset($correspondanceDossiers[$dossierParent])) {
                                             classeurService::updateFolderInfos($correspondanceDossiers[$dossierParent]);
                                         }
@@ -1890,13 +1890,6 @@ class ActionGroupDefault extends enicActionGroup
         $ppo->fichier->user_id       = _currentUser()->getExtra('id');
 
         $fichierDAO->insert($ppo->fichier);
-
-        // On récupère le dossier root
-        $dossier = $ppo->dossier;
-        while ($dossier->parent) {
-          $dossier = $dossierDAO->get($dossier->parent_id);
-        }
-        CopixEventNotifier::notify('createFile', array('file'=>$ppo->fichier, 'folder'=>$dossier));
 
         $extension = strtolower(strrchr($_FILES['fichiers']['name'][0], '.'));
         $fichierPhysique = $dir.$ppo->fichier->id.'-'.$ppo->fichier->cle.$extension;
