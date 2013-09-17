@@ -30,6 +30,7 @@
             $ppo->desc = $this->service->getDescription();
             $ppo->items = $this->service->getItems();
             $ppo->isEns = ($this->user->type == 'USER_ENS');
+            $ppo->listUrl = $this->helpers->config('rssetagere|list_url');
             return _arPPO($ppo, 'default.tpl');
         }
 
