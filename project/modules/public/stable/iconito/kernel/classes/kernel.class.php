@@ -3041,10 +3041,10 @@ if(DEBUG) {
               $schoolRoot = &$cityRoot['BU_ECOLE_'.$city->id_vi]['children'];
             }
 
-            if (_currentUser()->testCredential('module:school|'.$school->id.'|classroom|create@gestionautonome')) {
+            if (_currentUser()->testCredential('module:school|'.$school->numero.'|classroom|create@gestionautonome')) {
                 $classrooms = $classroomDAO->getBySchool($school->numero, $grade);
             } else {
-                $classrooms = $classroomDAO->findBySchoolIdAndUserGroups($school->id, $groups['gestionautonome|iconitogrouphandler'], $grade);
+                $classrooms = $classroomDAO->findBySchoolIdAndUserGroups($school->numero, $groups['gestionautonome|iconitogrouphandler'], $grade);
             }
 
             foreach ($classrooms as $classroom) {
