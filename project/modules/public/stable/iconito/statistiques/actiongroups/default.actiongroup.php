@@ -13,7 +13,7 @@ class ActionGroupDefault extends CopixActionGroup
 {
     public function beforeAction()
     {
-        _currentUser()->assertCredential('module:*||access|@statistiques');
+//        _currentUser()->assertCredential('module:*||access|@statistiques');
     }
 
     public function processIndex ()
@@ -45,6 +45,9 @@ class ActionGroupDefault extends CopixActionGroup
         CopixHTMLHeader::addJSLink (_resource("js/jquery/jquery.ui.datepicker-fr.js"));
 
         $ppo->stat = _request('stat');
+
+//      À décommenter après le merge avec la branche feature-activity-stream-send
+//        $ppo->contexts = Kernel::getContextTree(true);
 
         return _arPPO($ppo, 'set_filter.tpl');
     }

@@ -4,6 +4,23 @@
     <div class="field">
         <label for="context" class="form_libelle"> Périmètre </label>
         {copixzone process=statistiques|citiesGroup}
+        {* À décommenter après le merge avec la branche feature-activity-stream-send, puis supprimer les zones autres que apirequest, et les vues associées *}
+        {*<select name="context">
+            {foreach from=$ppo->contexts key=key item=context}
+                {if get_class($context.element) == 'CompiledDAORecordkernel_bu_groupe_villes'}
+                    <option value="{$key}">{$context.element->nom_groupe}</option>
+                {/if}
+                {if get_class($context.element) == 'CompiledDAORecordkernel_bu_ville'}
+                    <option value="{$key}">&nbsp;&nbsp;{$context.element->nom}</option>
+                {/if}
+                {if get_class($context.element) == 'CompiledDAORecordkernel_bu_ecole'}
+                    <option value="{$key}">&nbsp;&nbsp;&nbsp;&nbsp;{$context.element->nom}</option>
+                {/if}
+                {if get_class($context.element) == 'CompiledDAORecordkernel_bu_ecole_classe'}
+                    <option value="{$key}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$context.element->nom}</option>
+                {/if}
+            {/foreach}
+        </select>*}
     </div>
 
     <div class="field">
