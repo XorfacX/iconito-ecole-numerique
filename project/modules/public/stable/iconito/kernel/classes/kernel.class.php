@@ -1451,12 +1451,13 @@ if(DEBUG) {
                      echo '<li>$parent[0][] = '.$parent[0]['type']."/".$parent[0]['id']."</li>";
                      echo '<li>$node_* = '.$node_type."/".$node_id."</li>";
                      */
-
+                    $perso = new stdClass();
                     foreach( $parent_modules AS $parent_module ) {
                         /*
                          $perso->node_type   = $parent[0]['type'];
                          $perso->node_id     = $parent[0]['id'];
                          */
+                        
                         $perso->node_type   = $node_type;
                         $perso->node_id     = $node_id;
 
@@ -1574,13 +1575,14 @@ if(DEBUG) {
 
         // Cas particulier : module d'administration
         if( $node_type == "ROOT" && Kernel::getLevel( $node_type, $node_id ) >= 60 ) {
+            $sysutils = new stdClass();
             $sysutils->node_type   = $node_type;
             $sysutils->node_id     = $node_id;
             $sysutils->module_id   = NULL;
             $sysutils->module_type = 'MOD_SYSUTILS';
             $sysutils->module_nom   = Kernel::Code2Name ('MOD_SYSUTILS');
             $modules[] = clone $sysutils;
-
+            $charte = new stdClass();
             $charte->node_type   = $node_type;
             $charte->node_id     = $node_id;
             $charte->module_id   = NULL;
@@ -1598,6 +1600,7 @@ if(DEBUG) {
         method_exists( $SsoGaelService, "canSsoGael" ) &&
         $SsoGaelService->canSsoGael() &&
         Kernel::getLevel( $node_type, $node_id ) >= 60 ) {
+            $comptes = new stdClass();
             $comptes->node_type   = $node_type;
             $comptes->node_id     = $node_id;
             $comptes->module_type = 'MOD_SSOGAEL';
@@ -1609,6 +1612,7 @@ if(DEBUG) {
 
         // Cas particulier : gestion des groupes de ville (AC/TICE)
         if( $node_type == "ROOT" && Kernel::getLevel( $node_type, $node_id ) >= 60 ) {
+            $mod_grvilles = new stdClass();
             $mod_grvilles->node_type   = $node_type;
             $mod_grvilles->node_id     = $node_id;
             $mod_grvilles->module_type = 'MOD_REGROUPEMENTS';
