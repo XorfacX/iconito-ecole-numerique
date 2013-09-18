@@ -13,7 +13,7 @@ class ActionGroupDefault extends CopixActionGroup
 {
     public function beforeAction()
     {
-//        _currentUser()->assertCredential('module:*||access|@statistiques');
+        _currentUser()->assertCredential('module:*||access|@statistiques');
     }
 
     public function processIndex ()
