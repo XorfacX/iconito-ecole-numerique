@@ -1689,10 +1689,9 @@ if(DEBUG) {
 
     public function getModParentInfo( $type, $id )
     {
-        //echo "getModParentInfo ($type,$id)";
         $dao = _dao("kernel|kernel_mod_enabled");
         $result = $dao->getByModule($type,$id);
-        //die();
+
         if( count( $result ) ) {
             $node = $result[0];
             $info = Kernel::getNodeInfo( $node->node_type, $node->node_id, false );
@@ -1702,6 +1701,7 @@ if(DEBUG) {
                 else // Todo corriger
                 $info["module"] = "kernel";
             }
+
             return( $info );
         }
         return false;
@@ -3000,7 +3000,6 @@ if(DEBUG) {
           $criteria->orderBy('nom_groupe');
           $citiesGroups = $citiesGroupDAO->findBy($criteria);
       } else {
-          $groups = _currentUser()->getGroups();
           $citiesGroups = $citiesGroupDAO->findByUserGroups($groups['gestionautonome|iconitogrouphandler']);
       }
 
@@ -3014,7 +3013,7 @@ if(DEBUG) {
         }
 
         if (_currentUser()->testCredential('module:cities_group|'.$citiesGroup->id_grv.'|city|create@gestionautonome')) {
-          $cities = $cityDAO->getByIdGrville($citiesGroup->id);
+          $cities = $cityDAO->getByIdGrville($citiesGroup->id_grv);
         } else {
           $cities = $cityDAO->findByCitiesGroupIdAndUserGroups($citiesGroup->id_grv, $groups['gestionautonome|iconitogrouphandler']);
         }
@@ -3059,58 +3058,5 @@ if(DEBUG) {
       }
 
       return $tree;
-    }
-
-    /**
-     * Retourne le context courant, et les parents
-     *
-     * @param $context
-     *
-     * @return array
-     */
-    public static function getParentContexts($context)
-    {
-      $flatTree = static::getContextTree(true);
-
-      $contexts = array($context => $flatTree[$context]['element']);
-      while ($context = $flatTree[$context]['parent']) {
-        $contexts[$context] = $flatTree[$context]['element'];
-      }
-
-      return $contexts;
-    }
-
-    /**
-     * Retourne le context courant, et les parents en tant que Resources
-     *
-     * @param $context
-     *
-     * @return array
-     */
-    public static function getParentContextsAsResources($context)
-    {
-      $flatTree = static::getContextTree(true);
-
-      $contexts = array($context => $flatTree[$context]['element']->toResource());
-      while ($context = $flatTree[$context]['parent']) {
-        $contexts[$context] = $flatTree[$context]['element']->toResource();
-      }
-
-      return $contexts;
-    }
-
-    /**
-     * Récupère les contextes à partir du module
-     *
-     * @param string  $type Le type de module
-     * @param integer $id   L'identifiant de l'objet
-     *
-     * @return array<Resource>
-     */
-    public static function getModContexts($type, $id)
-    {
-      $modInfos = static::getModParentInfo($type, $id);
-
-      return static::getParentContextsAsResources($modInfos['type'].'_'.$modInfos['id']);
     }
 }

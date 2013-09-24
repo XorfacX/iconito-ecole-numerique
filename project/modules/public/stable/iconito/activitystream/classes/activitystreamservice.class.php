@@ -9,6 +9,7 @@ _classInclude('activityStream|StreamObjectEvent');
 _classInclude('activityStream|ActivityEvent');
 _classInclude('activityStream|StatisticEvent');
 _classInclude('activityStream|ActivityStreamPerson');
+_classInclude('kernel|Kernel');
 
 /**
  * Classe de service de l'activyStream
@@ -19,6 +20,11 @@ class ActivityStreamService
      * @var ActivityStreamService L'instance courante
      */
     protected static $instance;
+
+    /**
+     * @var array Mise en cache de l'arbre des contextes
+     */
+    protected $contextTree;
 
     const
         EVENT_ACTIVITY = 'activity_stream.push_activity',
@@ -108,5 +114,102 @@ class ActivityStreamService
     public function getPersonFromUserInfo(array $userInfo)
     {
         return new ActivityStreamPerson($userInfo['type'], $userInfo['id'], $userInfo['prenom'], $userInfo['nom']);
+    }
+
+
+    /**
+     * Retourne les resources parentes de la ressource passée en paramètre
+     *
+     * @param string $resourceIdentifier
+     *
+     * @return array
+     */
+    public function getParentResources($resourceIdentifier)
+    {
+        // On récupère les contextes à plat
+        $tree = $this->getContextTree();
+
+        // Le tableau des contextes parents
+        $parentContexts = array();
+
+        while (isset($tree[$resourceIdentifier]) && ($resourceIdentifier = $tree[$resourceIdentifier]['parent'])){
+            if ($tree[$resourceIdentifier]['element'] instanceof ResourceInterface){
+                $parentContexts[] = $tree[$resourceIdentifier]['element']->toResource();
+            }
+        }
+
+        return $parentContexts;
+    }
+
+    /**
+     * Récupère les contextes à partir du module
+     *
+     * @param string  $type Le type de module
+     * @param integer $id   L'identifiant de l'objet
+     *
+     * @return array<Resource>
+     */
+    public function getContexts($type, $id)
+    {
+        $modInfos = Kernel::getModParentInfo($type, $id);
+
+        $parentIdentifier = $this->formatResourceIdentifier($modInfos['type'], $modInfos['id']);
+
+        // Les contextes parents
+        $contexts = $this->getParentResources($parentIdentifier);
+
+        // On ajoute la ressource parente au début du tableau
+        array_unshift($contexts, $this->getResource($modInfos['type'], $modInfos['id']));
+
+        return $contexts;
+    }
+
+    /**
+     * Retourne la ressource ActivityStream correspondant à la ressource Ecole Numérique
+     *
+     * @param string $type Le type de la ressource Ecole Numérique
+     * @param int $id L'identifiant de la ressource Ecole Numérique
+     */
+    public function getResource($type, $id)
+    {
+        // On récupère les contextes à plat
+        $tree = $this->getContextTree();
+
+        $resourceIdentifier = $this->formatResourceIdentifier($type, $id);
+
+        if (isset($tree[$resourceIdentifier]['element']) && $tree[$resourceIdentifier]['element'] instanceof ResourceInterface)
+        {
+            return $tree[$resourceIdentifier]['element']->toResource();
+        }
+
+        return null;
+    }
+
+    /**
+     * Retourne l'identifieur de la ressource en fonction de son type et de son identifiant
+     *
+     * @param string $type Le type
+     * @param int $id L'identifiant
+     *
+     * @return string
+     */
+    protected function formatResourceIdentifier($type, $id)
+    {
+        return $type.'_'.$id;
+    }
+
+    /**
+     * Retourne l'arbre des contexte à plat
+     *
+     * @return array
+     */
+    protected function getContextTree()
+    {
+        if (null === $this->contextTree)
+        {
+            $this->contextTree = Kernel::getContextTree(true);
+        }
+
+        return $this->contextTree;
     }
 }

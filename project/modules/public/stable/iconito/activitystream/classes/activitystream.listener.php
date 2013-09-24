@@ -8,54 +8,68 @@ _classInclude('activityStream|ActivityStreamService');
 class ListenerActivityStream extends CopixListener
 {
     /**
-     * Listener sur le login
-     *
-     * @param $event
-     * @param $eventResponse
+     * @var ActivityStreamService
      */
-    public function processLogin($event, $eventResponse)
+    protected $activityStreamService;
+
+    /**
+     * Surcharge du constructeur afin de stocker la classe de service
+     */
+    public function __construct()
     {
-        $activityStreamService = new ActivityStreamService();
-        $activityStreamService->logActivity(
-            'login',
-            $activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras())
-        );
+        $this->activityStreamService = new ActivityStreamService();
     }
 
     /**
-     * Listener sur la crétion d'événements
+     * Listener sur le login
      *
-     * @param $event
-     * @param $eventResponse
+     * @param CopixEvent $event
+     * @param CopixEventResponse $eventResponse
      */
-    public function processCreateEvent($event, $eventResponse)
+    public function processLogin(CopixEvent $event, CopixEventResponse $eventResponse)
     {
-        $activityStreamService = new ActivityStreamService();
-        $eventObject = $event->getParam('event');
-        $contexts = Kernel::getModContexts('MOD_AGENDA', $eventObject->id_agenda);
+        $this->activityStreamService->logActivity(
+            'login',
+            $this->activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras())
+        );
 
-        $activityStreamService->logActivity(
+        _classInclude('activitystream|activitystreamunittask');
+
+        $t = new ActivityStreamUnitTask();
+
+        $t->processStat();
+    }
+
+    /**
+     * Listener sur la création d'événements
+     *
+     * @param CopixEvent $event
+     * @param CopixEventResponse $eventResponse
+     */
+    public function processCreateEvent(CopixEvent $event, CopixEventResponse $eventResponse)
+    {
+        $eventObject = $event->getParam('event');
+
+        $this->activityStreamService->logActivity(
             'create',
-            $activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras()),
+            $this->activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras()),
             $eventObject->toResource(),
-            reset($contexts),
-            $contexts
+            $this->activityStreamService->getResource('MOD_AGENDA', $eventObject->id_agenda),
+            $this->activityStreamService->getContexts('MOD_AGENDA', $eventObject->id_agenda)
         );
     }
 
     /**
      * Listener sur l'envoi de minimails
      *
-     * @param $event
-     * @param $eventResponse
+     * @param CopixEvent $event
+     * @param CopixEventResponse $eventResponse
      */
-    public function processSendMinimail($event, $eventResponse)
+    public function processSendMinimail(CopixEvent $event, CopixEventResponse $eventResponse)
     {
-        $activityStreamService = new ActivityStreamService();
-
-        $activityStreamService->logActivity(
+        $this->activityStreamService->logActivity(
             'create',
-            $activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras()),
+            $this->activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras()),
             $event->getParam('minimail')->toResource()
         );
     }
@@ -63,107 +77,97 @@ class ListenerActivityStream extends CopixListener
     /**
      * Listener sur la création de fichiers
      *
-     * @param $event
-     * @param $eventResponse
+     * @param CopixEvent $event
+     * @param CopixEventResponse $eventResponse
      */
-    public function processCreateFile($event, $eventResponse)
+    public function processCreateFile(CopixEvent $event, CopixEventResponse $eventResponse)
     {
-        $activityStreamService = new ActivityStreamService();
+        // TODO check si les metaData du fichier sont envoyées
         $file = $event->getParam('file');
-        $contexts = Kernel::getModContexts('MOD_CLASSEUR', $file->classeur_id);
 
-        $activityStreamService->logActivity(
+        $this->activityStreamService->logActivity(
             'create',
-            $activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras()),
+            $this->activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras()),
             $file->toResource(),
             $event->getParam('folder')->toResource(),
-            $contexts
+            $this->activityStreamService->getContexts('MOD_CLASSEUR', $file->classeur_id)
         );
     }
 
     /**
      * Listener sur la création d'articles
      *
-     * @param $event
-     * @param $eventResponse
+     * @param CopixEvent $event
+     * @param CopixEventResponse $eventResponse
      */
-    public function processCreateArticle($event, $eventResponse)
+    public function processCreateArticle(CopixEvent $event, CopixEventResponse $eventResponse)
     {
-        $activityStreamService = new ActivityStreamService();
-
         $article = $event->getParam('article');
-        $contexts = Kernel::getModContexts('MOD_BLOG', $article->id_blog);
 
-        $activityStreamService->logActivity(
+        $this->activityStreamService->logActivity(
             'create',
-            $activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras()),
+            $this->activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras()),
             $article->toResource(),
             $event->getParam('blog')->toResource(),
-            $contexts
+            $this->activityStreamService->getContexts('MOD_BLOG', $article->id_blog)
         );
     }
 
     /**
      * Listener sur la création de commentaires
      *
-     * @param $event
-     * @param $eventResponse
+     * @param CopixEvent $event
+     * @param CopixEventResponse $eventResponse
      */
-    public function processCreateComment($event, $eventResponse)
+    public function processCreateComment(CopixEvent $event, CopixEventResponse $eventResponse)
     {
-        $activityStreamService = new ActivityStreamService();
         $article = $event->getParam('article');
-        $contexts = Kernel::getModContexts('MOD_BLOG', $article->id_blog);
 
-        $activityStreamService->logActivity(
+        $this->activityStreamService->logActivity(
             'create',
-            $activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras()),
+            $this->activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras()),
             $event->getParam('comment')->toResource(),
             $article->toResource(),
-            $contexts
+            $this->activityStreamService->getContexts('MOD_BLOG', $article->id_blog)
         );
     }
 
     /**
      * Listener sur la création de quiz
      *
-     * @param $event
-     * @param $eventResponse
+     * @param CopixEvent $event
+     * @param CopixEventResponse $eventResponse
      */
-    public function processCreateQuiz($event, $eventResponse)
+    public function processCreateQuiz(CopixEvent $event, CopixEventResponse $eventResponse)
     {
-        $activityStreamService = new ActivityStreamService();
         $quiz = $event->getParam('quiz');
-        $contexts = Kernel::getModContexts('MOD_QUIZ', $quiz->gr_id);
+        $context = $this->activityStreamService->getContexts('MOD_QUIZ', $quiz->gr_id);
 
-
-        $activityStreamService->logActivity(
+        $this->activityStreamService->logActivity(
             'create',
-            $activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras()),
+            $this->activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras()),
             $quiz->toResource(),
-            null,
-            $contexts
+            count($context) > 0 ? array_shift($context) : null,
+            $context
         );
     }
 
     /**
      * Listener sur la création de question de quiz
      *
-     * @param $event
-     * @param $eventResponse
+     * @param CopixEvent $event
+     * @param CopixEventResponse $eventResponse
      */
-    public function processCreateQuestion($event, $eventResponse)
+    public function processCreateQuestion(CopixEvent $event, CopixEventResponse $eventResponse)
     {
-        $activityStreamService = new ActivityStreamService();
         $quiz = $event->getParam('quiz');
-        $contexts = Kernel::getModContexts('MOD_QUIZ', $quiz->gr_id);
 
-        $activityStreamService->logActivity(
+        $this->activityStreamService->logActivity(
             'create',
-            $activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras()),
+            $this->activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras()),
             $event->getParam('question')->toResource(),
             $quiz,
-            $contexts
+            $this->activityStreamService->getContexts('MOD_QUIZ', $quiz->gr_id)
         );
     }
 }
