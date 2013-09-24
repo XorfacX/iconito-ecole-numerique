@@ -2975,5 +2975,142 @@ if(DEBUG) {
         return CopixSession::get('flash|'.$type);
     }
 
+    /**
+     * Retourne l'arbre des contextes de l'utilisateur
+     *
+     * @param bool $flat true pour retourner un tableau simple des contextes, sinon, retournera un arbre
+     *
+     * @return array
+     */
+    public static function getContextTree($flat = false)
+    {
+      $citiesGroupDAO = _ioDAO('kernel|kernel_bu_groupe_villes');
+      $cityDAO = _ioDAO('kernel|kernel_bu_ville');
+      $schoolDAO = _ioDAO('kernel|kernel_bu_ecole');
+      $classroomDAO = _ioDAO('kernel|kernel_bu_ecole_classe');
+      $groups = _currentUser()->getGroups();
 
+      // Récupération de l'année scolaire
+      if (is_null($grade = _sessionGet('grade'))) {
+          $grade = Kernel::getAnneeScolaireCourante()->id_as;
+      }
+
+      if (_currentUser()->testCredential('module:*||cities_group|create@gestionautonome')) {
+          $criteria = _daoSp();
+          $criteria->orderBy('nom_groupe');
+          $citiesGroups = $citiesGroupDAO->findBy($criteria);
+      } else {
+          $groups = _currentUser()->getGroups();
+          $citiesGroups = $citiesGroupDAO->findByUserGroups($groups['gestionautonome|iconitogrouphandler']);
+      }
+
+      $tree = array();
+      foreach ($citiesGroups as $citiesGroup) {
+        if ($flat) {
+          $tree['citiesGroup-'.$citiesGroup->id_grv] = array('element' => $citiesGroup, 'parent' => null);
+        } else {
+          $tree['citiesGroup-'.$citiesGroup->id_grv] = array('element' => $citiesGroup, 'children' => array());
+          $root = &$tree['citiesGroup-'.$citiesGroup->id_grv]['children'];
+        }
+
+        if (_currentUser()->testCredential('module:cities_group|'.$citiesGroup->id_grv.'|city|create@gestionautonome')) {
+          $cities = $cityDAO->getByIdGrville($citiesGroup->id);
+        } else {
+          $cities = $cityDAO->findByCitiesGroupIdAndUserGroups($citiesGroup->id_grv, $groups['gestionautonome|iconitogrouphandler']);
+        }
+
+        foreach ($cities as $city) {
+          if ($flat) {
+            $tree['BU_VILLE_'.$city->id_vi] = array('element' => $city, 'parent' => 'citiesGroup-'.$citiesGroup->id_grv);
+          } else {
+            $root['BU_VILLE_'.$city->id_vi] = array('element' => $city, 'children' => array());
+            $cityRoot = &$root['BU_VILLE_'.$city->id_vi]['children'];
+          }
+
+          if (_currentUser()->testCredential('module:city|'.$city->id_vi.'|school|create@gestionautonome')) {
+              $schools = $schoolDAO->getByCity($city->id_vi);
+          } else {
+              $schools = $schoolDAO->findByCityIdAndUserGroups($city->id_vi, $groups['gestionautonome|iconitogrouphandler']);
+          }
+
+          foreach ($schools as $school) {
+            if ($flat) {
+              $tree['BU_ECOLE_'.$school->numero] = array('element' => $school, 'parent' => 'BU_VILLE_'.$city->id_vi);
+            } else {
+              $cityRoot['BU_ECOLE_'.$school->numero] = array('element' => $school, 'children' => array());
+              $schoolRoot = &$cityRoot['BU_ECOLE_'.$city->id_vi]['children'];
+            }
+
+            if (_currentUser()->testCredential('module:school|'.$school->numero.'|classroom|create@gestionautonome')) {
+                $classrooms = $classroomDAO->getBySchool($school->numero, $grade);
+            } else {
+                $classrooms = $classroomDAO->findBySchoolIdAndUserGroups($school->numero, $groups['gestionautonome|iconitogrouphandler'], $grade);
+            }
+
+            foreach ($classrooms as $classroom) {
+              if ($flat) {
+                $tree['BU_CLASSE_'.$classroom->id] = array('element' => $classroom, 'parent' => 'BU_ECOLE_'.$school->numero);
+              } else {
+                $schoolRoot['BU_CLASSE_'.$classroom->id] = array('element' => $classroom, 'children' => array());
+              }
+            }
+          }
+        }
+      }
+
+      return $tree;
+    }
+
+    /**
+     * Retourne le context courant, et les parents
+     *
+     * @param $context
+     *
+     * @return array
+     */
+    public static function getParentContexts($context)
+    {
+      $flatTree = static::getContextTree(true);
+
+      $contexts = array($context => $flatTree[$context]['element']);
+      while ($context = $flatTree[$context]['parent']) {
+        $contexts[$context] = $flatTree[$context]['element'];
+      }
+
+      return $contexts;
+    }
+
+    /**
+     * Retourne le context courant, et les parents en tant que Resources
+     *
+     * @param $context
+     *
+     * @return array
+     */
+    public static function getParentContextsAsResources($context)
+    {
+      $flatTree = static::getContextTree(true);
+
+      $contexts = array($context => $flatTree[$context]['element']->toResource());
+      while ($context = $flatTree[$context]['parent']) {
+        $contexts[$context] = $flatTree[$context]['element']->toResource();
+      }
+
+      return $contexts;
+    }
+
+    /**
+     * Récupère les contextes à partir du module
+     *
+     * @param string  $type Le type de module
+     * @param integer $id   L'identifiant de l'objet
+     *
+     * @return array<Resource>
+     */
+    public static function getModContexts($type, $id)
+    {
+      $modInfos = static::getModParentInfo($type, $id);
+
+      return static::getParentContextsAsResources($modInfos['type'].'_'.$modInfos['id']);
+    }
 }

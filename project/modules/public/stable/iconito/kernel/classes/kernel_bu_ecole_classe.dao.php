@@ -1,6 +1,9 @@
 <?php
 
-class DAORecordKernel_bu_ecole_classe
+use \ActivityStream\Client\Model\Resource;
+use \ActivityStream\Client\Model\ResourceInterface;
+
+class DAORecordKernel_bu_ecole_classe implements ResourceInterface
 {
   protected $_levels = null;
   protected $_school = null;
@@ -8,6 +11,38 @@ class DAORecordKernel_bu_ecole_classe
   public function __toString ()
   {
     return $this->nom.' ('.implode(' - ', $this->getLevels ()->fetchAll ()).')';
+  }
+
+  /**
+   * Return a resource from the current Object
+   *
+   * @return Resource
+   */
+  public function toResource()
+  {
+    $resource = new Resource(
+      $this->nom,
+      get_class($this),
+      $this->id
+    );
+
+    $attributes = array(
+      'ecole',
+      'annee_scol',
+      'is_validee',
+      'is_supprimee',
+      '_levels',
+      '_school',
+    );
+
+    $attributesValues = array();
+    foreach ($attributes as $attribute) {
+      $attributesValues[$attribute] = $this->$attribute;
+    }
+
+    $resource->setAttributes($attributesValues);
+
+    return $resource;
   }
 
   public function getSchool ()

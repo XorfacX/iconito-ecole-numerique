@@ -1,4 +1,8 @@
 <?php
+
+use \ActivityStream\Client\Model\Resource;
+use \ActivityStream\Client\Model\ResourceInterface;
+
 /**
 * @package	copix
 * @version	$Id: blog.dao.class.php,v 1.9 2006-10-09 16:21:31 cbeyer Exp $
@@ -65,6 +69,41 @@ class DAOBlog
 }
 
 
-class DAORecordBlog
+class DAORecordBlog implements ResourceInterface
 {
+  /**
+   * Return a resource from the current Object
+   *
+   * @return Resource
+   */
+  public function toResource()
+  {
+    $resource = new Resource(
+      $this->name_blog,
+      get_class($this),
+      $this->id_blog,
+      $this->url_blog
+    );
+
+    $attributes = array(
+      'id_ctpt',
+      'logo_blog',
+      'style_blog_file',
+      'is_public',
+      'privacy',
+      'has_comments_activated',
+      'type_moderation_comments',
+      'default_format_articles',
+      'template',
+    );
+
+    $attributesValues = array();
+    foreach ($attributes as $attribute) {
+      $attributesValues[$attribute] = $this->$attribute;
+    }
+
+    $resource->setAttributes($attributesValues);
+
+    return $resource;
+  }
 }

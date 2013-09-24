@@ -1,6 +1,9 @@
 <?php
 
-class DAORecordKernel_bu_ville
+use \ActivityStream\Client\Model\Resource;
+use \ActivityStream\Client\Model\ResourceInterface;
+
+class DAORecordKernel_bu_ville implements ResourceInterface
 {
   protected $_citiesGroup = null;
 
@@ -14,6 +17,35 @@ class DAORecordKernel_bu_ville
     }
 
     return $this->_citiesGroup;
+  }
+
+  /**
+   * Return a resource from the current Object
+   *
+   * @return Resource
+   */
+  public function toResource()
+  {
+    $resource = new Resource(
+      $this->nom,
+      get_class($this),
+      $this->id_vi
+    );
+
+    $attributes = array(
+      'date_creation',
+      'id_grville',
+      'canon',
+    );
+
+    $attributesValues = array();
+    foreach ($attributes as $attribute) {
+      $attributesValues[$attribute] = $this->$attribute;
+    }
+
+    $resource->setAttributes($attributesValues);
+
+    return $resource;
   }
 }
 

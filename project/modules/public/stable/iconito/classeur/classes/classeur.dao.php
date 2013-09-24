@@ -1,11 +1,14 @@
 <?php
 
+use \ActivityStream\Client\Model\Resource;
+use \ActivityStream\Client\Model\ResourceInterface;
+
 /**
 * @package    Iconito
 * @subpackage Classeur
 */
 
-class DAORecordClasseur
+class DAORecordClasseur implements ResourceInterface
 {
   public function __toString ()
   {
@@ -25,6 +28,39 @@ class DAORecordClasseur
 
       return count($dossierDAO->getEnfantsDirects($this->id, null, $withLockers)->fetchAll()) > 0 ? true : false;
     }
+
+  /**
+   * Return a resource from the current Object
+   *
+   * @return Resource
+   */
+  public function toResource()
+  {
+    $resource = new Resource(
+      $this->titre,
+      get_class($this),
+      $this->id
+    );
+
+    $attributes = array(
+      'cle',
+      'date_creation',
+      'date_publication',
+      'public',
+      'upload_fs',
+      'upload_db',
+      'upload_pw',
+    );
+
+    $attributesValues = array();
+    foreach ($attributes as $attribute) {
+      $attributesValues[$attribute] = $this->$attribute;
+    }
+
+    $resource->setAttributes($attributesValues);
+
+    return $resource;
+  }
 }
 
 class DAOClasseur
