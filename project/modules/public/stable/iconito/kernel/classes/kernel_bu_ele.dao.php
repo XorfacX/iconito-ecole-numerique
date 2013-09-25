@@ -1,5 +1,8 @@
 <?php
 
+use ActivityStream\Client\Model\Resource;
+use ActivityStream\Client\Model\ResourceInterface;
+
 /**
  * Surcharge de la DAO Kernel_bu_ele
  *
@@ -504,4 +507,34 @@ class DAOKernel_bu_ele
 
         return _doQuery($sql);
     }
+}
+
+class DAORecordKernel_bu_ele implements ResourceInterface
+{
+  /**
+   * Return an resource from the current Object
+   *
+   * @return Resource
+   */
+  public function toResource()
+  {
+    $resource = new Resource(
+      null,
+      get_class($this),
+      $this->idEleve
+    );
+
+    $attributes = array(
+      
+    );
+
+    $attributesValues = array();
+    foreach ($attributes as $attribute) {
+      $attributesValues[$attribute] = $this->$attribute;
+    }
+
+    $resource->setAttributes($attributesValues);
+
+    return $resource;
+  }
 }

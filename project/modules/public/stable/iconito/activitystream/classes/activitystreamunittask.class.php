@@ -26,15 +26,33 @@ class ActivityStreamUnitTask
    */
   public function processStat()
   {
-    $this->sendBlogOuvertStat();
-    $this->sendBlogPubliqueStat();
-    $this->sendBlogStat();
-    $this->sendClasseurStat();
-    $this->sendDossierStat();
-    $this->sendMemoStat();
-    $this->sendTravailAFaireStat();
-    $this->sendTravailEnClasseStat();
-    $this->sendUserStat();
+    $this->sendAgendaStat();
+//    $this->sendBlogOuvertStat();
+//    $this->sendBlogPubliqueStat();
+//    $this->sendBlogStat();
+//    $this->sendClasseurStat();
+//    $this->sendDossierStat();
+//    $this->sendMemoStat();
+//    $this->sendTravailAFaireStat();
+//    $this->sendTravailEnClasseStat();
+//    $this->sendUserStat();
+  }
+
+  protected function sendAgendaStat()
+  {
+    $sql = <<<SQL
+      SELECT COUNT(maa.id_agenda) AS count, kme.node_type AS target_node_type, kme.node_id AS target_node_id
+      FROM module_agenda_agenda maa
+      INNER JOIN kernel_mod_enabled kme ON kme.module_type = 'MOD_AGENDA' AND kme.module_id = maa.id_agenda
+      GROUP BY target_node_type, target_node_id
+SQL;
+
+
+    $results = _doQuery ($sql);
+
+    $object = new Resource('Classeurs', 'DAORecordClasseur');
+
+    $this->activityStreamService->logStatistic((int)$count[0]->count, 'unit', null, 'count', $object, null, array());
   }
 
   /**

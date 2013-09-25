@@ -123,7 +123,7 @@ class Kernel
         return( $level );
     }
 
-    public function setLevel( $node_type, $node_id, $user_type, $user_id, $droit, $debut=NULL, $fin=NULL )
+    public function setLevel( $node_type, $node_id, $user_type, $user_id, $droit, $debut=null, $fin=null )
     {
         $dao = _dao("kernel|kernel_link_user2node");
 
@@ -137,8 +137,8 @@ class Kernel
             $nouveau_droit->node_type = $node_type;
             $nouveau_droit->node_id = $node_id;
             $nouveau_droit->droit = $droit;
-            $nouveau_droit->debut = ($debut) ? $debut : NULL;
-            $nouveau_droit->fin = ($fin) ? $fin : NULL;
+            $nouveau_droit->debut = ($debut) ? $debut : null;
+            $nouveau_droit->fin = ($fin) ? $fin : null;
             $dao->insert( $nouveau_droit );
         }
     }
@@ -1564,7 +1564,7 @@ if(DEBUG) {
             foreach( $perso_list AS $perso_module ) {
                 $perso->node_type   = $node_type;
                 $perso->node_id     = $node_id;
-                $perso->module_id   = NULL;
+                $perso->module_id   = null;
                 $perso->module_type = $perso_module;
                 $perso->module_nom   = Kernel::Code2Name ($perso_module);
                 $modules[] = clone $perso;
@@ -1576,14 +1576,14 @@ if(DEBUG) {
         if( $node_type == "ROOT" && Kernel::getLevel( $node_type, $node_id ) >= 60 ) {
             $sysutils->node_type   = $node_type;
             $sysutils->node_id     = $node_id;
-            $sysutils->module_id   = NULL;
+            $sysutils->module_id   = null;
             $sysutils->module_type = 'MOD_SYSUTILS';
             $sysutils->module_nom   = Kernel::Code2Name ('MOD_SYSUTILS');
             $modules[] = clone $sysutils;
 
             $charte->node_type   = $node_type;
             $charte->node_id     = $node_id;
-            $charte->module_id   = NULL;
+            $charte->module_id   = null;
             $charte->module_type = 'MOD_CHARTE';
             $charte->module_nom   = Kernel::Code2Name ('MOD_CHARTE');
             $modules[] = clone $charte;
@@ -3058,5 +3058,101 @@ if(DEBUG) {
       }
 
       return $tree;
+    }
+
+    /**
+     * Retourne le noeud parent du noeud $type $id (au sens contextuel)
+     *
+     * @param string $type Le type
+     * @param int $id L'identifiant
+     *
+     * @return array|null
+     */
+    public static function getContextParent($type, $id)
+    {
+        $result = array(
+            'type' => null,
+            'id'   => null
+        );
+
+        if (preg_match('/^BU_.+$/', $type)) {
+            $data = Kernel::getNodeParents($type, $id);
+
+            if (count($data)) {
+                $data = reset($data);
+                $result['type'] = $data['type'];
+                $result['id'] = $data['id'];
+            }
+        }
+        elseif ((preg_match('/^MOD_.+$/', $type))) {
+            $data = Kernel::getModParent($type, $id);
+
+            if (count($data)){
+                $data->rewind();
+                $data = $data->current();
+
+                $result['type'] = $data->node_type;
+                $result['id'] = $data->node_id;
+            }
+        }
+        elseif ('CLUB' == $type) {
+            $data = _doQuery ('SELECT node_type, node_id FROM kernel_link_groupe2node WHERE groupe_id = ?', array($id));
+
+            if (count($data)){
+                $data = reset($data);
+
+                $result['type'] = $data->node_type;
+                $result['id'] = $data->node_id;
+            }
+        }
+
+        return (!count(array_filter($result)) ? null : $result);
+    }
+
+    /**
+     * Retourne le noeud en fonction de son type et de son identifiant
+     *
+     * @param string $type Le type
+     * @param int $id l'identifiant
+     *
+     * @return DAORecord|null
+     */
+    public static function getNode($type, $id)
+    {
+        $object = false;
+
+        switch ($type) {
+            case "BU_GRVILLE":
+                $object = _dao('kernel|kernel_bu_groupe_villes')->get($id);
+                break;
+            case "BU_VILLE":
+                $object = _dao('kernel|kernel_bu_ville')->get($id);
+                break;
+            case "BU_ECOLE":
+                $object = _dao('kernel|kernel_bu_ecole')->get($id);
+                break;
+            case "BU_CLASSE":
+                $object = _dao('kernel|kernel_bu_ecole_classe')->get($id);
+                break;
+            case "CLUB":
+                $object = _dao('groupe|groupe')->get($id);
+                break;
+            case "USER_ENS": // Enseignant
+            case "USER_VIL": // Agent de ville
+            case "USER_ADM": // Administratif ecole
+                $object = _dao('kernel|kernel_bu_personnel')->get($id);
+                break;
+            case "USER_ELE":
+                $object = _dao('kernel|kernel_bu_ele')->get($id);
+                break;
+            case 'USER_RES':
+                $object = _dao('kernel|kernel_bu_res')->get($id);
+                break;
+            case "USER_EXT":
+                $object = _dao('kernel|kernel_ext_user')->get($id);
+                break;
+        }
+
+        return (false === $object) ? null : $object;
     }
 }

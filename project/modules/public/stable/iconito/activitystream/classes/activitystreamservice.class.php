@@ -21,11 +21,6 @@ class ActivityStreamService
      */
     protected static $instance;
 
-    /**
-     * @var array Mise en cache de l'arbre des contextes
-     */
-    protected $contextTree;
-
     const
         EVENT_ACTIVITY = 'activity_stream.push_activity',
         EVENT_STATISTIC = 'activity_stream.push_statistic';
@@ -116,31 +111,6 @@ class ActivityStreamService
         return new ActivityStreamPerson($userInfo['type'], $userInfo['id'], $userInfo['prenom'], $userInfo['nom']);
     }
 
-
-    /**
-     * Retourne les resources parentes de la ressource passée en paramètre
-     *
-     * @param string $resourceIdentifier
-     *
-     * @return array
-     */
-    public function getParentResources($resourceIdentifier)
-    {
-        // On récupère les contextes à plat
-        $tree = $this->getContextTree();
-
-        // Le tableau des contextes parents
-        $parentContexts = array();
-
-        while (isset($tree[$resourceIdentifier]) && ($resourceIdentifier = $tree[$resourceIdentifier]['parent'])){
-            if ($tree[$resourceIdentifier]['element'] instanceof ResourceInterface){
-                $parentContexts[] = $tree[$resourceIdentifier]['element']->toResource();
-            }
-        }
-
-        return $parentContexts;
-    }
-
     /**
      * Récupère les contextes à partir du module
      *
@@ -151,17 +121,41 @@ class ActivityStreamService
      */
     public function getContexts($type, $id)
     {
-        $modInfos = Kernel::getModParentInfo($type, $id);
+        $parent = Kernel::getContextParent($type, $id);
 
-        $parentIdentifier = $this->formatResourceIdentifier($modInfos['type'], $modInfos['id']);
+        // On s'arrête de remonter dès que le parent est null ou ROOT
+        if (null !== $parent && $parent['type'] !== 'ROOT'){
+            return array_filter(
+                array_merge(
+                    array(
+                        $parent
+                    ),
+                    $this->getContexts($parent['type'], $parent['id'])
+                )
+            );
+        }
+        else {
+            return array();
+        }
+    }
 
-        // Les contextes parents
-        $contexts = $this->getParentResources($parentIdentifier);
+    /**
+     * Retourne les ressources du contexte
+     *
+     * @param string $type Le type
+     * @param int $id L'identifiant
+     *
+     * @return array
+     */
+    public function getContextResources($type, $id)
+    {
+        $context = array();
 
-        // On ajoute la ressource parente au début du tableau
-        array_unshift($contexts, $this->getResource($modInfos['type'], $modInfos['id']));
+        foreach ($this->getContexts($type, $id) as $element){
+            $context[] = $this->getResource($element['type'], $element['id']);
+        }
 
-        return $contexts;
+        return $context;
     }
 
     /**
@@ -172,44 +166,25 @@ class ActivityStreamService
      */
     public function getResource($type, $id)
     {
-        // On récupère les contextes à plat
-        $tree = $this->getContextTree();
+        $record = Kernel::getNode($type, $id);
 
-        $resourceIdentifier = $this->formatResourceIdentifier($type, $id);
-
-        if (isset($tree[$resourceIdentifier]['element']) && $tree[$resourceIdentifier]['element'] instanceof ResourceInterface)
-        {
-            return $tree[$resourceIdentifier]['element']->toResource();
+        if (null === $record){
+            throw new Exception(sprintf(
+                'Aucun enregistrement en base de données n\'a pu être trouvé pour le couple ["%s" - "%s"]',
+                $type,
+                $id
+            ));
         }
 
-        return null;
-    }
-
-    /**
-     * Retourne l'identifieur de la ressource en fonction de son type et de son identifiant
-     *
-     * @param string $type Le type
-     * @param int $id L'identifiant
-     *
-     * @return string
-     */
-    protected function formatResourceIdentifier($type, $id)
-    {
-        return $type.'_'.$id;
-    }
-
-    /**
-     * Retourne l'arbre des contexte à plat
-     *
-     * @return array
-     */
-    protected function getContextTree()
-    {
-        if (null === $this->contextTree)
-        {
-            $this->contextTree = Kernel::getContextTree(true);
+        if (!$record instanceof ResourceInterface){
+            throw new Exception(sprintf(
+                'L\'objet "%s" (id: %s) doit implémenter l\'interface "%s"',
+                get_class($record),
+                $id,
+                ResourceInterface
+            ));
         }
 
-        return $this->contextTree;
+        return $record->toResource();
     }
 }

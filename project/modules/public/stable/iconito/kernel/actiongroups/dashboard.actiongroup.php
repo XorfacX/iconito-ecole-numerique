@@ -38,7 +38,7 @@ class ActionGroupDashboard extends enicActionGroup
 
         $nodes_all = Kernel::getNodeParents($this->user->type, $this->user->idEn);
         $nodes_all = Kernel::sortNodeList($nodes_all);
-        // _dump($nodes_all);
+//         _dump($nodes_all);
 
         $nodes = array();
         foreach ($nodes_all AS $node) {
@@ -172,7 +172,7 @@ class ActionGroupDashboard extends enicActionGroup
 
 
         /* DRAFT WORKING */
-        // _dump($nodes);
+//         _dump($nodes);
         /* $rClasse = Kernel::getNodeInfo ('BU_CLASSE', $nodes['BU_CLASSE'][1]['id'], false);
           CopixZone::process ('annuaire|infosclasse', array('rClasse'=>$rClasse)); */
         //echo $this->matrix->display();
