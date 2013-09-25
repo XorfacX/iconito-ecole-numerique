@@ -1,6 +1,6 @@
 <h2>{$ppo->label}</h2>
 <p>
-    Du {$ppo->filter->publishedBeginDate->format('d/m/Y')} au {$ppo->filter->publishedEndDate->format('d/m/Y')} :
+    Du {$ppo->filter->publishedFrom->format('d/m/Y')} au {$ppo->filter->publishedTo->format('d/m/Y')} :
     <ul>
         {assign var=quiz value=$ppo->requestClass->getQuiz()}
         <li>{$quiz.total} quiz ont été créés, soit {$quiz.average} quiz par jour.</li>

@@ -25,16 +25,12 @@ class ConsolidatedStatisticFilterToRequestTransformer
             $key = lcfirst(preg_replace('/^get/', '', $method, 1, $count));
             if ($count) {
                 $value = $consolidatedStatisticFilter->$method();
+                $key = static::getUnderscoredString($key);
                 if (is_array($value) && count($value)) {
-                    $date[] = $this->formatArrayRequest($key, $value);
+                    $toImplode[] = $this->formatArrayRequest($key, $value);
                 } elseif (null !== $value && !is_array($value)) {
-                    if (false !== strpos($key, 'Date')) {
-                        /* @var $value \DateTime */
-                        if ($value->format('His') == 0) {
-                            $value = $value->format('Y-m-d');
-                        } else {
-                            $value = $value->format('Y-m-d H:i:s');
-                        }
+                    if ($value instanceof \DateTime) {
+                        $value = $value->format('Y-m-d H:i:s');
                     }
                     $toImplode[] = $key.'='.urlencode((string)$value);
                 }
@@ -57,9 +53,20 @@ class ConsolidatedStatisticFilterToRequestTransformer
         $toImplode = array();
         foreach ($array as $value)
         {
-            $toImplode[] = $key.'='.urlencode((string)$value);
+            $toImplode[] = $key.'[]='.urlencode((string)$value);
         }
 
         return implode('&',$toImplode);
+    }
+
+    /**
+     * @param string $str camelCased string
+     *
+     * @return string underscored string
+     */
+    public static function getUnderscoredString($str) {
+      $str[0] = strtolower($str[0]);
+      $func = create_function('$c', 'return "_" . strtolower($c[1]);');
+      return preg_replace_callback('/([A-Z])/', $func, $str);
     }
 }

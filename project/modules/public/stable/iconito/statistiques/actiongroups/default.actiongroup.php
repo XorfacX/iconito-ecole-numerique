@@ -18,6 +18,7 @@ class ActionGroupDefault extends CopixActionGroup
 
     public function processIndex ()
     {
+      ini_set('display_errors', true);
         $ppo = new CopixPPO ();
 
         $ppo->user = _currentUser();
@@ -29,7 +30,7 @@ class ActionGroupDefault extends CopixActionGroup
             $this->_setSessionConsolidationStatisticFilter($filter);
         }
 
-        if (_request('publishedBeginDate')) {
+        if (_request('publishedFrom')) {
             //demande de mettre l'objet � jour en fonction des valeurs saisies dans le formulaire
             $this->_validFromForm($filter);
             $this->_setSessionConsolidationStatisticFilter($filter);
@@ -44,7 +45,11 @@ class ActionGroupDefault extends CopixActionGroup
 
         CopixHTMLHeader::addJSLink (_resource("js/jquery/jquery.ui.datepicker-fr.js"));
 
-        $ppo->stat = _request('stat');
+        if ($ppo->filter) {
+          $ppo->stat = _request('stat');
+        }
+
+        $ppo->mapping = new ApiMapping;
 
 //      À décommenter après le merge avec la branche feature-activity-stream-send
 //        $ppo->contexts = Kernel::getContextTree(true);
@@ -77,10 +82,10 @@ class ActionGroupDefault extends CopixActionGroup
     */
     public function _validFromForm (& $toUpdate)
     {
-        $toCheck = array ('publishedBeginDate', 'publishedEndDate', 'context');
+        $toCheck = array ('publishedFrom', 'publishedTo', 'context');
         foreach ($toCheck as $elem){
             if (_request($elem)){
-                if ($elem == 'publishedBeginDate' || $elem == 'publishedEndDate') {
+                if ($elem == 'publishedFrom' || $elem == 'publishedTo') {
                     // On utilise d'abord la validation proposée par le kernel, comme ça on est sûr du format
                     $value = Kernel::_validDateProperties(_request($elem));
                     list($d, $m, $y) = explode('/', $value);
@@ -92,6 +97,11 @@ class ActionGroupDefault extends CopixActionGroup
                 $elem = 'set'.ucfirst($elem);
                 $toUpdate->$elem($value);
             }
+        }
+
+        if ($toUpdate->getPublishedFrom() > $toUpdate->getPublishedTo()) {
+          $toUpdate = null;
+//          return array()
         }
     }
 

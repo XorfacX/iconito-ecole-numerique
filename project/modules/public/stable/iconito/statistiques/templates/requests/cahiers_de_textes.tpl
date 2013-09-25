@@ -1,6 +1,6 @@
 <h2>{$ppo->label}</h2>
 <p>
-    Du {$ppo->filter->publishedBeginDate->format('d/m/Y')} au {$ppo->filter->publishedEndDate->format('d/m/Y')} :
+    Du {$ppo->filter->publishedFrom->format('d/m/Y')} au {$ppo->filter->publishedTo->format('d/m/Y')} :
     <ul>
         {assign var=memos value=$ppo->requestClass->getMemos()}
         <li>{$memos.total} mémos créés, soit {$memos.average} mémos par jour.</li>

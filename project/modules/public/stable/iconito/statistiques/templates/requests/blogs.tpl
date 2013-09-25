@@ -1,5 +1,5 @@
 <h2>{$ppo->label}</h2>
-<p>Au {$ppo->filter->publishedEndDate->format('d/m/Y')}, il y avait :
+<p>Au {$ppo->filter->publishedTo->format('d/m/Y')}, il y avait :
     <ul>
         <li>{$ppo->requestClass->getNombreBlogs()} blogs ouverts.</li>
         {assign var=blogsVisibles value=$ppo->requestClass->getBlogVisibleAnnuaireEtNonVisible()}
@@ -13,7 +13,7 @@
 </p>
 
 <p>
-    Du {$ppo->filter->publishedBeginDate->format('d/m/Y')} au {$ppo->filter->publishedEndDate->format('d/m/Y')} :
+    Du {$ppo->filter->publishedFrom->format('d/m/Y')} au {$ppo->filter->publishedTo->format('d/m/Y')} :
     <ul>
         {assign var=articles value=$ppo->requestClass->getArticlesRedigesSurPeriode()}
         <li>{$articles.articles} articles ont été rédigés, soit {$articles.nb_moyen_par_jour} articles par jour.</li>

@@ -68,14 +68,20 @@ abstract class ApiBaseRequest
     {
         $transformer = new ConsolidatedStatisticFilterToRequestTransformer;
         $requestFilter = $transformer->transform($filter);
-        $requestUrl = CopixConfig::get('statistiques|apiQueryUrl').'?'.$requestFilter;
+//        $requestUrl = CopixConfig::get('statistiques|apiQueryUrl').'?'.$requestFilter;
+        $requestUrl = 'http://asapi.local/app_dev.php/api/query.json'.'?'.$requestFilter;
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $requestUrl);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         $result = curl_exec ($curl);
         curl_close($curl);
+        $result = json_decode($result);
 
-        return json_decode($result);
+        if (is_object($result)) {
+          throw new Exception($result->message, $result->code);
+        }
+
+        return $result;
     }
 
     /**
@@ -86,8 +92,8 @@ abstract class ApiBaseRequest
     public function createBaseFilter()
     {
         return new ConsolidatedStatisticFilter(
-            $this->getFilter()->getPublishedBeginDate(),
-            $this->getFilter()->getPublishedEndDate(),
+            $this->getFilter()->getpublishedFrom(),
+            $this->getFilter()->getpublishedTo(),
             $this->getFilter()->getContext()
         );
     }
@@ -130,7 +136,7 @@ abstract class ApiBaseRequest
         $filter->setPeriod(static::PERIOD_DAILY);
 
         $total = $this->sumResults($this->getResult($filter));
-        $days = $this->getFilter()->getPublishedBeginDate()->diff($this->getFilter()->getPublishedEndDate(), true)->days;
+        $days = $this->getFilter()->getpublishedFrom()->diff($this->getFilter()->getpublishedTo(), true)->days;
         $days = $days ? $days : 1;
 
         return array(

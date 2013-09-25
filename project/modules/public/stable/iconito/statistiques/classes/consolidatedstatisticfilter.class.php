@@ -14,13 +14,13 @@ class ConsolidatedStatisticFilter extends ConsolidatedStatistic
      * The min date the consolidatedStatistic must match
      * @var \Datetime
      */
-    public $publishedBeginDate;
+    public $publishedFrom;
 
     /**
      * The max date the consolidatedStatistic must match
      * @var \DateTime
      */
-    public $publishedEndDate;
+    public $publishedTo;
 
     /**
      * Must we return the last (unit) only, or all units in the period
@@ -30,14 +30,14 @@ class ConsolidatedStatisticFilter extends ConsolidatedStatistic
 
     /**
      * Create a filter, possibly based on a base filter (for dates and context)
-     * @param DateTime $publishedBeginDate
-     * @param DateTime $publishedEndDate
+     * @param DateTime $publishedFrom
+     * @param DateTime $publishedTo
      * @param null $context
      */
-    public function __construct(\DateTime $publishedBeginDate = null, \DateTime $publishedEndDate = null, $context = null)
+    public function __construct(\DateTime $publishedFrom = null, \DateTime $publishedTo = null, $context = null)
     {
-        $this->publishedBeginDate = $publishedBeginDate;
-        $this->publishedEndDate   = $publishedEndDate;
+        $this->publishedFrom      = $publishedFrom;
+        $this->publishedTo        = $publishedTo;
         $this->context            = $context;
         $this->actorAttributes    = array();
         $this->objectAttributes   = array();
@@ -47,33 +47,33 @@ class ConsolidatedStatisticFilter extends ConsolidatedStatistic
 
 
     /**
-     * Set publishedBeginDate
+     * Set publishedFrom
      *
-     * @param \Datetime $publishedBeginDate
+     * @param \Datetime $publishedFrom
      */
-    public function setPublishedBeginDate(\DateTime $publishedBeginDate)
+    public function setPublishedFrom(\DateTime $publishedFrom)
     {
-        $this->publishedBeginDate = $publishedBeginDate;
+        $this->publishedFrom = $publishedFrom;
     }
 
     /**
-     * Get PublishedBeginDate
+     * Get PublishedFrom
      *
      * @return \Datetime
      */
-    public function getPublishedBeginDate()
+    public function getPublishedFrom()
     {
-        return $this->publishedBeginDate;
+        return $this->publishedFrom;
     }
 
     /**
-     * Set PublistedEndDate
+     * Set PublistedTo
      *
-     * @param \DateTime $publishedEndDate
+     * @param \DateTime $publishedTo
      */
-    public function setPublishedEndDate($publishedEndDate)
+    public function setPublishedTo($publishedTo)
     {
-        $this->publishedEndDate = $publishedEndDate;
+        $this->publishedTo = $publishedTo;
     }
 
     /**
@@ -81,9 +81,9 @@ class ConsolidatedStatisticFilter extends ConsolidatedStatistic
      *
      * @return \DateTime
      */
-    public function getPublishedEndDate()
+    public function getPublishedTo()
     {
-        return $this->publishedEndDate;
+        return $this->publishedTo;
     }
 
     /**

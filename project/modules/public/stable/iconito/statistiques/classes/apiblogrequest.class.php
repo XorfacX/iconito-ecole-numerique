@@ -75,7 +75,7 @@ class ApiBlogRequest extends ApiBaseRequest
     public function getBlogVisibleEtVisibilite()
     {
         return array(
-            'visible_internet'        => 5, #$this->getBlogs(array('visible sur Internet')),
+            'visible_internet'        => $this->getBlogs(array('visible sur Internet')),
             'visible_membres_iconito' => $this->getBlogs(array('visibles par membres ICONITO')),
             'visible_membres_groupe'  => $this->getBlogs(array('visibles par membres groupe'))
         );
@@ -106,7 +106,7 @@ class ApiBlogRequest extends ApiBaseRequest
         $filter->setPeriod(static::PERIOD_DAILY);
 
         $articles = $this->sumResults($this->getResult($filter));
-        $days = $this->getFilter()->getPublishedBeginDate()->diff($this->getFilter()->getPublishedEndDate(), true)->days;
+        $days = $this->getFilter()->getpublishedFrom()->diff($this->getFilter()->getpublishedTo(), true)->days;
 
         return array(
             'articles' => $articles,
@@ -122,7 +122,7 @@ class ApiBlogRequest extends ApiBaseRequest
         $filter->setPeriod(static::PERIOD_DAILY);
 
         $commentaires = $this->sumResults($this->getResult($filter));
-        $days = $this->getFilter()->getPublishedBeginDate()->diff($this->getFilter()->getPublishedEndDate(), true)->days;
+        $days = $this->getFilter()->getpublishedFrom()->diff($this->getFilter()->getpublishedTo(), true)->days;
 
         return array(
             'commentaires' => $commentaires,
