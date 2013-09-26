@@ -55,7 +55,7 @@ class ListenerActivityStream extends CopixListener
             $this->activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras()),
             $eventObject->toResource(),
             $this->activityStreamService->getResource('MOD_AGENDA', $eventObject->id_agenda),
-            $this->activityStreamService->getContexts('MOD_AGENDA', $eventObject->id_agenda)
+            $this->activityStreamService->getContextResources('MOD_AGENDA', $eventObject->id_agenda)
         );
     }
 
@@ -90,7 +90,7 @@ class ListenerActivityStream extends CopixListener
             $this->activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras()),
             $file->toResource(),
             $event->getParam('folder')->toResource(),
-            $this->activityStreamService->getContexts('MOD_CLASSEUR', $file->classeur_id)
+            $this->activityStreamService->getContextResources('MOD_CLASSEUR', $file->classeur_id)
         );
     }
 
@@ -109,7 +109,7 @@ class ListenerActivityStream extends CopixListener
             $this->activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras()),
             $article->toResource(),
             $event->getParam('blog')->toResource(),
-            $this->activityStreamService->getContexts('MOD_BLOG', $article->id_blog)
+            $this->activityStreamService->getContextResources('MOD_BLOG', $article->id_blog)
         );
     }
 
@@ -128,7 +128,7 @@ class ListenerActivityStream extends CopixListener
             $this->activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras()),
             $event->getParam('comment')->toResource(),
             $article->toResource(),
-            $this->activityStreamService->getContexts('MOD_BLOG', $article->id_blog)
+            $this->activityStreamService->getContextResources('MOD_BLOG', $article->id_blog)
         );
     }
 
@@ -141,7 +141,7 @@ class ListenerActivityStream extends CopixListener
     public function processCreateQuiz(CopixEvent $event, CopixEventResponse $eventResponse)
     {
         $quiz = $event->getParam('quiz');
-        $context = $this->activityStreamService->getContexts('MOD_QUIZ', $quiz->gr_id);
+        $context = $this->activityStreamService->getContextResources('MOD_QUIZ', $quiz->gr_id);
 
         $this->activityStreamService->logActivity(
             'create',
@@ -167,7 +167,7 @@ class ListenerActivityStream extends CopixListener
             $this->activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras()),
             $event->getParam('question')->toResource(),
             $quiz,
-            $this->activityStreamService->getContexts('MOD_QUIZ', $quiz->gr_id)
+            $this->activityStreamService->getContextResources('MOD_QUIZ', $quiz->gr_id)
         );
     }
 }

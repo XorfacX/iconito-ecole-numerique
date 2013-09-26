@@ -519,13 +519,41 @@ class DAORecordKernel_bu_ele implements ResourceInterface
   public function toResource()
   {
     $resource = new Resource(
-      null,
+      'Eleve',
       get_class($this),
       $this->idEleve
     );
 
     $attributes = array(
-      
+      'INE',
+      'nom',
+      'nom_jf',
+      'prenom1',
+      'prenom2',
+      'prenom3',
+      'civilite',
+      'id_sexe',
+      'payse_naise',
+      'nationalite',
+      'dep_nais',
+      'com_nais',
+      'date_nais',
+      'annee_france',
+      'num_rue',
+      'num_seq',
+      'adresse1',
+      'adresse2',
+      'code_postal',
+      'commune',
+      'id_ville',
+      'pays',
+      'hors_scol',
+      'id_directeur',
+      'observations',
+      'flag',
+      'adresse_tmp',
+      'date_tmp',
+      'ele_last_update'
     );
 
     $attributesValues = array();
