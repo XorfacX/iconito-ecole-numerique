@@ -14,7 +14,7 @@ class ActivityStreamUnitTask
   /**
    * @var ActivityStreamService
    */
-  protected $actvityStreamService;
+  protected $activityStreamService;
 
   public function __construct()
   {
@@ -26,12 +26,12 @@ class ActivityStreamUnitTask
    */
   public function processStat()
   {
-    $this->sendAgendaStat();
-//    $this->sendBlogOuvertStat();
-//    $this->sendBlogPubliqueStat();
-//    $this->sendBlogStat();
+//    $this->sendAgendaStat();
 //    $this->sendClasseurStat();
 //    $this->sendDossierStat();
+    $this->sendBlogOuvertStat();
+//    $this->sendBlogPubliqueStat();
+//    $this->sendBlogStat();
 //    $this->sendMemoStat();
 //    $this->sendTravailAFaireStat();
 //    $this->sendTravailEnClasseStat();
@@ -41,18 +41,19 @@ class ActivityStreamUnitTask
   protected function sendAgendaStat()
   {
     $sql = <<<SQL
-      SELECT COUNT(maa.id_agenda) AS count, kme.node_type AS target_node_type, kme.node_id AS target_node_id
-      FROM module_agenda_agenda maa
-      INNER JOIN kernel_mod_enabled kme ON kme.module_type = 'MOD_AGENDA' AND kme.module_id = maa.id_agenda
+      SELECT COUNT(*) AS count, kme.node_type AS target_node_type, kme.node_id AS target_node_id
+      FROM kernel_mod_enabled kme WHERE kme.module_type = 'MOD_AGENDA'
       GROUP BY target_node_type, target_node_id
 SQL;
 
-
     $results = _doQuery ($sql);
+    $object = new Resource('Agenda', 'DAORecordAgenda');
 
-    $object = new Resource('Classeurs', 'DAORecordClasseur');
-
-    $this->activityStreamService->logStatistic((int)$count[0]->count, 'unit', null, 'count', $object, null, array());
+    foreach ($results as $result) {
+      $context = $this->activityStreamService->getContextResources($result->target_node_type, $result->target_node_id);
+      $target = Kernel::getNode($result->target_node_type, $result->target_node_id);
+      $this->activityStreamService->logStatistic((int)$result->count, 'unit', null, 'count', $object, $target, $context);
+    }
   }
 
   /**
@@ -71,10 +72,20 @@ SQL;
    */
   protected function sendClasseurStat()
   {
-    $count = _doQuery ("SELECT COUNT(*) AS count FROM module_classeur");
-    $object = new Resource('Classeurs', 'DAORecordClasseur');
+    $sql = <<<SQL
+      SELECT COUNT(*) AS count, kme.node_type AS target_node_type, kme.node_id AS target_node_id
+      FROM kernel_mod_enabled kme WHERE kme.module_type = 'MOD_CLASSEUR'
+      GROUP BY target_node_type, target_node_id
+SQL;
 
-    $this->activityStreamService->logStatistic((int)$count[0]->count, 'unit', null, 'count', $object, null, array());
+    $results = _doQuery ($sql);
+    $object = new Resource('Classeur', 'DAORecordClasseur');
+
+    foreach ($results as $result) {
+      $context = $this->activityStreamService->getContextResources($result->target_node_type, $result->target_node_id);
+      $target = Kernel::getNode($result->target_node_type, $result->target_node_id);
+      $this->activityStreamService->logStatistic((int)$result->count, 'unit', null, 'count', $object, $target, $context);
+    }
   }
 
   /**
@@ -82,10 +93,22 @@ SQL;
    */
   protected function sendDossierStat()
   {
-    $count = _doQuery ("SELECT COUNT(*) AS count FROM module_classeur_dossier");
-    $object = new Resource('Dossiers dans les classeurs', 'DAORecordClasseurDossier');
+    $sql = <<<SQL
+      SELECT COUNT(*) AS count, kme.node_type AS target_node_type, kme.node_id AS target_node_id
+      FROM module_classeur_dossier mcd
+      INNER JOIN kernel_mod_enabled kme ON kme.module_type = 'MOD_CLASSEUR' AND kme.module_id = mcd.module_classeur_id
+      GROUP BY target_node_type, target_node_id
+SQL;
 
-    $this->activityStreamService->logStatistic((int)$count[0]->count, 'unit', null, 'count', $object, null, array());
+    $results = _doQuery ($sql);
+
+    $object = new Resource('Dossier de classeur', 'DAORecordClasseurDossier');
+
+    foreach ($results as $result) {
+      $context = $this->activityStreamService->getContextResources($result->target_node_type, $result->target_node_id);
+      $target = Kernel::getNode($result->target_node_type, $result->target_node_id);
+      $this->activityStreamService->logStatistic((int)$result->count, 'unit', null, 'count', $object, $target, $context);
+    }
   }
 
   /**
@@ -93,10 +116,20 @@ SQL;
    */
   protected function sendBlogOuvertStat()
   {
-    $count = _doQuery ("SELECT COUNT(*) AS count FROM module_blog");
-    $object = new Resource('Blogs ouverts', 'DAORecordBlog');
-    
-    $this->activityStreamService->logStatistic((int)$count[0]->count, 'unit', null, 'count', $object, null, array());
+    $sql = <<<SQL
+      SELECT COUNT(*) AS count, kme.node_type AS target_node_type, kme.node_id AS target_node_id
+      FROM kernel_mod_enabled kme WHERE kme.module_type = 'MOD_BLOG'
+      GROUP BY target_node_type, target_node_id
+SQL;
+
+    $object = new Resource('Dossier de classeur', 'DAORecordClasseurDossier');
+    $results = _doQuery ($sql);
+
+    foreach ($results as $result) {
+      $context = $this->activityStreamService->getContextResources($result->target_node_type, $result->target_node_id);
+      $target = Kernel::getNode($result->target_node_type, $result->target_node_id);
+      $this->activityStreamService->logStatistic((int)$result->count, 'unit', null, 'count', $object, $target, $context);
+    }
   }
 
   /**
