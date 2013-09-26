@@ -68,9 +68,17 @@ class ListenerActivityStream extends CopixListener
     public function processSendMinimail(CopixEvent $event, CopixEventResponse $eventResponse)
     {
         $this->activityStreamService->logActivity(
-            'create',
+            'send',
             $this->activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras()),
-            $event->getParam('minimail')->toResource()
+            $event->getParam('minimail')->toResource(),
+            $this->activityStreamService->getPersonFromUserInfo($event->getParam('recipient'))
+        );
+
+        $this->activityStreamService->logActivity(
+            'receive',
+            $this->activityStreamService->getPersonFromUserInfo($event->getParam('recipient')),
+            $event->getParam('minimail')->toResource(),
+            $this->activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras())
         );
     }
 
