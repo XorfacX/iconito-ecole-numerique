@@ -3105,6 +3105,45 @@ if(DEBUG) {
                 $result['id'] = $data->node_id;
             }
         }
+        elseif ('classeur|classeurdossier' == $type) {
+            $dossierDAO = _ioDAO($type);
+            $object = $dossierDAO->get($id);
+
+            if ($object) {
+                if ($object->parent_id) {
+                    $result['type'] = $type;
+                    $result['id'] = $object->parent_id;
+                } else {
+                    $result['type'] = 'MOD_CLASSEUR';
+                    $result['id'] = $object->classeur_id;
+                }
+            }
+        }
+        elseif ('classeur|classeurfichier' == $type) {
+            $dossierDAO = _ioDAO($type);
+            $object = $dossierDAO->get($id);
+            if ($object) {
+                if ($object->dossier_id) {
+                    $result['type'] = 'classeur|classeurdossier';
+                    $result['id'] = $object->dossier_id;
+                } else {
+                    $result['type'] = 'MOD_CLASSEUR';
+                    $result['id'] = $object->classeur_id;
+                }
+            }
+        }
+        elseif ('liste|liste_listes' == $type) {
+            $module = _doQuery( 'SELECT node_type, node_id FROM kernel_mod_enabled kme WHERE module_type = ? AND module_id = ?', array(
+                'MOD_LISTE',
+                $id
+            ));
+
+            $module = reset($module);
+            if ($module) {
+                $result['type'] = $module->node_type;
+                $result['id'] = $module->node_id;
+            }
+        }
 
         return (!count(array_filter($result)) ? null : $result);
     }
@@ -3117,42 +3156,97 @@ if(DEBUG) {
      *
      * @return DAORecord|null
      */
-    public static function getNode($type, $id)
+    public static function getNode($type, $id = null)
     {
         $object = false;
 
+      $dao = _ioDAO('kernel|kernel_bu_groupe_villes');
+
         switch ($type) {
             case "BU_GRVILLE":
-                $object = _dao('kernel|kernel_bu_groupe_villes')->get($id);
+                $object = $id ? _dao('kernel|kernel_bu_groupe_villes')->get($id) : _record('kernel|kernel_bu_groupe_villes');
                 break;
             case "BU_VILLE":
-                $object = _dao('kernel|kernel_bu_ville')->get($id);
+                $object = $id ? _dao('kernel|kernel_bu_ville')->get($id) : _record('kernel|kernel_bu_ville');
                 break;
             case "BU_ECOLE":
-                $object = _dao('kernel|kernel_bu_ecole')->get($id);
+                $object = $id ? _dao('kernel|kernel_bu_ecole')->get($id) : _record('kernel|kernel_bu_ecole');
                 break;
             case "BU_CLASSE":
-                $object = _dao('kernel|kernel_bu_ecole_classe')->get($id);
+                $object = $id ? _dao('kernel|kernel_bu_ecole_classe')->get($id) : _record('kernel|kernel_bu_ecole_classe');
                 break;
             case "CLUB":
-                $object = _dao('groupe|groupe')->get($id);
+                $object = $id ? _dao('groupe|groupe')->get($id) : _record('groupe|groupe');
                 break;
             case "USER_ENS": // Enseignant
             case "USER_VIL": // Agent de ville
             case "USER_ADM": // Administratif ecole
-                $object = _dao('kernel|kernel_bu_personnel')->get($id);
+                $object = $id ? _dao('kernel|kernel_bu_personnel')->get($id) : _record('kernel|kernel_bu_personnel');
                 break;
             case "USER_ELE":
-                $object = _dao('kernel|kernel_bu_ele')->get($id);
+                $object = $id ? _dao('kernel|kernel_bu_ele')->get($id) : _record('kernel|kernel_bu_ele');
                 break;
             case 'USER_RES':
-                $object = _dao('kernel|kernel_bu_res')->get($id);
+                $object = $id ? _dao('kernel|kernel_bu_res')->get($id) : _record('kernel|kernel_bu_res');
                 break;
             case "USER_EXT":
-                $object = _dao('kernel|kernel_ext_user')->get($id);
+                $object = $id ? _dao('kernel|kernel_ext_user')->get($id) : _record('kernel|kernel_ext_user');
                 break;
+            case "MOD_TELEPROCEDURES":
+
+                return static::getNode('teleprocedures|teleprocedure', $id);
+            case "MOD_LISTE":
+
+                return static::getNode('liste|liste_listes', $id);
+            default:
+              $object = $id ? _dao($type)->get($id) : _record($type);
         }
 
         return (false === $object) ? null : $object;
+    }
+
+    /**
+     * Return users groups from user infos
+     *
+     * @param $userInfos
+     *
+     * @return array
+     */
+    public static function getGroupsFromUserInfos($userInfos)
+    {
+        $groups = array();
+        foreach (array_keys($userInfos['link']->ecole) as $id) {
+            $groups[] = array('type' => 'BU_ECOLE', 'id' => $id);
+        }
+
+        foreach (array_keys($userInfos['link']->classe) as $id) {
+            $groups[] = array('type' => 'BU_CLASSE', 'id' => $id);
+        }
+
+        foreach (array_keys($userInfos['link']->ville) as $id) {
+            $groups[] = array('type' => 'BU_VILLE', 'id' => $id);
+        }
+
+        if (is_array($userInfos['link'])) {
+            foreach (array_keys($userInfos['link']['CLUB']) as $id) {
+                $groups[] = array('type' => 'CLUB', 'id' => $id);
+            }
+        }
+
+        return $groups;
+    }
+
+  /**
+   * Return users groups from user id
+   *
+   * @param $userId
+   *
+   * @return array
+   */
+  public static function getGroupsForUserId($userId)
+    {
+        $userInfos = static::getUserInfo("ID", $userId, array('strict' => true));
+
+        return static::getGroupsFromUserInfos($userInfos);
     }
 }

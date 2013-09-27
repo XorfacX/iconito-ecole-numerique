@@ -17,7 +17,7 @@ class DAORecordAgenda implements ResourceInterface
    */
   public function toResource()
   {
-    $resource = new Resource(
+    $resource = new EcoleNumeriqueActivityStreamResource(
       $this->title_agenda,
       get_class($this),
       $this->id_agenda

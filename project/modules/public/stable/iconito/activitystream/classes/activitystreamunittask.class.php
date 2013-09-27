@@ -1,6 +1,6 @@
 <?php
 
-use ActivityStream\Client\Model\Resource;
+_classInclude('activitystream|ecolenumeriqueactivitystreamresource');
 
 _classInclude('activityStream|ActivityStreamService');
 _classInclude('activityStream|StatisticEvent');
@@ -27,15 +27,33 @@ class ActivityStreamUnitTask
   public function processStat()
   {
 //    $this->sendAgendaStat();
+
 //    $this->sendClasseurStat();
 //    $this->sendDossierStat();
-    $this->sendBlogOuvertStat();
+//    $this->sendFichierStat();
+
+//    $this->sendBlogOuvertStat();
 //    $this->sendBlogPubliqueStat();
+//    $this->sendBlogRubriqueStat();
+//    $this->sendBlogPageStat();
+
 //    $this->sendBlogStat();
-//    $this->sendMemoStat();
-//    $this->sendTravailAFaireStat();
-//    $this->sendTravailEnClasseStat();
 //    $this->sendUserStat();
+//      $this->sendFichierStat();
+//      $this->sendGroupeDeTravailStat();
+//      $this->sendListeStat();
+      $this->sendMessageStat();
+//    die(var_dump($this->activityStreamService->getContexts('classeur|classeurfichier', 590)));
+//    die(var_dump(_currentUser()->getExtras()));
+      $groups = Kernel::getGroupsForUser(15);
+      $this->activityStreamService->getContextResourcesFromArray(Kernel::getGroupsForUserId(15));
+      $userInfos = Kernel::getUserInfo("ID", 15, array('strict' => true));
+    die(var_dump(Kernel::getGroupsFromUserInfos($userInfos)));
+    die(var_dump(Kernel::getGroupsFromUserInfos(_currentUser()->getExtras())));
+
+//    die(var_dump($this->activityStreamService->getContexts()));
+    // Unit nombre de users par périmètre
+    // Fichiers dans les dossiers, et poids des fichiers
   }
 
   protected function sendAgendaStat()
@@ -47,7 +65,7 @@ class ActivityStreamUnitTask
 SQL;
 
     $results = _doQuery ($sql);
-    $object = new Resource('Agenda', 'DAORecordAgenda');
+    $object = new EcoleNumeriqueActivityStreamResource('Agenda', 'DAORecordAgenda');
 
     foreach ($results as $result) {
       $context = $this->activityStreamService->getContextResources($result->target_node_type, $result->target_node_id);
@@ -61,10 +79,19 @@ SQL;
    */
   protected function sendUserStat()
   {
-    $count = _doQuery ("SELECT COUNT(*) AS count FROM dbuser WHERE enabled_dbuser=1");
-    $object = new Resource('Comptes actifs', 'ActivityStreamPerson');
+    $sql = <<<SQL
+      SELECT COUNT(*) AS count, klbu.bu_type AS target_node_type
+      FROM kernel_link_bu2user klbu INNER JOIN dbuser dbu ON klbu.user_id = dbu.id_dbuser WHERE dbu.enabled_dbuser = 1
+      GROUP BY target_node_type
+SQL;
 
-    $this->activityStreamService->logStatistic((int)$count[0]->count, 'unit', null, 'count', $object, null, array());
+    $results = _doQuery ($sql);
+
+    foreach ($results as $result) {
+      $context = $this->activityStreamService->getContextResources($result->target_node_type, $result->target_node_id);
+      $object = Kernel::getNode($result->target_node_type, $result->target_node_id);
+      $this->activityStreamService->logStatistic((int)$result->count, 'unit', null, 'count', $object, null, $context);
+    }
   }
 
   /**
@@ -79,7 +106,7 @@ SQL;
 SQL;
 
     $results = _doQuery ($sql);
-    $object = new Resource('Classeur', 'DAORecordClasseur');
+    $object = new EcoleNumeriqueActivityStreamResource('Classeur', 'DAORecordClasseur');
 
     foreach ($results as $result) {
       $context = $this->activityStreamService->getContextResources($result->target_node_type, $result->target_node_id);
@@ -102,13 +129,89 @@ SQL;
 
     $results = _doQuery ($sql);
 
-    $object = new Resource('Dossier de classeur', 'DAORecordClasseurDossier');
+    $object = new EcoleNumeriqueActivityStreamResource('Dossier de classeur', 'DAORecordClasseurDossier');
 
     foreach ($results as $result) {
       $context = $this->activityStreamService->getContextResources($result->target_node_type, $result->target_node_id);
       $target = Kernel::getNode($result->target_node_type, $result->target_node_id);
       $this->activityStreamService->logStatistic((int)$result->count, 'unit', null, 'count', $object, $target, $context);
     }
+  }
+
+  /**
+   * Envoie les statistiques sur le nombre de fichiers
+   */
+  protected function sendFichierStat()
+  {
+      // Fichiers par classeurs
+      $sql = <<<SQL
+          SELECT COUNT(*) AS count, mcf.module_classeur_id AS target_node_id, SUM(taille) AS taille_totale
+          FROM module_classeur_fichier mcf
+          GROUP BY mcf.module_classeur_id
+SQL;
+
+      $results = _doQuery ($sql);
+
+
+      foreach ($results as $result) {
+          $object = new EcoleNumeriqueActivityStreamResource('Fichier', 'DAORecordClasseurFichier', null, null, array('taille' => $result->taille_totale));
+          $target = Kernel::getNode('classeur|classeur', $result->target_node_id);
+          $this->activityStreamService->logStatistic((int)$result->count, 'unit', null, 'count', $object, $target, array());
+      }
+
+      function flattenArray(array $array) {
+          $return = array();
+
+          foreach ($array as $key => $value) {
+              $return[$key] = reset($value);
+          }
+
+          return $return;
+      }
+
+      $sql = <<<SQL
+          SELECT kme.node_id as classe_id, mcd.id AS dossier_id
+          FROM module_classeur_dossier mcd
+          INNER JOIN kernel_mod_enabled kme ON kme.module_id = mcd.module_classeur_id AND kme.module_type = 'MOD_CLASSEUR' AND kme.node_type = 'BU_CLASSE'
+          WHERE mcd.casier = 1
+SQL;
+
+      $casierIdByClasseIds = _doQuery($sql);
+
+      function getChildren($dossierId)
+      {
+          return flattenArray(_doQuery('SELECT id FROM module_classeur_dossier WHERE parent_id = ?', array($dossierId)));
+      }
+
+      function getSubFolders($dossierId)
+      {
+          $children = array($dossierId);
+          foreach (getChildren($dossierId) as $child) {
+              $children = array_merge($children, getSubFolders($child));
+          }
+
+          return $children;
+      }
+
+      foreach ($casierIdByClasseIds as $row) {
+          $subFolders = getSubFolders($row->dossier_id);
+
+          // Fichiers par casiers
+          $sql = <<<SQL
+              SELECT COUNT(*) AS count, SUM(taille) AS taille_totale
+              FROM module_classeur_fichier mcf
+              WHERE mcf.module_classeur_dossier_id IN (?)
+              GROUP BY mcf.module_classeur_id
+SQL;
+          $results = _doQuery($sql, array(implode(', ', $subFolders)));
+
+          if (count($results)) {
+              $result = reset($results);
+              $object = new EcoleNumeriqueActivityStreamResource('Fichier', 'DAORecordClasseurFichier', null, null, array('taille' => $result->taille_totale));
+              $target = Kernel::getNode('BU_CLASSE', $row->classe_id);
+              $this->activityStreamService->logStatistic((int)$result->count, 'unit', null, 'count', $object, $target, array());
+          }
+      }
   }
 
   /**
@@ -122,7 +225,7 @@ SQL;
       GROUP BY target_node_type, target_node_id
 SQL;
 
-    $object = new Resource('Dossier de classeur', 'DAORecordClasseurDossier');
+    $object = new EcoleNumeriqueActivityStreamResource('Dossier de classeur', 'DAORecordClasseurDossier');
     $results = _doQuery ($sql);
 
     foreach ($results as $result) {
@@ -137,12 +240,54 @@ SQL;
    */
   protected function sendBlogPubliqueStat()
   {
-    $results = _doQuery ("SELECT is_public, COUNT(*) AS count FROM module_blog GROUP BY is_public");
+      $sql = <<<SQL
+          SELECT COUNT(*) AS count, mb.is_public, kme.node_type AS target_node_type, kme.node_id AS target_node_id
+          FROM module_blog mb
+          INNER JOIN kernel_mod_enabled kme ON kme.module_type = 'MOD_BLOG' AND kme.module_id = mb.id_blog
+          GROUP BY target_node_type, target_node_id, is_public
+SQL;
+
+      $results = _doQuery ($sql);
+
+      foreach ($results as $result) {
+          $object = new EcoleNumeriqueActivityStreamResource('Blog', 'DAORecordBlog', null, null, array('is_public' => $result->is_public));
+
+          $context = $this->activityStreamService->getContextResources($result->target_node_type, $result->target_node_id);
+          $target = Kernel::getNode($result->target_node_type, $result->target_node_id);
+          $this->activityStreamService->logStatistic((int)$result->count, 'unit', null, 'count', $object, $target, $context);
+      }
+  }
+
+  /**
+   * Envoie les statistiques sur le nombre de blogs publics et non publics
+   */
+  protected function sendBlogRubriqueStat()
+  {
+      $results = _doQuery ('SELECT COUNT(*) AS count, id_blog FROM module_blog_articlecategory mba GROUP BY id_blog');
+
 
     foreach ($results as $result) {
-      $object = new Resource('Blog', 'DAORecordBlog', null, null, array('is_public' => $result->is_public));
-      $this->activityStreamService->logStatistic((int)$result->count, 'unit', null, 'count', $object, null, array());
-    }
+          $object = new EcoleNumeriqueActivityStreamResource('Blog', 'DAORecordBlogarticlecategory', null, null, array());
+          $target = Kernel::getNode('blog|blog', $result->id_blog);
+          $context = $this->activityStreamService->getContextResources('MOD_BLOG', $result->id_blog);
+          $this->activityStreamService->logStatistic((int)$result->count, 'unit', null, 'count', $object, $target, $context);
+      }
+  }
+
+  /**
+   * Envoie les statistiques sur le nombre de pages de blogs
+   */
+  protected function sendBlogPageStat()
+  {
+      $results = _doQuery ('SELECT COUNT(*) AS count, id_blog FROM module_blog_article mba GROUP BY id_blog');
+
+
+    foreach ($results as $result) {
+          $object = new EcoleNumeriqueActivityStreamResource('Blog', 'DAORecordBlogArticle', null, null, array());
+          $target = Kernel::getNode('blog|blog', $result->id_blog);
+          $context = $this->activityStreamService->getContextResources('MOD_BLOG', $result->id_blog);
+          $this->activityStreamService->logStatistic((int)$result->count, 'unit', null, 'count', $object, $target, $context);
+      }
   }
 
   /**
@@ -150,44 +295,112 @@ SQL;
    */
   protected function sendBlogStat()
   {
-    $results = _doQuery ("SELECT privacy, COUNT(*) AS count FROM module_blog GROUP BY privacy");
+    $sql = <<<SQL
+      SELECT COUNT(*) AS count, mb.privacy, kme.node_type AS target_node_type, kme.node_id AS target_node_id
+      FROM module_blog mb
+      INNER JOIN kernel_mod_enabled kme ON kme.module_type = 'MOD_BLOG' AND kme.module_id = mb.id_blog
+      GROUP BY target_node_type, target_node_id, privacy
+SQL;
+
+    $results = _doQuery ($sql);
 
     foreach ($results as $result) {
-      $object = new Resource('Blog', 'DAORecordBlog', null, null, array('privacy' => $result->privacy));
-      $this->activityStreamService->logStatistic((int)$result->count, 'unit', null, 'count', $object, null, array());
+      $object = new EcoleNumeriqueActivityStreamResource('Blog', 'DAORecordBlog', null, null, array('privacy' => $result->privacy));
+
+      $context = $this->activityStreamService->getContextResources($result->target_node_type, $result->target_node_id);
+      $target = Kernel::getNode($result->target_node_type, $result->target_node_id);
+      $this->activityStreamService->logStatistic((int)$result->count, 'unit', null, 'count', $object, $target, $context);
+    }
+  }
+
+  public function sendGroupeDeTravailStat()
+  {
+      $sql = <<<SQL
+          SELECT COUNT(*) AS count, module_type, klgn.node_type, klgn.node_id
+          FROM module_groupe_groupe mgg
+          INNER JOIN kernel_mod_enabled kme ON kme.node_type = 'CLUB' AND kme.node_id = mgg.id
+          INNER JOIN kernel_link_groupe2node klgn ON klgn.groupe_id = mgg.id
+          GROUP BY kme.module_type, klgn.node_type, klgn.node_id
+SQL;
+
+      $results = _doQuery($sql);
+      foreach ($results as $result) {
+          if ($result->node_type == 'ROOT') {
+              continue;
+          }
+
+          $object = new EcoleNumeriqueActivityStreamResource('Groupe de travail', 'DAORecordGroupe', null, null, array('module' => $result->module_type));
+          $context = $this->activityStreamService->getContextResources($result->node_type, $result->node_id);
+          $target = Kernel::getNode($result->node_type, $result->node_id);
+          $this->activityStreamService->logStatistic((int)$result->count, 'unit', null, 'count', $object, $target, $context);
+      }
+
+      $sql = <<<SQL
+          SELECT COUNT(*) AS count, klgn.node_type, klgn.node_id
+          FROM module_groupe_groupe mgg
+          INNER JOIN kernel_link_groupe2node klgn ON klgn.groupe_id = mgg.id
+          GROUP BY klgn.node_type, klgn.node_id
+SQL;
+      $results = _doQuery($sql);
+
+      foreach ($results as $result)
+      {
+          if ($result->node_type == 'ROOT') {
+              continue;
+          }
+
+          $object = new EcoleNumeriqueActivityStreamResource('Groupe de travail', 'DAORecordGroupe', null, null, array('module' => 'TOTAL'));
+          $context = $this->activityStreamService->getContextResources($result->node_type, $result->node_id);
+          $target = Kernel::getNode($result->node_type, $result->node_id);
+          $this->activityStreamService->logStatistic((int)$result->count, 'unit', null, 'count', $object, $target, $context);
+      }
+
+  }
+
+
+  /**
+   * Envoie le nombre de discussions pour un groupe de travail
+   */
+  protected function sendListeStat()
+  {
+    $sql = <<<SQL
+      SELECT COUNT(*) AS count, kme.node_type AS target_node_type, kme.node_id AS target_node_id
+      FROM module_liste_listes mll
+      INNER JOIN kernel_mod_enabled kme ON kme.module_type = 'MOD_LISTE' AND kme.module_id = mll.id
+      GROUP BY target_node_type, target_node_id
+SQL;
+
+    $results = _doQuery ($sql);
+
+    foreach ($results as $result) {
+      $object = new EcoleNumeriqueActivityStreamResource('Discussion', 'DAORecordListe_Listes', null, null, array('privacy' => $result->privacy));
+
+      $context = $this->activityStreamService->getContextResources($result->target_node_type, $result->target_node_id);
+      $target = Kernel::getNode($result->target_node_type, $result->target_node_id);
+      $this->activityStreamService->logStatistic((int)$result->count, 'unit', null, 'count', $object, $target, $context);
     }
   }
 
   /**
-   * Envoie le nombre de travaux marqués comme étant à faire
+   * Envoie le nombre de discussions pour un groupe de travail
    */
-  protected function sendTravailAFaireStat()
+  protected function sendMessageStat()
   {
-    $count = _doQuery ("SELECT COUNT(*) AS count FROM module_cahierdetextes_travail WHERE a_faire = 1");
+    $sql = <<<SQL
+      SELECT COUNT(*) AS count, kme.node_type AS target_node_type, kme.node_id AS target_node_id
+      FROM module_liste_messages mlm
+      INNER JOIN kernel_mod_enabled kme ON kme.module_type = 'MOD_LISTE' AND kme.module_id = mlm.liste
+      GROUP BY target_node_type, target_node_id
+SQL;
 
-    $object = new Resource('Travail', 'DAORecordCahierDeTextesTravail', null, null, array('a_faire' => 1));
-    $this->activityStreamService->logStatistic((int)$count[0]->count, 'unit', null, 'count', $object, null, array());
-  }
+    $results = _doQuery ($sql);
 
-  /**
-   * Envoie le nombre de travaux en classe
-   */
-  protected function sendTravailEnClasseStat()
-  {
-    $count = _doQuery ("SELECT COUNT(*) AS count FROM module_cahierdetextes_travail WHERE a_faire = 0");
+    foreach ($results as $result) {
+      $object = new EcoleNumeriqueActivityStreamResource('Discussion', 'DAORecordliste_messages', null, null, array('privacy' => $result->privacy));
 
-    $object = new Resource('Travail', 'DAORecordCahierDeTextesTravail', null, null, array('a_faire' => 0));
-    $this->activityStreamService->logStatistic((int)$count[0]->count, 'unit', null, 'count', $object, null, array());
-  }
-
-  /**
-   * Envoie le nombre de mémos
-   */
-  protected function sendMemoStat()
-  {
-    $count = _doQuery ("SELECT COUNT(*) AS count FROM module_cahierdetextes_memo");
-
-    $object = new Resource('Mémo', 'DAORecordCahierDeTextesMemo', null, null);
-    $this->activityStreamService->logStatistic((int)$count[0]->count, 'unit', null, 'count', $object, null, array());
+      $context = $this->activityStreamService->getContextResources($result->target_node_type, $result->target_node_id);
+      $target = Kernel::getNode($result->target_node_type, $result->target_node_id);
+      $this->activityStreamService->logStatistic((int)$result->count, 'unit', null, 'count', $object, $target, $context);
+    }
   }
 }

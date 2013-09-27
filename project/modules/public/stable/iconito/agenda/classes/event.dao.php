@@ -22,7 +22,7 @@ class DAORecordEvent implements ResourceInterface
    */
   public function toResource()
   {
-    $resource = new Resource(
+    $resource = new EcoleNumeriqueActivityStreamResource(
       $this->title_event,
       get_class($this),
       $this->id_event

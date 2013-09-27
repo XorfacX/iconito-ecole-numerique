@@ -180,7 +180,7 @@ class DAORecordClasseurFichier implements ResourceInterface
    */
   public function toResource()
   {
-    $resource = new Resource(
+    $resource = new EcoleNumeriqueActivityStreamResource(
       $this->titre,
       get_class($this),
       $this->id

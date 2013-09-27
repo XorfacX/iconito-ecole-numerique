@@ -76,7 +76,7 @@ class DAORecordClasseurDossier implements ResourceInterface
    */
   public function toResource()
   {
-    $resource = new Resource(
+    $resource = new EcoleNumeriqueActivityStreamResource(
       $this->nom,
       get_class($this),
       $this->id

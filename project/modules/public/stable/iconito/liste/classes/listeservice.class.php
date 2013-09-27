@@ -9,7 +9,7 @@
 class ListeService
 {
     /**
-     * Ajoute un message à une liste, et s'occupe de l'envoyer à tous ses membres en minimail
+     * Ajoute un message ï¿½ une liste, et s'occupe de l'envoyer ï¿½ tous ses membres en minimail
      *
      * @author Christophe Beyer <cbeyer@cap-tic.fr>
      * @since 2005/11/23
@@ -17,7 +17,7 @@ class ListeService
      * @param integer $auteur Id de l'utilisateur auteur du message
      * @param string $titre Titre du message
      * @param string $message Corps du message
-     * @return integer l'Id du message inséré ou NULL si erreur
+     * @return integer l'Id du message insï¿½rï¿½ ou NULL si erreur
      */
     public function addListeMessage ($liste, $auteur, $titre, $message)
     {
@@ -43,6 +43,8 @@ class ListeService
             $newMessage->message = $message;
             $newMessage->date = date("Y-m-d H:i:s");
             $daoMessages->insert ($newMessage);
+            CopixEventNotifier::notify('createMessageListe', array('message'=>$newMessage));
+
             if ($newMessage->id!==NULL) {
                 $dest = array();
                 // On cherche le parent
@@ -77,7 +79,7 @@ class ListeService
     /**
      * Gestion des droits dans une liste
      *
-     * Teste si l'usager peut effectuer une certaine opération par rapport à son droit. Le droit sur la liste nécessite d'être connu, renvoyé par le kernel avant l'entrée dans cette fonction.
+     * Teste si l'usager peut effectuer une certaine opï¿½ration par rapport ï¿½ son droit. Le droit sur la liste nï¿½cessite d'ï¿½tre connu, renvoyï¿½ par le kernel avant l'entrï¿½e dans cette fonction.
      *
      * @author Christophe Beyer <cbeyer@cap-tic.fr>
      * @since 2006/03/30

@@ -71,14 +71,16 @@ class ListenerActivityStream extends CopixListener
             'send',
             $this->activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras()),
             $event->getParam('minimail')->toResource(),
-            $this->activityStreamService->getPersonFromUserInfo($event->getParam('recipient'))
+            $this->activityStreamService->getPersonFromUserInfo($event->getParam('recipient')),
+            $this->activityStreamService->getContextResourcesFromArray(Kernel::getGroupsFromUserInfos($event->getParam('recipient')))
         );
 
         $this->activityStreamService->logActivity(
             'receive',
             $this->activityStreamService->getPersonFromUserInfo($event->getParam('recipient')),
             $event->getParam('minimail')->toResource(),
-            $this->activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras())
+            $this->activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras()),
+            $this->activityStreamService->getContextResourcesFromArray(Kernel::getGroupsFromUserInfos(_currentUser()->getExtras()))
         );
     }
 
@@ -118,6 +120,27 @@ class ListenerActivityStream extends CopixListener
             $article->toResource(),
             $event->getParam('blog')->toResource(),
             $this->activityStreamService->getContextResources('MOD_BLOG', $article->id_blog)
+        );
+    }
+
+    /**
+     * Listener sur la création d'articles
+     *
+     * @param CopixEvent $event
+     * @param CopixEventResponse $eventResponse
+     */
+    public function processVisitBlog(CopixEvent $event, CopixEventResponse $eventResponse)
+    {
+        $blog = $event->getParam('blog');
+
+        $contexts = $this->activityStreamService->getContextResources('MOD_BLOG', $blog->id_blog);
+
+        $this->activityStreamService->logActivity(
+            'watch',
+            $this->activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras()),
+            $blog->toResource(),
+            array_shift($contexts),
+            $contexts
         );
     }
 
@@ -176,6 +199,66 @@ class ListenerActivityStream extends CopixListener
             $event->getParam('question')->toResource(),
             $quiz,
             $this->activityStreamService->getContextResources('MOD_QUIZ', $quiz->gr_id)
+        );
+    }
+
+    /**
+     * Listener sur la création de travaux
+     *
+     * @param CopixEvent $event
+     * @param CopixEventResponse $eventResponse
+     */
+    public function processCreateTravail(CopixEvent $event, CopixEventResponse $eventResponse)
+    {
+        $travail = $event->getParam('travail');
+
+        $classe = _doQuery('SELECT kernel_bu_ecole_classe_id as id FROM module_cahierdetextes_domaine WHERE id = ?', array($travail->domaine_id));
+        $classe = reset($classe);
+
+        $this->activityStreamService->logActivity(
+            'create',
+            $this->activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras()),
+            $travail->toResource(),
+            null,
+            $this->activityStreamService->getContextResources('BU_CLASSE', $classe->id)
+        );
+    }
+
+    /**
+     * Listener sur la création de travaux
+     *
+     * @param CopixEvent $event
+     * @param CopixEventResponse $eventResponse
+     */
+    public function processCreateMemo(CopixEvent $event, CopixEventResponse $eventResponse)
+    {
+        $memo = $event->getParam('memo');
+
+        $this->activityStreamService->logActivity(
+            'create',
+            $this->activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras()),
+            $memo->toResource(),
+            null,
+            $this->activityStreamService->getContextResources('BU_CLASSE', $memo->classe_id)
+        );
+    }
+
+    /**
+     * Listener sur la création de travaux
+     *
+     * @param CopixEvent $event
+     * @param CopixEventResponse $eventResponse
+     */
+    public function processCreateMessageListe(CopixEvent $event, CopixEventResponse $eventResponse)
+    {
+        $message = $event->getParam('message');
+
+        $this->activityStreamService->logActivity(
+            'send',
+            $this->activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras()),
+            $message->toResource(),
+            $this->activityStreamService->getResource('MOD_LISTE', $message->liste),
+            $this->activityStreamService->getContextResources('MOD_LISTE', $message->liste)
         );
     }
 }

@@ -17,7 +17,7 @@ class DAORecordKernel_bu_groupe_villes implements ResourceInterface
    */
   public function toResource()
   {
-    $resource = new Resource(
+    $resource = new EcoleNumeriqueActivityStreamResource(
       $this->nom_groupe,
       get_class($this),
       $this->id_grv

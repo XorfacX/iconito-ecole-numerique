@@ -23,8 +23,8 @@ class DAORecordCahierDeTextesMemo implements ResourceInterface
    */
   public function toResource()
   {
-    $resource = new Resource(
-      null,
+    $resource = new EcoleNumeriqueActivityStreamResource(
+      'Mémo',
       get_class($this),
       $this->id
     );

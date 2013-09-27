@@ -1,6 +1,6 @@
 <?php
 
-use ActivityStream\Client\Model\Resource;
+_classInclude('activitystream|ecolenumeriqueactivitystreamresource');
 use ActivityStream\Client\Model\ResourceInterface;
 
 /**

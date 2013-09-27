@@ -1,6 +1,6 @@
 <?php
 
-use ActivityStream\Client\Model\Resource;
+_classInclude('activitystream|ecolenumeriqueactivitystreamresource');
 use ActivityStream\Client\Model\ResourceInterface;
 
 /**
@@ -104,7 +104,7 @@ class DAORecordKernel_ext_user implements ResourceInterface
    */
   public function toResource()
   {
-    $resource = new Resource(
+    $resource = new EcoleNumeriqueActivityStreamResource(
       'Intervenant externe',
       get_class($this),
       $this->id

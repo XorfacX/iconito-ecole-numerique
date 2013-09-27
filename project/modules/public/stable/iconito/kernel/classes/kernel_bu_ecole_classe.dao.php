@@ -20,7 +20,7 @@ class DAORecordKernel_bu_ecole_classe implements ResourceInterface
    */
   public function toResource()
   {
-    $resource = new Resource(
+    $resource = new EcoleNumeriqueActivityStreamResource(
       $this->nom,
       get_class($this),
       $this->id

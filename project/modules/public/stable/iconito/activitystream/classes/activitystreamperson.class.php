@@ -1,6 +1,6 @@
 <?php
 
-use ActivityStream\Client\Model\Resource;
+_classInclude('activitystream|ecolenumeriqueactivitystreamresource');
 use ActivityStream\Client\Model\ResourceInterface;
 
 /**
@@ -125,7 +125,7 @@ class ActivityStreamPerson implements ResourceInterface
    */
   public function toResource()
   {
-    $resource = new Resource(
+    $resource = new EcoleNumeriqueActivityStreamResource(
       $this->getIdentity(),
       get_class($this)
     );

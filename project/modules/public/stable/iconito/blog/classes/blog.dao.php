@@ -78,7 +78,7 @@ class DAORecordBlog implements ResourceInterface
    */
   public function toResource()
   {
-    $resource = new Resource(
+    $resource = new EcoleNumeriqueActivityStreamResource(
       $this->name_blog,
       get_class($this),
       $this->id_blog,

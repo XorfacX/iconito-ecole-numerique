@@ -1,14 +1,9 @@
 <?php
 
-use \ActivityStream\Client\Model\Resource;
-use \ActivityStream\Client\Model\ResourceInterface;
+use ActivityStream\Client\Model\ResourceInterface;
+_classInclude('activitystream|ecolenumeriqueactivitystreamresource');
 
-/**
- * @package     iconito
- * @subpackage  quiz
- * @author      Jérémy Hubert <jeremy.hubert@infogroom.fr>
- */
-class DAORecordQuiz_quiz implements ResourceInterface
+class DAORecordliste_messages implements ResourceInterface
 {
   /**
    * Return a resource from the current Object
@@ -18,22 +13,16 @@ class DAORecordQuiz_quiz implements ResourceInterface
   public function toResource()
   {
     $resource = new EcoleNumeriqueActivityStreamResource(
-      $this->name,
+      $this->titre,
       get_class($this),
       $this->id
     );
 
     $attributes = array(
-      'id_owner',
-      'date_start',
-      'date_end',
-      'description',
-      'help',
-      'pic',
-      'opt_save',
-      'opt_show_results',
-      'lock',
-      'gr_id',
+      'liste',
+      'message',
+      'date',
+      'auteur'
     );
 
     $attributesValues = array();

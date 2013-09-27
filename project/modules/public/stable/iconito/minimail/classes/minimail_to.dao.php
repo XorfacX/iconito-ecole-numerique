@@ -17,7 +17,7 @@ class DAORecordMinimail_to implements ResourceInterface
    */
   public function toResource()
   {
-    $resource = new Resource(
+    $resource = new EcoleNumeriqueActivityStreamResource(
       'Minimail',
       get_class($this),
       $this->id2

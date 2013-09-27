@@ -1,7 +1,7 @@
 <?php
 
 use ActivityStream\Client\Model\ResourceInterface;
-use ActivityStream\Client\Model\Resource;
+_classInclude('activitystream|ecolenumeriqueactivitystreamresource');
 
 class DAOGroupe
 {
@@ -95,7 +95,7 @@ class DAORecordGroupe implements ResourceInterface
      */
     public function toResource()
     {
-        $resource = new Resource(
+        $resource = new EcoleNumeriqueActivityStreamResource(
             $this->titre,
             get_class($this),
             $this->id

@@ -1,6 +1,6 @@
 <?php
 
-use ActivityStream\Client\Model\Resource;
+_classInclude('activitystream|ecolenumeriqueactivitystreamresource');
 use ActivityStream\Client\Model\ResourceInterface;
 
 _classInclude('eventDispatcher|EventDispatcherFactory');
@@ -152,10 +152,38 @@ class ActivityStreamService
         $context = array();
 
         foreach ($this->getContexts($type, $id) as $element){
-            $context[] = $this->getResource($element['type'], $element['id']);
+            $resource = $this->getResource($element['type'], $element['id']);
+            if (null !== $resource) {
+                $context[] = $resource;
+            }
         }
 
         return $context;
+    }
+
+    /**
+     * Retourne les ressources du contexte
+     *
+     * @param array $data Le tableau de data
+     *
+     * @return array
+     */
+    public function getContextResourcesFromArray(array $data)
+    {
+        $contexts = array();
+        foreach ($data as $datum) {
+            $contexts[$datum['type'].'|'.$datum['id']] = $datum;
+            foreach ($this->getContexts($datum['type'], $datum['id']) as $context) {
+              $contexts[$context['type'].'|'.$context['id']] = $context;
+            }
+        }
+
+        $contextResources = array();
+        foreach ($contexts as $element){
+            $contextResources[] = $this->getResource($element['type'], $element['id']);
+        }
+
+        return $contextResources;
     }
 
     /**
@@ -169,11 +197,8 @@ class ActivityStreamService
         $record = Kernel::getNode($type, $id);
 
         if (null === $record){
-            throw new Exception(sprintf(
-                'Aucun enregistrement en base de données n\'a pu être trouvé pour le couple ["%s" - "%s"]',
-                $type,
-                $id
-            ));
+
+            return null;
         }
 
         if (!$record instanceof ResourceInterface){

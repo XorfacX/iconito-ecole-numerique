@@ -26,9 +26,13 @@
                 <event name="sendMinimail" />
                 <event name="createFile" />
                 <event name="createArticle" />
+                <event name="visitBlog" />
                 <event name="createComment" />
                 <event name="createQuiz" />
                 <event name="createQuestion" />
+                <event name="createTravail" />
+                <event name="createMemo" />
+                <event name="createMessageListe" />
             </listener>
         </listeners>
     </events>

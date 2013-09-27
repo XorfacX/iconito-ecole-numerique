@@ -734,6 +734,7 @@ class ActionGroupDefault extends CopixActionGroup
 
         // Insertion de l'enregistrement "travail"
         $travailDAO->insert ($ppo->travail);
+        CopixEventNotifier::notify('createTravail', array('travail'=>$ppo->travail));
       }
       // Mise à jour
       else {
@@ -1177,6 +1178,7 @@ class ActionGroupDefault extends CopixActionGroup
 
         // Insertion de l'enregistrement "memo"
         $memoDAO->insert ($ppo->memo);
+        CopixEventNotifier::notify('createMemo', array('memo'=>$ppo->memo));
       }
       // Mise à jour
       else {

@@ -17,7 +17,7 @@ class DAORecordQuiz_questions implements ResourceInterface
    */
   public function toResource()
   {
-    $resource = new Resource(
+    $resource = new EcoleNumeriqueActivityStreamResource(
       $this->name,
       get_class($this),
       $this->id

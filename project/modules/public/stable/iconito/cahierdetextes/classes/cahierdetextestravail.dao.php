@@ -17,8 +17,8 @@ class DAORecordCahierDeTextesTravail implements ResourceInterface
    */
   public function toResource()
   {
-    $resource = new Resource(
-      $this->title,
+    $resource = new EcoleNumeriqueActivityStreamResource(
+      'Travail',
       get_class($this),
       $this->id2
     );

@@ -432,7 +432,7 @@ class DAORecordblogarticle implements ResourceInterface
    */
   public function toResource()
   {
-    $resource = new Resource(
+    $resource = new EcoleNumeriqueActivityStreamResource(
       $this->name_bact,
       get_class($this),
       $this->id_bact
