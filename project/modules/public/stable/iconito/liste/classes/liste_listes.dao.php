@@ -1,5 +1,38 @@
 <?php
 
+use ActivityStream\Client\Model\ResourceInterface;
+_classInclude('activitystream|ecolenumeriqueactivitystreamresource');
+
+class DAORecordListe_Listes implements ResourceInterface
+{
+  /**
+   * Return a resource from the current Object
+   *
+   * @return Resource
+   */
+  public function toResource()
+  {
+    $resource = new EcoleNumeriqueActivityStreamResource(
+      $this->titre,
+      get_class($this),
+      $this->id
+    );
+
+    $attributes = array(
+      'date_creation'
+    );
+
+    $attributesValues = array();
+    foreach ($attributes as $attribute) {
+      $attributesValues[$attribute] = $this->$attribute;
+    }
+
+    $resource->setAttributes($attributesValues);
+
+    return $resource;
+  }
+}
+
 /**
  * Surcharge de la DAO liste_listes
  *
@@ -9,7 +42,7 @@
 class DAOListe_Listes
 {
     /**
-     * Renvoie nb de messages envoyés sur une liste
+     * Renvoie nb de messages envoyï¿½s sur une liste
      *
      * @author Christophe Beyer <cbeyer@cap-tic.fr>
      * @since 2005/11/23

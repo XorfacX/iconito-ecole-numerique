@@ -222,11 +222,13 @@ class ActionGroupAdminArticle extends CopixActionGroup
         $showErrors =  true;
       } elseif ($go=='save') {
         // Insertion dans la base
-                $article->sumary_html_bact = smarty_modifier_blog_format_article ($article->sumary_bact, $article->format_bact);
-                $article->content_html_bact = smarty_modifier_blog_format_article ($article->content_bact, $article->format_bact);
+        $article->sumary_html_bact = smarty_modifier_blog_format_article ($article->sumary_bact, $article->format_bact);
+        $article->content_html_bact = smarty_modifier_blog_format_article ($article->content_bact, $article->format_bact);
         $articleDAO->insert($article);
-                $article->url_bact = killBadUrlChars($article->id_bact.'-'.$article->name_bact);
-                $articleDAO->update($article);
+        $blog = CopixDAOFactory::create('blog|blog')->get($id_blog);
+        CopixEventNotifier::notify('createArticle', array('article'=>$article, 'blog'=>$blog));
+        $article->url_bact = killBadUrlChars($article->id_bact.'-'.$article->name_bact);
+        $articleDAO->update($article);
         // Insertion dans la base blogarticle_blogarticlecategory
         $artctgDAO = CopixDAOFactory::create('blog|blogarticle_blogarticlecategory');
         $artctgDAO->deleteAndInsert($article->id_bact, $tabSelectCat);

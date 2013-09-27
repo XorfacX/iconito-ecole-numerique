@@ -1,4 +1,53 @@
 <?php
+
+use \ActivityStream\Client\Model\Resource;
+use \ActivityStream\Client\Model\ResourceInterface;
+
+/**
+ * @package     iconito
+ * @author      Jérémy Hubert <jeremy.hubert@infogroom.fr>
+ */
+class DAORecordBlogarticlecomment implements ResourceInterface
+{
+  /**
+   * Return a resource from the current Object
+   *
+   * @return Resource
+   */
+  public function toResource()
+  {
+    $resource = new EcoleNumeriqueActivityStreamResource(
+      null,
+      get_class($this),
+      $this->id_bacc
+    );
+
+    $attributes = array(
+      'id_bact',
+      'authorid_bacc',
+      'authorname_bacc',
+      'authoremail_bacc',
+      'authorweb_bacc',
+      'authorip_bacc',
+      'date_bacc',
+      'time_bacc',
+      'content_bacc',
+      'is_online',
+      'date_send',
+      'id_blog',
+    );
+
+    $attributesValues = array();
+    foreach ($attributes as $attribute) {
+      $attributesValues[$attribute] = $this->$attribute;
+    }
+
+    $resource->setAttributes($attributesValues);
+
+    return $resource;
+  }
+}
+
 /**
 * @package	copix
 * @version	$Id: blogarticlecomment.dao.class.php,v 1.8 2007-05-15 10:08:39 cbeyer Exp $

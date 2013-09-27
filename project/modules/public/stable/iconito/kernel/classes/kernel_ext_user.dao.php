@@ -1,5 +1,8 @@
 <?php
 
+_classInclude('activitystream|ecolenumeriqueactivitystreamresource');
+use ActivityStream\Client\Model\ResourceInterface;
+
 /**
  * Surcharge de la DAO Kernel_bu_ext
  *
@@ -92,5 +95,34 @@ class DAOKernel_ext_user
 
 }
 
+class DAORecordKernel_ext_user implements ResourceInterface
+{
+  /**
+   * Return an resource from the current Object
+   *
+   * @return Resource
+   */
+  public function toResource()
+  {
+    $resource = new EcoleNumeriqueActivityStreamResource(
+      'Intervenant externe',
+      get_class($this),
+      $this->id
+    );
 
+    $attributes = array(
+      'nom',
+      'prenom',
+      'description'
+    );
 
+    $attributesValues = array();
+    foreach ($attributes as $attribute) {
+      $attributesValues[$attribute] = $this->$attribute;
+    }
+
+    $resource->setAttributes($attributesValues);
+
+    return $resource;
+  }
+}

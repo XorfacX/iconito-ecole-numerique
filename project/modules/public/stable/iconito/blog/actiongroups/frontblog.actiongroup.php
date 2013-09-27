@@ -82,6 +82,8 @@ class ActionGroupFrontBlog extends EnicActionGroup
             }
         }
 
+        CopixEventNotifier::notify('visitBlog', array('blog' => $blog));
+
 //		$menu = array();
         $parent = Kernel::getModParentInfo("MOD_BLOG", $blog->id_blog);
         $blog->parent = $parent;

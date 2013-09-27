@@ -1,5 +1,8 @@
 <?php
 
+_classInclude('activitystream|ecolenumeriqueactivitystreamresource');
+use ActivityStream\Client\Model\ResourceInterface;
+
 /**
  * Surcharge de la DAO Kernel_bu_res
  *
@@ -7,9 +10,54 @@
  * @subpackage Kernel
  */
 
-class DAORecordKernel_bu_res
+class DAORecordKernel_bu_res implements ResourceInterface
 {
   protected $_loginAccount = null;
+
+  /**
+   * Return an resource from the current Object
+   *
+   * @return Resource
+   */
+  public function toResource()
+  {
+    $resource = new EcoleNumeriqueActivityStreamResource(
+      'Responsable',
+      get_class($this),
+      $this->id
+    );
+
+    $attributes = array(
+      'nom',
+      'nom_jf',
+      'prenom1',
+      'civilite',
+      'id_sexe',
+      'id_pcs',
+      'profession',
+      'id_fam',
+      'tel_dom',
+      'tel_gsm',
+      'tel_pro',
+      'mel',
+      'num_rue',
+      'num_seq',
+      'adresse1',
+      'adresse2',
+      'code_postal',
+      'commune',
+      'id_ville',
+    );
+
+    $attributesValues = array();
+    foreach ($attributes as $attribute) {
+      $attributesValues[$attribute] = $this->$attribute;
+    }
+
+    $resource->setAttributes($attributesValues);
+
+    return $resource;
+  }
 
   public function getLoginAccount ()
   {

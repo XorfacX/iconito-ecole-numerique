@@ -21,3 +21,9 @@
 /www/themes/*
 !/project/themes/default
 !/www/themes/default
+
+# Les fichiers inclus via composer
+/utils/alviss/*
+/utils/symfony/*
+/utils/composer/*
+/utils/autoload.php

@@ -1,6 +1,9 @@
 <?php
 
-class DAORecordKernel_bu_ecole
+use \ActivityStream\Client\Model\Resource;
+use \ActivityStream\Client\Model\ResourceInterface;
+
+class DAORecordKernel_bu_ecole implements ResourceInterface
 {
   protected $_city = null;
 
@@ -19,6 +22,42 @@ class DAORecordKernel_bu_ecole
     }
 
     return $this->_city;
+  }
+
+  /**
+   * Return a resource from the current Object
+   *
+   * @return Resource
+   */
+  public function toResource()
+  {
+    $resource = new EcoleNumeriqueActivityStreamResource(
+      $this->nom,
+      get_class($this),
+      $this->numero
+    );
+
+    $attributes = array(
+      'type',
+      'num_rue',
+      'num_seq',
+      'adresse1',
+      'adresse2',
+      'code_postal',
+      'commune',
+      'tel',
+      'id_ville',
+      'num_plan_interactif',
+    );
+
+    $attributesValues = array();
+    foreach ($attributes as $attribute) {
+      $attributesValues[$attribute] = $this->$attribute;
+    }
+
+    $resource->setAttributes($attributesValues);
+
+    return $resource;
   }
 
 

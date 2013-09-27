@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<moduledefinition>
+    <general>
+        <default name="eventdispatcher" descriptioni18n="eventdispatcher.moduleDescription"/>
+        <package name="copixdivers" version="2.2" />
+    </general>
+
+    <dependencies>
+        <dependency name="parameters" kind="module"/>
+    </dependencies>
+
+    <parameters>
+        <parameter name="activity_stream_adapter_classname" captioni18n="activitystream.parameter.adapter_class_name" default="RedisAdapter" />
+        <parameter name="activity_stream_adapter_host" captioni18n="activitystream.parameter.adapter_host" />
+        <parameter name="activity_stream_adapter_port" captioni18n="activitystream.parameter.adapter_port" />
+        <parameter name="activity_stream_adapter_connection_timeout" captioni18n="activitystream.parameter.adapter_connection_timeout" />
+        <parameter name="activity_stream_adapter_auth_password" captioni18n="activitystream.parameter.adapter_auth_password" />
+    </parameters>
+
+</moduledefinition>

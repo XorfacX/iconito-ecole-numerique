@@ -1,5 +1,8 @@
 <?php
 
+_classInclude('activitystream|ecolenumeriqueactivitystreamresource');
+use ActivityStream\Client\Model\ResourceInterface;
+
 /**
  * Surcharge de la DAO Kernel_bu_ele
  *
@@ -504,4 +507,62 @@ class DAOKernel_bu_ele
 
         return _doQuery($sql);
     }
+}
+
+class DAORecordKernel_bu_ele implements ResourceInterface
+{
+  /**
+   * Return an resource from the current Object
+   *
+   * @return Resource
+   */
+  public function toResource()
+  {
+    $resource = new EcoleNumeriqueActivityStreamResource(
+      'Eleve',
+      get_class($this),
+      $this->idEleve
+    );
+
+    $attributes = array(
+      'INE',
+      'nom',
+      'nom_jf',
+      'prenom1',
+      'prenom2',
+      'prenom3',
+      'civilite',
+      'id_sexe',
+      'payse_naise',
+      'nationalite',
+      'dep_nais',
+      'com_nais',
+      'date_nais',
+      'annee_france',
+      'num_rue',
+      'num_seq',
+      'adresse1',
+      'adresse2',
+      'code_postal',
+      'commune',
+      'id_ville',
+      'pays',
+      'hors_scol',
+      'id_directeur',
+      'observations',
+      'flag',
+      'adresse_tmp',
+      'date_tmp',
+      'ele_last_update'
+    );
+
+    $attributesValues = array();
+    foreach ($attributes as $attribute) {
+      $attributesValues[$attribute] = $this->$attribute;
+    }
+
+    $resource->setAttributes($attributesValues);
+
+    return $resource;
+  }
 }

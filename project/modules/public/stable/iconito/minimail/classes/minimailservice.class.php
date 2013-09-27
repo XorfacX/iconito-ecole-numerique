@@ -53,6 +53,10 @@ class MinimailService
                 $newDest->is_deleted = 0;
                 $DAOminimail_to->insert ($newDest);
 
+                $recipient = Kernel::getUserInfo("ID", $to_id, array('strict' => true));
+
+                CopixEventNotifier::notify('sendMinimail', array('minimail'=>$newDest, 'recipient' => $recipient));
+
                 // ======= Alerte mail ===============
                 // On vérifie que l'envoi de mails est activé, qu'un serveur SMTP est configuré, que le destinataire a coché l'option "etre prêvenu par mail" et qu'il a renseigné un mail
                 if ($newDest->id2 && CopixConfig::get('|mailEnabled')==1 && CopixConfig::get('|mailSmtpHost')) {
@@ -72,6 +76,7 @@ class MinimailService
                     }
                 }
                 // ======= Fin alerte mail ===============
+
             }
             $res = $newMp->id;
             if ($res) {

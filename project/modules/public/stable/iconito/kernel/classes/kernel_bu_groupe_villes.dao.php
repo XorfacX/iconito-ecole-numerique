@@ -1,5 +1,43 @@
 <?php
 
+use \ActivityStream\Client\Model\Resource;
+use \ActivityStream\Client\Model\ResourceInterface;
+
+/**
+ * @package     iconito
+ * @subpackage  cahierdetextes
+ * @author      Jérémy Hubert <jeremy.hubert@infogroom.fr>
+ */
+class DAORecordKernel_bu_groupe_villes implements ResourceInterface
+{
+  /**
+   * Return a resource from the current Object
+   *
+   * @return Resource
+   */
+  public function toResource()
+  {
+    $resource = new EcoleNumeriqueActivityStreamResource(
+      $this->nom_groupe,
+      get_class($this),
+      $this->id_grv
+    );
+
+    $attributes = array(
+      'date_creation',
+    );
+
+    $attributesValues = array();
+    foreach ($attributes as $attribute) {
+      $attributesValues[$attribute] = $this->$attribute;
+    }
+
+    $resource->setAttributes($attributesValues);
+
+    return $resource;
+  }
+}
+
 class DAOKernel_bu_groupe_villes
 {
 

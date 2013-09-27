@@ -5,8 +5,50 @@
 * @subpackage Cahierdetextes
 */
 
-class DAORecordCahierDeTextesMemo
+
+use \ActivityStream\Client\Model\Resource;
+use \ActivityStream\Client\Model\ResourceInterface;
+
+/**
+ * @package     iconito
+ * @subpackage  cahierdetextes
+ * @author      Jérémy Hubert <jeremy.hubert@infogroom.fr>
+ */
+class DAORecordCahierDeTextesMemo implements ResourceInterface
 {
+  /**
+   * Return a resource from the current Object
+   *
+   * @return Resource
+   */
+  public function toResource()
+  {
+    $resource = new EcoleNumeriqueActivityStreamResource(
+      'Mémo',
+      get_class($this),
+      $this->id
+    );
+
+    $attributes = array(
+      'classe_id',
+      'date_creation',
+      'date_validite',
+      'message',
+      'avec_signature',
+      'date_max_signature',
+      'supprime',
+      'timestamp',
+    );
+
+    $attributesValues = array();
+    foreach ($attributes as $attribute) {
+      $attributesValues[$attribute] = $this->$attribute;
+    }
+
+    $resource->setAttributes($attributesValues);
+
+    return $resource;
+  }
 }
 
 class DAOCahierDeTextesMemo
