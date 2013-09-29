@@ -32,3 +32,9 @@
 	<div class="button-subline">{i18n key="sysutils|admin.menu.groupes_sub"}</div>
 	</a>
 </div>
+<div class="loading-button">
+	<a href="{copixurl dest="sysutils|coreprim|"}" class="button floatleft">
+	<div class="button-title">{i18n key="sysutils|admin.menu.coreprim"}</div>
+	<div class="button-subline">{i18n key="sysutils|admin.menu.coreprim_sub"}</div>
+	</a>
+</div>

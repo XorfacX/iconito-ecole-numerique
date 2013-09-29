@@ -281,3 +281,14 @@ table.editItems th {
 	width:40%;
 }
 table.editItems .submit input {margin:5px 10px;}
+
+.accordion {
+    padding-left: 1.6em;
+    background-position: 0 50%; background-repeat: no-repeat;
+    background-image: url(../../../themes/default/images/sort_right_off.png);
+
+}
+
+.accordionOpen {
+    background-image: url(../../../themes/default/images/sort_down_off.png);
+}
