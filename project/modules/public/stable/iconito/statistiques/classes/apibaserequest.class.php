@@ -11,26 +11,27 @@ abstract class ApiBaseRequest
     const PERIOD_MONTHLY = 'monthly';
     const PERIOD_YEARLY  = 'yearly';
 
-    const CLASS_ACCOUNT       = 'Account';
-    const CLASS_AGENDA        = 'Agenda';
-    const CLASS_EVENT         = 'Evenement';
-    const CLASS_MINIMAIL      = 'Minimail';
-    const CLASS_CLASSEUR      = 'Classeur';
-    const CLASS_DOSSIER       = 'Dossier';
-    const CLASS_BLOG          = 'Blog';
+    const CLASS_ACCOUNT       = 'ActivityStreamPerson';
+    const CLASS_AGENDA        = 'DAORecordAgenda';
+    const CLASS_EVENT         = 'DAORecordEvent';
+    const CLASS_MINIMAIL      = 'DAORecordminimail_to';
+    const CLASS_CLASSEUR      = 'DAORecordClasseur';
+    const CLASS_DOSSIER       = 'DAORecordClasseurDossier';
+    const CLASS_FICHIER       = 'DAORecordClasseurFichier';
+    const CLASS_BLOG          = 'DAORecordBlog';
     const CLASS_VISITE        = 'Visite';
-    const CLASS_RUBRIQUE      = 'Rubrique';
-    const CLASS_PAGE          = 'Page';
-    const CLASS_ARTICLE       = 'Article';
-    const CLASS_COMMENTAIRE   = 'Commentaire';
-    const CLASS_TRAVAIL       = 'Travail';
-    const CLASS_CAHIERTEXTE   = 'CahierDeTexte';
-    const CLASS_MEMO          = 'Memo';
-    const CLASS_QUIZ          = 'Quiz';
-    const CLASS_QUESTION      = 'Question';
-    const CLASS_GROUPETRAVAIL = 'GroupeDeTravail';
-    const CLASS_DISCUSSION    = 'Discussion';
-    const CLASS_MESSAGE       = 'Message';
+    const CLASS_RUBRIQUE      = 'DAORecordBlogCategory';
+    const CLASS_PAGE          = 'DAORecordblogpage';
+    const CLASS_ARTICLE       = 'DAORecordblogarticle';
+    const CLASS_COMMENTAIRE   = 'DAORecordBlogarticlecomment';
+    const CLASS_TRAVAIL       = 'DAORecordCahierDeTextesTravail';
+    const CLASS_CAHIERTEXTE   = 'DAORecordCahierDeTextes';
+    const CLASS_MEMO          = 'DAORecordCahierDeTextesMemo';
+    const CLASS_QUIZ          = 'DAORecordQuiz_quiz';
+    const CLASS_QUESTION      = 'DAORecordQuiz_questions';
+    const CLASS_GROUPETRAVAIL = 'DAORecordGroupe';
+    const CLASS_DISCUSSION    = 'DAORecordliste_listes';
+    const CLASS_MESSAGE       = 'DAORecordliste_messages';
 
     /**
      * @var ConsolidatedStatisticFilter
@@ -94,26 +95,39 @@ abstract class ApiBaseRequest
         return new ConsolidatedStatisticFilter(
             $this->getFilter()->getpublishedFrom(),
             $this->getFilter()->getpublishedTo(),
-            $this->getFilter()->getContext()
+            $this->getFilter()->getTargetObjectType(),
+            $this->getFilter()->getTargetId()
         );
     }
 
     /**
-     * Applies unit count filter to objectType defined as parameter
+     * Applies unit count filter to objectType defined as parameter and return count result
      * @param string $objectType
      * @param array  $objectAttributes
      * @return mixed
      */
     protected function getObjectTypeNumber($objectType, $objectAttributes = array())
     {
+        $result = $this->getObjectTypeResult($objectType, $objectAttributes);
+
+        return count($result) ? $result[0]->counter : 0;
+    }
+
+    /**
+     * Applies unit count filter to objectType defined as parameter and return result
+     * @param string $objectType
+     * @param array  $objectAttributes
+     * @return mixed
+     */
+    protected function getObjectTypeResult($objectType, $objectAttributes = array())
+    {
         $filter = $this->createBaseFilter();
         $filter->setObjectObjectType($objectType);
         $filter->setObjectAttributes($objectAttributes);
         $filter->setPeriod(static::PERIOD_UNIT);
         $filter->setLastOnly(true);
-        $result = $this->getResult($filter);
 
-        return count($result) ? $result[0]->count : 0;
+        return $this->getResult($filter);
     }
 
     protected function sumResults($results)

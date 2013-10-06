@@ -3006,10 +3006,10 @@ if(DEBUG) {
       $tree = array();
       foreach ($citiesGroups as $citiesGroup) {
         if ($flat) {
-          $tree['citiesGroup-'.$citiesGroup->id_grv] = array('element' => $citiesGroup, 'parent' => null);
+          $tree['BU_GRVILLE|'.$citiesGroup->id_grv] = array('element' => $citiesGroup, 'parent' => null);
         } else {
-          $tree['citiesGroup-'.$citiesGroup->id_grv] = array('element' => $citiesGroup, 'children' => array());
-          $root = &$tree['citiesGroup-'.$citiesGroup->id_grv]['children'];
+          $tree['BU_GRVILLE|'.$citiesGroup->id_grv] = array('element' => $citiesGroup, 'children' => array());
+          $root = &$tree['BU_GRVILLE|'.$citiesGroup->id_grv]['children'];
         }
 
         if (_currentUser()->testCredential('module:cities_group|'.$citiesGroup->id_grv.'|city|create@gestionautonome')) {
@@ -3020,10 +3020,10 @@ if(DEBUG) {
 
         foreach ($cities as $city) {
           if ($flat) {
-            $tree['BU_VILLE_'.$city->id_vi] = array('element' => $city, 'parent' => 'citiesGroup-'.$citiesGroup->id_grv);
+            $tree['BU_VILLE|'.$city->id_vi] = array('element' => $city, 'parent' => 'BU_GRVILLE|'.$citiesGroup->id_grv);
           } else {
-            $root['BU_VILLE_'.$city->id_vi] = array('element' => $city, 'children' => array());
-            $cityRoot = &$root['BU_VILLE_'.$city->id_vi]['children'];
+            $root['BU_VILLE|'.$city->id_vi] = array('element' => $city, 'children' => array());
+            $cityRoot = &$root['BU_VILLE|'.$city->id_vi]['children'];
           }
 
           if (_currentUser()->testCredential('module:city|'.$city->id_vi.'|school|create@gestionautonome')) {
@@ -3034,10 +3034,10 @@ if(DEBUG) {
 
           foreach ($schools as $school) {
             if ($flat) {
-              $tree['BU_ECOLE_'.$school->numero] = array('element' => $school, 'parent' => 'BU_VILLE_'.$city->id_vi);
+              $tree['BU_ECOLE|'.$school->numero] = array('element' => $school, 'parent' => 'BU_VILLE|'.$city->id_vi);
             } else {
-              $cityRoot['BU_ECOLE_'.$school->numero] = array('element' => $school, 'children' => array());
-              $schoolRoot = &$cityRoot['BU_ECOLE_'.$city->id_vi]['children'];
+              $cityRoot['BU_ECOLE|'.$school->numero] = array('element' => $school, 'children' => array());
+              $schoolRoot = &$cityRoot['BU_ECOLE|'.$city->id_vi]['children'];
             }
 
             if (_currentUser()->testCredential('module:school|'.$school->numero.'|classroom|create@gestionautonome')) {
@@ -3048,9 +3048,9 @@ if(DEBUG) {
 
             foreach ($classrooms as $classroom) {
               if ($flat) {
-                $tree['BU_CLASSE_'.$classroom->id] = array('element' => $classroom, 'parent' => 'BU_ECOLE_'.$school->numero);
+                $tree['BU_CLASSE|'.$classroom->id] = array('element' => $classroom, 'parent' => 'BU_ECOLE|'.$school->numero);
               } else {
-                $schoolRoot['BU_CLASSE_'.$classroom->id] = array('element' => $classroom, 'children' => array());
+                $schoolRoot['BU_CLASSE|'.$classroom->id] = array('element' => $classroom, 'children' => array());
               }
             }
           }
@@ -3198,6 +3198,9 @@ if(DEBUG) {
             case "MOD_LISTE":
 
                 return static::getNode('liste|liste_listes', $id);
+            case "MOD_AGENDA":
+
+                return static::getNode('agenda|agenda', $id);
             default:
               $object = $id ? _dao($type)->get($id) : _record($type);
         }

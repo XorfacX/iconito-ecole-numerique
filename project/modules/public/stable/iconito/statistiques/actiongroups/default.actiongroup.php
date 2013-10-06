@@ -13,14 +13,13 @@ class ActionGroupDefault extends CopixActionGroup
 {
     public function beforeAction()
     {
-        _currentUser()->assertCredential('module:*||access|@statistiques');
+//        _currentUser()->assertCredential('module:*||access|@statistiques');
     }
 
     public function processIndex ()
     {
-      ini_set('display_errors', true);
+//      ini_set('display_errors', true);
         $ppo = new CopixPPO ();
-
         $ppo->user = _currentUser();
 
         $ppo->TITLE_PAGE = CopixConfig::get('statistiques|moduleTitle');
@@ -51,8 +50,15 @@ class ActionGroupDefault extends CopixActionGroup
 
         $ppo->mapping = new ApiMapping;
 
-//      À décommenter après le merge avec la branche feature-activity-stream-send
-//        $ppo->contexts = Kernel::getContextTree(true);
+        $ppo->contexts = Kernel::getContextTree(true);
+
+        $userExtras = _currentUser()->getExtras();
+        $ppo->isAdmin = is_array($userExtras['link']);
+
+        $ppo->userGroups = array();
+        foreach (Kernel::getGroupsFromUserInfos(_currentUser()->getExtras()) as $group) {
+            $ppo->userGroups[] = $group['type'].'|'.$group['id'];
+        }
 
         return _arPPO($ppo, 'set_filter.tpl');
     }
@@ -82,7 +88,7 @@ class ActionGroupDefault extends CopixActionGroup
     */
     public function _validFromForm (& $toUpdate)
     {
-        $toCheck = array ('publishedFrom', 'publishedTo', 'context');
+        $toCheck = array ('publishedFrom', 'publishedTo', 'target');
         foreach ($toCheck as $elem){
             if (_request($elem)){
                 if ($elem == 'publishedFrom' || $elem == 'publishedTo') {
@@ -99,9 +105,8 @@ class ActionGroupDefault extends CopixActionGroup
             }
         }
 
-        if ($toUpdate->getPublishedFrom() > $toUpdate->getPublishedTo()) {
+        if ($toUpdate->getPublishedFrom() > $toUpdate->getPublishedTo() || !$toUpdate->getTarget()) {
           $toUpdate = null;
-//          return array()
         }
     }
 

@@ -5,5 +5,8 @@
     <ul>
         {assign var=dossiers value=$ppo->requestClass->getNombreDossiersEtRatio()}
         <li>{$dossiers.dossiers} dossiers ont été créés, soit {$dossiers.ratio} dossiers par classeur.</li>
+        <li>{$dossiers.dossiers} dossiers ont été créés, soit {$dossiers.ratio} dossiers par classeur.</li>
     </ul>
 </p>
+
+{$ppo->requestClass->getNombreFichiersEtInfos()}

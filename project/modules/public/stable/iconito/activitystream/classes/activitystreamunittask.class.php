@@ -1,7 +1,6 @@
 <?php
 
 _classInclude('activitystream|ecolenumeriqueactivitystreamresource');
-
 _classInclude('activityStream|ActivityStreamService');
 _classInclude('activityStream|StatisticEvent');
 
@@ -26,34 +25,23 @@ class ActivityStreamUnitTask
    */
   public function processStat()
   {
-//    $this->sendAgendaStat();
+      $this->sendAgendaStat();
 
-//    $this->sendClasseurStat();
-//    $this->sendDossierStat();
-//    $this->sendFichierStat();
+      $this->sendClasseurStat();
+      $this->sendDossierStat();
+      $this->sendFichierStat();
 
-//    $this->sendBlogOuvertStat();
-//    $this->sendBlogPubliqueStat();
-//    $this->sendBlogRubriqueStat();
-//    $this->sendBlogPageStat();
+      $this->sendBlogOuvertStat();
+      $this->sendBlogPubliqueStat();
+      $this->sendBlogRubriqueStat();
+      $this->sendBlogPageStat();
 
-//    $this->sendBlogStat();
-//    $this->sendUserStat();
-//      $this->sendFichierStat();
-//      $this->sendGroupeDeTravailStat();
-//      $this->sendListeStat();
+      $this->sendBlogStat();
+      $this->sendUserStat();
+
+      $this->sendGroupeDeTravailStat();
+      $this->sendListeStat();
       $this->sendMessageStat();
-//    die(var_dump($this->activityStreamService->getContexts('classeur|classeurfichier', 590)));
-//    die(var_dump(_currentUser()->getExtras()));
-      $groups = Kernel::getGroupsForUser(15);
-      $this->activityStreamService->getContextResourcesFromArray(Kernel::getGroupsForUserId(15));
-      $userInfos = Kernel::getUserInfo("ID", 15, array('strict' => true));
-    die(var_dump(Kernel::getGroupsFromUserInfos($userInfos)));
-    die(var_dump(Kernel::getGroupsFromUserInfos(_currentUser()->getExtras())));
-
-//    die(var_dump($this->activityStreamService->getContexts()));
-    // Unit nombre de users par périmètre
-    // Fichiers dans les dossiers, et poids des fichiers
   }
 
   protected function sendAgendaStat()
@@ -154,7 +142,7 @@ SQL;
 
 
       foreach ($results as $result) {
-          $object = new EcoleNumeriqueActivityStreamResource('Fichier', 'DAORecordClasseurFichier', null, null, array('taille' => $result->taille_totale));
+          $object = new EcoleNumeriqueActivityStreamResource('Fichier', 'DAORecordClasseurFichier', null, null, array('taille' => $result->taille_totale, 'is_casier' => 0));
           $target = Kernel::getNode('classeur|classeur', $result->target_node_id);
           $this->activityStreamService->logStatistic((int)$result->count, 'unit', null, 'count', $object, $target, array());
       }
@@ -207,7 +195,7 @@ SQL;
 
           if (count($results)) {
               $result = reset($results);
-              $object = new EcoleNumeriqueActivityStreamResource('Fichier', 'DAORecordClasseurFichier', null, null, array('taille' => $result->taille_totale));
+              $object = new EcoleNumeriqueActivityStreamResource('Fichier', 'DAORecordClasseurFichier', null, null, array('taille' => $result->taille_totale, 'is_casier' => 1));
               $target = Kernel::getNode('BU_CLASSE', $row->classe_id);
               $this->activityStreamService->logStatistic((int)$result->count, 'unit', null, 'count', $object, $target, array());
           }

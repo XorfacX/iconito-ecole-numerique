@@ -29,20 +29,26 @@ class ConsolidatedStatisticFilter extends ConsolidatedStatistic
     public $lastOnly;
 
     /**
+     * @var string
+     */
+    public $target;
+
+    /**
      * Create a filter, possibly based on a base filter (for dates and context)
      * @param DateTime $publishedFrom
      * @param DateTime $publishedTo
      * @param null $context
      */
-    public function __construct(\DateTime $publishedFrom = null, \DateTime $publishedTo = null, $context = null)
+    public function __construct(\DateTime $publishedFrom = null, \DateTime $publishedTo = null, $targetObjectType = null, $targetId = null)
     {
         $this->publishedFrom      = $publishedFrom;
         $this->publishedTo        = $publishedTo;
-        $this->context            = $context;
+        $this->targetObjectType   = $targetObjectType;
+        $this->targetId           = $targetId;
         $this->actorAttributes    = array();
         $this->objectAttributes   = array();
         $this->targetAttributes   = array();
-        $this->applicationId      = 'EN-LMG';
+        $this->applicationId      = CopixConfig::get('activitystream|activity_stream_application_id');
     }
 
 
@@ -103,5 +109,22 @@ class ConsolidatedStatisticFilter extends ConsolidatedStatistic
     public function getLastOnly()
     {
         return $this->lastOnly;
+    }
+
+    public function setTarget($target)
+    {
+        $this->target = $target;
+
+        list($type, $id) = explode('|', $target);
+        $targetResource = Kernel::getNode($type, $id)->toResource();
+
+        $this->setTargetObjectType($targetResource->getObjectType());
+        $this->setTargetDisplayName($targetResource->getDisplayName());
+        $this->setTargetId($targetResource->getId());
+    }
+
+    public function getTarget()
+    {
+        return $this->target;
     }
 }
