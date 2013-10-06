@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 {foreach from=$ppo->mapping->getCategories() key=stat item=infos}
     <a href="{copixurl dest="statistiques|default|index" stat=$stat}" class="button">{$infos.label}</a>
 {/foreach}
