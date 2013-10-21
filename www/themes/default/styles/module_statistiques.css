@@ -1,0 +1,5 @@
+@charset "UTF-8";
+/* CSS Document */
+
+#tabs .ui-tabs-nav a:hover {cursor:pointer;}
+#tabs .container {padding:0 0.5em 0.5em;}

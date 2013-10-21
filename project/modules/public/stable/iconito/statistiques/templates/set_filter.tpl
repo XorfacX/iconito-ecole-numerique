@@ -1,8 +1,4 @@
-{foreach from=$ppo->mapping->getFiltersCategories() key=stat item=infos}
-    <a href="{copixurl dest="statistiques|default|index" stat=$stat}" class="button">{$infos.label}</a>
-{/foreach}
-
-<h2>Sélectionnez un périmètre et une période</h2>
+<h2>{i18n key="statistiques.label.title"}</h2>
 
 <form action="{copixurl dest="statistiques|default|index" stat=$ppo->stat}" method="post" class="edit">
     <div class="field">
@@ -41,10 +37,24 @@
     </div>
 </form>
 
-{if $ppo->stat && $ppo->filter->publishedFrom && $ppo->filter->publishedTo}
-    {copixzone process=statistiques|apiRequest stat=$ppo->stat filter=$ppo->filter}
-{/if}
+<h2>{i18n key="statistiques.label.results"}</h2>
+<div id="tabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
+    <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
+    {foreach from=$ppo->mapping->getFiltersCategories() key=stat item=infos}
+        <li class="ui-state-default ui-corner-top ui-tabs-active {if $stat eq $ppo->stat}ui-state-active{/if}"><a href="{copixurl dest="statistiques|default|index" stat=$stat}">{$infos.label}</a></li>
+    {/foreach}
+    </ul>
+	<div class="container">
+    {if $ppo->stat && $ppo->filter->publishedFrom && $ppo->filter->publishedTo}
+        {copixzone process=statistiques|apiRequest stat=$ppo->stat filter=$ppo->filter}
+    {/if}
+    </div>
+</div>
 
+{literal}
 <script type="text/javascript">
-    setDatePicker('#date_begin, #date_end');
+  jQuery(document).ready(function(){
+      setDatePicker('#date_begin, #date_end');
+  });
 </script>
+{/literal}

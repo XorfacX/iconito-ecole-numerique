@@ -1,5 +1,5 @@
 <h2>{$ppo->label}</h2>
-<p>Au {$ppo->filter->publishedTo->format('d/m/Y')}, il y avait :{$ppo->requestClass->getNombreAgendas()} agenda(s).</p>
+<p>Au {$ppo->filter->publishedTo->format('d/m/Y')}, il y avait : <strong>{$ppo->requestClass->getNombreAgendas()}</strong> agenda(s).</p>
 <p>
     Du {$ppo->filter->publishedFrom->format('d/m/Y')} au {$ppo->filter->publishedTo->format('d/m/Y')} :
     <ul>
