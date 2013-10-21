@@ -69,8 +69,7 @@ abstract class ApiBaseRequest
     {
         $transformer = new ConsolidatedStatisticFilterToRequestTransformer;
         $requestFilter = $transformer->transform($filter);
-//        $requestUrl = CopixConfig::get('statistiques|apiQueryUrl').'?'.$requestFilter;
-        $requestUrl = 'http://asapi.local/app_dev.php/api/query.json'.'?'.$requestFilter;
+        $requestUrl = CopixConfig::get('statistiques|apiQueryUrl').'?'.$requestFilter;
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $requestUrl);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);

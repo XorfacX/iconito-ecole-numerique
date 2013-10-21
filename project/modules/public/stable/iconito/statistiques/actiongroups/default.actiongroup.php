@@ -18,7 +18,6 @@ class ActionGroupDefault extends CopixActionGroup
 
     public function processIndex ()
     {
-//      ini_set('display_errors', true);
         $ppo = new CopixPPO ();
         $ppo->user = _currentUser();
 

@@ -3218,16 +3218,23 @@ if(DEBUG) {
     public static function getGroupsFromUserInfos($userInfos)
     {
         $groups = array();
-        foreach (array_keys($userInfos['link']->ecole) as $id) {
-            $groups[] = array('type' => 'BU_ECOLE', 'id' => $id);
+
+        if (isset($userInfos['link']->ecole) && is_array($userInfos['link']->ecole)){
+            foreach (array_keys($userInfos['link']->ecole) as $id) {
+                $groups[] = array('type' => 'BU_ECOLE', 'id' => $id);
+            }
         }
 
-        foreach (array_keys($userInfos['link']->classe) as $id) {
-            $groups[] = array('type' => 'BU_CLASSE', 'id' => $id);
+        if (isset($userInfos['link']->classe) && is_array($userInfos['link']->classe)){
+            foreach (array_keys($userInfos['link']->classe) as $id) {
+                $groups[] = array('type' => 'BU_CLASSE', 'id' => $id);
+            }
         }
 
-        foreach (array_keys($userInfos['link']->ville) as $id) {
-            $groups[] = array('type' => 'BU_VILLE', 'id' => $id);
+        if (isset($userInfos['link']->ville) && is_array($userInfos['link']->ville)){
+            foreach (array_keys($userInfos['link']->ville) as $id) {
+                $groups[] = array('type' => 'BU_VILLE', 'id' => $id);
+            }
         }
 
         if (is_array($userInfos['link'])) {

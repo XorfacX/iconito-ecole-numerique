@@ -7,19 +7,20 @@
 <form action="{copixurl dest="statistiques|default|index" stat=$ppo->stat}" method="post" class="edit">
     <div class="field">
         <label for="context" class="form_libelle"> Périmètre </label>
+        {assign var=current value=$ppo->filter->target }
         <select name="target">
             {foreach from=$ppo->contexts key=key item=context}
                 {if get_class($context.element) == 'CompiledDAORecordkernel_bu_groupe_villes'}
-                    <option value="{$key}" {if !isAdmin && !in_array($key, $ppo->userGroups)}disabled="disabled"{/if}>{$context.element->nom_groupe}</option>
+                    <option value="{$key}" {if $key == $current}selected="selected" {/if}{if !isAdmin && !in_array($key, $ppo->userGroups)}disabled="disabled"{/if}>{$context.element->nom_groupe}</option>
                 {/if}
                 {if get_class($context.element) == 'CompiledDAORecordkernel_bu_ville'}
-                    <option value="{$key}" {if !isAdmin && !in_array($key, $ppo->userGroups)}disabled="disabled"{/if}>&nbsp;&nbsp;{$context.element->nom}</option>
+                    <option value="{$key}" {if $key == $current}selected="selected" {/if}{if !isAdmin && !in_array($key, $ppo->userGroups)}disabled="disabled"{/if}>&nbsp;&nbsp;{$context.element->nom}</option>
                 {/if}
                 {if get_class($context.element) == 'CompiledDAORecordkernel_bu_ecole'}
-                    <option value="{$key}" {if !isAdmin && !in_array($key, $ppo->userGroups)}disabled="disabled"{/if}>&nbsp;&nbsp;&nbsp;&nbsp;{$context.element->nom}</option>
+                    <option value="{$key}" {if $key == $current}selected="selected" {/if}{if !isAdmin && !in_array($key, $ppo->userGroups)}disabled="disabled"{/if}>&nbsp;&nbsp;&nbsp;&nbsp;{$context.element->nom}</option>
                 {/if}
                 {if get_class($context.element) == 'CompiledDAORecordkernel_bu_ecole_classe'}
-                    <option value="{$key}" {if !isAdmin && !in_array($key, $ppo->userGroups)}disabled="disabled"{/if}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$context.element->nom}</option>
+                    <option value="{$key}" {if $key == $current}selected="selected" {/if}{if !isAdmin && !in_array($key, $ppo->userGroups)}disabled="disabled"{/if}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$context.element->nom}</option>
                 {/if}
             {/foreach}
         </select>
