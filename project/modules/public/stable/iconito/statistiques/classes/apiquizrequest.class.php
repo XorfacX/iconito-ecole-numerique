@@ -10,7 +10,7 @@ class ApiQuizRequest extends ApiBaseRequest
     }
 
     /**
-     * Récupère le nombre de quiz envoyés, et le ratio par comptes ouverts
+     * Récupère le nombre de questions envoyées, et le ratio par quiz
      *
      * @return integer
      */
@@ -18,13 +18,10 @@ class ApiQuizRequest extends ApiBaseRequest
     {
         $quizCount = $this->getObjectTypeNumber(static::CLASS_QUIZ);
         $questionCount = $this->getObjectTypeNumber(static::CLASS_QUESTION);
-        $quizCount = $quizCount ? $quizCount : 1;
-
-        $ratio = $questionCount/$quizCount;
 
         return array(
             'questions' => $questionCount,
-            'ratio' => $ratio
+            'ratio' => $quizCount > 0 ? round($questionCount/$quizCount, 2) : 0
         );
     }
 }

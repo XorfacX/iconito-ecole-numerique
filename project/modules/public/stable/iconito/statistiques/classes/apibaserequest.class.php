@@ -25,9 +25,9 @@ abstract class ApiBaseRequest
     const CLASS_PAGE          = 'DAORecordblogpage';
     const CLASS_ARTICLE       = 'DAORecordblogarticle';
     const CLASS_COMMENTAIRE   = 'DAORecordblogarticlecomment';
-    const CLASS_TRAVAIL       = 'DAORecordCahierDeTextesTravail';
-    const CLASS_CAHIERTEXTE   = 'DAORecordCahierDeTextes';
-    const CLASS_MEMO          = 'DAORecordCahierDeTextesMemo';
+    const CLASS_TRAVAIL       = 'DAORecordcahierdetextestravail';
+    const CLASS_CAHIERTEXTE   = 'DAORecordcahierdetextes';
+    const CLASS_MEMO          = 'DAORecordcahierdetextesmemo';
     const CLASS_QUIZ          = 'DAORecordQuiz_quiz';
     const CLASS_QUESTION      = 'DAORecordQuiz_questions';
     const CLASS_GROUPETRAVAIL = 'DAORecordGroupe';
@@ -154,11 +154,10 @@ abstract class ApiBaseRequest
 
         $total = $this->sumResults($this->getResult($filter));
         $days = $this->getFilter()->getpublishedFrom()->diff($this->getFilter()->getpublishedTo(), true)->days;
-        $days = $days ? $days : 1;
 
         return array(
             'total' => $total,
-            'average' => $total/$days
+            'average' => $days > 0 ? round($total/$days, 2) : 0
         );
     }
 }

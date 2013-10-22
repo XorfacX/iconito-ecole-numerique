@@ -6,16 +6,16 @@ class ApiCahierDeTexteRequest extends ApiBaseRequest
 {
     public function getTravailAfaire()
     {
-        return $this->getTotalAndAverageOnPeriod(static::CLASS_TRAVAIL, 'given', array('travail à faire'));
+        return $this->getTotalAndAverageOnPeriod(static::CLASS_TRAVAIL, 'create', array('a_faire' => 1));
     }
 
     public function getTravailEnClasse()
     {
-        return $this->getTotalAndAverageOnPeriod(static::CLASS_TRAVAIL, 'given', array('travail en classe'));
+        return $this->getTotalAndAverageOnPeriod(static::CLASS_TRAVAIL, 'create', array('a_faire' => 0));
     }
 
     public function getMemos()
     {
-        return $this->getTotalAndAverageOnPeriod(static::CLASS_TRAVAIL, 'given');
+        return $this->getTotalAndAverageOnPeriod(static::CLASS_MEMO, 'create');
     }
 }
