@@ -24,7 +24,7 @@ abstract class ApiBaseRequest
     const CLASS_RUBRIQUE      = 'DAORecordBlogCategory';
     const CLASS_PAGE          = 'DAORecordblogpage';
     const CLASS_ARTICLE       = 'DAORecordblogarticle';
-    const CLASS_COMMENTAIRE   = 'DAORecordBlogarticlecomment';
+    const CLASS_COMMENTAIRE   = 'DAORecordblogarticlecomment';
     const CLASS_TRAVAIL       = 'DAORecordCahierDeTextesTravail';
     const CLASS_CAHIERTEXTE   = 'DAORecordCahierDeTextes';
     const CLASS_MEMO          = 'DAORecordCahierDeTextesMemo';
@@ -70,6 +70,9 @@ abstract class ApiBaseRequest
     {
         $transformer = new ConsolidatedStatisticFilterToRequestTransformer;
         $requestFilter = $transformer->transform($filter);
+//        var_dump('-----');
+//        echo $requestFilter;
+//        var_dump('-----');
         $requestUrl = CopixConfig::get('statistiques|apiQueryUrl').'?'.$requestFilter;
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $requestUrl);

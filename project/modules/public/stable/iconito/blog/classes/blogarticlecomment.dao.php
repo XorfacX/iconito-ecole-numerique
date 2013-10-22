@@ -17,7 +17,7 @@ class DAORecordBlogarticlecomment implements ResourceInterface
   public function toResource()
   {
     $resource = new EcoleNumeriqueActivityStreamResource(
-      null,
+      'Commentaire #'.$this->id_bacc,
       get_class($this),
       $this->id_bacc
     );

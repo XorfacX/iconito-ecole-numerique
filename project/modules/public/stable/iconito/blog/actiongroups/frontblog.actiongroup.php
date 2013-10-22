@@ -439,6 +439,16 @@ class ActionGroupFrontBlog extends EnicActionGroup
         CopixHTMLHeader::addCSSLink (CopixUrl::get('blog||getBlogCss', array('id_blog'=>$blog->id_blog)));
 
         $tpl->assign ('blog', $blog);
+        $zoneArticle = CopixZone::process ('ShowArticle', array( 'blog'=>$blog, 'article'=>$this->getRequest('article', ''), 'errors'=>$errors, 'showErrors'=>$showErrors, 'comment'=>$comment));
+        list ($title,$article) = explode ("{/}",$zoneArticle);
+        $tpl->assign ('TITLE_PAGE', $title.' - '.$blog->name_blog);
+        $tpl->assign ('Article', $article);
+        $tpl->assign ('ListLink', CopixZone::process ('ListLink', array('blog'=>$blog)));
+        $tpl->assign ('ListCategory', CopixZone::process ('ListCategory', array('blog'=>$blog)));
+        $tpl->assign ('ListArchive', CopixZone::process ('ListArchive', array('blog'=>$blog)));
+        $tpl->assign ('ListPage', CopixZone::process ('ListPage', array('blog'=>$blog)));
+        $tpl->assign ('ListSearch', CopixZone::process ('ListSearch', array('blog'=>$blog)));
+
 
         $errors = $commentDAO->check($comment);
         //print_r($comment);
@@ -449,17 +459,11 @@ class ActionGroupFrontBlog extends EnicActionGroup
         } else {
             // Insertion dans la base
             $commentDAO->insert($comment);
+            $article = CopixDAOFactory::create('blog|blogarticle')->get($comment->id_bact);
+            CopixEventNotifier::notify('createComment', array('comment'=>$comment, 'article'=>$article));
         }
 
-        $zoneArticle = CopixZone::process ('ShowArticle', array( 'blog'=>$blog, 'article'=>$this->getRequest('article', ''), 'errors'=>$errors, 'showErrors'=>$showErrors, 'comment'=>$comment));
-        list ($title,$article) = explode ("{/}",$zoneArticle);
-        $tpl->assign ('TITLE_PAGE', $title.' - '.$blog->name_blog);
-        $tpl->assign ('Article', $article);
-        $tpl->assign ('ListLink', CopixZone::process ('ListLink', array('blog'=>$blog)));
-        $tpl->assign ('ListCategory', CopixZone::process ('ListCategory', array('blog'=>$blog)));
-        $tpl->assign ('ListArchive', CopixZone::process ('ListArchive', array('blog'=>$blog)));
-        $tpl->assign ('ListPage', CopixZone::process ('ListPage', array('blog'=>$blog)));
-        $tpl->assign ('ListSearch', CopixZone::process ('ListSearch', array('blog'=>$blog)));
+
 
 
         if (!$showErrors) {

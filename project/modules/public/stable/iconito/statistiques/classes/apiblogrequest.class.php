@@ -61,8 +61,8 @@ class ApiBlogRequest extends ApiBaseRequest
     public function getBlogVisibleAnnuaireEtNonVisible()
     {
         return array(
-            'visible_annuaire' => $this->getBlogs(array('visible dans l\'annuaire')),
-            'non_visible'      => $this->getBlogs(array('non-visible'))
+            'visible_annuaire' => $this->getBlogs(array('is_public' => 1)),
+            'non_visible'      => $this->getBlogs(array('is_public' => 0))
         );
     }
 
@@ -75,9 +75,9 @@ class ApiBlogRequest extends ApiBaseRequest
     public function getBlogVisibleEtVisibilite()
     {
         return array(
-            'visible_internet'        => $this->getBlogs(array('visible sur Internet')),
-            'visible_membres_iconito' => $this->getBlogs(array('visibles par membres ICONITO')),
-            'visible_membres_groupe'  => $this->getBlogs(array('visibles par membres groupe'))
+            'visible_internet'        => $this->getBlogs(array('privacy' => 0)),
+            'visible_membres_iconito' => $this->getBlogs(array('privacy' => 10)),
+            'visible_membres_groupe'  => $this->getBlogs(array('privacy' => 20))
         );
     }
 
@@ -95,14 +95,14 @@ class ApiBlogRequest extends ApiBaseRequest
         $filter->setLastOnly(true);
         $result = $this->getResult($filter);
 
-        return count($result) ? $result[0]->count : 0;
+        return count($result) ? $result[0]->counter : 0;
     }
 
     public function getArticlesRedigesSurPeriode()
     {
         $filter = $this->createBaseFilter();
         $filter->setObjectObjectType(static::CLASS_ARTICLE);
-        $filter->setVerb('redacted');
+        $filter->setVerb('create');
         $filter->setPeriod(static::PERIOD_DAILY);
 
         $articles = $this->sumResults($this->getResult($filter));
@@ -110,7 +110,7 @@ class ApiBlogRequest extends ApiBaseRequest
 
         return array(
             'articles' => $articles,
-            'nb_moyen_par_jour' => $articles/$days
+            'nb_moyen_par_jour' =>  $days > 0 ? round($articles/$days, 2) : 0
         );
     }
 
@@ -118,7 +118,7 @@ class ApiBlogRequest extends ApiBaseRequest
     {
         $filter = $this->createBaseFilter();
         $filter->setObjectObjectType(static::CLASS_COMMENTAIRE);
-        $filter->setVerb('redacted');
+        $filter->setVerb('create');
         $filter->setPeriod(static::PERIOD_DAILY);
 
         $commentaires = $this->sumResults($this->getResult($filter));
@@ -126,7 +126,7 @@ class ApiBlogRequest extends ApiBaseRequest
 
         return array(
             'commentaires' => $commentaires,
-            'nb_moyen_par_jour' => $commentaires/$days
+            'nb_moyen_par_jour' => $days > 0 ? round($commentaires/$days, 2) : 0
         );
     }
 }

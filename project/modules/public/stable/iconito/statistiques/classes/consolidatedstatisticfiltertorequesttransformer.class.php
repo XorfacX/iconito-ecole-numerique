@@ -51,9 +51,13 @@ class ConsolidatedStatisticFilterToRequestTransformer
     private function formatArrayRequest($key, $array)
     {
         $toImplode = array();
-        foreach ($array as $value)
+        foreach ($array as $index => $value)
         {
-            $toImplode[] = $key.'[]='.urlencode((string)$value);
+            $toImplode[] = sprintf('%s[%s]=%s',
+                $key,
+                $index,
+                urlencode((string)$value)
+            );
         }
 
         return implode('&',$toImplode);
