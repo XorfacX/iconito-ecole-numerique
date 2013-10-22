@@ -24,7 +24,6 @@ class ApiAgendaRequest extends ApiBaseRequest
     {
         $filter = $this->createBaseFilter();
         $filter->setObjectObjectType(static::CLASS_EVENT);
-        $filter->setTargetObjectType(static::CLASS_AGENDA);
         $filter->setPeriod(static::PERIOD_DAILY);
         $results = $this->getResult($filter);
 
@@ -36,7 +35,12 @@ class ApiAgendaRequest extends ApiBaseRequest
         $agendas = $this->getNombreAgendas();
         $agendas = $agendas ? $agendas : 1;
 
-        $ratio = $sum/$agendas;
+        if ($agendas == 0){
+            $ratio = 0;
+        }
+        else {
+            $ratio = round($sum/$agendas, 2);
+        }
 
         return array(
             'evenements' => $sum,

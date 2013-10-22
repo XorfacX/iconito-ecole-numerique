@@ -11,9 +11,10 @@ abstract class ApiBaseRequest
     const PERIOD_MONTHLY = 'monthly';
     const PERIOD_YEARLY  = 'yearly';
 
+    const CLASS_ALL_USERS     = 'ALL_USERS';
     const CLASS_ACCOUNT       = 'ActivityStreamPerson';
-    const CLASS_AGENDA        = 'DAORecordAgenda';
-    const CLASS_EVENT         = 'DAORecordEvent';
+    const CLASS_AGENDA        = 'DAORecordagenda';
+    const CLASS_EVENT         = 'DAORecordevent';
     const CLASS_MINIMAIL      = 'DAORecordminimail_to';
     const CLASS_CLASSEUR      = 'DAORecordClasseur';
     const CLASS_DOSSIER       = 'DAORecordClasseurDossier';

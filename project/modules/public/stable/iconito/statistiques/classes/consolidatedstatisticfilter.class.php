@@ -41,14 +41,14 @@ class ConsolidatedStatisticFilter extends ConsolidatedStatistic
      */
     public function __construct(\DateTime $publishedFrom = null, \DateTime $publishedTo = null, $targetObjectType = null, $targetId = null)
     {
-        $this->publishedFrom      = $publishedFrom;
-        $this->publishedTo        = $publishedTo;
-        $this->targetObjectType   = $targetObjectType;
-        $this->targetId           = $targetId;
-        $this->actorAttributes    = array();
-        $this->objectAttributes   = array();
-        $this->targetAttributes   = array();
-        $this->applicationId      = CopixConfig::get('activitystream|activity_stream_application_id');
+        $this->publishedFrom = $publishedFrom;
+        $this->publishedTo = $publishedTo;
+        $this->targetObjectType = $targetObjectType;
+        $this->targetId = $targetId;
+        $this->actorAttributes = array();
+        $this->objectAttributes = array();
+        $this->targetAttributes = array();
+        $this->applicationId = CopixConfig::get('activitystream|activity_stream_application_id');
     }
 
 
@@ -96,10 +96,14 @@ class ConsolidatedStatisticFilter extends ConsolidatedStatistic
      * Set LastOnly
      *
      * @param boolean $lastOnly
+     *
+     * @return $this
      */
     public function setLastOnly($lastOnly)
     {
         $this->lastOnly = $lastOnly;
+
+        return $this;
     }
 
     /**

@@ -2,6 +2,7 @@
 
 _classInclude('statistiques|apibaserequest');
 _classInclude('statistiques|consolidatedstatisticfilter');
+_classInclude('statistiques|ApiUserRequest');
 
 class ApiMinimailRequest extends ApiBaseRequest
 {
@@ -22,12 +23,18 @@ class ApiMinimailRequest extends ApiBaseRequest
      */
     public function getNombreMinimailsEtRatio()
     {
-        $minimailCount = $this->getNombreMinimails();
+//        $minimailCount = $this->getNombreMinimails();
+        $minimailCount = 100;
 
         $userRequest = new ApiUserRequest($this->getFilter());
         $accountCount = $userRequest->getNombreComptes();
 
-        $ratio = $minimailCount/$accountCount;
+        if ($accountCount == 0){
+            $ratio = 0;
+        }
+        else {
+            $ratio = round($minimailCount/$accountCount, 2);
+        }
 
         return array(
             'minimails' => $minimailCount,

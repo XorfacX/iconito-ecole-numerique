@@ -12,7 +12,22 @@ class ApiUserRequest extends ApiBaseRequest
      */
     public function getNombreComptes()
     {
-        return $this->getObjectTypeNumber(static::CLASS_ACCOUNT);
+        $filter = $this->createBaseFilter();
+
+        $filter
+            ->setObjectObjectType(static::CLASS_ALL_USERS)
+            ->setPeriod(static::PERIOD_UNIT)
+            ->setLastOnly(true)
+            ->setVerb('count')
+            ->setTargetObjectType(null)
+            ->setTargetId(null)
+            ->setTargetDisplayName(null)
+            ->setTargetUrl(null)
+            ->setTargetAttributes(null);
+
+        $results = $this->getResult($filter);
+
+        return count($results) ? $results[0]->counter : 0;
     }
 
     /**

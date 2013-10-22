@@ -3181,6 +3181,7 @@ if(DEBUG) {
             case "USER_ENS": // Enseignant
             case "USER_VIL": // Agent de ville
             case "USER_ADM": // Administratif ecole
+            case "USER_DIR": // Directeur
                 $object = $id ? _dao('kernel|kernel_bu_personnel')->get($id) : _record('kernel|kernel_bu_personnel');
                 break;
             case "USER_ELE":

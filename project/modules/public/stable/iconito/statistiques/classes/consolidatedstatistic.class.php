@@ -119,7 +119,6 @@ class ConsolidatedStatistic
     protected $context;
 
 
-
     /**
      * Get id
      *
@@ -134,19 +133,19 @@ class ConsolidatedStatistic
      * Set period
      *
      * @param string $period
-     * @return ConsolidatedStatistic
+     * @return $this
      */
     public function setPeriod($period)
     {
         $this->period = $period;
-    
+
         return $this;
     }
 
     /**
      * Get period
      *
-     * @return string 
+     * @return string
      */
     public function getPeriod()
     {
@@ -157,19 +156,19 @@ class ConsolidatedStatistic
      * Set applicationId
      *
      * @param string $applicationId
-     * @return ConsolidatedStatistic
+     * @return $this
      */
     public function setApplicationId($applicationId)
     {
         $this->applicationId = $applicationId;
-    
+
         return $this;
     }
 
     /**
      * Get applicationId
      *
-     * @return string 
+     * @return string
      */
     public function getApplicationId()
     {
@@ -180,19 +179,19 @@ class ConsolidatedStatistic
      * Set published
      *
      * @param \DateTime $published
-     * @return ConsolidatedStatistic
+     * @return $this
      */
     final public function setPublished($published)
     {
         $this->published = $published;
-    
+
         return $this;
     }
 
     /**
      * Get published
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     final public function getPublished()
     {
@@ -203,19 +202,19 @@ class ConsolidatedStatistic
      * Set actorObjectType
      *
      * @param string $actorObjectType
-     * @return ConsolidatedStatistic
+     * @return $this
      */
     public function setActorObjectType($actorObjectType)
     {
         $this->actorObjectType = $actorObjectType;
-    
+
         return $this;
     }
 
     /**
      * Get actorObjectType
      *
-     * @return string 
+     * @return string
      */
     public function getActorObjectType()
     {
@@ -226,19 +225,19 @@ class ConsolidatedStatistic
      * Set actorId
      *
      * @param string $actorId
-     * @return ConsolidatedStatistic
+     * @return $this
      */
     public function setActorId($actorId)
     {
         $this->actorId = $actorId;
-    
+
         return $this;
     }
 
     /**
      * Get actorId
      *
-     * @return string 
+     * @return string
      */
     public function getActorId()
     {
@@ -249,19 +248,19 @@ class ConsolidatedStatistic
      * Set actorUrl
      *
      * @param string $actorUrl
-     * @return ConsolidatedStatistic
+     * @return $this
      */
     public function setActorUrl($actorUrl)
     {
         $this->actorUrl = $actorUrl;
-    
+
         return $this;
     }
 
     /**
      * Get actorUrl
      *
-     * @return string 
+     * @return string
      */
     public function getActorUrl()
     {
@@ -272,19 +271,19 @@ class ConsolidatedStatistic
      * Set actorDisplayName
      *
      * @param string $actorDisplayName
-     * @return ConsolidatedStatistic
+     * @return $this
      */
     public function setActorDisplayName($actorDisplayName)
     {
         $this->actorDisplayName = $actorDisplayName;
-    
+
         return $this;
     }
 
     /**
      * Get actorDisplayName
      *
-     * @return string 
+     * @return string
      */
     public function getActorDisplayName()
     {
@@ -295,19 +294,19 @@ class ConsolidatedStatistic
      * Set actorAttributes
      *
      * @param string $actorAttributes
-     * @return ConsolidatedStatistic
+     * @return $this
      */
     public function setActorAttributes($actorAttributes)
     {
         $this->actorAttributes = $actorAttributes;
-    
+
         return $this;
     }
 
     /**
      * Get actorAttributes
      *
-     * @return string 
+     * @return string
      */
     public function getActorAttributes()
     {
@@ -318,19 +317,19 @@ class ConsolidatedStatistic
      * Set verb
      *
      * @param string $verb
-     * @return ConsolidatedStatistic
+     * @return $this
      */
     public function setVerb($verb)
     {
         $this->verb = $verb;
-    
+
         return $this;
     }
 
     /**
      * Get verb
      *
-     * @return string 
+     * @return string
      */
     public function getVerb()
     {
@@ -341,19 +340,19 @@ class ConsolidatedStatistic
      * Set counter
      *
      * @param integer $counter
-     * @return ConsolidatedStatistic
+     * @return $this
      */
     public function setCounter($counter)
     {
         $this->counter = $counter;
-    
+
         return $this;
     }
 
     /**
      * Get counter
      *
-     * @return integer 
+     * @return integer
      */
     public function getCounter()
     {
@@ -364,19 +363,19 @@ class ConsolidatedStatistic
      * Set objectObjectType
      *
      * @param string $objectObjectType
-     * @return ConsolidatedStatistic
+     * @return $this
      */
     public function setObjectObjectType($objectObjectType)
     {
         $this->objectObjectType = $objectObjectType;
-    
+
         return $this;
     }
 
     /**
      * Get objectObjectType
      *
-     * @return string 
+     * @return string
      */
     public function getObjectObjectType()
     {
@@ -387,19 +386,19 @@ class ConsolidatedStatistic
      * Set objectId
      *
      * @param string $objectId
-     * @return ConsolidatedStatistic
+     * @return $this
      */
     public function setObjectId($objectId)
     {
         $this->objectId = $objectId;
-    
+
         return $this;
     }
 
     /**
      * Get objectId
      *
-     * @return string 
+     * @return string
      */
     public function getObjectId()
     {
@@ -410,19 +409,19 @@ class ConsolidatedStatistic
      * Set objectUrl
      *
      * @param string $objectUrl
-     * @return ConsolidatedStatistic
+     * @return $this
      */
     public function setObjectUrl($objectUrl)
     {
         $this->objectUrl = $objectUrl;
-    
+
         return $this;
     }
 
     /**
      * Get objectUrl
      *
-     * @return string 
+     * @return string
      */
     public function getObjectUrl()
     {
@@ -433,19 +432,19 @@ class ConsolidatedStatistic
      * Set objectDisplayName
      *
      * @param string $objectDisplayName
-     * @return ConsolidatedStatistic
+     * @return $this
      */
     public function setObjectDisplayName($objectDisplayName)
     {
         $this->objectDisplayName = $objectDisplayName;
-    
+
         return $this;
     }
 
     /**
      * Get objectDisplayName
      *
-     * @return string 
+     * @return string
      */
     public function getObjectDisplayName()
     {
@@ -456,19 +455,19 @@ class ConsolidatedStatistic
      * Set objectAttributes
      *
      * @param string $objectAttributes
-     * @return ConsolidatedStatistic
+     * @return $this
      */
     public function setObjectAttributes($objectAttributes)
     {
         $this->objectAttributes = $objectAttributes;
-    
+
         return $this;
     }
 
     /**
      * Get objectAttributes
      *
-     * @return string 
+     * @return string
      */
     public function getObjectAttributes()
     {
@@ -479,19 +478,19 @@ class ConsolidatedStatistic
      * Set targetObjectType
      *
      * @param string $targetObjectType
-     * @return ConsolidatedStatistic
+     * @return $this
      */
     public function setTargetObjectType($targetObjectType)
     {
         $this->targetObjectType = $targetObjectType;
-    
+
         return $this;
     }
 
     /**
      * Get targetObjectType
      *
-     * @return string 
+     * @return string
      */
     public function getTargetObjectType()
     {
@@ -502,19 +501,19 @@ class ConsolidatedStatistic
      * Set targetId
      *
      * @param string $targetId
-     * @return ConsolidatedStatistic
+     * @return $this
      */
     public function setTargetId($targetId)
     {
         $this->targetId = $targetId;
-    
+
         return $this;
     }
 
     /**
      * Get targetId
      *
-     * @return string 
+     * @return string
      */
     public function getTargetId()
     {
@@ -525,19 +524,19 @@ class ConsolidatedStatistic
      * Set targetUrl
      *
      * @param string $targetUrl
-     * @return ConsolidatedStatistic
+     * @return $this
      */
     public function setTargetUrl($targetUrl)
     {
         $this->targetUrl = $targetUrl;
-    
+
         return $this;
     }
 
     /**
      * Get targetUrl
      *
-     * @return string 
+     * @return string
      */
     public function getTargetUrl()
     {
@@ -548,19 +547,19 @@ class ConsolidatedStatistic
      * Set targetDisplayName
      *
      * @param string $targetDisplayName
-     * @return ConsolidatedStatistic
+     * @return $this
      */
     public function setTargetDisplayName($targetDisplayName)
     {
         $this->targetDisplayName = $targetDisplayName;
-    
+
         return $this;
     }
 
     /**
      * Get targetDisplayName
      *
-     * @return string 
+     * @return string
      */
     public function getTargetDisplayName()
     {
@@ -571,19 +570,19 @@ class ConsolidatedStatistic
      * Set targetAttributes
      *
      * @param string $targetAttributes
-     * @return ConsolidatedStatistic
+     * @return $this
      */
     public function setTargetAttributes($targetAttributes)
     {
         $this->targetAttributes = $targetAttributes;
-    
+
         return $this;
     }
 
     /**
      * Get targetAttributes
      *
-     * @return string 
+     * @return string
      */
     public function getTargetAttributes()
     {
@@ -594,19 +593,19 @@ class ConsolidatedStatistic
      * Set context
      *
      * @param string $context
-     * @return ConsolidatedStatistic
+     * @return $this
      */
     public function setContext($context)
     {
         $this->context = $context;
-    
+
         return $this;
     }
 
     /**
      * Get context
      *
-     * @return string 
+     * @return string
      */
     public function getContext()
     {
