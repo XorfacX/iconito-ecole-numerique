@@ -95,6 +95,10 @@ class ActionGroupDefault extends CopixActionGroup
                     $value = Kernel::_validDateProperties(_request($elem));
                     list($d, $m, $y) = explode('/', $value);
                     $value = new \DateTime("$y-$m-$d");
+
+                    if ($elem == 'publishedTo'){
+                        $value->setTime(23, 59, 59);
+                    }
                 } else {
                     $value = $toUpdate->$elem = _request($elem);
                 }

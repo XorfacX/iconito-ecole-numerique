@@ -3,6 +3,8 @@
 use \ActivityStream\Client\Model\Resource;
 use \ActivityStream\Client\Model\ResourceInterface;
 
+_classInclude('activityStream|EcoleNumeriqueActivityStreamResource');
+
 /**
  * @package     iconito
  * @subpackage  cahierdetextes

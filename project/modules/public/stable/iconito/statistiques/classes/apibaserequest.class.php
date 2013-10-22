@@ -6,6 +6,7 @@ _classInclude('statistiques|consolidatedstatisticfiltertorequesttransformer');
 abstract class ApiBaseRequest
 {
     const PERIOD_UNIT    = 'unit';
+    const PERIOD_HOURLY  = 'hourly';
     const PERIOD_DAILY   = 'daily';
     const PERIOD_WEEKLY  = 'weekly';
     const PERIOD_MONTHLY = 'monthly';
