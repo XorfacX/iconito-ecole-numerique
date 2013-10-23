@@ -32,12 +32,6 @@ class ListenerActivityStream extends CopixListener
             'login',
             $this->activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras())
         );
-
-        _classInclude('activitystream|activitystreamunittask');
-
-        $t = new ActivityStreamUnitTask();
-
-        $t->processStat();
     }
 
     /**
