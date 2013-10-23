@@ -1690,7 +1690,11 @@ if(DEBUG) {
     public function hasRole($role, $linkType, $nodeId)
     {
         $userInfos = self::getUserInfo();
-        return in_array($role, $userInfos['link']->$linkType);
+        if (isset($userInfos['link']->$linkType)) {
+            return in_array($role, $userInfos['link']->$linkType);
+        } else {
+            return false;
+        }
     }
 
     public function getModParent( $type, $id )
