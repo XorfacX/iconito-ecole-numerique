@@ -23,7 +23,7 @@ use constant MAND_OPTS => qw(H b D w y);
 use constant OTHER_OPTS => qw(d L o f);
 
 use constant {
-	VERSION_ATTRIBUTE => 'gidNumber',
+	VERSION_ATTRIBUTE => 'description',
 	MIN_ATTRIBUTE     => 'shadowMin',
 	MAX_ATTRIBUTE     => 'shadowMax',
 };

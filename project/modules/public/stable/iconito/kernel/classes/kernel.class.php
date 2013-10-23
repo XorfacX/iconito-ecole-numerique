@@ -1516,19 +1516,24 @@ class Kernel
             $modKne->node_type   = $node_type;
             $modKne->node_id     = $node_id;
             $modKne->module_type = 'MOD_KNE';
-            $modKne->module_id   = $node_id;
-            $modKne->module_nom  = kernel::Code2Name('MOD_KNE');
-            $modules[]           = $modKne;
+            $modKne->module_id = $node_id;
+            $modKne->module_nom = kernel::Code2Name('MOD_KNE');
+            $modules[] = $modKne;
         }
+
         //for Coreprim
-        if (in_array($user_type, array('USER_ELE', 'USER_ENS', 'USER_DIR', 'USER_DID')) && $node_type == 'BU_CLASSE' && CopixConfig::exists('default|rssEtagereEnabled') && CopixConfig::get('default|rssEtagereEnabled')) {
-            $modRssEtagere              = new stdClass();
-            $modRssEtagere->node_type   = $node_type;
-            $modRssEtagere->node_id     = $node_id;
-            $modRssEtagere->module_type = 'MOD_RSSETAGERE';
-            $modRssEtagere->module_id   = $node_type . "-" . $node_id;
-            $modRssEtagere->module_nom  = kernel::Code2Name('MOD_RSSETAGERE');
-            $modules[]                  = $modRssEtagere;
+        if(in_array($user_type, array('USER_ELE', 'USER_ENS', 'USER_DIR', 'USER_DID')) && $node_type == 'BU_CLASSE' && CopixConfig::exists('default|rssEtagereEnabled') && CopixConfig::get('default|rssEtagereEnabled')){
+            _classInclude('sysutils|coreprimService');
+            $coreprim = new coreprimService();
+            if($coreprim->classHasAccess($node_id) == 1){
+                $modRssEtagere = new stdClass();
+                $modRssEtagere->node_type = $node_type;
+                $modRssEtagere->node_id = $node_id;
+                $modRssEtagere->module_type = 'MOD_RSSETAGERE';
+                $modRssEtagere->module_id = $node_type."-".$node_id;
+                $modRssEtagere->module_nom = kernel::Code2Name('MOD_RSSETAGERE');
+                $modules[] = $modRssEtagere;
+            }
         }
         if (CopixConfig::exists('|conf_ModTeleprocedures') && CopixConfig::get('|conf_ModTeleprocedures') == 0) {
             // Pas de module de tÈlÈprocÈdures...

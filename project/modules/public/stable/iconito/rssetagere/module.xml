@@ -4,6 +4,7 @@
         <default name="rssEtagere" />
     </general>
     <parameters>
-        <parameter name="rss_url" captioni18n="rssetagere.url" default="http://corree.preprod.coreprim.fr/etagere/rss" />
-	   </parameters>
+        <parameter name="rss_url" captioni18n="rssetagere.url" default="http://www.coreprim.fr/etagere/rss" />
+        <parameter name="list_url" captioni18n="rssetagere.list" default="https://www.coreprim.fr/etagere/list.html" />
+    </parameters>
 </moduledefinition>
