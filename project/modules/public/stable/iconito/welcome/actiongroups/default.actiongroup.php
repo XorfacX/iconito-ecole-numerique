@@ -17,10 +17,6 @@ class ActionGroupDefault extends enicActionGroup
 {
     public function processDefault()
     {
-        _classInclude('activitystream|ActivityStreamUnitTask');
-        $asut = new ActivityStreamUnitTask();
-        $asut->processStat();die;
-
         $tpl = new CopixTpl ();
         $tplModule = new CopixTpl ();
 

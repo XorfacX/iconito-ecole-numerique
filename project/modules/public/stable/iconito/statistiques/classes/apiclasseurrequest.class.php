@@ -45,12 +45,13 @@ SQL;
 
         $filter = $this->createBaseFilter();
         $filter->setObjectObjectType(static::CLASS_FICHIER);
-        $filter->setObjectAttributes(array('"is_casier":1'));
+        $filter->setObjectAttributes(array('is_casier' => 1));
         $filter->setPeriod(static::PERIOD_UNIT);
         $filter->setLastOnly(true);
 
         $fichiersCount = 0;
         $taille = 0;
+        // Récupère le détail des fichiers qui sont des casiers dans le périmètre considéré
         foreach ($results as $result) {
             $filter->setTargetObjectType(static::CLASS_CLASSEUR);
             $filter->setTargetId($result->module_id);
@@ -59,25 +60,29 @@ SQL;
             $fichiersCount += $fichier->counter;
             $taille += $fichier->object_attributes->taille;
         }
-      die(var_dump(array(
+
+        $casiers = array(
                   'count' => $fichiersCount,
                   'total' => $taille,
                   'average' => $fichiersCount ? $taille / $fichiersCount : 0
-              )));
-        $filter->setObjectAttributes(array('"is_casier":1'));
+        );
+
+        // On y ajoute le détail des fichier qui ne sont pas des casiers
+        $filter->setObjectAttributes(array('is_casier' => 0));
         foreach ($results as $result) {
-                  $filter->setTargetObjectType(static::CLASS_CLASSEUR);
-                  $filter->setTargetId($result->module_id);
-                  $fichiers = $this->getResult($filter);
-                  $fichier = reset($fichiers);
-                  $fichiersCount += $fichier->counter;
-                  $taille += $fichier->object_attributes->taille;
+            $filter->setTargetObjectType(static::CLASS_CLASSEUR);
+            $filter->setTargetId($result->module_id);
+            $fichiers = $this->getResult($filter);
+            $fichier = reset($fichiers);
+            $fichiersCount += $fichier->counter;
+            $taille += $fichier->object_attributes->taille;
         }
 
         return array(
             'count' => $fichiersCount,
             'total' => $taille,
-            'average' => $fichiersCount ? $taille / $fichiersCount : 0
+            'average' => $fichiersCount ? $taille / $fichiersCount : 0,
+            'casiers' => $casiers
         );
     }
 }

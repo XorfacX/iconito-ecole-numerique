@@ -71,10 +71,10 @@ abstract class ApiBaseRequest
     {
         $transformer = new ConsolidatedStatisticFilterToRequestTransformer;
         $requestFilter = $transformer->transform($filter);
-//        var_dump('-----');
-//        echo $requestFilter;
-//        var_dump('-----');
         $requestUrl = CopixConfig::get('statistiques|apiQueryUrl').'?'.$requestFilter;
+//        var_dump('-----');
+//        echo '<a href="'.$requestUrl.'" target="_blank">'.urldecode($requestFilter).'</a>';
+//        var_dump('-----');
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, $requestUrl);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
