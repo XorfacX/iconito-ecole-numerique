@@ -39,7 +39,7 @@ class ActionGroupDefault extends enicActionGroup
                                             WHERE
                                             ((`date_start` < '.time().' AND `date_end` > '.time().') OR
                                             (`date_start` = 0 OR `date_end` = 0)) AND
-                                            `lock` = 0 AND gr_id = '.$idGrQuiz.'
+                                            `is_locked` = 0 AND gr_id = '.$idGrQuiz.'
                                             ORDER BY date_end DESC')
                                     ->toArray();
 
@@ -60,6 +60,9 @@ class ActionGroupDefault extends enicActionGroup
         $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.new'),
                             'type' => 'create',
                             'url' => $this->url('quiz|admin|modif', array('qaction' => 'new')));
+        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.import'),
+                            'type' => 'copy',
+                            'url' => $this->url('quiz|admin|import'));
         }
         return _arPPO($ppo, 'quiz.tpl');
     }
@@ -92,7 +95,7 @@ class ActionGroupDefault extends enicActionGroup
             //description
             $desc = ($quizData->description == null) ? null : $quizData->description;
 
-            if($quizData->lock == 1)
+            if($quizData->is_locked == 1)
                 return CopixActionGroup::process('genericTools|Messages::getError', array ('message'=>CopixI18N::get ('quiz.errors.lock'), 'back'=>CopixUrl::get('quiz||')));
 
 //time test :
@@ -194,6 +197,9 @@ class ActionGroupDefault extends enicActionGroup
         $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.new'),
                             'type' => 'create',
                             'url' => $this->url('quiz|admin|modif', array('qaction' => 'new')));
+        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.import'),
+                             'type' => 'copy',
+                             'url' => $this->url('quiz|admin|import'));
         }
 
         return _arPPO($ppo, 'accueil_quiz.tpl');
@@ -328,6 +334,9 @@ class ActionGroupDefault extends enicActionGroup
         $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.new'),
                             'type' => 'create',
                             'url' => $this->url('quiz|admin|modif', array('qaction' => 'new')));
+        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.import'),
+                             'type' => 'copy',
+                             'url' => $this->url('quiz|admin|import'));
         }
         $this->js->dialog('#qd-help', '#help-data');
         return _arPPO($ppo, 'question.tpl');
@@ -368,7 +377,7 @@ class ActionGroupDefault extends enicActionGroup
         );
 
         // lock test
-        if ($quizData->lock == 1) {
+        if ($quizData->is_locked == 1) {
             return CopixActionGroup::process('genericTools|Messages::getError', array ('message'=>CopixI18N::get ('quiz.errors.lock'), 'back'=>CopixUrl::get('quiz||')));
         }
 
@@ -417,7 +426,7 @@ class ActionGroupDefault extends enicActionGroup
         );
 
         // lock test
-        if ($quizData->lock == 1) {
+        if ($quizData->is_locked == 1) {
             return CopixActionGroup::process('genericTools|Messages::getError', array ('message'=>CopixI18N::get ('quiz.errors.lock'), 'back'=>CopixUrl::get('quiz||')));
         }
 
@@ -425,11 +434,15 @@ class ActionGroupDefault extends enicActionGroup
         $ppo = new CopixPPO();
 
         $ppo->question = $this->service('QuizService')->getQuestion($qId);
-
         $ppo->nameAuthor = $this->session->load('authorName');
         $ppo->surname = $this->session->load('authorSurname');
         $ppo->help = qSession('help');
         $ppo->name = qSession('name');
+
+        //lock test
+        if($quizData->is_locked == 1) {
+            return CopixActionGroup::process('genericTools|Messages::getError', array ('message'=>CopixI18N::get ('quiz.errors.lock'), 'back'=>CopixUrl::get('quiz||')));
+        }
 
         // Récupération des choix de réponses
         $choices = $this->service('QuizService')->getChoices($qId);

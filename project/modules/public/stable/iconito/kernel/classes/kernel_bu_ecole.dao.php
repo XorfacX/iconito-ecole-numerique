@@ -66,6 +66,8 @@ class DAORecordKernel_bu_ecole {
 
 class DAOKernel_bu_ecole extends enicService {
 
+    protected $errorsMessages;
+
     public function __construct() {
         parent::__construct();
         $this->db = & enic::get('model');
@@ -150,8 +152,6 @@ class DAOKernel_bu_ecole extends enicService {
 
         return new CopixDAORecordIterator(_doQuery($sql), $this->getDAOId());
     }
-
-    protected $errorsMessages;
 
     /**
      * Récupérer le(s) message(s) d'erreurs
@@ -261,4 +261,28 @@ class DAOKernel_bu_ecole extends enicService {
         return (0 == ($sum % 10));
     }
 
+    /**
+     * Retourne l'école en fonction de la classe
+     *
+     * @param $idClasse L'identifiant de la classe
+     */
+    public function findByClassroom ($idClasse)
+    {
+        $sql = <<<SQL
+          SELECT *
+          FROM kernel_bu_ecole kbe
+          INNER JOIN kernel_bu_ecole_classe kbec ON kbec.ecole = kbe.numero
+          WHERE kbec.id = :id_classe
+SQL;
+
+        $ecoles = new CopixDAORecordIterator (_doQuery($sql, array(
+            'id_classe' => $idClasse
+        )), $this->getDAOId ());
+
+        if (count($ecoles)) {
+            return $ecoles[0];
+        }
+
+        return null;
+    }
 }
