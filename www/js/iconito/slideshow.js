@@ -17,6 +17,9 @@ TINY.slider=function(){
 		}
 		this.pos(p.position||0,this.a?1:0)
 	},
+	slide.prototype.pause=function() {
+		clearInterval(this.u.ai);
+	},
 	slide.prototype.auto=function(){
 		this.u.ai=setInterval(new Function(this.n+'.move(1,1)'),this.a*1000)
 	},
