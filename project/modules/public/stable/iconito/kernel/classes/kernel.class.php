@@ -1440,16 +1440,17 @@ class Kernel
                 if ($parent[0]['droit'] >= 30) {
                     $parent_modules = Kernel::getModEnabled($parent[0]['type'], $parent[0]['id'], $node_type, $node_id);
                     /*
-                    echo '<li>$parent[0][] = '.$parent[0]['type']."/".$parent[0]['id']."</li>";
-                    echo '<li>$node_* = '.$node_type."/".$node_id."</li>";
-                    */
-                    foreach ($parent_modules AS $parent_module) {
+                     echo '<li>$parent[0][] = '.$parent[0]['type']."/".$parent[0]['id']."</li>";
+                     echo '<li>$node_* = '.$node_type."/".$node_id."</li>";
+                     */
+                    $perso = new stdClass();
+                    foreach( $parent_modules AS $parent_module ) {
                         /*
                          $perso->node_type   = $parent[0]['type'];
                          $perso->node_id     = $parent[0]['id'];
                          */
-                        $perso->node_type = $node_type;
-                        $perso->node_id   = $node_id;
+                        $perso->node_type   = $node_type;
+                        $perso->node_id     = $node_id;
                         $perso->module_type = $parent_module->module_type;
                         $perso->module_id   = $parent_module->module_id;
                         $perso->module_nom  = Kernel::Code2Name($parent_module->module_type);
@@ -1568,13 +1569,16 @@ class Kernel
             }
         }
         // Cas particulier : module d'administration
-        if ($node_type == "ROOT" && Kernel::getLevel($node_type, $node_id) >= 60) {
+        if( $node_type == "ROOT" && Kernel::getLevel( $node_type, $node_id ) >= 60 ) {
+            $sysutils = new stdClass();
             $sysutils->node_type   = $node_type;
             $sysutils->node_id     = $node_id;
             $sysutils->module_id   = null;
             $sysutils->module_type = 'MOD_SYSUTILS';
-            $sysutils->module_nom  = Kernel::Code2Name('MOD_SYSUTILS');
-            $modules[]             = clone $sysutils;
+            $sysutils->module_nom   = Kernel::Code2Name ('MOD_SYSUTILS');
+            $modules[] = clone $sysutils;
+
+            $charte = new stdClass();
             $charte->node_type   = $node_type;
             $charte->node_id     = $node_id;
             $charte->module_id   = null;
@@ -1588,20 +1592,21 @@ class Kernel
             ($user_type == "USER_ENS" && $node_type == "BU_ECOLE") ||
                 ($user_type == "USER_VIL" && $node_type == "BU_VILLE")
         ) &&
-            method_exists($SsoGaelService, "canSsoGael") &&
-            $SsoGaelService->canSsoGael() &&
-            Kernel::getLevel($node_type, $node_id) >= 60
-        ) {
-            $comptes->node_type    = $node_type;
-            $comptes->node_id      = $node_id;
-            $comptes->module_type  = 'MOD_SSOGAEL';
-            $comptes->module_id    = $node_type . '-' . $node_id;
-            $comptes->module_nom   = Kernel::Code2Name('MOD_SSO_GAEL');
+        method_exists( $SsoGaelService, "canSsoGael" ) &&
+        $SsoGaelService->canSsoGael() &&
+        Kernel::getLevel( $node_type, $node_id ) >= 60 ) {
+            $comptes = new stdClass();
+            $comptes->node_type   = $node_type;
+            $comptes->node_id     = $node_id;
+            $comptes->module_type = 'MOD_SSOGAEL';
+            $comptes->module_id = $node_type.'-'.$node_id;
+            $comptes->module_nom   = Kernel::Code2Name ('MOD_SSO_GAEL');
             $comptes->module_popup = true; // Mode Popup !!!
             $modules[]             = clone $comptes;
         }
         // Cas particulier : gestion des groupes de ville (AC/TICE)
-        if ($node_type == "ROOT" && Kernel::getLevel($node_type, $node_id) >= 60) {
+        if( $node_type == "ROOT" && Kernel::getLevel( $node_type, $node_id ) >= 60 ) {
+            $mod_grvilles = new stdClass();
             $mod_grvilles->node_type   = $node_type;
             $mod_grvilles->node_id     = $node_id;
             $mod_grvilles->module_type = 'MOD_REGROUPEMENTS';
