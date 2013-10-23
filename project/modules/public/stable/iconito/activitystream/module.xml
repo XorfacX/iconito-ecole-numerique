@@ -10,10 +10,10 @@
     </dependencies>
 
     <parameters>
-        <parameter name="activity_stream_application_id" captioni18n="activitystream.application_id" />
+        <parameter name="activity_stream_application_id" captioni18n="activitystream.application_id" default="__URL__"/>
         <parameter name="activity_stream_adapter_classname" captioni18n="activitystream.parameter.adapter_class_name" default="ActivityStream\Client\Adapter\RedisAdapter" />
-        <parameter name="activity_stream_adapter_host" captioni18n="activitystream.parameter.adapter_host" />
-        <parameter name="activity_stream_adapter_port" captioni18n="activitystream.parameter.adapter_port" />
+        <parameter name="activity_stream_adapter_host" captioni18n="activitystream.parameter.adapter_host" default="redis.iconito.fr" />
+        <parameter name="activity_stream_adapter_port" captioni18n="activitystream.parameter.adapter_port" default="6379" />
         <parameter name="activity_stream_adapter_connection_timeout" captioni18n="activitystream.parameter.adapter_connection_timeout" />
         <parameter name="activity_stream_adapter_auth_password" captioni18n="activitystream.parameter.adapter_auth_password" />
     </parameters>
