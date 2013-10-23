@@ -244,47 +244,41 @@ class ClasseurService
      */
     public static function moveFolder (DAORecordClasseurDossier $folder, $targetType, $targetId, $withFiles = true)
     {
-      $folderDAO    = _ioDAO('classeur|classeurdossier');
-    $fileDAO      = _ioDAO('classeur|classeurfichier');
+        $folderDAO    = _ioDAO('classeur|classeurdossier');
+        $fileDAO      = _ioDAO('classeur|classeurfichier');
 
         // Pour chaque sous dossiers on rappelle la méthode
         $subfolders = $folderDAO->getEnfantsDirects ($folder->classeur_id, $folder->id);
         foreach ($subfolders as $subfolder) {
-
-          self::moveFolder ($subfolder, 'dossier', $folder->id);
+            self::moveFolder ($subfolder, 'dossier', $folder->id);
         }
 
         // Récupération des fichiers du dossier pour le déplacement
-    if ($withFiles) {
-
-          $files = $fileDAO->getParDossier ($folder->classeur_id, $folder->id);
+        if ($withFiles) {
+            $files = $fileDAO->getParDossier ($folder->classeur_id, $folder->id);
         }
 
-    // Déplacement du dossier
-    if ($targetType == 'dossier') {
+        // Déplacement du dossier
+        if ($targetType == 'dossier') {
+            $targetFolder = $folderDAO->get($targetId);
 
-      $targetFolder = $folderDAO->get($targetId);
+            $folder->classeur_id = $targetFolder->classeur_id;
+            $folder->parent_id   = $targetId;
+            $folder->casier      = $targetFolder->casier;
+        } else {
+            $folder->classeur_id  = $targetId;
+            $folder->parent_id    = 0;
+            $folder->casier       = 0;
+        }
 
-      $folder->classeur_id = $targetFolder->classeur_id;
-      $folder->parent_id   = $targetId;
-      $folder->casier      = $targetFolder->casier;
-    } else {
+        // Mise à jour du dossier après déplacement
+        $folderDAO->update($folder);
 
-      $folder->classeur_id  = $targetId;
-      $folder->parent_id    = 0;
-      $folder->casier       = 0;
-    }
-
-    // Mise à jour du dossier après déplacement
-    $folderDAO->update($folder);
-
-    // Modification des fichiers du dossier
-    if ($withFiles) {
-
-          foreach($files as $file) {
-
-            self::moveFile ($file, 'dossier', $folder->id);
-          }
+        // Modification des fichiers du dossier
+        if ($withFiles) {
+            foreach($files as $file) {
+                self::moveFile ($file, 'dossier', $folder->id);
+            }
         }
     }
 
@@ -297,71 +291,68 @@ class ClasseurService
      */
     public static function moveFile (DAORecordClasseurFichier $file, $targetType, $targetId)
     {
-      $classeurDAO  = _ioDAO('classeur|classeur');
-      $folderDAO    = _ioDAO('classeur|classeurdossier');
-    $fileDAO      = _ioDAO('classeur|classeurfichier');
+        $classeurDAO  = _ioDAO('classeur|classeur');
+        $folderDAO    = _ioDAO('classeur|classeurdossier');
+        $fileDAO      = _ioDAO('classeur|classeurfichier');
 
-    // Récupération du classeur
-    $oldClasseur = $classeurDAO->get($file->classeur_id);
-    if ($targetType == 'dossier') {
+        // Récupération du classeur
+        $oldClasseur = $classeurDAO->get($file->classeur_id);
+        if ($targetType == 'dossier') {
+            $targetFolder = $folderDAO->get($targetId);
+            $newClasseur  = $classeurDAO->get($targetFolder->classeur_id);
 
-      $targetFolder = $folderDAO->get($targetId);
-      $newClasseur  = $classeurDAO->get($targetFolder->classeur_id);
-
-      $file->classeur_id  = $targetFolder->classeur_id;
-      $file->dossier_id   = $targetFolder->id;
-    } else {
-
-      $newClasseur = $classeurDAO->get($targetId);
-
-      $file->classeur_id  = $targetId;
-      $file->dossier_id   = 0;
-    }
-
-    $fileDAO->update($file);
-
-    // Si classeurs différents on déplace le fichier
-    if ($oldClasseur != $newClasseur) {
-
-      $old_dir = realpath('./static/classeur').'/'.$oldClasseur->id.'-'.$oldClasseur->cle.'/';
-      $new_dir = realpath('./static/classeur').'/'.$newClasseur->id.'-'.$newClasseur->cle.'/';
-
-      if (!file_exists($new_dir)) {
-
-        mkdir($new_dir, 0755, true);
-      }
-
-      $extension = strtolower(strrchr($file->fichier, '.'));
-      copy($old_dir.$file->id.'-'.$file->cle.$extension, $new_dir.$file->id.'-'.$file->cle.$extension);
-      unlink($old_dir.$file->id.'-'.$file->cle.$extension);
-    }
-
-    // Déplacement d'un document d'un élève dans un casier par un enseignant
-    if ($targetType == 'dossier' && $targetFolder->casier && !$targetFolder->isCasierPrincipal () && $file->user_type == 'USER_ELE') {
-
-      // On vérifie si un travail à rendre correspondant à ce casier existe
-      $travailDAO = _ioDAO ('cahierdetextes|cahierdetextestravail');
-      if ($travail = $travailDAO->findTravailARendreByCasier ($targetFolder->id)) {
-
-        // Sauvegarde de la date de rendu du travail
-        $travail2eleveDAO = _ioDAO ('cahierdetextes|cahierdetextestravail2eleve');
-        if ($suivi = $travail2eleveDAO->getByTravailAndEleve ($travail->id, $file->user_id)) {
-
-          $suivi->rendu_le = date('Y-m-d H:i:s');
-
-          $travail2eleveDAO->update ($suivi);
+            $file->classeur_id  = $targetFolder->classeur_id;
+            $file->dossier_id   = $targetFolder->id;
         } else {
+            $newClasseur = $classeurDAO->get($targetId);
 
-          $suivi = _record ('cahierdetextes|cahierdetextestravail2eleve');
-
-          $suivi->travail_id = $travail->id;
-          $suivi->eleve_id = $file->user_id;
-          $suivi->rendu_le = date('Y-m-d H:i:s');
-
-          $travail2eleveDAO->insert ($suivi);
+            $file->classeur_id  = $targetId;
+            $file->dossier_id   = 0;
         }
-      }
-    }
+
+        $fileDAO->update($file);
+
+        // Si classeurs différents on déplace le fichier
+        if ($oldClasseur != $newClasseur) {
+
+            $old_dir = realpath('./static/classeur').'/'.$oldClasseur->id.'-'.$oldClasseur->cle.'/';
+            $new_dir = realpath('./static/classeur').'/'.$newClasseur->id.'-'.$newClasseur->cle.'/';
+
+            if (!file_exists($new_dir)) {
+                mkdir($new_dir, 0755, true);
+            }
+
+            $extension = strtolower(strrchr($file->fichier, '.'));
+            copy($old_dir.$file->id.'-'.$file->cle.$extension, $new_dir.$file->id.'-'.$file->cle.$extension);
+            unlink($old_dir.$file->id.'-'.$file->cle.$extension);
+        }
+
+        // Déplacement d'un document d'un élève dans un casier par un enseignant
+        if ($targetType == 'dossier' && $targetFolder->casier && !$targetFolder->isCasierPrincipal () && $file->user_type == 'USER_ELE') {
+
+            // On vérifie si un travail à rendre correspondant à ce casier existe
+            $travailDAO = _ioDAO ('cahierdetextes|cahierdetextestravail');
+            if ($travail = $travailDAO->findTravailARendreByCasier ($targetFolder->id)) {
+
+                // Sauvegarde de la date de rendu du travail
+                $travail2eleveDAO = _ioDAO ('cahierdetextes|cahierdetextestravail2eleve');
+                if ($suivi = $travail2eleveDAO->getByTravailAndEleve ($travail->id, $file->user_id)) {
+
+                    $suivi->rendu_le = date('Y-m-d H:i:s');
+
+                    $travail2eleveDAO->update ($suivi);
+                } else {
+
+                    $suivi = _record ('cahierdetextes|cahierdetextestravail2eleve');
+
+                    $suivi->travail_id = $travail->id;
+                    $suivi->eleve_id = $file->user_id;
+                    $suivi->rendu_le = date('Y-m-d H:i:s');
+
+                    $travail2eleveDAO->insert ($suivi);
+                }
+            }
+        }
     }
 
     /**
