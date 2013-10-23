@@ -26,7 +26,7 @@
 <textarea style="width:{$width}px; height:{$height}px;" name="{$field}" id="{$field}" class="form">{$content}</textarea>
 
 <script>
-    window.onload = function() {literal}{{/literal}
+    $( document ).ready( function() {literal}{{/literal}
         CKEDITOR.replace('{$field}', {literal}{{/literal}
             customConfig: '{copixresource path="js/ckeditor.js"}',
             width: '{$width}',
@@ -43,7 +43,7 @@
             {if $options.toolbarSet}, toolbar: '{$options.toolbarSet}'{/if}
             {if $options.toolbarStartupExpanded}, toolbarCanCollapse: true, toolbarStartupExpanded: {$options.toolbarStartupExpanded}{/if}
         {literal}}{/literal});
-    {literal}}{/literal};
+    {literal}}{/literal});
 </script>
 
 <div>{$wikibuttons}</div>
