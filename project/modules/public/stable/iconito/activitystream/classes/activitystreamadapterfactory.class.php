@@ -15,7 +15,7 @@ class ActivityStreamAdapterFactory
         $adapterClassname = CopixConfig::get('activitystream|activity_stream_adapter_classname');
 
 
-        if (!is_subclass_of($adapterClassname, 'ActivityStream\Client\Adapter\AdapterInterface')) {
+        if (!is_subclass_of($adapterClassname, 'ActivityStream\Client\Adapter\AdapterAbstract')) {
             throw new Exception('invalide');
         }
 
