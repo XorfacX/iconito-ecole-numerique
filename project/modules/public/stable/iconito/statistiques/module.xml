@@ -6,7 +6,7 @@
     </general>
 
     <parameters>
-        <parameter name="apiQueryUrl" captioni18n="statistiques.parameter.apiQueryUrl" default="http://api.local/api/query.json" />
+        <parameter name="apiQueryUrl" captioni18n="statistiques.parameter.apiQueryUrl" default="http://api-stats.iconito.fr/api/query.json" />
         <parameter name="moduleTitle" captioni18n="statistiques.parameter.moduleTitle" default="Statistiques" />
     </parameters>
 </moduledefinition>
