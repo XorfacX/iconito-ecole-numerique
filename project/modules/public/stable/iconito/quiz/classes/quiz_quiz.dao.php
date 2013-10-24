@@ -43,7 +43,7 @@ class DAORecordQuiz_quiz implements ResourceInterface
       'pic',
       'opt_save',
       'opt_show_results',
-      'lock',
+      'is_locked',
       'gr_id',
     );
 
