@@ -44,7 +44,7 @@ class ActionGroupDefault extends CopixActionGroup
         CopixHTMLHeader::addJSLink (_resource("js/jquery/jquery.ui.datepicker-fr.js"));
 
         if ($ppo->filter) {
-          $ppo->stat = _request('stat');
+          $ppo->stat = _request('stat','comptesEtConnexions'); // On affiche l'onglet Comptes par défaut si aucun n'est sélectionné
         }
 
         $ppo->mapping = new ApiMapping;
