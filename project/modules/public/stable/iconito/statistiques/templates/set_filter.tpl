@@ -1,8 +1,10 @@
 <h2>{i18n key="statistiques.label.title"}</h2>
 
 <form action="{copixurl dest="statistiques|default|index" stat=$ppo->stat}" method="post" class="edit">
+    <p class="center">{i18n key='kernel|kernel.fields.oblig' noEscape=1}</p>
+    
     <div class="field">
-        <label for="context" class="form_libelle"> Périmètre </label>
+        <label for="context" class="form_libelle">Périmètre  <img src="{copixresource path="img/red-star.png"}" alt="{i18n key='kernel|kernel.required'}" /></label>
         {assign var=current value=$ppo->filter->target }
         <select name="target">
             {foreach from=$ppo->contexts key=key item=context}
@@ -23,13 +25,13 @@
     </div>
 
     <div class="field">
-        <label for="dateBegin" class="form_libelle"> Du </label>
-        <input type="text" name="publishedFrom" id="date_begin" value="{if $ppo->filter->publishedFrom}{$ppo->filter->publishedFrom->format('d/m/Y')|escape}{/if}"/>
+        <label for="dateBegin" class="form_libelle"> Du <img src="{copixresource path="img/red-star.png"}" alt="{i18n key='kernel|kernel.required'}" /></label>
+        <input type="text" name="publishedFrom" id="date_begin" required value="{if $ppo->filter->publishedFrom}{$ppo->filter->publishedFrom->format('d/m/Y')|escape}{/if}"/>
     </div>
 
     <div class="field">
-        <label for="dateEnd" class="form_libelle"> Au </label>
-        <input type="text" name="publishedTo" id="date_end" value="{if $ppo->filter->publishedTo}{$ppo->filter->publishedTo->format('d/m/Y')|escape}{/if}"/>
+        <label for="dateEnd" class="form_libelle"> Au <img src="{copixresource path="img/red-star.png"}" alt="{i18n key='kernel|kernel.required'}" /></label>
+        <input type="text" name="publishedTo" id="date_end" required value="{if $ppo->filter->publishedTo}{$ppo->filter->publishedTo->format('d/m/Y')|escape}{/if}"/>
     </div>
 
     <div class="submit">
@@ -54,7 +56,7 @@
 {literal}
 <script type="text/javascript">
   jQuery(document).ready(function(){
-      setDatePicker('#date_begin, #date_end');
+      jQuery('#date_begin, #date_end').datepicker({showOn: 'both', buttonImage: '../../../js/jquery/images/datepicker/calendar.gif', buttonImageOnly: true, numberOfMonths: 3, showButtonPanel: true, appendText: '(JJ/MM/AAAA)', constrainInput: true, maxDate:0});
   });
 </script>
 {/literal}
