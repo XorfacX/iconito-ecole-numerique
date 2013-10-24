@@ -35,6 +35,7 @@ class ActionGroupSaml extends EnicActionGroup {
 		$ppo->user = _currentUser();
 		if($ppo->user->isConnected()){
 			$url_return = CopixUrl::get ('kernel||doSelectHome');
+            CopixEventNotifier::notify ('login', array ());
 			/*
 			 * PATCH FOR CHARTE
 			 */
