@@ -3,3 +3,12 @@
 
 #tabs .ui-tabs-nav a:hover {cursor:pointer;}
 #tabs .container {padding:0 0.5em 0.5em;}
+.average {
+	padding-left:1em;
+	color:#2e6e9e;
+	font-style:italic; font-size:0.9em;
+}
+.dateStats {
+	color:#2e6e9e;
+	font-weight:bold;
+}

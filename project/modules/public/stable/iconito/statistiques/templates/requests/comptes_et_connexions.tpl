@@ -1,5 +1,5 @@
 <h2>{$ppo->label}</h2>
-<p>Au {$ppo->filter->publishedTo->format('d/m/Y')}, il y avait {$ppo->requestClass->getNombreComptes()} compte(s).</p>
+<p>Au <span class="dateStats">{$ppo->filter->publishedTo->format('d/m/Y')}</span>, il y a <strong>{$ppo->requestClass->getNombreComptes()}</strong> compte(s).</p>
 <div>
     <h3>Nombre de compte par profil</h3>
     {assign var=comptesParProfil value=$ppo->requestClass->getNombreComptesParProfil()}
@@ -11,9 +11,9 @@
 </div>
 
 <div>
-    Du {$ppo->filter->publishedFrom->format('d/m/Y')} au {$ppo->filter->publishedTo->format('d/m/Y')} :
+    Du <span class="dateStats">{$ppo->filter->publishedFrom->format('d/m/Y')}</span> au <span class="dateStats">{$ppo->filter->publishedTo->format('d/m/Y')}</span> :
 
-    Il y a eu : {$ppo->requestClass->getNombreConnexions()} connexions
+    Il y a eu <strong>{$ppo->requestClass->getNombreConnexions()}</strong> connexion(s).
 
     <h3>Statistiques annuelles</h3>
 
