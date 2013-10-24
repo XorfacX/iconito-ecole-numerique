@@ -147,6 +147,10 @@ GROUP BY quiz.id
 
         $this->db->create('module_quiz_quiz', $datas);
 
+        $id = $this->db->query('SELECT id FROM module_quiz_quiz order by id desc limit 1')->toInt();
+        $quiz = _dao('quiz|quiz_quiz')->get($id);
+        CopixEventNotifier::notify('createQuiz', array('quiz'=>$quiz));
+
         return true;
     }
 
@@ -324,6 +328,10 @@ GROUP BY quiz.id
     {
         $data = $this->prepareAnsw($iDatas);
         $this->db->create('module_quiz_questions', $data);
+        $id = $this->db->query('SELECT id FROM module_quiz_questions order by id desc limit 1')->toInt();
+        $question = _dao('quiz|quiz_questions')->get($id);
+        $quiz = _dao('quiz|quiz_quiz')->get($question->id_quiz);
+        CopixEventNotifier::notify('createQuestion', array('question'=>$question, 'quiz'=>$quiz));
     }
 
     public function newResp($iDatas)

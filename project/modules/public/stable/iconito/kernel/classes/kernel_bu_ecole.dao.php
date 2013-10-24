@@ -1,7 +1,10 @@
 <?php
 
-class DAORecordKernel_bu_ecole {
+use \ActivityStream\Client\Model\Resource;
+use \ActivityStream\Client\Model\ResourceInterface;
 
+class DAORecordKernel_bu_ecole implements ResourceInterface
+{
     protected $_city = null;
 
     public function __toString() {
@@ -34,15 +37,51 @@ class DAORecordKernel_bu_ecole {
         return $oHas;
     }
 
+  /**
+   * Return a resource from the current Object
+   *
+   * @return Resource
+   */
+  public function toResource()
+  {
+    $resource = new EcoleNumeriqueActivityStreamResource(
+      $this->nom,
+      get_class($this),
+      $this->numero
+    );
 
-    /**
-     * L'adresse de l'ecole en une ligne
-     *
-     * @author Christophe Beyer <cbeyer@cap-tic.fr>
-     * @since 2011/11/02
-     * @return string L'adresse
-     */
-    public function getFullAddress() {
+    $attributes = array(
+      'type',
+      'num_rue',
+      'num_seq',
+      'adresse1',
+      'adresse2',
+      'code_postal',
+      'commune',
+      'tel',
+      'id_ville',
+      'num_plan_interactif',
+    );
+
+    $attributesValues = array();
+    foreach ($attributes as $attribute) {
+      $attributesValues[$attribute] = $this->$attribute;
+    }
+
+    $resource->setAttributes($attributesValues);
+
+    return $resource;
+  }
+
+  /**
+   * L'adresse de l'ecole en une ligne
+   *
+   * @author Christophe Beyer <cbeyer@cap-tic.fr>
+   * @since 2011/11/02
+   * @return string L'adresse
+   */
+  public function getFullAddress()
+  {
       $address = AnnuaireService::googleMapsFormatAdresse('ecole', $this);
       return $address;
     }

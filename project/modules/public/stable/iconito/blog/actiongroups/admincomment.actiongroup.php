@@ -160,6 +160,8 @@ class ActionGroupAdminComment extends CopixActionGroup
         } else {
             // Insertion dans la base
             $commentDAO->insert($comment);
+            $article = CopixDAOFactory::create('blog|blogarticle')->get($id_bact);
+            CopixEventNotifier::notify('createComment', array('comment'=>$comment, 'article'=>$article));
             return new CopixActionReturn (COPIX_AR_REDIRECT,
             CopixUrl::get ('blog|admin|listComment', array("id_blog"=>$id_blog, "id_bact"=>$id_bact)));
         }

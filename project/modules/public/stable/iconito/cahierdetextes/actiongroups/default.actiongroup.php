@@ -763,6 +763,7 @@ class ActionGroupDefault extends BaseMemoActionGroup
 
         // Insertion de l'enregistrement "travail"
         $travailDAO->insert ($ppo->travail);
+        CopixEventNotifier::notify('createTravail', array('travail'=>$ppo->travail));
       }
       // Mise à jour
       else {

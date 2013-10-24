@@ -5,8 +5,45 @@
 * @subpackage Cahierdetextes
 */
 
-class DAORecordCahierDeTextesTravail
+use \ActivityStream\Client\Model\Resource;
+use \ActivityStream\Client\Model\ResourceInterface;
+
+class DAORecordCahierDeTextesTravail implements ResourceInterface
 {
+  /**
+   * Return a resource from the current Object
+   *
+   * @return Resource
+   */
+  public function toResource()
+  {
+    $resource = new EcoleNumeriqueActivityStreamResource(
+      'Travail',
+      get_class($this),
+      $this->id2
+    );
+
+    $attributes = array(
+      'domaine_id',
+      'a_faire',
+      'date_creation',
+      'date_realisation',
+      'description',
+      'a_rendre',
+      'dossier_id',
+      'supprime',
+      'timestamp',
+    );
+
+    $attributesValues = array();
+    foreach ($attributes as $attribute) {
+      $attributesValues[$attribute] = $this->$attribute;
+    }
+
+    $resource->setAttributes($attributesValues);
+
+    return $resource;
+  }
 }
 
 class DAOCahierDeTextesTravail

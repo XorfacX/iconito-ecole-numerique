@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<moduledefinition>
+    <general>
+        <default name="activitystream" descriptioni18n="activitystream.moduleDescription"/>
+        <package name="copixdivers" version="2.2" />
+    </general>
+
+    <dependencies>
+        <dependency name="parameters" kind="module"/>
+    </dependencies>
+
+    <parameters>
+        <parameter name="activity_stream_application_id" captioni18n="activitystream.application_id" default="__URL__"/>
+        <parameter name="activity_stream_adapter_classname" captioni18n="activitystream.parameter.adapter_class_name" default="ActivityStream\Client\Adapter\RedisAdapter" />
+        <parameter name="activity_stream_adapter_host" captioni18n="activitystream.parameter.adapter_host" default="redis.iconito.fr" />
+        <parameter name="activity_stream_adapter_port" captioni18n="activitystream.parameter.adapter_port" default="6379" />
+        <parameter name="activity_stream_adapter_connection_timeout" captioni18n="activitystream.parameter.adapter_connection_timeout" />
+        <parameter name="activity_stream_adapter_auth_password" captioni18n="activitystream.parameter.adapter_auth_password" />
+    </parameters>
+
+    <events>
+        <listeners>
+            <listener name="ActivityStream">
+                <event name="login" />
+                <event name="createEvent" />
+                <event name="sendMinimail" />
+                <event name="createFile" />
+                <event name="createArticle" />
+                <event name="visitBlog" />
+                <event name="createComment" />
+                <event name="createQuiz" />
+                <event name="createQuestion" />
+                <event name="createTravail" />
+                <event name="createMemo" />
+                <event name="createMessageListe" />
+            </listener>
+        </listeners>
+    </events>
+
+</moduledefinition>

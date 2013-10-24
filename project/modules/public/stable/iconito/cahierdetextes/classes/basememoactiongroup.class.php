@@ -168,6 +168,7 @@ abstract class BaseMemoActionGroup extends CopixActionGroup
 
         // Insertion de l'enregistrement "memo"
         $memoDAO->insert ($memo);
+        CopixEventNotifier::notify('createMemo', array('memo'=>$memo));
     }
 
     /**

@@ -1,4 +1,37 @@
 <?php
+
+use \ActivityStream\Client\Model\Resource;
+use \ActivityStream\Client\Model\ResourceInterface;
+
+/**
+ * @package     iconito
+ * @subpackage  agenda
+ * @author      JÃ©rÃ©my Hubert <jeremy.hubert@infogroom.fr>
+ */
+class DAORecordAgenda implements ResourceInterface
+{
+  /**
+   * Return a resource from the current Object
+   *
+   * @return Resource
+   */
+  public function toResource()
+  {
+    $resource = new EcoleNumeriqueActivityStreamResource(
+      $this->title_agenda,
+      get_class($this),
+      $this->id_agenda
+    );
+
+    $resource->setAttributes(array(
+      'type' => $this->type_agenda,
+      'desc_agenda' => $this->desc_agenda,
+    ));
+
+    return $resource;
+  }
+}
+
 /**
 * @filesource
 * @package : copix
@@ -9,7 +42,7 @@
 class DAOAgenda
 {
 /**
-    * Récupération d'une liste d'agendas parmi une liste d'ids
+    * Rï¿½cupï¿½ration d'une liste d'agendas parmi une liste d'ids
     * @author Christophe Beyer <cbeyer@cap-tic.fr>
     * @since 2006/08/24
     */
@@ -20,7 +53,7 @@ class DAOAgenda
     }
 
     /**
-     * Renvoie des stats sur les évènements d'un agenda : nb d'évènements (nbEvenements)
+     * Renvoie des stats sur les ï¿½vï¿½nements d'un agenda : nb d'ï¿½vï¿½nements (nbEvenements)
      *
      * @author Christophe Beyer <cbeyer@cap-tic.fr>
      * @since 2006/10/06

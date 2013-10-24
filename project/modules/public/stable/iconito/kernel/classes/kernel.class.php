@@ -1735,11 +1735,10 @@ class Kernel
 
     public function getModParentInfo($type, $id)
     {
-        //echo "getModParentInfo ($type,$id)";
-        $dao    = _dao("kernel|kernel_mod_enabled");
-        $result = $dao->getByModule($type, $id);
-        //die();
-        if (count($result)) {
+        $dao = _dao("kernel|kernel_mod_enabled");
+        $result = $dao->getByModule($type,$id);
+
+        if( count( $result ) ) {
             $node = $result[0];
             $info = Kernel::getNodeInfo($node->node_type, $node->node_id, false);
             if ($info) {
@@ -3009,5 +3008,288 @@ class Kernel
         if ($ar = _doQuery ($sql, array(':id_class_EN'=>$class_id))) $res = $ar[0]->validity_date;
         return $res;
     }
+    /**
+     * Retourne l'arbre des contextes de l'utilisateur
+     *
+     * @param bool $flat true pour retourner un tableau simple des contextes, sinon, retournera un arbre
+     *
+     * @return array
+     */
+    public static function getContextTree($flat = false)
+    {
+      $citiesGroupDAO = _ioDAO('kernel|kernel_bu_groupe_villes');
+      $cityDAO = _ioDAO('kernel|kernel_bu_ville');
+      $schoolDAO = _ioDAO('kernel|kernel_bu_ecole');
+      $classroomDAO = _ioDAO('kernel|kernel_bu_ecole_classe');
+      $groups = _currentUser()->getGroups();
 
+      // Récupération de l'année scolaire
+      if (is_null($grade = _sessionGet('grade'))) {
+          $grade = Kernel::getAnneeScolaireCourante()->id_as;
+      }
+
+      if (_currentUser()->testCredential('module:*||cities_group|create@gestionautonome')) {
+          $criteria = _daoSp();
+          $criteria->orderBy('nom_groupe');
+          $citiesGroups = $citiesGroupDAO->findBy($criteria);
+      } else {
+          $citiesGroups = $citiesGroupDAO->findByUserGroups($groups['gestionautonome|iconitogrouphandler']);
+      }
+
+      $tree = array();
+      foreach ($citiesGroups as $citiesGroup) {
+        if ($flat) {
+          $tree['BU_GRVILLE|'.$citiesGroup->id_grv] = array('element' => $citiesGroup, 'parent' => null);
+        } else {
+          $tree['BU_GRVILLE|'.$citiesGroup->id_grv] = array('element' => $citiesGroup, 'children' => array());
+          $root = &$tree['BU_GRVILLE|'.$citiesGroup->id_grv]['children'];
+        }
+
+        if (_currentUser()->testCredential('module:cities_group|'.$citiesGroup->id_grv.'|city|create@gestionautonome')) {
+          $cities = $cityDAO->getByIdGrville($citiesGroup->id_grv);
+        } else {
+          $cities = $cityDAO->findByCitiesGroupIdAndUserGroups($citiesGroup->id_grv, $groups['gestionautonome|iconitogrouphandler']);
+        }
+
+        foreach ($cities as $city) {
+          if ($flat) {
+            $tree['BU_VILLE|'.$city->id_vi] = array('element' => $city, 'parent' => 'BU_GRVILLE|'.$citiesGroup->id_grv);
+          } else {
+            $root['BU_VILLE|'.$city->id_vi] = array('element' => $city, 'children' => array());
+            $cityRoot = &$root['BU_VILLE|'.$city->id_vi]['children'];
+          }
+
+          if (_currentUser()->testCredential('module:city|'.$city->id_vi.'|school|create@gestionautonome')) {
+              $schools = $schoolDAO->getByCity($city->id_vi);
+          } else {
+              $schools = $schoolDAO->findByCityIdAndUserGroups($city->id_vi, $groups['gestionautonome|iconitogrouphandler']);
+          }
+
+          foreach ($schools as $school) {
+            if ($flat) {
+              $tree['BU_ECOLE|'.$school->numero] = array('element' => $school, 'parent' => 'BU_VILLE|'.$city->id_vi);
+            } else {
+              $cityRoot['BU_ECOLE|'.$school->numero] = array('element' => $school, 'children' => array());
+              $schoolRoot = &$cityRoot['BU_ECOLE|'.$city->id_vi]['children'];
+            }
+
+            if (_currentUser()->testCredential('module:school|'.$school->numero.'|classroom|create@gestionautonome')) {
+                $classrooms = $classroomDAO->getBySchool($school->numero, $grade);
+            } else {
+                $classrooms = $classroomDAO->findBySchoolIdAndUserGroups($school->numero, $groups['gestionautonome|iconitogrouphandler'], $grade);
+            }
+
+            foreach ($classrooms as $classroom) {
+              if ($flat) {
+                $tree['BU_CLASSE|'.$classroom->id] = array('element' => $classroom, 'parent' => 'BU_ECOLE|'.$school->numero);
+              } else {
+                $schoolRoot['BU_CLASSE|'.$classroom->id] = array('element' => $classroom, 'children' => array());
+              }
+            }
+          }
+        }
+      }
+
+      return $tree;
+    }
+
+    /**
+     * Retourne le noeud parent du noeud $type $id (au sens contextuel)
+     *
+     * @param string $type Le type
+     * @param int $id L'identifiant
+     *
+     * @return array|null
+     */
+    public static function getContextParent($type, $id)
+    {
+        $result = array(
+            'type' => null,
+            'id'   => null
+        );
+
+        if (preg_match('/^BU_.+$/', $type)) {
+            $data = Kernel::getNodeParents($type, $id);
+
+            if (count($data)) {
+                $data = reset($data);
+                $result['type'] = $data['type'];
+                $result['id'] = $data['id'];
+            }
+        }
+        elseif ((preg_match('/^MOD_.+$/', $type))) {
+            $data = Kernel::getModParent($type, $id);
+
+            if (count($data)){
+                $data->rewind();
+                $data = $data->current();
+
+                $result['type'] = $data->node_type;
+                $result['id'] = $data->node_id;
+            }
+        }
+        elseif ('CLUB' == $type) {
+            $data = _doQuery ('SELECT node_type, node_id FROM kernel_link_groupe2node WHERE groupe_id = ?', array($id));
+
+            if (count($data)){
+                $data = reset($data);
+
+                $result['type'] = $data->node_type;
+                $result['id'] = $data->node_id;
+            }
+        }
+        elseif ('classeur|classeurdossier' == $type) {
+            $dossierDAO = _ioDAO($type);
+            $object = $dossierDAO->get($id);
+
+            if ($object) {
+                if ($object->parent_id) {
+                    $result['type'] = $type;
+                    $result['id'] = $object->parent_id;
+                } else {
+                    $result['type'] = 'MOD_CLASSEUR';
+                    $result['id'] = $object->classeur_id;
+                }
+            }
+        }
+        elseif ('classeur|classeurfichier' == $type) {
+            $dossierDAO = _ioDAO($type);
+            $object = $dossierDAO->get($id);
+            if ($object) {
+                if ($object->dossier_id) {
+                    $result['type'] = 'classeur|classeurdossier';
+                    $result['id'] = $object->dossier_id;
+                } else {
+                    $result['type'] = 'MOD_CLASSEUR';
+                    $result['id'] = $object->classeur_id;
+                }
+            }
+        }
+        elseif ('liste|liste_listes' == $type) {
+            $module = _doQuery( 'SELECT node_type, node_id FROM kernel_mod_enabled kme WHERE module_type = ? AND module_id = ?', array(
+                'MOD_LISTE',
+                $id
+            ));
+
+            $module = reset($module);
+            if ($module) {
+                $result['type'] = $module->node_type;
+                $result['id'] = $module->node_id;
+            }
+        }
+
+        return (!count(array_filter($result)) ? null : $result);
+    }
+
+    /**
+     * Retourne le noeud en fonction de son type et de son identifiant
+     *
+     * @param string $type Le type
+     * @param int $id l'identifiant
+     *
+     * @return DAORecord|null
+     */
+    public static function getNode($type, $id = null)
+    {
+        $object = false;
+
+      $dao = _ioDAO('kernel|kernel_bu_groupe_villes');
+
+        switch ($type) {
+            case "BU_GRVILLE":
+                $object = $id ? _dao('kernel|kernel_bu_groupe_villes')->get($id) : _record('kernel|kernel_bu_groupe_villes');
+                break;
+            case "BU_VILLE":
+                $object = $id ? _dao('kernel|kernel_bu_ville')->get($id) : _record('kernel|kernel_bu_ville');
+                break;
+            case "BU_ECOLE":
+                $object = $id ? _dao('kernel|kernel_bu_ecole')->get($id) : _record('kernel|kernel_bu_ecole');
+                break;
+            case "BU_CLASSE":
+                $object = $id ? _dao('kernel|kernel_bu_ecole_classe')->get($id) : _record('kernel|kernel_bu_ecole_classe');
+                break;
+            case "CLUB":
+                $object = $id ? _dao('groupe|groupe')->get($id) : _record('groupe|groupe');
+                break;
+            case "USER_ENS": // Enseignant
+            case "USER_VIL": // Agent de ville
+            case "USER_ADM": // Administratif ecole
+            case "USER_DIR": // Directeur
+                $object = $id ? _dao('kernel|kernel_bu_personnel')->get($id) : _record('kernel|kernel_bu_personnel');
+                break;
+            case "USER_ELE":
+                $object = $id ? _dao('kernel|kernel_bu_ele')->get($id) : _record('kernel|kernel_bu_ele');
+                break;
+            case 'USER_RES':
+                $object = $id ? _dao('kernel|kernel_bu_res')->get($id) : _record('kernel|kernel_bu_res');
+                break;
+            case "USER_EXT":
+                $object = $id ? _dao('kernel|kernel_ext_user')->get($id) : _record('kernel|kernel_ext_user');
+                break;
+            case "MOD_TELEPROCEDURES":
+
+                return static::getNode('teleprocedures|teleprocedure', $id);
+            case "MOD_LISTE":
+
+                return static::getNode('liste|liste_listes', $id);
+            case "MOD_AGENDA":
+
+                return static::getNode('agenda|agenda', $id);
+            default:
+              $object = $id ? _dao($type)->get($id) : _record($type);
+        }
+
+        return (false === $object) ? null : $object;
+    }
+
+    /**
+     * Return users groups from user infos
+     *
+     * @param $userInfos
+     *
+     * @return array
+     */
+    public static function getGroupsFromUserInfos($userInfos)
+    {
+        $groups = array();
+
+        if (isset($userInfos['link']->ecole) && is_array($userInfos['link']->ecole)){
+            foreach (array_keys($userInfos['link']->ecole) as $id) {
+                $groups[] = array('type' => 'BU_ECOLE', 'id' => $id);
+            }
+        }
+
+        if (isset($userInfos['link']->classe) && is_array($userInfos['link']->classe)){
+            foreach (array_keys($userInfos['link']->classe) as $id) {
+                $groups[] = array('type' => 'BU_CLASSE', 'id' => $id);
+            }
+        }
+
+        if (isset($userInfos['link']->ville) && is_array($userInfos['link']->ville)){
+            foreach (array_keys($userInfos['link']->ville) as $id) {
+                $groups[] = array('type' => 'BU_VILLE', 'id' => $id);
+            }
+        }
+
+        if (is_array($userInfos['link'])) {
+            foreach (array_keys($userInfos['link']['CLUB']) as $id) {
+                $groups[] = array('type' => 'CLUB', 'id' => $id);
+            }
+        }
+
+        return $groups;
+    }
+
+  /**
+   * Return users groups from user id
+   *
+   * @param $userId
+   *
+   * @return array
+   */
+  public static function getGroupsForUserId($userId)
+    {
+        $userInfos = static::getUserInfo("ID", $userId, array('strict' => true));
+        return static::getGroupsFromUserInfos($userInfos);
+    }
 }

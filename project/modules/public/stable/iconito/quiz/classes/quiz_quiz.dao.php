@@ -1,11 +1,14 @@
 <?php
 
-/**
-* @package    Iconito
-* @subpackage Quiz
-*/
+use \ActivityStream\Client\Model\Resource;
+use \ActivityStream\Client\Model\ResourceInterface;
 
-class DAORecordQuiz_quiz
+/**
+ * @package     iconito
+ * @subpackage  quiz
+ * @author      Jérémy Hubert <jeremy.hubert@infogroom.fr>
+ */
+class DAORecordQuiz_quiz implements ResourceInterface
 {
     /**
      * Retourne la classe d'un quiz
@@ -17,6 +20,43 @@ class DAORecordQuiz_quiz
         $classeDao = _ioDAO('kernel|kernel_bu_ecole_classe');
         return $classeDao->getForQuiz($this->id);
     }
+
+  /**
+   * Return a resource from the current Object
+   *
+   * @return Resource
+   */
+  public function toResource()
+  {
+    $resource = new EcoleNumeriqueActivityStreamResource(
+      $this->name,
+      get_class($this),
+      $this->id
+    );
+
+    $attributes = array(
+      'id_owner',
+      'date_start',
+      'date_end',
+      'description',
+      'help',
+      'pic',
+      'opt_save',
+      'opt_show_results',
+      'lock',
+      'gr_id',
+    );
+
+    $attributesValues = array();
+    foreach ($attributes as $attribute) {
+      $attributesValues[$attribute] = $this->$attribute;
+    }
+
+    $resource->setAttributes($attributesValues);
+
+    return $resource;
+  }
+  
 }
 
 class DAOQuiz_quiz

@@ -23,3 +23,9 @@
 !/www/themes/default
 !/www/themes/iconitoplus
 /utils/simplesamlphp/config/authsources.php
+
+# Les fichiers inclus via composer
+/utils/alviss/*
+/utils/symfony/*
+/utils/composer/*
+/utils/autoload.php
