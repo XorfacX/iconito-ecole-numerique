@@ -388,7 +388,7 @@ class ApiUserRequest extends ApiBaseRequest
 
             $nombreHeures[$hour]++;
 
-            $beginDate->modify('+1 day');
+            $beginDate->modify('+1 hour');
         }
 
         foreach ($this->getConnexionsParPeriode(static::PERIOD_HOURLY) as $period) {
