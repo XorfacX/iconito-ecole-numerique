@@ -244,14 +244,9 @@ class ClasseurService
      */
     public static function moveFolder (DAORecordClasseurDossier $folder, $targetType, $targetId, $withFiles = true)
     {
+        $folder_org   = clone $folder;
         $folderDAO    = _ioDAO('classeur|classeurdossier');
         $fileDAO      = _ioDAO('classeur|classeurfichier');
-
-        // Pour chaque sous dossiers on rappelle la méthode
-        $subfolders = $folderDAO->getEnfantsDirects ($folder->classeur_id, $folder->id);
-        foreach ($subfolders as $subfolder) {
-            self::moveFolder ($subfolder, 'dossier', $folder->id);
-        }
 
         // Récupération des fichiers du dossier pour le déplacement
         if ($withFiles) {
@@ -280,6 +275,16 @@ class ClasseurService
                 self::moveFile ($file, 'dossier', $folder->id);
             }
         }
+
+        // Pour chaque sous dossiers on rappelle la méthode
+        $subfolders = $folderDAO->getEnfantsDirects ($folder_org->classeur_id, $folder_org->id);
+        foreach ($subfolders as $subfolder) {
+            self::moveFolder ($subfolder, 'dossier', $folder_org->id);
+        }
+
+        // Mise à jour du dossier après déplacement
+        $folderDAO->update($folder);
+
     }
 
     /**
