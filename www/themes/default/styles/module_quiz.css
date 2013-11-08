@@ -95,11 +95,11 @@
 #quiz-table .row1	{  }
 #quiz-table .row2	{  }
 
-div.quiz-title {
+.quiz-title {
     font-weight: bold;
 	}
 
-div.quiz-description {
+.quiz-description {
     font-style: italic;
 	}
 
@@ -654,4 +654,18 @@ RESPONSES ADMIN
     height: 20px;
     line-height: 20px;
     font-size: 15px;
+}
+
+
+/* Import */
+.quiz .quizTitle {
+	margin:0;
+	text-align:left;
+	font-weight:bold;
+}
+.viewItems p {
+	margin:0;
+}
+input[type="radio"] + label {
+	margin-right:0.5em;
 }
