@@ -9,11 +9,15 @@ _classInclude('statistiques|apimapping');
  * @package Iconito
  * @subpackage Statistiques
  */
-class ActionGroupDefault extends CopixActionGroup
+class ActionGroupDefault extends enicActionGroup
 {
     public function beforeAction()
     {
 //        _currentUser()->assertCredential('module:*||access|@statistiques');
+        $this->addJs('js/jquery/jquery.visualize.js');
+        $this->addJs('js/iconito/module_statistiques.js');
+		$this->addCss('js/jquery/css/jquery.visualize.css');
+		$this->addCss('js/jquery/css/jquery.visualize-light.css');
     }
 
     public function processIndex ()
@@ -29,7 +33,7 @@ class ActionGroupDefault extends CopixActionGroup
         }
 
         if (_request('publishedFrom')) {
-            //demande de mettre l'objet � jour en fonction des valeurs saisies dans le formulaire
+            //demande de mettre l'objet à jour en fonction des valeurs saisies dans le formulaire
             $this->_validFromForm($filter);
             $this->_setSessionConsolidationStatisticFilter($filter);
         }

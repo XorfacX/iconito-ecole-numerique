@@ -201,7 +201,7 @@ class ApiUserRequest extends ApiBaseRequest
         // Initialisation du tableau
         while ($beginDate <= $endDate) {
             $key = sprintf(
-                '%s - Semaine %s',
+                '%s - S%s',
                 $this->getYearOfWeekNumberFromDate($beginDate),
                 $this->getWeekNumberFromDate($beginDate)
             );
@@ -216,7 +216,7 @@ class ApiUserRequest extends ApiBaseRequest
             $periodDatetime->modify('this week last monday');
 
             $key = sprintf(
-                '%s - Semaine %s',
+                '%s - S%s',
                 $this->getYearOfWeekNumberFromDate($periodDatetime),
                 $this->getWeekNumberFromDate($periodDatetime)
             );
@@ -304,7 +304,7 @@ class ApiUserRequest extends ApiBaseRequest
             $nombreDeJours[$day]++;
 
             $weekKey = sprintf(
-                '%s - Semaine %s',
+                '%s - S%s',
                 $this->getYearOfWeekNumberFromDate($beginDate),
                 $this->getWeekNumberFromDate($beginDate)
             );
@@ -345,30 +345,30 @@ class ApiUserRequest extends ApiBaseRequest
     public function getConnexionsHoraires()
     {
         $hours = array(
-            '00' => '00h à 01h',
-            '01' => '01h à 02h',
-            '02' => '02h à 03h',
-            '03' => '03h à 04h',
-            '04' => '04h à 05h',
-            '05' => '05h à 06h',
-            '06' => '06h à 07h',
-            '07' => '07h à 08h',
-            '08' => '08h à 09h',
-            '09' => '09h à 10h',
-            '10' => '10h à 11h',
-            '11' => '11h à 12h',
-            '12' => '12h à 13h',
-            '13' => '13h à 14h',
-            '14' => '14h à 15h',
-            '15' => '15h à 16h',
-            '16' => '16h à 17h',
-            '17' => '17h à 18h',
-            '18' => '18h à 19h',
-            '19' => '19h à 20h',
-            '20' => '20h à 21h',
-            '21' => '21h à 22h',
-            '22' => '22h à 23h',
-            '23' => '23h à 24h'
+            '00' => '00h',
+            '01' => '01h',
+            '02' => '02h',
+            '03' => '03h',
+            '04' => '04h',
+            '05' => '05h',
+            '06' => '06h',
+            '07' => '07h',
+            '08' => '08h',
+            '09' => '09h',
+            '10' => '10h',
+            '11' => '11h',
+            '12' => '12h',
+            '13' => '13h',
+            '14' => '14h',
+            '15' => '15h',
+            '16' => '16h',
+            '17' => '17h',
+            '18' => '18h',
+            '19' => '19h',
+            '20' => '20h',
+            '21' => '21h',
+            '22' => '22h',
+            '23' => '23h'
         );
 
         $beginDate = clone $this->getFilter()->getPublishedFrom();

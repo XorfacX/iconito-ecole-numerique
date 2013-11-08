@@ -12,3 +12,9 @@
 	color:#2e6e9e;
 	font-weight:bold;
 }
+table caption {display:none;}
+
+.info {
+	color:#666;
+	font-size:0.85em; font-style:italic;
+}
