@@ -15,20 +15,20 @@
 </div>
 
 {if count($ppo->quizList)}
-    <table id="quiz-table">
+    <table class="viewItems">
         <thead>
         <tr>
-            <th></th>
+            <th>{i18n key="quiz.table.quiz" noEscape=1}</th>
             <th>{i18n key="quiz.table.classroom" noEscape=1}</th>
-            <th></th>
+            <th>{i18n key="quiz.table.actions" noEscape=1}</th>
         </tr>
         </thead>
         <tbody>
             {foreach from=$ppo->quizList item=quiz}
             <tr>
-                <td class="quiz-colstart">
-                    <div class="quiz-title">{$quiz->name}</div>
-                    <div class="quiz-description">{$quiz->description}</div>
+                <td>
+                    <h3 class="quizTitle">{$quiz->name}</h3>
+                    <p class="quizDescription">{$quiz->description}</p>
                 </td>
                 <td>
                     {assign var='quizClasse' value=$quiz->getClasse()}
@@ -37,7 +37,7 @@
                 {/if}
                 </td>
                 <td>
-                    <a href="{copixurl dest="quiz|admin|processImport" id=$quiz->id}" class="button">
+                    <a href="{copixurl dest="quiz|admin|processImport" id=$quiz->id}" class="button button-down">
                         {i18n key="quiz.admin.importQuiz" noEscape=1}
                     </a>
                 </td>

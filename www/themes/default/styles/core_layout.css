@@ -248,6 +248,7 @@ table.viewItems {
 	width:100%;
 	background:#FFFFFF;
         table-layout:fixed;
+    font-size:1em;
 }
 table.viewItems tr.even {
 	background:#F5F5F5;
