@@ -1,8 +1,8 @@
 <h2>{$ppo->label}</h2>
 <p>
-    Du {$ppo->filter->publishedFrom->format('d/m/Y')} au {$ppo->filter->publishedTo->format('d/m/Y')} :
+    Du <span class="dateStats">{$ppo->filter->publishedFrom->format('d/m/Y')}</span> au <span class="dateStats">{$ppo->filter->publishedTo->format('d/m/Y')}</span> :
     <ul>
         {assign var=minimails value=$ppo->requestClass->getNombreMinimailsEtRatio()}
-        <li>{$minimails.minimails} minimails ont été envoyés, soit {$minimails.ratio} minimails par compte ouvert.</li>
+        <li>{$minimails.minimails} minimail(s) ont été envoyé(s)   <span class="average">(soit {$minimails.ratio} minimail(s) par compte ouvert)</span></li>
     </ul>
 </p>

@@ -1,23 +1,22 @@
 <h2>{$ppo->label}</h2>
-<p>Au {$ppo->filter->publishedTo->format('d/m/Y')}, il y avait :
+<p>Au <span class="dateStats">{$ppo->filter->publishedTo->format('d/m/Y')}</span>, il y a :
     <ul>
-        <li>{$ppo->requestClass->getNombreBlogs()} blogs ouverts.</li>
+        <li><strong>{$ppo->requestClass->getNombreBlogs()}</strong> blog(s) ouvert(s).</li>
         {assign var=blogsVisibles value=$ppo->requestClass->getBlogVisibleAnnuaireEtNonVisible()}
-        <li>{$blogsVisibles.visible_annuaire} blogs visibles dans l'annuaire</li>
-        <li>{$blogsVisibles.non_visible} blogs non-visibles dans l'annuaire</li>
+        <li><strong>{$blogsVisibles.visible_annuaire}</strong> blog(s) visible(s) dans l'annuaire <span class="average">(<strong>{$blogsVisibles.non_visible}</strong> blogs non-visibles dans l'annuaire)</span></li>
         {assign var=visibilite value=$ppo->requestClass->getBlogVisibleEtVisibilite()}
-        <li>{$visibilite.visible_internet} blogs visibles sur internet</li>
-        <li>{$visibilite.visible_membres_groupe} blogs visibles par les membres des groupes</li>
-        <li>{$visibilite.visible_membres_iconito} blogs visibles par les membres Iconito</li>
+        <li><strong>{$visibilite.visible_internet}</strong> blog(s) visible(s) sur internet</li>
+        <li><strong>{$visibilite.visible_membres_groupe}</strong> blog(s) visible(s) par les membres des groupes</li>
+        <li><strong>{$visibilite.visible_membres_iconito}</strong> blog(s) visible(s) par les membres Iconito</li>
     </ul>
 </p>
 
 <p>
-    Du {$ppo->filter->publishedFrom->format('d/m/Y')} au {$ppo->filter->publishedTo->format('d/m/Y')} :
+    Du <span class="dateStats">{$ppo->filter->publishedFrom->format('d/m/Y')}</span> au <span class="dateStats">{$ppo->filter->publishedTo->format('d/m/Y')}</span> :
     <ul>
         {assign var=articles value=$ppo->requestClass->getArticlesRedigesSurPeriode()}
-        <li>{$articles.articles} articles ont été rédigés, soit {$articles.nb_moyen_par_jour} articles par jour.</li>
+        <li><strong>{$articles.articles}</strong> article(s) ont été rédigé(s) <span class="average">(soit {$articles.nb_moyen_par_jour} article(s) par jour)</span></li>
         {assign var=commentaires value=$ppo->requestClass->getCommentairesRedigesSurPeriode()}
-        <li>{$commentaires.commentaires} commentaires ont été rédigés, soit {$commentaires.nb_moyen_par_jour} commentaires par jour.</li>
+        <li><strong>{$commentaires.commentaires}</strong> commentaire(s) ont été rédigé(s) <span class="average">(soit {$commentaires.nb_moyen_par_jour} commentaire(s) par jour)</span></li>
     </ul>
 </p>
