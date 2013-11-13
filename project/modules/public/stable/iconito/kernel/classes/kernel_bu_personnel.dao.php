@@ -635,28 +635,25 @@ class DAORecordKernel_bu_personnel implements ResourceInterface
     );
 
     $attributes = array(
-      'nom',
-      'nom_jf',
-      'prenom1',
-      'civilite',
-      'id_sexe',
-      'date_nais',
-      'cle_privee',
-      'profession',
-      'tel_dom',
-      'tel_gsm',
-      'tel_pro',
-      'mel',
-      'num_rue',
-      'num_seq',
-      'adresse1',
-      'adresse2',
-      'code_postal',
-      'commune',
-      'id_ville',
-      'pays',
-      'challenge',
-      'dateChallenge'
+      'pers_nom',
+      'pers_nom_jf',
+      'pers_prenom1',
+      'pers_civilite',
+      'pers_id_sexe',
+      'pers_date_nais',
+      'pers_cle_privee',
+      'pers_profession',
+      'pers_tel_dom',
+      'pers_tel_gsm',
+      'pers_tel_pro',
+      'pers_mel',
+      'pers_num_rue',
+      'pers_num_seq',
+      'pers_adresse1',
+      'pers_adresse2',
+      'pers_code_postal',
+      'pers_commune',
+      'pers_id_ville'
     );
 
     $attributesValues = array();
