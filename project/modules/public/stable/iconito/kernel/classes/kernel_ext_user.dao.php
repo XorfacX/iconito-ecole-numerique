@@ -111,9 +111,9 @@ class DAORecordKernel_ext_user implements ResourceInterface
     );
 
     $attributes = array(
-      'nom',
-      'prenom',
-      'description'
+      'ext_nom',
+      'ext_prenom',
+      'ext_description'
     );
 
     $attributesValues = array();
