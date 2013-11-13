@@ -71,7 +71,8 @@ SQL;
     {
         $sql = <<<SQL
             SELECT COUNT(*) AS count, klbu.bu_type AS target_node_type
-            FROM kernel_link_bu2user klbu INNER JOIN dbuser dbu ON klbu.user_id = dbu.id_dbuser
+            FROM kernel_link_bu2user klbu
+            INNER JOIN dbuser dbu ON klbu.user_id = dbu.id_dbuser
             WHERE dbu.enabled_dbuser = 1
             GROUP BY target_node_type
 SQL;
@@ -80,9 +81,8 @@ SQL;
 
         // On envoie la statistique par type de compte
         foreach ($results as $result) {
-            $context = $this->activityStreamService->getContextResources($result->target_node_type, $result->target_node_id);
             $object = new Resource($result->target_node_type, $result->target_node_type);
-            $this->activityStreamService->logStatistic((int)$result->count, 'unit', null, 'count', $object, null, $context);
+            $this->activityStreamService->logStatistic((int)$result->count, 'unit', null, 'count', $object);
         }
 
         $sql = <<<SQL
@@ -376,7 +376,7 @@ SQL;
         $results = _doQuery($sql);
 
         foreach ($results as $result) {
-            $object = new EcoleNumeriqueActivityStreamResource('Discussion', 'DAORecordListe_Listes', null, null, array('privacy' => $result->privacy));
+            $object = new EcoleNumeriqueActivityStreamResource('Discussion', 'DAORecordListe_Listes');
 
             $context = $this->activityStreamService->getContextResources($result->target_node_type, $result->target_node_id);
             $target = Kernel::getNode($result->target_node_type, $result->target_node_id);
