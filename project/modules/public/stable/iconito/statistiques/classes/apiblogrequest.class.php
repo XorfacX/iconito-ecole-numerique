@@ -16,40 +16,39 @@ class ApiBlogRequest extends ApiBaseRequest
 
     public function getNombreVisitesEtRatio()
     {
-        $visiteCount = $this->getObjectTypeNumber(static::CLASS_VISITE);
-        $blogCount = $this->getNombreBlogs();
+        $filter = $this->createBaseFilter();
+        $filter->setObjectObjectType(static::CLASS_BLOG);
+        $filter->setVerb('watch');
+        $filter->setPeriod(static::PERIOD_DAILY);
 
-        $ratio = $visiteCount/$blogCount;
+        $visiteCount = $this->sumResults($this->getResult($filter));
+        $blogCount = $this->getNombreBlogs();
 
         return array(
             'visites' => $visiteCount,
-            'ratio' => $ratio
+            'ratio' => $blogCount > 0 ? round($visiteCount / $blogCount, 2) : 0
         );
     }
 
     public function getNombreRubriquesEtRatio()
     {
-        $rubriqueCount = $this->getObjectTypeNumber(static::CLASS_RUBRIQUE);
+        $rubriqueCount = $this->getObjectTypeNumber(static::CLASS_BLOG_CATEGORY);
         $blogCount = $this->getNombreBlogs();
-
-        $ratio = $rubriqueCount/$blogCount;
 
         return array(
             'rubriques' => $rubriqueCount,
-            'ratio' => $ratio
+            'ratio' => $blogCount > 0 ? round($rubriqueCount / $blogCount, 2) : 0
         );
     }
 
     public function getNombrePagesEtRatio()
     {
-        $pageCount = $this->getObjectTypeNumber(static::CLASS_PAGE);
+        $pageCount = $this->getObjectTypeNumber(static::CLASS_BLOG_PAGE);
         $blogCount = $this->getNombreBlogs();
-
-        $ratio = $pageCount/$blogCount;
 
         return array(
             'pages' => $pageCount,
-            'ratio' => $ratio
+            'ratio' => $blogCount > 0 ? round($pageCount / $blogCount, 2) : 0
         );
     }
 
@@ -101,7 +100,7 @@ class ApiBlogRequest extends ApiBaseRequest
     public function getArticlesRedigesSurPeriode()
     {
         $filter = $this->createBaseFilter();
-        $filter->setObjectObjectType(static::CLASS_ARTICLE);
+        $filter->setObjectObjectType(static::CLASS_BLOG_ARTICLE);
         $filter->setVerb('create');
         $filter->setPeriod(static::PERIOD_DAILY);
 

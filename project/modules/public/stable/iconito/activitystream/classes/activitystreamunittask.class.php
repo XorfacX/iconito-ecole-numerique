@@ -283,11 +283,11 @@ SQL;
      */
     protected function sendBlogPageStat()
     {
-        $results = _doQuery('SELECT COUNT(*) AS count, id_blog FROM module_blog_article mba GROUP BY id_blog');
+        $results = _doQuery('SELECT COUNT(*) AS count, id_blog FROM module_blog_page mbp GROUP BY id_blog');
 
 
         foreach ($results as $result) {
-            $object = new EcoleNumeriqueActivityStreamResource('Blog', 'DAORecordBlogArticle', null, null, array());
+            $object = new EcoleNumeriqueActivityStreamResource('Blog', 'DAORecordblogpage', null, null, array());
             $target = Kernel::getNode('blog|blog', $result->id_blog);
             $context = $this->activityStreamService->getContextResources('MOD_BLOG', $result->id_blog);
             $this->activityStreamService->logStatistic((int)$result->count, 'unit', null, 'count', $object, $target, $context);
