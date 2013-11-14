@@ -48,7 +48,7 @@ class ApiGroupeDeTravailRequest extends ApiBaseRequest
             $nombreModule = $this->getNombreGroupDeTravail($moduleKey);
 
             if ($nombreTotal > 0){
-                $results[$moduleLabel] = round($nombreModule / $nombreTotal, 2);
+                $results[$moduleLabel] = round(($nombreModule / $nombreTotal) * 100, 2);
             }
             else{
                 $results[$moduleLabel] = 0;
@@ -117,12 +117,12 @@ class ApiGroupeDeTravailRequest extends ApiBaseRequest
         $minimails = $this->sumResults($results);
         $listesDiff = $this->getNombreGroupDeTravail('MOD_LISTE');
 
-        $average = array();
+        $nbDaysInFilter = $this->getFilter()->getpublishedFrom()->diff($this->getFilter()->getpublishedTo())->days;
 
         return array(
-            'number' => $minimails,
-            'ratio' => $listesDiff > 0 ? round($minimails / $listesDiff, 2) : 0,
-            'average'
+            'number'  => $minimails,
+            'ratio'   => $listesDiff > 0 ? round($minimails / $listesDiff, 2) : 0,
+            'average' => $nbDaysInFilter > 0 ? round($minimails / $nbDaysInFilter, 2) : 0
         );
     }
 }

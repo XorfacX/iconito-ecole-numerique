@@ -1,6 +1,9 @@
 <h2>{$ppo->label}</h2>
 
-<p>Du <span class="dateStats">{$ppo->filter->publishedFrom->format('d/m/Y')}</span> au <span class="dateStats">{$ppo->filter->publishedTo->format('d/m/Y')}</span> :</p>
+<p>Au <span class="dateStats">{$ppo->filter->publishedTo->format('d/m/Y')}</span>, il y a :</p>
+
+<strong>{$ppo->requestClass->getNombreGroupDeTravail()} groupe(s) de travail</strong>
+
 <div>
     <ul>
         {assign var=repartition value=$ppo->requestClass->getRepartitionGroupDeTravailParModule()}
@@ -25,18 +28,14 @@
     messages par discussion
 </p>
 
-<p>Du {$ppo->filter->publishedFrom->format('d/m/Y')} au {$ppo->filter->publishedTo->format('d/m/Y')} :</p>
+<p>Du <span class="dateStats">{$ppo->filter->publishedFrom->format('d/m/Y')}</span> au <span class="dateStats">{$ppo->filter->publishedTo->format('d/m/Y')}</span> :</p>
 
 <p>
-    <strong></strong>
+    {assign var=nombreMinimailsEtRatio value=$ppo->requestClass->getNombreMinimailEtRatio() }
+    <strong>{$nombreMinimailsEtRatio.number}</strong>
     minimails envoyés, soit
-    <strong></strong>
-    minimails par groupe de travail
+    <strong>{$nombreMinimailsEtRatio.ratio}</strong>
+    minimails par groupe de travail.
+    Et <strong>{$nombreMinimailsEtRatio.average}</strong>
+    minimails par jour.
 </p>
-
-<h3>Moyennes de minimails envoyés par jour</h3>
-
-
-<ul>
-
-</ul>
