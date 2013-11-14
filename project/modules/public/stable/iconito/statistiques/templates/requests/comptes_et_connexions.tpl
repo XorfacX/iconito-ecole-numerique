@@ -1,7 +1,7 @@
-<h2>{$ppo->label}</h2>
+<h2 class="mt2 mb1">{$ppo->label}</h2>
 <p>Au <span class="dateStats">{$ppo->filter->publishedTo->format('d/m/Y')}</span>, il y a <strong>{$ppo->requestClass->getNombreComptes()}</strong> compte(s).</p>
 <div>
-    <h3>Nombre de compte par profil</h3>
+    <h3 class="mt2 mb1">Nombre de compte par profil</h3>
     {assign var=comptesParProfil value=$ppo->requestClass->getNombreComptesParProfil()}
     <table class="viewItems visualize">
         <caption>Nombre de compte par profil</caption>
@@ -24,12 +24,14 @@
     </table>
 </div>
 
+
+<h2 class="mt2 mb1">{i18n key="statistiques.label.connections"}</h2>
 <div>
     Du <span class="dateStats">{$ppo->filter->publishedFrom->format('d/m/Y')}</span> au <span class="dateStats">{$ppo->filter->publishedTo->format('d/m/Y')}</span> :
 
     Il y a eu <strong>{$ppo->requestClass->getNombreConnexions()}</strong> connexion(s).
 
-    <h3>Statistiques annuelles</h3>
+    <h3 class="mt2 mb1">Statistiques annuelles</h3>
 
     <table class="viewItems visualize">
         <caption>Statistiques annuelles</caption>
@@ -52,7 +54,7 @@
     </table>
 
 
-    <h3>Statistiques mensuelles</h3>
+    <h3 class="mt2 mb1">Statistiques mensuelles</h3>
     {assign var=connexionsMensuelles value=$ppo->requestClass->getConnexionsMensuelles()}
     {if count($connexionsMensuelles.statistiques) <= 12}
         <table class="viewItems visualize">
@@ -116,7 +118,7 @@
         </table>
     {/if}
 
-    <h3>Statistiques hebdomadaires</h3>
+    <h3 class="mt2 mb1">Statistiques hebdomadaires</h3>
 
     {assign var=connexionsHebdomadaires value=$ppo->requestClass->getConnexionsHebdomadaires()}
   
@@ -163,7 +165,7 @@
         <p class="info">La période est trop étendue pour présenter les données dans un graphique.</p>
     {/if}
     
-    <h3>Statistiques journalières</h3>
+    <h3 class="mt2 mb1">Statistiques journalières</h3>
 
     {assign var=connexionsJournalieres value=$ppo->requestClass->getConnexionsJournalieres()}
     <table class="viewItems">
@@ -207,7 +209,7 @@
         </table>
     {/if}
 
-    <h3>Statistiques horaires</h3>
+    <h3 class="mt2 mb1">Statistiques horaires</h3>
 
     {assign var=connexionsHoraires value=$ppo->requestClass->getConnexionsHoraires()}
     <table class="viewItems visualize">
