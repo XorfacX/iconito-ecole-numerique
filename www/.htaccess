@@ -1,6 +1,7 @@
 php_value memory_limit 128M
 php_value upload_max_filesize 100M
 php_value post_max_size 100M
+php_value error_reporting 30711
 
 AddDefaultCharset utf-8
 RewriteEngine On

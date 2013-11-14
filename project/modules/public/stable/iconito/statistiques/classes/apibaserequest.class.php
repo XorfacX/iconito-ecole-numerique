@@ -31,8 +31,9 @@ abstract class ApiBaseRequest
     const CLASS_QUIZ          = 'DAORecordQuiz_quiz';
     const CLASS_QUESTION      = 'DAORecordQuiz_questions';
     const CLASS_GROUPETRAVAIL = 'DAORecordGroupe';
-    const CLASS_DISCUSSION    = 'DAORecordliste_listes';
+    const CLASS_DISCUSSION    = 'DAORecordListe_Listes';
     const CLASS_MESSAGE       = 'DAORecordliste_messages';
+    const CLASS_MINIMAIL_SENT = 'DAORecordminimail_to';
 
     /**
      * @var ConsolidatedStatisticFilter
