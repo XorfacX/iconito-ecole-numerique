@@ -5,7 +5,7 @@ class ApiMapping
     public function getFiltersCategories()
     {
         return array(
-            'comptesEtConnexions' => array('label' => 'Comptes', 'template' => 'requests/comptes_et_connexions.tpl', 'class' => function($filter) {_classInclude('statistiques|apiuserrequest'); return new ApiUserRequest($filter); }),
+            'comptesEtConnexions' => array('label' => 'Usagers', 'template' => 'requests/comptes_et_connexions.tpl', 'class' => function($filter) {_classInclude('statistiques|apiuserrequest'); return new ApiUserRequest($filter); }),
             'agendas' => array('label' => 'Agendas', 'template' => 'requests/agendas.tpl', 'class' => function($filter) {_classInclude('statistiques|apiagendarequest'); return new ApiAgendaRequest($filter); }),
             'minimails' => array('label' => 'Minimails', 'template' => 'requests/minimails.tpl', 'class' => function($filter) {_classInclude('statistiques|apiminimailrequest'); return new ApiMinimailRequest($filter); }),
             'classeurs' => array('label' => 'Classeurs', 'template' => 'requests/classeurs.tpl', 'class' => function($filter) {_classInclude('statistiques|apiclasseurrequest'); return new ApiClasseurRequest($filter); }),

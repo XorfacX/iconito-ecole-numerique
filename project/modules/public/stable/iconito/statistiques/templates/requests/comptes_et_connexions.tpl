@@ -1,9 +1,8 @@
+<h2 class="mt2 mb1">Comptes</h2>
 
-
-<h2>Comptes</h2>
 <p>Au <span class="dateStats">{$ppo->filter->publishedTo->format('d/m/Y')}</span>, il y a <strong>{$ppo->requestClass->getNombreComptes()}</strong> compte(s).</p>
 <div>
-    <h3>Nombre de compte par profil</h3>
+    <h3 class="mt2 mb1">Nombre de compte par profil</h3>
     {assign var=comptesParProfil value=$ppo->requestClass->getNombreComptesParProfil()}
     <table class="viewItems visualize">
         <caption>Nombre de compte par profil</caption>
@@ -26,7 +25,7 @@
     </table>
 </div>
 
-<h2>Connexions</h2>
+<h2 class="mt2 mb1">{i18n key="statistiques.label.connections"}</h2>
 
 <div id="accountTypeSwitcherPlaceholder"></div>
 

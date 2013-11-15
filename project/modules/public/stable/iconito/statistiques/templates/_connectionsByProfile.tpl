@@ -1,6 +1,6 @@
 Il y a eu <strong>{$ppo->requestClass->getNombreConnexions($ppo->profile)}</strong> connexion(s).
 
-<h3>Statistiques annuelles</h3>
+<h3 class="mt2 mb1">Statistiques annuelles</h3>
 
 <table class="viewItems visualize">
     <caption>Statistiques annuelles</caption>
@@ -23,7 +23,7 @@ Il y a eu <strong>{$ppo->requestClass->getNombreConnexions($ppo->profile)}</stro
 </table>
 
 
-<h3>Statistiques mensuelles</h3>
+<h3 class="mt2 mb1">Statistiques mensuelles</h3>
 {assign var=connexionsMensuelles value=$ppo->requestClass->getConnexionsMensuelles($ppo->profile)}
 {if count($connexionsMensuelles.statistiques) <= 12}
     <table class="viewItems visualize">
@@ -87,7 +87,7 @@ Il y a eu <strong>{$ppo->requestClass->getNombreConnexions($ppo->profile)}</stro
     </table>
 {/if}
 
-<h3>Statistiques hebdomadaires</h3>
+<h3 class="mt2 mb1">Statistiques hebdomadaires</h3>
 
 {assign var=connexionsHebdomadaires value=$ppo->requestClass->getConnexionsHebdomadaires($ppo->profile)}
 
@@ -132,7 +132,7 @@ Il y a eu <strong>{$ppo->requestClass->getNombreConnexions($ppo->profile)}</stro
     <p class="info">La période est trop étendue pour présenter les données dans un graphique.</p>
 {/if}
 
-<h3>Statistiques journalières</h3>
+<h3 class="mt2 mb1">Statistiques journalières</h3>
 
 {assign var=connexionsJournalieres value=$ppo->requestClass->getConnexionsJournalieres($ppo->profile)}
 <table class="viewItems">
@@ -176,7 +176,7 @@ Il y a eu <strong>{$ppo->requestClass->getNombreConnexions($ppo->profile)}</stro
     </table>
 {/if}
 
-<h3>Statistiques horaires</h3>
+<h3 class="mt2 mb1">Statistiques horaires</h3>
 
 {assign var=connexionsHoraires value=$ppo->requestClass->getConnexionsHoraires($ppo->profile)}
 <table class="viewItems visualize">
