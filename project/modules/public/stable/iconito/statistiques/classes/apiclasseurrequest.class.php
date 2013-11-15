@@ -73,9 +73,11 @@ SQL;
             $filter->setTargetObjectType(static::CLASS_CLASSEUR);
             $filter->setTargetId($result->module_id);
             $fichiers = $this->getResult($filter);
-            $fichier = reset($fichiers);
-            $fichiersCount += $fichier->counter;
-            $taille += $fichier->object_attributes->taille;
+            if (count($fichiers)){
+                $fichier = reset($fichiers);
+                $fichiersCount += $fichier->counter;
+                $taille += $fichier->object_attributes->taille;
+            }
         }
 
         return array(
