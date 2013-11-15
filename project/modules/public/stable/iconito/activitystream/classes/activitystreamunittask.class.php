@@ -157,7 +157,7 @@ SQL;
 
 
         foreach ($results as $result) {
-            $object = new EcoleNumeriqueActivityStreamResource('Fichier', 'DAORecordClasseurFichier', null, null, array('taille' => $result->taille_totale, 'is_casier' => 0));
+            $object = new EcoleNumeriqueActivityStreamResource('Fichier', 'DAORecordClasseurFichier', null, null, array('taille' => $result->taille_totale, 'is_casier' => '0'));
             $target = Kernel::getNode('classeur|classeur', $result->target_node_id);
             $this->activityStreamService->logStatistic((int)$result->count, 'unit', null, 'count', $object, $target, array());
         }
@@ -211,7 +211,7 @@ SQL;
 
             if (count($results)) {
                 $result = reset($results);
-                $object = new EcoleNumeriqueActivityStreamResource('Fichier', 'DAORecordClasseurFichier', null, null, array('taille' => $result->taille_totale, 'is_casier' => 1));
+                $object = new EcoleNumeriqueActivityStreamResource('Fichier', 'DAORecordClasseurFichier', null, null, array('taille' => $result->taille_totale, 'is_casier' => '1'));
                 $target = Kernel::getNode('BU_CLASSE', $row->classe_id);
                 $this->activityStreamService->logStatistic((int)$result->count, 'unit', null, 'count', $object, $target, array());
             }

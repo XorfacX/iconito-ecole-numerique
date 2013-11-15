@@ -66,7 +66,7 @@ class ListenerActivityStream extends CopixListener
             $this->activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras()),
             $event->getParam('minimail')->toResource(),
             $this->activityStreamService->getPersonFromUserInfo($event->getParam('recipient')),
-            $this->activityStreamService->getContextResourcesFromArray(Kernel::getGroupsFromUserInfos($event->getParam('recipient')))
+            $this->activityStreamService->getContextResourcesFromArray(Kernel::getGroupsFromUserInfos($event->getParam('sender')))
         );
 
         $this->activityStreamService->logActivity(
@@ -74,7 +74,7 @@ class ListenerActivityStream extends CopixListener
             $this->activityStreamService->getPersonFromUserInfo($event->getParam('recipient')),
             $event->getParam('minimail')->toResource(),
             $this->activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras()),
-            $this->activityStreamService->getContextResourcesFromArray(Kernel::getGroupsFromUserInfos(_currentUser()->getExtras()))
+            $this->activityStreamService->getContextResourcesFromArray(Kernel::getGroupsFromUserInfos($event->getParam('recipient')))
         );
     }
 

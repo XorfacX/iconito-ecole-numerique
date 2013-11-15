@@ -32,8 +32,6 @@ class ApiUserRequest extends ApiBaseRequest
 
     public function getNombreComptesParProfil()
     {
-
-
         $profils = array(
             'USER_ADM' => 'Équipe administrative',
             'USER_DIR' => 'Directeur',
