@@ -32,15 +32,7 @@ class ApiUserRequest extends ApiBaseRequest
 
     public function getNombreComptesParProfil()
     {
-        $profils = array(
-            'USER_ADM' => 'Équipe administrative',
-            'USER_DIR' => 'Directeur',
-            'USER_ELE' => 'Élève',
-            'USER_ENS' => 'Enseignant',
-            'USER_EXT' => 'Intervenant extérieur',
-            'USER_RES' => 'Responsable',
-            'USER_VIL' => 'Agent de ville'
-        );
+        $profils = $this->getProfils();
 
         $nombreComptes = array();
 
@@ -73,9 +65,9 @@ class ApiUserRequest extends ApiBaseRequest
      *
      * @return int
      */
-    public function getNombreConnexions()
+    public function getNombreConnexions($profil)
     {
-        return $this->sumResults($this->getConnexionsParPeriode(static::PERIOD_DAILY));
+        return $this->sumResults($this->getConnexionsParPeriode(static::PERIOD_DAILY, $profil));
     }
 
     /**
@@ -83,7 +75,7 @@ class ApiUserRequest extends ApiBaseRequest
      *
      * @return integer
      */
-    public function getConnexionsAnnuelles()
+    public function getConnexionsAnnuelles($profil)
     {
         $beginYear = $this->getFilter()->getPublishedFrom()->format('Y');
         $endYear = $this->getFilter()->getPublishedTo()->format('Y');
@@ -94,8 +86,7 @@ class ApiUserRequest extends ApiBaseRequest
             $connexionsAnnuelles[$beginYear++] = 0;
         }
 
-
-        foreach ($this->getConnexionsParPeriode(static::PERIOD_YEARLY) as $period) {
+        foreach ($this->getConnexionsParPeriode(static::PERIOD_YEARLY, $profil) as $period) {
             $year = substr($period->published, 0, 4);
 
             $connexionsAnnuelles[$year] += $period->counter;
@@ -109,7 +100,7 @@ class ApiUserRequest extends ApiBaseRequest
      *
      * @return integer
      */
-    public function getConnexionsMensuelles()
+    public function getConnexionsMensuelles($profil)
     {
         $months = array(
             '01' => 'Janvier',
@@ -154,7 +145,7 @@ class ApiUserRequest extends ApiBaseRequest
             $beginDate->modify('+1 month');
         }
 
-        foreach ($this->getConnexionsParPeriode(static::PERIOD_MONTHLY) as $period) {
+        foreach ($this->getConnexionsParPeriode(static::PERIOD_MONTHLY, $profil) as $period) {
             $year = substr($period->published, 0, 4);
             $month = substr($period->published, 5, 2);
             $monthName = $months[$month];
@@ -185,7 +176,7 @@ class ApiUserRequest extends ApiBaseRequest
      *
      * @return integer
      */
-    public function getConnexionsHebdomadaires()
+    public function getConnexionsHebdomadaires($profil)
     {
         $beginDate = clone $this->getFilter()->getPublishedFrom();
         $endDate = clone $this->getFilter()->getPublishedTo();
@@ -208,7 +199,7 @@ class ApiUserRequest extends ApiBaseRequest
             $beginDate->modify('+1 week');
         }
 
-        foreach ($this->getConnexionsParPeriode(static::PERIOD_WEEKLY) as $period) {
+        foreach ($this->getConnexionsParPeriode(static::PERIOD_WEEKLY, $profil) as $period) {
 
             $periodDatetime = new DateTime($period->published);
             $periodDatetime->modify('this week last monday');
@@ -267,7 +258,7 @@ class ApiUserRequest extends ApiBaseRequest
      *
      * @return integer
      */
-    public function getConnexionsJournalieres()
+    public function getConnexionsJournalieres($profil)
     {
         $days = array(
             '1' => 'Lundi',
@@ -314,7 +305,7 @@ class ApiUserRequest extends ApiBaseRequest
             $beginDate->modify('+1 day');
         }
 
-        foreach ($this->getConnexionsParPeriode(static::PERIOD_DAILY) as $period) {
+        foreach ($this->getConnexionsParPeriode(static::PERIOD_DAILY, $profil) as $period) {
             $date = new DateTime($period->published);
 
             $day = $days[$date->format('N')];
@@ -340,7 +331,7 @@ class ApiUserRequest extends ApiBaseRequest
         );
     }
 
-    public function getConnexionsHoraires()
+    public function getConnexionsHoraires($profil)
     {
         $hours = array(
             '00' => '00h',
@@ -389,7 +380,7 @@ class ApiUserRequest extends ApiBaseRequest
             $beginDate->modify('+1 hour');
         }
 
-        foreach ($this->getConnexionsParPeriode(static::PERIOD_HOURLY) as $period) {
+        foreach ($this->getConnexionsParPeriode(static::PERIOD_HOURLY, $profil) as $period) {
             $date = new DateTime($period->published);
 
             $connexionsMoyennes[$hours[$date->format('H')]] += $period->counter;
@@ -412,11 +403,12 @@ class ApiUserRequest extends ApiBaseRequest
     /**
      * Retourne les connexions sur la période, pour le type de statistique passé en paramètres
      *
-     * @param $periode
+     * @param string $periode
+     * @param string $profil
      *
      * @return array
      */
-    private function getConnexionsParPeriode($periode)
+    private function getConnexionsParPeriode($periode, $profil = null)
     {
         $filter = $this->createBaseFilter();
         $filter
@@ -429,6 +421,28 @@ class ApiUserRequest extends ApiBaseRequest
             ->setTargetDisplayName(null)
             ->setTargetAttributes(null);
 
+        if (null !== $profil && !empty($profil)){
+            $filter->setActorAttributes(array('type' => $profil));
+        }
+
         return (array)$this->getResult($filter);
+    }
+
+    public function getProfils()
+    {
+        return array(
+            'USER_ADM' => 'Équipe administrative',
+            'USER_DIR' => 'Directeur',
+            'USER_ELE' => 'Élève',
+            'USER_ENS' => 'Enseignant',
+            'USER_EXT' => 'Intervenant extérieur',
+            'USER_RES' => 'Responsable',
+            'USER_VIL' => 'Agent de ville'
+        );
+    }
+
+    public function getJsonProfils()
+    {
+        return json_encode($this->getProfils());
     }
 }
