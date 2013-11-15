@@ -131,4 +131,10 @@ class ConsolidatedStatisticFilter extends ConsolidatedStatistic
     {
         return $this->target;
     }
+
+    public function __clone()
+    {
+        $this->setPublishedFrom(clone $this->getPublishedFrom());
+        $this->setPublishedTo(clone $this->getPublishedTo());
+    }
 }

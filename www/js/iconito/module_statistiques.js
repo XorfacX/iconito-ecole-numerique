@@ -31,8 +31,6 @@ function prepareAccountTypeSwitcher(switcherContainer, dataContainer, profiles){
             value = 'ALL';
         }
 
-        console.log(value);
-
         $('.linked-with-account-profile', dataContainer).hide().filter('.show-for-'+value).show();
     }).trigger('change');
 }
