@@ -6,3 +6,16 @@
         <li>{$minimails.minimails} minimail(s) ont été envoyé(s)   <span class="average">(soit {$minimails.ratio} minimail(s) par compte ouvert)</span></li>
     </ul>
 </p>
+
+<h3>Détail par profil</h3>
+
+<table class="viewItems visualize">
+    <tbody>
+        {foreach from=$ppo->requestClass->getNombreMinimailParProfil() key=profile item=number}
+            <tr>
+                <th>{$profile}</th>
+                <td>{$number}</td>
+            </tr>
+        {/foreach}
+    </tbody>
+</table>
