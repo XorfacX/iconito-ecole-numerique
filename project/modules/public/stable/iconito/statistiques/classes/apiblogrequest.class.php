@@ -99,12 +99,7 @@ class ApiBlogRequest extends ApiBaseRequest
 
     public function getArticlesRedigesSurPeriode()
     {
-        $filter = $this->createBaseFilter();
-        $filter->setObjectObjectType(static::CLASS_BLOG_ARTICLE);
-        $filter->setVerb('create');
-        $filter->setPeriod(static::PERIOD_DAILY);
-
-        $articles = $this->sumResults($this->getResult($filter));
+        $articles = $this->getArticlesRediges();
         $days = $this->getFilter()->getpublishedFrom()->diff($this->getFilter()->getpublishedTo(), true)->days;
 
         return array(
@@ -127,5 +122,39 @@ class ApiBlogRequest extends ApiBaseRequest
             'commentaires' => $commentaires,
             'nb_moyen_par_jour' => $days > 0 ? round($commentaires/$days, 2) : 0
         );
+    }
+
+    public function getNombreArticleParProfil()
+    {
+        $profils = array(
+            'USER_ADM' => 'Équipe administrative',
+            'USER_DIR' => 'Directeur',
+            'USER_ELE' => 'Élève',
+            'USER_ENS' => 'Enseignant',
+            'USER_EXT' => 'Intervenant extérieur',
+            'USER_RES' => 'Responsable',
+            'USER_VIL' => 'Agent de ville'
+        );
+
+        $nombres = array();
+        foreach ($profils as $profil => $libelle){
+            $nombres[$libelle] = $this->getArticlesRediges($profil);
+        }
+
+        return $nombres;
+    }
+
+    public function getArticlesRediges($profil = null)
+    {
+        $filter = $this->createBaseFilter();
+        $filter->setObjectObjectType(static::CLASS_BLOG_ARTICLE);
+        $filter->setVerb('create');
+        $filter->setPeriod(static::PERIOD_DAILY);
+
+        if (null !== $profil){
+            $filter->setActorAttributes(array('type' => $profil));
+        }
+
+        return $this->sumResults($this->getResult($filter));
     }
 }

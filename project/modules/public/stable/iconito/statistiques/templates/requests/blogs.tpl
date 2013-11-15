@@ -27,3 +27,16 @@
         <li><strong>{$commentaires.commentaires}</strong> commentaire(s) ont été rédigé(s) <span class="average">(soit {$commentaires.nb_moyen_par_jour} commentaire(s) par jour)</span></li>
     </ul>
 </p>
+
+<h3>Détail des rédaction d'article par profil</h3>
+
+<table class="viewItems visualize">
+    <tbody>
+    {foreach from=$ppo->requestClass->getNombreArticleParProfil() key=profile item=number}
+        <tr>
+            <th>{$profile}</th>
+            <td>{$number}</td>
+        </tr>
+    {/foreach}
+    </tbody>
+</table>
