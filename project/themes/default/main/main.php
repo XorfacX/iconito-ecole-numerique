@@ -19,6 +19,7 @@ $module = CopixRequest::get ('module');
 
 <head profile="http://www.w3.org/2005/10/profile">
     <meta content="text/html; charset=UTF-8" http-equiv="content-type" />
+    <?php if ($module == 'statistiques'): // Pour afficher les statistiques, on reproduit les normes d'IE7 (bug Jquery Visualize / Excanvas) ?><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" /><?php endif;?>
     <title><?php echo isset ($TITLE_BAR) ? $TITLE_BAR : ''; ?></title>
     <link rel="icon" type="image/x-icon" href="<?php echo CopixUrl::getRequestedScriptPath(); ?>favicon.ico" />
 
