@@ -14,6 +14,7 @@ class ActionGroupDefault extends enicActionGroup
     public function beforeAction()
     {
 //        _currentUser()->assertCredential('module:*||access|@statistiques');
+        $this->addJs('js/excanvas.js');  // For IE
         $this->addJs('js/jquery/jquery.visualize.js');
         $this->addJs('js/iconito/module_statistiques.js');
 		$this->addCss('js/jquery/css/jquery.visualize.css');

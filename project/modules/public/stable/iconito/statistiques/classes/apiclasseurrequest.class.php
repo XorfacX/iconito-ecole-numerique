@@ -18,13 +18,11 @@ class ApiClasseurRequest extends ApiBaseRequest
     public function getNombreDossiersEtRatio()
     {
         $dossierCount = $this->getObjectTypeNumber(static::CLASS_DOSSIER);
-        $classeurCount = $this->getNombreClasseurs() ? $this->getNombreClasseurs() : 1;
-
-        $ratio = $dossierCount/$classeurCount;
+        $classeurCount = $this->getNombreClasseurs();
 
         return array(
             'dossiers' => $dossierCount,
-            'ratio' => $ratio
+            'ratio' => $classeurCount > 0 ? round($dossierCount / $classeurCount, 2) : 0
         );
     }
 
@@ -56,15 +54,17 @@ SQL;
             $filter->setTargetObjectType(static::CLASS_CLASSEUR);
             $filter->setTargetId($result->module_id);
             $fichiers = $this->getResult($filter);
-            $fichier = reset($fichiers);
-            $fichiersCount += $fichier->counter;
-            $taille += $fichier->object_attributes->taille;
+            if (count($fichiers)){
+                $fichier = reset($fichiers);
+                $fichiersCount += $fichier->counter;
+                $taille += $fichier->object_attributes->taille;
+            }
         }
 
         $casiers = array(
                   'count' => $fichiersCount,
                   'total' => $taille,
-                  'average' => $fichiersCount ? $taille / $fichiersCount : 0
+                  'average' => $fichiersCount > 0 ? round($taille / $fichiersCount, 2) : 0
         );
 
         // On y ajoute le détail des fichier qui ne sont pas des casiers
@@ -73,9 +73,11 @@ SQL;
             $filter->setTargetObjectType(static::CLASS_CLASSEUR);
             $filter->setTargetId($result->module_id);
             $fichiers = $this->getResult($filter);
-            $fichier = reset($fichiers);
-            $fichiersCount += $fichier->counter;
-            $taille += $fichier->object_attributes->taille;
+            if (count($fichiers)){
+                $fichier = reset($fichiers);
+                $fichiersCount += $fichier->counter;
+                $taille += $fichier->object_attributes->taille;
+            }
         }
 
         return array(

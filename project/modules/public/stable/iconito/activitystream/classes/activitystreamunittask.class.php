@@ -157,7 +157,7 @@ SQL;
 
 
         foreach ($results as $result) {
-            $object = new EcoleNumeriqueActivityStreamResource('Fichier', 'DAORecordClasseurFichier', null, null, array('taille' => $result->taille_totale, 'is_casier' => 0));
+            $object = new EcoleNumeriqueActivityStreamResource('Fichier', 'DAORecordClasseurFichier', null, null, array('taille' => $result->taille_totale, 'is_casier' => '0'));
             $target = Kernel::getNode('classeur|classeur', $result->target_node_id);
             $this->activityStreamService->logStatistic((int)$result->count, 'unit', null, 'count', $object, $target, array());
         }
@@ -211,7 +211,7 @@ SQL;
 
             if (count($results)) {
                 $result = reset($results);
-                $object = new EcoleNumeriqueActivityStreamResource('Fichier', 'DAORecordClasseurFichier', null, null, array('taille' => $result->taille_totale, 'is_casier' => 1));
+                $object = new EcoleNumeriqueActivityStreamResource('Fichier', 'DAORecordClasseurFichier', null, null, array('taille' => $result->taille_totale, 'is_casier' => '1'));
                 $target = Kernel::getNode('BU_CLASSE', $row->classe_id);
                 $this->activityStreamService->logStatistic((int)$result->count, 'unit', null, 'count', $object, $target, array());
             }
@@ -283,11 +283,11 @@ SQL;
      */
     protected function sendBlogPageStat()
     {
-        $results = _doQuery('SELECT COUNT(*) AS count, id_blog FROM module_blog_article mba GROUP BY id_blog');
+        $results = _doQuery('SELECT COUNT(*) AS count, id_blog FROM module_blog_page mbp GROUP BY id_blog');
 
 
         foreach ($results as $result) {
-            $object = new EcoleNumeriqueActivityStreamResource('Blog', 'DAORecordBlogArticle', null, null, array());
+            $object = new EcoleNumeriqueActivityStreamResource('Blog', 'DAORecordblogpage', null, null, array());
             $target = Kernel::getNode('blog|blog', $result->id_blog);
             $context = $this->activityStreamService->getContextResources('MOD_BLOG', $result->id_blog);
             $this->activityStreamService->logStatistic((int)$result->count, 'unit', null, 'count', $object, $target, $context);

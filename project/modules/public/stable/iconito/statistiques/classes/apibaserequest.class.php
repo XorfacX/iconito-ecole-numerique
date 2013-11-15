@@ -21,10 +21,9 @@ abstract class ApiBaseRequest
     const CLASS_DOSSIER       = 'DAORecordClasseurDossier';
     const CLASS_FICHIER       = 'DAORecordClasseurFichier';
     const CLASS_BLOG          = 'DAORecordBlog';
-    const CLASS_VISITE        = 'Visite';
-    const CLASS_RUBRIQUE      = 'DAORecordBlogCategory';
-    const CLASS_PAGE          = 'DAORecordblogpage';
-    const CLASS_ARTICLE       = 'DAORecordblogarticle';
+    const CLASS_BLOG_CATEGORY = 'DAORecordBlogarticlecategory';
+    const CLASS_BLOG_ARTICLE  = 'DAORecordblogarticle';
+    const CLASS_BLOG_PAGE     = 'DAORecordblogpage';
     const CLASS_COMMENTAIRE   = 'DAORecordblogarticlecomment';
     const CLASS_TRAVAIL       = 'DAORecordcahierdetextestravail';
     const CLASS_CAHIERTEXTE   = 'DAORecordcahierdetextes';
@@ -32,8 +31,9 @@ abstract class ApiBaseRequest
     const CLASS_QUIZ          = 'DAORecordQuiz_quiz';
     const CLASS_QUESTION      = 'DAORecordQuiz_questions';
     const CLASS_GROUPETRAVAIL = 'DAORecordGroupe';
-    const CLASS_DISCUSSION    = 'DAORecordliste_listes';
+    const CLASS_DISCUSSION    = 'DAORecordListe_Listes';
     const CLASS_MESSAGE       = 'DAORecordliste_messages';
+    const CLASS_MINIMAIL_SENT = 'DAORecordminimail_to';
 
     /**
      * @var ConsolidatedStatisticFilter
@@ -106,30 +106,40 @@ abstract class ApiBaseRequest
 
     /**
      * Applies unit count filter to objectType defined as parameter and return count result
+     *
      * @param string $objectType
-     * @param array  $objectAttributes
+     * @param array $objectAttributes
+     * @param string $verb
+     *
      * @return mixed
      */
-    protected function getObjectTypeNumber($objectType, $objectAttributes = array())
+    protected function getObjectTypeNumber($objectType, array $objectAttributes = array(), $verb = null)
     {
-        $result = $this->getObjectTypeResult($objectType, $objectAttributes);
+        $result = $this->getObjectTypeResult($objectType, $objectAttributes, $verb);
 
         return count($result) ? $result[0]->counter : 0;
     }
 
     /**
      * Applies unit count filter to objectType defined as parameter and return result
+     *
      * @param string $objectType
-     * @param array  $objectAttributes
+     * @param array $objectAttributes
+     * @param string $verb
+     *
      * @return mixed
      */
-    protected function getObjectTypeResult($objectType, $objectAttributes = array())
+    protected function getObjectTypeResult($objectType, array $objectAttributes = array(), $verb = null)
     {
         $filter = $this->createBaseFilter();
         $filter->setObjectObjectType($objectType);
         $filter->setObjectAttributes($objectAttributes);
         $filter->setPeriod(static::PERIOD_UNIT);
         $filter->setLastOnly(true);
+
+        if (null !== $verb){
+            $filter->setVerb($verb);
+        }
 
         return $this->getResult($filter);
     }
