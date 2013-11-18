@@ -70,7 +70,29 @@ abstract class ApiBaseRequest
     public function getResult(ConsolidatedStatisticFilter $filter)
     {
         $transformer = new ConsolidatedStatisticFilterToRequestTransformer;
-        $requestFilter = $transformer->transform($filter);
+
+        // On clone le filter
+        $filterClone = clone $filter;
+
+        // On corrige les date de début et de fin de recherche en fonction de la period de stat voulue
+        switch ($filterClone->getPeriod()){
+            case 'weekly':
+                $filterClone->getPublishedFrom()->modify(
+                    ($filterClone->getPublishedFrom()->format('N') == 1 ? 'this' : 'last').' Monday midnight'
+                );
+                $filterClone->getPublishedTo()->modify('next Monday midnight -1 second');
+                break;
+            case 'monthly':
+                $filterClone->getPublishedFrom()->modify('first day of this month midnight');
+                $filterClone->getPublishedTo()->modify('first day of next month midnight -1 second');
+                break;
+            case 'yearly':
+                $filterClone->getPublishedFrom()->modify('first day of January midnight');
+                $filterClone->getPublishedTo()->modify('first day of January next year midnight -1 second');
+                break;
+        }
+
+        $requestFilter = $transformer->transform($filterClone);
         $requestUrl = CopixConfig::get('statistiques|apiQueryUrl').'?'.$requestFilter;
 //        var_dump('-----');
 //        echo '<a href="'.$requestUrl.'" target="_blank">'.urldecode($requestFilter).'</a>';
