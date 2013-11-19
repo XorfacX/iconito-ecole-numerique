@@ -1,6 +1,7 @@
 <?php
 
 _classInclude('statistiques|apibaserequest');
+_classInclude('statistiques|ApiUserRequest');
 
 class ApiBlogRequest extends ApiBaseRequest
 {
@@ -126,15 +127,9 @@ class ApiBlogRequest extends ApiBaseRequest
 
     public function getNombreArticleParProfil()
     {
-        $profils = array(
-            'USER_ADM' => 'Équipe administrative',
-            'USER_DIR' => 'Directeur',
-            'USER_ELE' => 'Élève',
-            'USER_ENS' => 'Enseignant',
-            'USER_EXT' => 'Intervenant extérieur',
-            'USER_RES' => 'Responsable',
-            'USER_VIL' => 'Agent de ville'
-        );
+        $apiUser = new ApiUserRequest($this->getFilter());
+
+        $profils = $apiUser->getProfils();
 
         $nombres = array();
         foreach ($profils as $profil => $libelle){

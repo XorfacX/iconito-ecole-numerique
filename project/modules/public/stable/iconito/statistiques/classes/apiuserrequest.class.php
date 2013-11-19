@@ -432,9 +432,8 @@ class ApiUserRequest extends ApiBaseRequest
     {
         return array(
             'USER_ADM' => 'Équipe administrative',
-            'USER_DIR' => 'Directeur',
             'USER_ELE' => 'Élève',
-            'USER_ENS' => 'Enseignant',
+            'USER_ENS' => 'Enseignant / Directeur',
             'USER_EXT' => 'Intervenant extérieur',
             'USER_RES' => 'Responsable',
             'USER_VIL' => 'Agent de ville'
