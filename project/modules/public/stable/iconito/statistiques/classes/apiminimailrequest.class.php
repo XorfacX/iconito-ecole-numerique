@@ -27,15 +27,9 @@ class ApiMinimailRequest extends ApiBaseRequest
 
     public function getNombreMinimailParProfil()
     {
-        $profils = array(
-            'USER_ADM' => 'Équipe administrative',
-            'USER_DIR' => 'Directeur',
-            'USER_ELE' => 'Élève',
-            'USER_ENS' => 'Enseignant',
-            'USER_EXT' => 'Intervenant extérieur',
-            'USER_RES' => 'Responsable',
-            'USER_VIL' => 'Agent de ville'
-        );
+        $apiUser = new ApiUserRequest($this->getFilter());
+
+        $profils = $apiUser->getProfils();
 
         $nombres = array();
         foreach ($profils as $profil => $libelle){
