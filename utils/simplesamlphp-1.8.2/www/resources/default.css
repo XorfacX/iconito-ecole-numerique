@@ -19,6 +19,13 @@ a:link {color:#666;}
 a:visited {color:#777;}
 a:hover, a:focus {color:#333; text-decoration:none;}
 a:active {color:#000;}
+.mesgError {
+	margin:10px 0 15px; padding:5px 5px 5px 28px; border:1px solid #f00;
+	-webkit-border-radius:10px; -moz-border-radius:10px; -o-border-radius:10px; border-radius:10px;
+	font-weight:bold;
+	background:url(../../../themes/default/images/button-action/action_warning.png) no-repeat 5px 50% #fff; color:#f00;
+	list-style:none;
+}
 .mesgError span {font-weight:normal;}
 .button-back {
     float:left;
