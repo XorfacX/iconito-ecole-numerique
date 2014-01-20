@@ -1563,6 +1563,7 @@ if(DEBUG) {
         if( 0 == strncmp($node_type,"USER_",5) /* && 0 != strncmp($user_type,"USER_RES",8) */ ) {
             $perso_list = array( 'MOD_ANNUAIRE', 'MOD_MINIMAIL', 'MOD_GROUPE', 'MOD_RESSOURCE' );
             foreach( $perso_list AS $perso_module ) {
+                $perso = new CopixPPO();
                 $perso->node_type   = $node_type;
                 $perso->node_id     = $node_id;
                 $perso->module_id   = NULL;
@@ -1857,6 +1858,8 @@ if(DEBUG) {
 
             //var_dump("getMyNodes / type=$type / id=$id");
             $data = array();
+            
+            $data[0] = new CopixPPO();
 
             $data[0]->title = "Modules perso...";
             $data[0]->type = $bu_type;
@@ -1875,6 +1878,8 @@ if(DEBUG) {
             //die();
             foreach( $myTree["direct"] AS $node_type=>$node_val ) {
                 foreach( $node_val AS $node_id=>$droit ) {
+                    $data[$i] = new CopixPPO();
+                    
                     $data[$i]->title = "Node ".$node_type."/".$node_id;
                     $data[$i]->type = $node_type;
                     $data[$i]->id = $node_id;
