@@ -834,7 +834,7 @@ if(DEBUG) {
         //print_r($module_list);
         $liste_filtree = array();
 
-        if( ereg('([^\*]+)\*',$module_type,$regs) && isset($regs[1]) && trim($regs[1])!='' ) {
+        if(preg_match('#([^\*]+)\*#',$module_type,$regs) && isset($regs[1]) && trim($regs[1])!='' ) {
             foreach( $module_list AS $key=>$val ) {
                 if( 0==strncmp($val->module_type,$regs[1],strlen($regs[1])) )
                 $liste_filtree[] = $val;
