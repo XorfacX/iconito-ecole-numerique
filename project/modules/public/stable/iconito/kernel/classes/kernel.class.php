@@ -1504,6 +1504,7 @@ if(DEBUG) {
         if( $user_type == "USER_ENS" &&
         $node_type == "BU_CLASSE" &&
         Kernel::getLevel( $node_type, $node_id ) >= 60 ) {
+            $carnetcorresp = new CopixPPO();
             $carnetcorresp->node_type   = $node_type;
             $carnetcorresp->node_id     = $node_id;
             $carnetcorresp->module_type = 'MOD_CARNET';
@@ -1526,7 +1527,7 @@ if(DEBUG) {
 
                 //for Coreprim
         if(in_array($user_type, array('USER_ELE', 'USER_ENS', 'USER_DIR', 'USER_DID')) && $node_type == 'BU_CLASSE' && CopixConfig::exists('default|rssEtagereEnabled') && CopixConfig::get('default|rssEtagereEnabled')){
-                    $modRssEtagere = new stdClass();
+            $modRssEtagere = new stdClass();
             $modRssEtagere->node_type = $node_type;
             $modRssEtagere->node_id = $node_id;
             $modRssEtagere->module_type = 'MOD_RSSETAGERE';
@@ -1541,6 +1542,7 @@ if(DEBUG) {
             if( $user_type == "USER_ENS" &&
             $node_type == "BU_ECOLE" &&
             Kernel::getLevel( $node_type, $node_id ) >= 60 ) {
+                $teleprocedures = new CopixPPO();
                 $teleprocedures->node_type   = $node_type;
                 $teleprocedures->node_id     = $node_id;
                 $teleprocedures->module_type = 'MOD_TELEPROCEDURES';
@@ -1550,6 +1552,7 @@ if(DEBUG) {
             } elseif ( CopixConfig::exists('teleprocedures|USER_ADM_as_USER_ENS') && CopixConfig::get('teleprocedures|USER_ADM_as_USER_ENS') && $user_type == "USER_ADM" &&
             $node_type == "BU_ECOLE" &&
             Kernel::getLevel( $node_type, $node_id ) >= 30 ) {
+                $teleprocedures = new CopixPPO();
                 $teleprocedures->node_type   = $node_type;
                 $teleprocedures->node_id     = $node_id;
                 $teleprocedures->module_type = 'MOD_TELEPROCEDURES';
@@ -1576,14 +1579,15 @@ if(DEBUG) {
 
         // Cas particulier : module d'administration
         if( $node_type == "ROOT" && Kernel::getLevel( $node_type, $node_id ) >= 60 ) {
-            $sysutils = new stdClass();
+            $sysutils = new CopixPPO();
             $sysutils->node_type   = $node_type;
             $sysutils->node_id     = $node_id;
             $sysutils->module_id   = NULL;
             $sysutils->module_type = 'MOD_SYSUTILS';
             $sysutils->module_nom   = Kernel::Code2Name ('MOD_SYSUTILS');
             $modules[] = clone $sysutils;
-            $charte = new stdClass();
+
+            $charte = new CopixPPO();
             $charte->node_type   = $node_type;
             $charte->node_id     = $node_id;
             $charte->module_id   = NULL;
@@ -1634,6 +1638,7 @@ if(DEBUG) {
             ($user_type == "USER_VIL" && $node_type == "BU_VILLE")
             ) &&
             Kernel::getLevel( $node_type, $node_id ) >= 60 ) {
+                $mod_grvilles = new CopixPPO();
                 $mod_grvilles->node_type   = $node_type;
                 $mod_grvilles->node_id     = $node_id;
                 $mod_grvilles->module_type = 'MOD_GESTIONAUTONOME';
@@ -1860,7 +1865,6 @@ if(DEBUG) {
             $data = array();
             
             $data[0] = new CopixPPO();
-
             $data[0]->title = "Modules perso...";
             $data[0]->type = $bu_type;
             $data[0]->id = $bu_id;
