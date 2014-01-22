@@ -80,7 +80,9 @@ Il y a eu <strong>{$ppo->requestClass->getNombreConnexions($ppo->profile)}</stro
             <tr>
                 <th scope="row">Nb de connexions</th>
                 {foreach from=$connexionsMensuelles.moyennes key=month item=numberOfConnection}
-                    <td>{$numberOfConnection}</td>
+                    <td {if $numberOfConnection.aide}title="{$numberOfConnection.aide}"{/if}>
+                        {$numberOfConnection.valeur}
+                    </td>
                 {/foreach}
             </tr>
         </tbody>
@@ -169,7 +171,9 @@ Il y a eu <strong>{$ppo->requestClass->getNombreConnexions($ppo->profile)}</stro
             <tr>
                 <th scope="row">Nb de connexions</th>
                 {foreach from=$connexionsJournalieres.moyennes key=day item=numberOfConnection}
-                    <td>{$numberOfConnection}</td>
+                    <td {if $numberOfConnection.aide}title="{$numberOfConnection.aide}"{/if}>
+                        {$numberOfConnection.valeur}
+                    </td>
                 {/foreach}
             </tr>
         </tbody>
@@ -193,7 +197,9 @@ Il y a eu <strong>{$ppo->requestClass->getNombreConnexions($ppo->profile)}</stro
         <tr>
             <th scope="row">Nb de connexions</th>
             {foreach from=$connexionsHoraires.moyennes key=hour item=numberOfConnection}
-                <td>{$numberOfConnection}</td>
+                <td {if $numberOfConnection.aide}title="{$numberOfConnection.aide}"{/if}>
+                    {$numberOfConnection.valeur}
+                </td>
             {/foreach}
         </tr>
     </tbody>
