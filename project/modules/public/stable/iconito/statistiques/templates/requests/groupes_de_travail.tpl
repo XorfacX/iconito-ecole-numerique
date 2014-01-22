@@ -2,7 +2,7 @@
 
 <p>Au <span class="dateStats">{$ppo->filter->publishedTo->format('d/m/Y')}</span>, il y a :</p>
 
-<strong>{$ppo->requestClass->getNombreGroupDeTravail()} groupe(s) de travail</strong>
+<strong>{$ppo->requestClass->getNombreGroupDeTravail()} groupe(s) de travail existants</strong>
 
 <div>
     <ul>
@@ -12,6 +12,8 @@
         {/foreach}
     </ul>
 </div>
+
+Au sein des forums :
 
 <p>
     {assign var=nombreDiscussionsEtRatio value=$ppo->requestClass->getNombreDiscussionsEtRatio()}
@@ -33,9 +35,9 @@
 <p>
     {assign var=nombreMinimailsEtRatio value=$ppo->requestClass->getNombreMinimailEtRatio() }
     <strong>{$nombreMinimailsEtRatio.number}</strong>
-    minimails envoyés, soit
+    minimails envoyés sur la (ou les) liste de diffusion, soit
     <strong>{$nombreMinimailsEtRatio.ratio}</strong>
-    minimails par groupe de travail.
-    Et <strong>{$nombreMinimailsEtRatio.average}</strong>
+    minimails par groupe de travail et
+    <strong>{$nombreMinimailsEtRatio.average}</strong>
     minimails par jour.
 </p>
