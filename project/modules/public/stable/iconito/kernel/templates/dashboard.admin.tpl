@@ -9,7 +9,7 @@
         <p>{i18n key="kernel|dashboard.admin.twitterDesc"}</p>
         <div class="row">
             <label for="social_stream">{i18n key="kernel|dashboard.admin.twitterLabel"} </label>
-            <input type="text" name="social_stream" value="{$ppo->content.social_stream}"/>
+            <textarea name="social_stream">{$ppo->content.social_stream}</textarea>
             <em>({i18n key="kernel|dashboard.admin.twitterExample"})</em>
         </div>
     
