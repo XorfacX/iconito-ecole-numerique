@@ -8,9 +8,9 @@
         <h2>{i18n key="kernel|dashboard.admin.twitter"}</h2>
         <p>{i18n key="kernel|dashboard.admin.twitterDesc"}</p>
         <div class="row">
-            <label for="social_stream">{i18n key="kernel|dashboard.admin.twitterLabel"} </label>
-            <textarea name="social_stream">{$ppo->content.social_stream}</textarea>
-            <em>({i18n key="kernel|dashboard.admin.twitterExample"})</em>
+            <label for="social_stream" class="twitterLabel">{i18n key="kernel|dashboard.admin.twitterLabel"} </label>
+            <textarea class="twitterWidget" name="social_stream">{$ppo->content.social_stream}</textarea>
+           
         </div>
     
 
