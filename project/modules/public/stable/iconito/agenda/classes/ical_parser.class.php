@@ -720,42 +720,42 @@ class ical_parser
                                         break;
                                     case 'BYSECOND':
                                         $bysecond = $val;
-                                        $bysecond = split (',', $bysecond);
+                                        $bysecond = explode (',', $bysecond);
                                         $master_array[($start_date)][($hour.$minute)][$uid]['recur'][$key] = $bysecond;
                                         break;
                                     case 'BYMINUTE':
                                         $byminute = $val;
-                                        $byminute = split (',', $byminute);
+                                        $byminute = explode (',', $byminute);
                                         $master_array[($start_date)][($hour.$minute)][$uid]['recur'][$key] = $byminute;
                                         break;
                                     case 'BYHOUR':
                                         $byhour = $val;
-                                        $byhour = split (',', $byhour);
+                                        $byhour = explode (',', $byhour);
                                         $master_array[($start_date)][($hour.$minute)][$uid]['recur'][$key] = $byhour;
                                         break;
                                     case 'BYDAY':
                                         $byday = $val;
-                                        $byday = split (',', $byday);
+                                        $byday = explode (',', $byday);
                                         $master_array[($start_date)][($hour.$minute)][$uid]['recur'][$key] = $byday;
                                         break;
                                     case 'BYMONTHDAY':
                                         $bymonthday = $val;
-                                        $bymonthday = split (',', $bymonthday);
+                                        $bymonthday = explode (',', $bymonthday);
                                         $master_array[($start_date)][($hour.$minute)][$uid]['recur'][$key] = $bymonthday;
                                         break;
                                     case 'BYYEARDAY':
                                         $byyearday = $val;
-                                        $byyearday = split (',', $byyearday);
+                                        $byyearday = explode (',', $byyearday);
                                         $master_array[($start_date)][($hour.$minute)][$uid]['recur'][$key] = $byyearday;
                                         break;
                                     case 'BYWEEKNO':
                                         $byweekno = $val;
-                                        $byweekno = split (',', $byweekno);
+                                        $byweekno = explode (',', $byweekno);
                                         $master_array[($start_date)][($hour.$minute)][$uid]['recur'][$key] = $byweekno;
                                         break;
                                     case 'BYMONTH':
                                         $bymonth = $val;
-                                        $bymonth = split (',', $bymonth);
+                                        $bymonth = explode (',', $bymonth);
                                         $master_array[($start_date)][($hour.$minute)][$uid]['recur'][$key] = $bymonth;
                                         break;
                                     case 'BYSETPOS':
@@ -1272,7 +1272,7 @@ class ical_parser
                                 break;
 
                             case 'EXDATE':
-                                $data = split(",", $data);
+                                $data = explode(",", $data);
                                 foreach ($data as $exdata) {
                                     $exdata = str_replace('T', '', $exdata);
                                     $exdata = str_replace('Z', '', $exdata);
@@ -1318,7 +1318,7 @@ class ical_parser
                             case 'RECURRENCE-ID':
                                 $parts = explode(';', $field);
                                 foreach($parts as $part) {
-                                    $eachval = split('=',$part);
+                                    $eachval = explode('=',$part);
                                     if ($eachval[0] == 'RECURRENCE-ID') {
                                         // do nothing
                                     } elseif ($eachval[0] == 'TZID') {
@@ -1385,7 +1385,7 @@ class ical_parser
                                 break;
                             case 'RRULE':
                                 $data = str_replace ('RRULE:', '', $data);
-                                $rrule = split (';', $data);
+                                $rrule = explode (';', $data);
                                 foreach ($rrule as $recur) {
                                     ereg ('(.*)=(.*)', $recur, $regs);
                                     $rrule_array[$regs[1]] = $regs[2];

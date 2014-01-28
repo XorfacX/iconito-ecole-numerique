@@ -71,7 +71,7 @@
             $this->nom = $userInfos['nom'];
             $this->prenom = $userInfos['prenom'];
             $this->connected = true;
-            $this->chartValid = $_SESSION['chartValid'];
+            $this->chartValid = isset($_SESSION['chartValid'])?$_SESSION['chartValid']:false;
         }else{
             $this->director = false;
         $this->animator = false;

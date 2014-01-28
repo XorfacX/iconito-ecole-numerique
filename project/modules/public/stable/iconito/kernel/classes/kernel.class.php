@@ -834,7 +834,7 @@ if(DEBUG) {
         //print_r($module_list);
         $liste_filtree = array();
 
-        if( ereg('([^\*]+)\*',$module_type,$regs) && isset($regs[1]) && trim($regs[1])!='' ) {
+        if(preg_match('#([^\*]+)\*#',$module_type,$regs) && isset($regs[1]) && trim($regs[1])!='' ) {
             foreach( $module_list AS $key=>$val ) {
                 if( 0==strncmp($val->module_type,$regs[1],strlen($regs[1])) )
                 $liste_filtree[] = $val;
@@ -1451,12 +1451,13 @@ if(DEBUG) {
                      echo '<li>$parent[0][] = '.$parent[0]['type']."/".$parent[0]['id']."</li>";
                      echo '<li>$node_* = '.$node_type."/".$node_id."</li>";
                      */
-
+                    $perso = new stdClass();
                     foreach( $parent_modules AS $parent_module ) {
                         /*
                          $perso->node_type   = $parent[0]['type'];
                          $perso->node_id     = $parent[0]['id'];
                          */
+                        
                         $perso->node_type   = $node_type;
                         $perso->node_id     = $node_id;
 
@@ -1503,6 +1504,7 @@ if(DEBUG) {
         if( $user_type == "USER_ENS" &&
         $node_type == "BU_CLASSE" &&
         Kernel::getLevel( $node_type, $node_id ) >= 60 ) {
+            $carnetcorresp = new CopixPPO();
             $carnetcorresp->node_type   = $node_type;
             $carnetcorresp->node_id     = $node_id;
             $carnetcorresp->module_type = 'MOD_CARNET';
@@ -1525,7 +1527,7 @@ if(DEBUG) {
 
                 //for Coreprim
         if(in_array($user_type, array('USER_ELE', 'USER_ENS', 'USER_DIR', 'USER_DID')) && $node_type == 'BU_CLASSE' && CopixConfig::exists('default|rssEtagereEnabled') && CopixConfig::get('default|rssEtagereEnabled')){
-                    $modRssEtagere = new stdClass();
+            $modRssEtagere = new stdClass();
             $modRssEtagere->node_type = $node_type;
             $modRssEtagere->node_id = $node_id;
             $modRssEtagere->module_type = 'MOD_RSSETAGERE';
@@ -1540,6 +1542,7 @@ if(DEBUG) {
             if( $user_type == "USER_ENS" &&
             $node_type == "BU_ECOLE" &&
             Kernel::getLevel( $node_type, $node_id ) >= 60 ) {
+                $teleprocedures = new CopixPPO();
                 $teleprocedures->node_type   = $node_type;
                 $teleprocedures->node_id     = $node_id;
                 $teleprocedures->module_type = 'MOD_TELEPROCEDURES';
@@ -1549,6 +1552,7 @@ if(DEBUG) {
             } elseif ( CopixConfig::exists('teleprocedures|USER_ADM_as_USER_ENS') && CopixConfig::get('teleprocedures|USER_ADM_as_USER_ENS') && $user_type == "USER_ADM" &&
             $node_type == "BU_ECOLE" &&
             Kernel::getLevel( $node_type, $node_id ) >= 30 ) {
+                $teleprocedures = new CopixPPO();
                 $teleprocedures->node_type   = $node_type;
                 $teleprocedures->node_id     = $node_id;
                 $teleprocedures->module_type = 'MOD_TELEPROCEDURES';
@@ -1562,6 +1566,7 @@ if(DEBUG) {
         if( 0 == strncmp($node_type,"USER_",5) /* && 0 != strncmp($user_type,"USER_RES",8) */ ) {
             $perso_list = array( 'MOD_ANNUAIRE', 'MOD_MINIMAIL', 'MOD_GROUPE', 'MOD_RESSOURCE' );
             foreach( $perso_list AS $perso_module ) {
+                $perso = new CopixPPO();
                 $perso->node_type   = $node_type;
                 $perso->node_id     = $node_id;
                 $perso->module_id   = NULL;
@@ -1574,6 +1579,7 @@ if(DEBUG) {
 
         // Cas particulier : module d'administration
         if( $node_type == "ROOT" && Kernel::getLevel( $node_type, $node_id ) >= 60 ) {
+            $sysutils = new CopixPPO();
             $sysutils->node_type   = $node_type;
             $sysutils->node_id     = $node_id;
             $sysutils->module_id   = NULL;
@@ -1581,6 +1587,7 @@ if(DEBUG) {
             $sysutils->module_nom   = Kernel::Code2Name ('MOD_SYSUTILS');
             $modules[] = clone $sysutils;
 
+            $charte = new CopixPPO();
             $charte->node_type   = $node_type;
             $charte->node_id     = $node_id;
             $charte->module_id   = NULL;
@@ -1598,6 +1605,7 @@ if(DEBUG) {
         method_exists( $SsoGaelService, "canSsoGael" ) &&
         $SsoGaelService->canSsoGael() &&
         Kernel::getLevel( $node_type, $node_id ) >= 60 ) {
+            $comptes = new stdClass();
             $comptes->node_type   = $node_type;
             $comptes->node_id     = $node_id;
             $comptes->module_type = 'MOD_SSOGAEL';
@@ -1609,6 +1617,7 @@ if(DEBUG) {
 
         // Cas particulier : gestion des groupes de ville (AC/TICE)
         if( $node_type == "ROOT" && Kernel::getLevel( $node_type, $node_id ) >= 60 ) {
+            $mod_grvilles = new stdClass();
             $mod_grvilles->node_type   = $node_type;
             $mod_grvilles->node_id     = $node_id;
             $mod_grvilles->module_type = 'MOD_REGROUPEMENTS';
@@ -1629,6 +1638,7 @@ if(DEBUG) {
             ($user_type == "USER_VIL" && $node_type == "BU_VILLE")
             ) &&
             Kernel::getLevel( $node_type, $node_id ) >= 60 ) {
+                $mod_grvilles = new CopixPPO();
                 $mod_grvilles->node_type   = $node_type;
                 $mod_grvilles->node_id     = $node_id;
                 $mod_grvilles->module_type = 'MOD_GESTIONAUTONOME';
@@ -1853,7 +1863,8 @@ if(DEBUG) {
 
             //var_dump("getMyNodes / type=$type / id=$id");
             $data = array();
-
+            
+            $data[0] = new CopixPPO();
             $data[0]->title = "Modules perso...";
             $data[0]->type = $bu_type;
             $data[0]->id = $bu_id;
@@ -1871,6 +1882,8 @@ if(DEBUG) {
             //die();
             foreach( $myTree["direct"] AS $node_type=>$node_val ) {
                 foreach( $node_val AS $node_id=>$droit ) {
+                    $data[$i] = new CopixPPO();
+                    
                     $data[$i]->title = "Node ".$node_type."/".$node_id;
                     $data[$i]->type = $node_type;
                     $data[$i]->id = $node_id;
