@@ -3,7 +3,7 @@
 * @package  Iconito
 * @subpackage Prefs
 * @version   $Id: prefs.class.php,v 1.4 2007-03-22 15:31:37 cbeyer Exp $
-* @author   Frédéric Mossmann
+* @author   Frï¿½dï¿½ric Mossmann
 * @copyright 2005 CAP-TIC
 * @link      http://www.cap-tic.fr
 * @licence  http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public Licence, see LICENCE file
@@ -23,7 +23,9 @@ class Prefs
                     _currentUser()->getExtra('type'),   _currentUser()->getExtra('id') );
 
                 foreach( $modules AS $modules_key=>$module ) {
-                    if( $module->module_type!="MOD_PREFS" && ereg('^MOD_(.+)$', $module->module_type, $regs) ) {
+                    if( $module->module_type!="MOD_PREFS" && preg_match('#^MOD_(.+)$#', $module->module_type, $regs) ) {
+                        $mod_tmp = new CopixPPO();
+                        
                         $mod_tmp->type = $module->module_type;
                         $mod_tmp->nom  = $module->module_nom;
                         $mod_tmp->rep  = strtolower($regs[1]);
@@ -36,6 +38,8 @@ class Prefs
 
         ksort( $my_modules );
 
+        $pref_module['MOD_PREFS'] = new CopixPPO();
+        
         $pref_module['MOD_PREFS']->type = 'MOD_PREFS';
         $pref_module['MOD_PREFS']->nom = CopixI18N::get ('prefs|prefs.string.generalprefs');;
         $pref_module['MOD_PREFS']->rep = 'prefs';
