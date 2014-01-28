@@ -113,7 +113,7 @@ class ActionGroupOptions extends enicActionGroup
                     break;
                 case 'upload-delete':
                     $dir = realpath('.').'/upload/'.$ppo->classeur->upload_fs.'/';
-                     if (strlen($ppo->classeur->upload_fs)>3 && is_dir($dir)) {
+                    if (strlen($ppo->classeur->upload_fs)>3 && is_dir($dir)) {
                         $this->rrmdir($dir);
                     }
                     $ppo->classeur->upload_db = null;
