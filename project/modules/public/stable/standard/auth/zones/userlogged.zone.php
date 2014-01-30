@@ -40,6 +40,8 @@ class ZoneUserLogged extends enicZone
         $ppo->conf_Saml_actif = (CopixConfig::exists('default|conf_Saml_actif')?CopixConfig::get ('default|conf_Saml_actif'):0);
         
         //load tpl
-        $toReturn = $this->_usePPO ($ppo, 'userlogged.tpl');
+        if (CopixUrl::getRequestedPathInfo () !== '/kernel/auth/sso') {
+            $toReturn = $this->_usePPO ($ppo, 'userlogged.tpl');
+        }
     }
 }

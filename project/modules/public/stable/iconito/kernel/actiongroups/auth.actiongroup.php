@@ -46,8 +46,12 @@ class ActionGroupAuth extends enicActionGroup
                     // la date est dans les dernières 30 minutes ?
                     $dateTimestampPhp = round($date/1000);
                     if (round(abs(time() - $dateTimestampPhp) / 60, 2) <= $ssoTimeout) {
+                        
+                        $tpl = new CopixTpl();
+
                         // si l'utilisateur a envoyé le formulaire (login) on va faire la verification
                         // (et, si c'est le cas on va aussi faire le lien)
+
                         if ( _request('username') !== null && _request('password') !== null ) {
                             $enUser = _request('username');
                             $enPass = _request('password');
@@ -62,9 +66,16 @@ class ActionGroupAuth extends enicActionGroup
                                 $userAppariementExterne = _record ('sso');
                                 $userAppariementExterne->id_externe = $idExterne;
                                 $userAppariementExterne->id_ecolenumerique = $data[0]->id_dbuser;
+                                $userAppariementExterne->createdAt = date("Y-m-d H:i:s");
 
                                 _dao('sso')->insert($userAppariementExterne);
                             }
+                            else {
+                                $tpl->assign ('errorLogin', 1);
+                            }
+                        }
+                        else if (_request('submit') !== null) {
+                            $tpl->assign ('errorLogin', 1);
                         }
 
                         // vérification pour voir si on à déjà fait un lien
@@ -75,7 +86,6 @@ class ActionGroupAuth extends enicActionGroup
 
                         if (sizeof($data) == 0) {
                             // on va afficher le formulaire de login
-                            $tpl = new CopixTpl();
                             $tpl->assign ('TITLE_PAGE', "SSO");
                             $tpl->assign ('MAIN', $tpl->fetch('kernel|auth_sso.tpl'));
                             return new CopixActionReturn (COPIX_AR_DISPLAY, $tpl);
@@ -83,7 +93,9 @@ class ActionGroupAuth extends enicActionGroup
                         else {
                             // on va recuperer l'id d'utilisateur Ecole Numerique pour l'utilisateur Cap-Démat
                             $idEcoleNumerique = $data[0]->id_ecolenumerique;
-                            // _dump('id_ecolenumerique = ' . $idEcoleNumerique);
+                            
+                            // et l'id module_sso
+                            $idSSO = $data[0]->id;
                         }
                         
                         // AUTO LOG IN
@@ -95,9 +107,13 @@ class ActionGroupAuth extends enicActionGroup
                                 // ... et si il est active (enabled)
                                 if ($dataDbUser[0]->enabled_dbuser == '1') {
                                     // LOGIN USER
-                                    // _dump(CopixAuth::getCurrentUser());
                                     CopixAuth::getCurrentUser()->login(array('login'=>$dataDbUser[0]->login_dbuser, 'sso'=>true));
-                                    // _dump(CopixAuth::getCurrentUser());
+
+                                    // update lastAccess timestamp
+                                    $userAppariementExterne = _dao('sso')->get($idSSO);
+                                    $userAppariementExterne->lastAccess = date("Y-m-d H:i:s");
+                                    _dao('sso')->update($userAppariementExterne);
+
                                 }
                             }
                         }
