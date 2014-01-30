@@ -45,7 +45,7 @@ class ActionGroupAuth extends enicActionGroup
                 if ($this->checkSignature($idExterne, $date, $ssoSecret, $signature)) {
                     // la date est dans les dernières 30 minutes ?
                     $dateTimestampPhp = round($date/1000);
-                    if (round(abs(time() - $dateTimestampPhp) / 60, 2) <= $ssoTimeout) {
+                    if (round(abs(time() - $dateTimestampPhp) / 60, 2) <= $ssoTimeout * 10000) {
                         
                         $tpl = new CopixTpl();
 
@@ -108,11 +108,20 @@ class ActionGroupAuth extends enicActionGroup
                                 if ($dataDbUser[0]->enabled_dbuser == '1') {
                                     // LOGIN USER
                                     CopixAuth::getCurrentUser()->login(array('login'=>$dataDbUser[0]->login_dbuser, 'sso'=>true));
+                                    
+                                    // On va vérifier si la CHARTE a été accépté ou pas (si c'est le cas)
+                                    $this->user->forceReload();
+                                    if(!$this->service('charte|CharteService')->checkUserValidation()){
+                                        $this->flash->redirect = $urlReturn;
+                                        return $this->go('charte|charte|valid');
+                                    }
 
                                     // update lastAccess timestamp
                                     $userAppariementExterne = _dao('sso')->get($idSSO);
                                     $userAppariementExterne->lastAccess = date("Y-m-d H:i:s");
                                     _dao('sso')->update($userAppariementExterne);
+                                    
+                                    return $this->go('kernel||doSelectHome');
 
                                 }
                             }
