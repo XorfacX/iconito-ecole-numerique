@@ -45,7 +45,7 @@ class ActionGroupAuth extends enicActionGroup
                 if ($this->checkSignature($idExterne, $date, $ssoSecret, $signature)) {
                     // la date est dans les dernières 30 minutes ?
                     $dateTimestampPhp = round($date/1000);
-                    if (round(abs(time() - $dateTimestampPhp) / 60, 2) <= $ssoTimeout * 10000) {
+                    if (round(abs(time() - $dateTimestampPhp) / 60, 2) <= $ssoTimeout) {
                         
                         $tpl = new CopixTpl();
 
