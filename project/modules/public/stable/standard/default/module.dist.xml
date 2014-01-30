@@ -76,7 +76,7 @@
 			<parameter name="can_search_by_name"           caption="Autorise la recherche par nom dans la gestion des usagers / Outil d'affectations" default="1" />
 			<parameter name="use_class_validity"           caption="Utilise la date de validité des classes"               default="0" />
 			<parameter name="notification_maxnodes"        caption="Nombre max de noeuds dans le dashboard pour activer les nitofocations" default="30" />
-			<parameter name="ssoActivated" caption="Activation du SSO" default="1" />
+			<parameter name="ssoActivated" caption="Activation du SSO" default="0" />
 			<parameter name="ssoSecret" caption="Mot de passe secret d'authentification" default="12345" />
 			<parameter name="ssoTimeout" caption="Timeout valabilité lien (minutes)" default="30" />
 		</group>

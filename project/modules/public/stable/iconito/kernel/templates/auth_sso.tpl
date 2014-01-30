@@ -24,7 +24,7 @@
                     <tr>
                         <th><label for="loginBig">{i18n key="kernel|kernel.sso.login"}</label></th>
                         <td>
-                            <input type="text" name="username" id="loginBig" size="9" autofocus="autofocus" value="" />
+                            <input type="text" name="username" id="loginBig" size="9" autofocus="autofocus" value="{if isset($typedUsername)}{$typedUsername}{/if}" />
                         </td>
                     </tr>
 

@@ -24,7 +24,6 @@ class ActionGroupAuth extends enicActionGroup
             $date         = _request('date');
             $signature    = _request('signature');
 
-
             $isSSOallowed = false;
             $ssoTimeout   = 30;
             $ssoSecret    = '';
@@ -41,7 +40,6 @@ class ActionGroupAuth extends enicActionGroup
 
             if ($isSSOallowed) {
                 // on va vérifier la signature 
-                // _dump($this->checkSignature($idExterne, $date, $ssoSecret, $signature));
                 if ($this->checkSignature($idExterne, $date, $ssoSecret, $signature)) {
                     // la date est dans les dernières 30 minutes ?
                     $dateTimestampPhp = round($date/1000);
@@ -63,24 +61,26 @@ class ActionGroupAuth extends enicActionGroup
 
                             // si l'utilisateur existe
                             if (sizeof($data) == 1) {
-                                $userAppariementExterne = _record ('sso');
+                                $userAppariementExterne = _record ('kernel|sso');
                                 $userAppariementExterne->id_externe = $idExterne;
                                 $userAppariementExterne->id_ecolenumerique = $data[0]->id_dbuser;
                                 $userAppariementExterne->createdAt = date("Y-m-d H:i:s");
 
-                                _dao('sso')->insert($userAppariementExterne);
+                                _dao('kernel|sso')->insert($userAppariementExterne);
                             }
                             else {
+                                $tpl->assign ('typedUsername', _request('username'));
                                 $tpl->assign ('errorLogin', 1);
                             }
                         }
                         else if (_request('submit') !== null) {
+                            $tpl->assign ('typedUsername', _request('username'));
                             $tpl->assign ('errorLogin', 1);
                         }
 
                         // vérification pour voir si on à déjà fait un lien
                         $criteres = _daoSp()->addCondition('id_externe', '=', $idExterne);
-                        $data     = _dao('sso')->findBy($criteres);
+                        $data     = _dao('kernel|sso')->findBy($criteres);
 
                         $idEcoleNumerique = '';
 
@@ -109,7 +109,7 @@ class ActionGroupAuth extends enicActionGroup
                                     // LOGIN USER
                                     CopixAuth::getCurrentUser()->login(array('login'=>$dataDbUser[0]->login_dbuser, 'sso'=>true));
                                     
-                                    // On va vérifier si la CHARTE a été accépté ou pas (si c'est le cas)
+                                    // On va vérifier si la CHARTE a été accéptée ou pas (si c'est le cas)
                                     $this->user->forceReload();
                                     if(!$this->service('charte|CharteService')->checkUserValidation()){
                                         $this->flash->redirect = $urlReturn;
@@ -117,9 +117,9 @@ class ActionGroupAuth extends enicActionGroup
                                     }
 
                                     // update lastAccess timestamp
-                                    $userAppariementExterne = _dao('sso')->get($idSSO);
+                                    $userAppariementExterne = _dao('kernel|sso')->get($idSSO);
                                     $userAppariementExterne->lastAccess = date("Y-m-d H:i:s");
-                                    _dao('sso')->update($userAppariementExterne);
+                                    _dao('kernel|sso')->update($userAppariementExterne);
                                     
                                     return $this->go('kernel||doSelectHome');
 
@@ -133,20 +133,25 @@ class ActionGroupAuth extends enicActionGroup
 
         }
         catch (Exception $e) {
-            // TODO ::: message d'erreur
-            // _dump($e);q
+            return new CopixActionReturn (CopixActionReturn::HTTPCODE, CopixHTTPHeader::get404 (), $e->getMessage());
         }
         
         // go to index
         return $this->go('||');
-
     }
 
+    /**
+     * Méthode pour vérifier si la signature envoyée dans le lien est correcte
+     * 
+     * @param string            $idExterne   - id utilisateur dans l'application externe
+     * @param timestamp Java    $date        - la date de la demande
+     * @param string            $secret      - la clé secrete 
+     * @param string            $sigToCheck  - la signature envoyée dans le lien 
+     * 
+     * @return boolean
+     */
     private function checkSignature($idExterne, $date, $secret, $sigToCheck) {
         $parametersForHash = $date . "+" . $idExterne . "+" . $secret;
-
-        // _dump(sha1($parametersForHash));
-        // _dump($sigToCheck);
 
         return ( sha1($parametersForHash) === $sigToCheck );
     }
