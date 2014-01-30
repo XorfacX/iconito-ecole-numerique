@@ -1,0 +1,130 @@
+<?php
+
+/*
+  @file 	auth.actiongroup.php
+  @desc		SSO Cap-Démat
+  @version 	1.0.0
+  @date 	2010-05-28 09:28:09 +0200 (Fri, 28 May 2010)
+  @author 	Cristian CIOFU <cciofu@cap-tic.fr>
+
+  Copyright (c) 2010 CAP-TIC <http://www.cap-tic.fr>
+ */
+
+_classInclude('auth|dbuserhandler');
+
+class ActionGroupAuth extends enicActionGroup
+{
+
+    public function processSso()
+    {
+        try {
+            CopixRequest::assert ('id', 'date', 'signature');
+
+            $idExterne    = _request('id');
+            $date         = _request('date');
+            $signature    = _request('signature');
+
+
+            $isSSOallowed = false;
+            $ssoTimeout   = 30;
+            $ssoSecret    = '';
+
+            if ( CopixConfig::exists('|ssoActivated') ) {
+                $isSSOallowed = (CopixConfig::get ('|ssoActivated')==1) ? true : false;
+            }
+            if ( CopixConfig::exists('|ssoSecret') ) {
+                $ssoSecret = CopixConfig::get ('|ssoSecret');
+            }
+            if ( CopixConfig::exists('|ssoTimeout') ) {
+                $ssoTimeout = CopixConfig::get ('|ssoTimeout');
+            }
+
+            if ($isSSOallowed) {
+                // on va vérifier la signature 
+                // _dump($this->checkSignature($idExterne, $date, $ssoSecret, $signature));
+                if ($this->checkSignature($idExterne, $date, $ssoSecret, $signature)) {
+                    // la date est dans les dernières 30 minutes ?
+                    $dateTimestampPhp = round($date/1000);
+                    if (round(abs(time() - $dateTimestampPhp) / 60, 2) <= $ssoTimeout) {
+                        // si l'utilisateur a envoyé le formulaire (login) on va faire la verification
+                        // (et, si c'est le cas on va aussi faire le lien)
+                        if ( _request('username') !== null && _request('password') !== null ) {
+                            $enUser = _request('username');
+                            $enPass = _request('password');
+
+                            // verification login
+                            $criteres = _daoSp()->addCondition('login_dbuser', '=', $enUser)
+                                                ->addCondition('password_dbuser', '=', md5($enPass));
+                            $data     = _dao('dbuser')->findBy($criteres);
+
+                            // si l'utilisateur existe
+                            if (sizeof($data) == 1) {
+                                $userAppariementExterne = _record ('sso');
+                                $userAppariementExterne->id_externe = $idExterne;
+                                $userAppariementExterne->id_ecolenumerique = $data[0]->id_dbuser;
+
+                                _dao('sso')->insert($userAppariementExterne);
+                            }
+                        }
+
+                        // vérification pour voir si on à déjà fait un lien
+                        $criteres = _daoSp()->addCondition('id_externe', '=', $idExterne);
+                        $data     = _dao('sso')->findBy($criteres);
+
+                        $idEcoleNumerique = '';
+
+                        if (sizeof($data) == 0) {
+                            // on va afficher le formulaire de login
+                            $tpl = new CopixTpl();
+                            $tpl->assign ('TITLE_PAGE', "SSO");
+                            $tpl->assign ('MAIN', $tpl->fetch('kernel|auth_sso.tpl'));
+                            return new CopixActionReturn (COPIX_AR_DISPLAY, $tpl);
+                        }
+                        else {
+                            // on va recuperer l'id d'utilisateur Ecole Numerique pour l'utilisateur Cap-Démat
+                            $idEcoleNumerique = $data[0]->id_ecolenumerique;
+                            // _dump('id_ecolenumerique = ' . $idEcoleNumerique);
+                        }
+                        
+                        // AUTO LOG IN
+                        if ($idEcoleNumerique !== '') {
+                            // vérification pour voir si l'utilisateur existe encore
+                            $criteresDbUser = _daoSp()->addCondition('id_dbuser', '=', $idEcoleNumerique);
+                            $dataDbUser     = _dao('dbuser')->findBy($criteresDbUser);
+                            if (sizeof($dataDbUser)>0) {
+                                // ... et si il est active (enabled)
+                                if ($dataDbUser[0]->enabled_dbuser == '1') {
+                                    // LOGIN USER
+                                    // _dump(CopixAuth::getCurrentUser());
+                                    CopixAuth::getCurrentUser()->login(array('login'=>$dataDbUser[0]->login_dbuser, 'sso'=>true));
+                                    // _dump(CopixAuth::getCurrentUser());
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+
+        }
+        catch (Exception $e) {
+            // TODO ::: message d'erreur
+            // _dump($e);q
+        }
+        
+        // go to index
+        return $this->go('||');
+
+    }
+
+    private function checkSignature($idExterne, $date, $secret, $sigToCheck) {
+        $parametersForHash = $date . "+" . $idExterne . "+" . $secret;
+
+        // _dump(sha1($parametersForHash));
+        // _dump($sigToCheck);
+
+        return ( sha1($parametersForHash) === $sigToCheck );
+    }
+
+
+}

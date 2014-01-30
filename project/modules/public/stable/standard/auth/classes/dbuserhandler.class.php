@@ -137,7 +137,7 @@ class DBUserHandler implements ICopixUserHandler
             // Si en SSO, mot de passe deja crypte
             $password_test = (isset($pParams['ssoIn']) && $pParams['ssoIn']) ? $pParams['password'] : ($this->_cryptPassword (isset ($pParams['password']) ? $pParams['password'] : ''));
 
-            if ( !( (isset($pParams['assistance']) && $pParams['assistance']) || $results[0]->password_dbuser == $password_test ) ) {
+            if ( !( (isset($pParams['sso']) && $pParams['sso']) || (isset($pParams['assistance']) && $pParams['assistance']) || $results[0]->password_dbuser == $password_test ) ) {
                 // Si le mot de passe crypté commence par "$1$"
                 if(0==strncmp($results[0]->password_dbuser,'$1$',3)) {
                     // Si la fonction "crypt" supporte le MD5 (hachage MD5 à 12 caractères commençant par $1$)
@@ -157,7 +157,7 @@ class DBUserHandler implements ICopixUserHandler
                 }
             }
 
-            if ( (isset($pParams['assistance']) && $pParams['assistance']) || $results[0]->password_dbuser == $password_test){
+            if ( (isset($pParams['sso']) && $pParams['sso']) || (isset($pParams['assistance']) && $pParams['assistance']) || $results[0]->password_dbuser == $password_test){
 
                 $extra = array();
 
