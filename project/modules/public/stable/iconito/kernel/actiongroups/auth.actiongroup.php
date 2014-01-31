@@ -109,7 +109,7 @@ class ActionGroupAuth extends enicActionGroup
                                     // LOGIN USER
                                     CopixAuth::getCurrentUser()->login(array('login'=>$dataDbUser[0]->login_dbuser, 'sso'=>true));
                                     
-                                    // On va vérifier si la CHARTE a été accéptée ou pas (si c'est le cas)
+                                    // On va vérifier si la CHARTE a été acceptée ou pas (si c'est le cas)
                                     $this->user->forceReload();
                                     if(!$this->service('charte|CharteService')->checkUserValidation()){
                                         $this->flash->redirect = $urlReturn;
