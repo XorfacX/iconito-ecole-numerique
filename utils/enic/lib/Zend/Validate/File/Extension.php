@@ -14,9 +14,9 @@
  *
  * @category  Zend
  * @package   Zend_Validate
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
- * @version   $Id: Extension.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version   $Id: Extension.php 24593 2012-01-05 20:35:02Z matthew $
  */
 
 /**
@@ -29,7 +29,7 @@ require_once 'Zend/Validate/Abstract.php';
  *
  * @category  Zend
  * @package   Zend_Validate
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Validate_File_Extension extends Zend_Validate_Abstract
@@ -202,7 +202,7 @@ class Zend_Validate_File_Extension extends Zend_Validate_Abstract
 
         if ($this->_case && (in_array($info['extension'], $extensions))) {
             return true;
-        } elseif (!$this->getCase()) {
+        } else if (!$this->getCase()) {
             foreach ($extensions as $extension) {
                 if (strtolower($extension) == strtolower($info['extension'])) {
                     return true;

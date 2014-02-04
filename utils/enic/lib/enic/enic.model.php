@@ -71,8 +71,8 @@ class enicModel extends enicMod
         $this->lastQuery = $query;
         $this->_results = $this->_db->query($query);
         if($this->_results === false){
-            echo $this->errorInfo();
-            return false;
+            throw new Exception($this->errorInfo());
+            return $this;
         }
 
         return $this;
