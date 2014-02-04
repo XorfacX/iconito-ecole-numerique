@@ -1,4 +1,5 @@
 <?php
+include(__DIR__ . '/../../../var/config/db_profiles.conf.php');
 
 $config = array(
 
@@ -22,7 +23,7 @@ $config = array(
 
 		// The entity ID of the IdP this should SP should contact.
 		// Can be NULL/unset, in which case the user will be shown a list of available IdPs.
-		'idp' => 'http://ecolenumerique.fmossmann.cap/simplesaml/module.php/saml/sp/metadata.php/default-sp', // A_MODIFIER
+		'idp' => 'https://'. $_SERVER['HTTP_HOST'] .'/simplesaml/module.php/saml/sp/metadata.php/default-sp', // A_MODIFIER
 
 		// The URL to the discovery service.
 		// Can be NULL/unset, in which case a builtin discovery service will be used.
@@ -35,9 +36,9 @@ $config = array(
 
 	'iconito-sql' => array(
 		'sqlauth:SQL',
-		'dsn' => 'mysql:host=localhost;port=8889;dbname=iconito_en_git', // A_MODIFIER
-		'username' => 'root', // A_MODIFIER
-		'password' => 'root', // A_MODIFIER
+		'dsn' => 'mysql:' . $_db_profiles['iconito_ecole_numerique']['connectionString'], // A_MODIFIER
+		'username' => $_db_profiles['iconito_ecole_numerique']['user'], // A_MODIFIER
+		'password' => $_db_profiles['iconito_ecole_numerique']['password'], // A_MODIFIER
 		// 'query' => 'SELECT login_dbuser AS username, login_dbuser as name, \'pas_de_mail@example.com\' AS email FROM dbuser WHERE login_dbuser = :username AND password_dbuser = MD5(:password)',
 		'query' => 'SELECT
 			dbuser.id_dbuser AS id_dbuser,
@@ -75,7 +76,7 @@ $config = array(
 			LEFT JOIN kernel_ext_user ON kernel_ext_user.id=kernel_link_bu2user.bu_id
 			WHERE dbuser.login_dbuser=:username AND dbuser.password_dbuser = MD5(:password)',
 		
-		'entityID' => 'http://ecolenumerique.fmossmann.cap/', // A_MODIFIER
+		'entityID' => 'https://'. $_SERVER['HTTP_HOST'] .'', // A_MODIFIER
 		'privateKey' => 'saml.pem',
 		'certificate' => 'saml.crt',
 	),
