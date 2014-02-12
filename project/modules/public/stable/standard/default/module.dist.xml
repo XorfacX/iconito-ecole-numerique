@@ -72,7 +72,8 @@
 			<parameter name="can_pref_assistance"          caption="Activation du module Assistance"                       default="1" />
 			<parameter name="can_module_ressources"        caption="Autorise le module Ressouces"                          default="1" />
 			<parameter name="can_module_rssfeed"           caption="Autorise le module Flux RSS agrégé"                    default="1" />
-
+			<parameter name="can_search_by_name"           caption="Autorise la recherche par nom dans la gestion des usagers / Outil d'affectations" default="1" />
+			<parameter name="use_class_validity"           caption="Utilise la date de validité des classes"               default="0" />
 			<parameter name="notification_maxnodes"        caption="Nombre max de noeuds dans le dashboard pour activer les nitofocations" default="30" />
 		</group>
 	</parameters>
