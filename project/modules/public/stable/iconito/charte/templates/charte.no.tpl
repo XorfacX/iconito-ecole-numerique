@@ -7,6 +7,6 @@
 		{i18n key="charte.no.noaccess" noEscape=1}
 	</div>
 	<div class="content-panel center">
-	<a class="button button-cancel" href="{copixurl dest='auth|log|out'}">{i18n key="charte.no.logoff" noEscape=1}</a>
+	<a class="button button-cancel" href="{if $ppo->conf_Saml_actif}{copixurl dest='auth|saml|logout'}{else}{copixurl dest='auth|log|out'}{/if}">{i18n key="charte.no.logoff" noEscape=1}</a>
 	</div>
 </div>
