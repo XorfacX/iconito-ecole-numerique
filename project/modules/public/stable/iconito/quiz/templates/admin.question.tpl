@@ -95,7 +95,7 @@ jQuery(document).ready(function($){
     <div class="content-panel content-panel-edit">
         <span class="quiz-itemlist">{i18n key="quiz.question.question" noEscape=1}</span><br/>
         <label for="aw-name">{i18n key="quiz.question.title" noEscape=1}</label>
-        <input type="text" class="qf-title" id="aw-name" name="aw-name" value="{$ppo->question.name}"/><br />
+        <input type="text" class="qf-title" id="aw-name" name="aw-name" value="{$ppo->question.name|escape}"/><br />
         <label for="aw-content">{i18n key="quiz.question.detail" noEscape=1}</label>
         <textarea class="qf-description" id="aw-content" name="aw-content">{$ppo->question.content}</textarea>
         {$ppo->addPicPopup}
@@ -138,7 +138,7 @@ jQuery(document).ready(function($){
             <li class="qf-answer">
                 <a class="button-drag"></a>
                 <input type="checkbox" class="qf-correct" name="qf-correct" {if $resp.correct == 1} checked="checked" {/if} />
-                <input type="text" class="qf-content" name="qf-content[]" value="{$resp.content}"/>
+                <input type="text" class="qf-content" name="qf-content[]" value="{$resp.content|escape}"/>
                 <button class="qf-delanswer button button-delete">{i18n key="quiz.question.answersDelete" noEscape=1}</button>
             </li>
 			{/foreach}

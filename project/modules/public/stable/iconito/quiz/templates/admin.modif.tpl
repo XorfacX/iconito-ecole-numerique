@@ -52,7 +52,7 @@
 	
 	<div class="col-main">
 		<div class="content-panel content-panel-edit qf-head">
-			<input type="text" class="qf-title" name="qf-title" value="{$ppo->quiz.name}" />
+			<input type="text" class="qf-title" name="qf-title" value="{$ppo->quiz.name|escape}" />
 			<textarea id="qf-description" class="qf-description" name="qf-description">{$ppo->quiz.description}</textarea>
 		</div>
 		<div class="content-panel">

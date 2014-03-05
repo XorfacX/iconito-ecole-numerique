@@ -27,8 +27,8 @@
             {foreach from=$ppo->quizList item=quiz}
             <tr>
                 <td>
-                    <h3 class="quizTitle">{$quiz->name}</h3>
-                    <p class="quizDescription">{$quiz->description}</p>
+                    <h3 class="quizTitle">{$quiz->name|utf8_decode}</h3>
+                    <p class="quizDescription">{$quiz->description|utf8_decode}</p>
                 </td>
                 <td>
                     {assign var='quizClasse' value=$quiz->getClasse()}
