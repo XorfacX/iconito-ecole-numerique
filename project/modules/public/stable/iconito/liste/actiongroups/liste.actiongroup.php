@@ -58,10 +58,8 @@ class ActionGroupListe extends CopixActionGroup
 
             $menu = array();
             _classInclude('minimail|MinimailService');
-            if (MinimailService::hasUserAccess()) {
-                $menu[] = array('txt' => CopixI18N::get('liste|liste.homeLinkMsgSend'), 'url' => CopixUrl::get ('minimail||getListSend'));
-            }
-
+            $menu[] = array('txt' => CopixI18N::get('liste|liste.homeLinkMsgSend'), 'url' => CopixUrl::get ('minimail||getListSend'));
+            
             $tpl->assign ('MENU', $menu);
 
             $tplListe = new CopixTpl ();
