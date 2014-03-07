@@ -229,6 +229,7 @@ class ActionGroupDefault extends enicActionGroup
         //get params
         $pId = CopixRequest::getInt('id', false);
         $pQId = CopixRequest::getInt('qId', false);
+        $pSRes = CopixRequest::getInt('sRes', false);
 
         if(empty($pId) || !$this->session->exists('questions'))
             $this->error ('quiz.errors.badOperation');
@@ -251,9 +252,13 @@ class ActionGroupDefault extends enicActionGroup
         $responsesDatas = $this->service('QuizService')->getResponses($pQId, $this->user->id);
 
         $quiz = $this->service('QuizService')->getQuizDatas($pId);
+        
+        // showing answers when it is not allowed
+        if($pSRes && $quiz['opt_show_results'] == 'never')
+            return $this->error('quiz.errors.badOperation');        	
 
-        //check if user as already respond to the question
-        $uResp = (!empty($responsesDatas)) ? true : false;
+        //check if user has already respond to the question
+        $uResp = (!$pSRes && !empty($responsesDatas)) ? true : false;
 
         //get choices for question
         $choicesDatas = $this->service('QuizService')->getChoices($pQId);
@@ -264,23 +269,37 @@ class ActionGroupDefault extends enicActionGroup
         //data preparation
         $i=0;
         $correct = 0;
+        $repWrong = 0;
 
         $choiceReturn = array();
+        $wrongAnswer = false;
         foreach($choicesDatas as $choice){
 
             $choiceReturn[$i]['ct'] = $choice['content'];
             $choiceReturn[$i]['id'] = $choice['id'];
+            if($pSRes)
+            	$choiceReturn[$i]['correct'] = $choice['correct'];
             $choiceReturn[$i]['user'] = false;
 
             if($choice['correct'] == 1)
                 $correct++;
-
+            else
+            	$repWrong++;
+                
             foreach($responsesDatas as $response){
                 if((int)$response['id_choice'] == (int)$choice['id']){
                     $choiceReturn[$i]['user'] = true;
-                }
+                    $userCorrect++;
+                	if($choice['correct'] != 1)
+                		$wrongAnswer = true;                }
             }
-
+            
+            // if the user needs to answers all the right choices, not only one
+            /*
+            if($userCorrect != $correct)
+                $wrongAnswer = true;
+			*/
+			
             $i++;
         }
 
@@ -308,6 +327,9 @@ class ActionGroupDefault extends enicActionGroup
 //        $this->js->button('.button');
         $ppo = new CopixPPO();
         $ppo->error =  ($this->flash->has('error')) ? $this->flash->error : null;
+		if($pSRes && $wrongAnswer){
+				$ppo->wrong = CopixI18N::get('quiz.errors.wrongAnswer');
+		}
 
         $ppo->userResp = $uResp;
         $ppo->choices = $choiceReturn;
@@ -322,8 +344,13 @@ class ActionGroupDefault extends enicActionGroup
         $ppo->name = qSession('name');
         $ppo->next = $next;
         $ppo->quiz = $quiz;
+        if($pSRes) {
+        	$ppo->alreadyShowRes = true;
+        	$ppo->repCorrect = $correct;
+        	$ppo->repWrong = $repWrong;
+        }
 
-         if(Kernel::getLevel( 'MOD_QUIZ', $pId) >= PROFILE_CCV_ADMIN){
+        if(Kernel::getLevel( 'MOD_QUIZ', $pId) >= PROFILE_CCV_ADMIN){
 
         $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.listActive'),
                             'type' => 'list-active',
@@ -397,11 +424,11 @@ class ActionGroupDefault extends enicActionGroup
      */
     public function processSaveAndGetAnswer()
     {
+    	if (!$this->flash->has('nextAnsw'))
+            return $this->error('quiz.errors.badOperation');
+
         // Récupération du quiz
         $quizData = $this->service('QuizService')->getQuizFromQSession('id');
-        if ($quizData->opt_show_results != 'each') {
-            return CopixActionGroup::process('genericTools|Messages::getError', array ('message'=>CopixI18N::get ('quiz.errors.badOperation'), 'back'=>CopixUrl::get('quiz||')));
-        }
 
         // Test de la validité : la question doit être la question courante
         $qId = (int)$this->request('qId');
@@ -418,7 +445,7 @@ class ActionGroupDefault extends enicActionGroup
         }
 
         // Sauvegarde des réponses
-        $responses = $this->service('QuizService')->save(
+        $this->service('QuizService')->save(
             $pResponse,
             $this->flash->currentAnsw,
             $this->flash->typeAnsw,
@@ -430,65 +457,9 @@ class ActionGroupDefault extends enicActionGroup
             return CopixActionGroup::process('genericTools|Messages::getError', array ('message'=>CopixI18N::get ('quiz.errors.lock'), 'back'=>CopixUrl::get('quiz||')));
         }
 
-        // Affichage de la réponse et du texte complémentaire
-        $ppo = new CopixPPO();
-
-        $ppo->question = $this->service('QuizService')->getQuestion($qId);
-        $ppo->nameAuthor = $this->session->load('authorName');
-        $ppo->surname = $this->session->load('authorSurname');
-        $ppo->help = qSession('help');
-        $ppo->name = qSession('name');
-
-        //lock test
-        if($quizData->is_locked == 1) {
-            return CopixActionGroup::process('genericTools|Messages::getError', array ('message'=>CopixI18N::get ('quiz.errors.lock'), 'back'=>CopixUrl::get('quiz||')));
-        }
-
-        // Récupération des choix de réponses
-        $choices = $this->service('QuizService')->getChoices($qId);
-
-        // Récupération des bons choix
-        $ppo->valid_choices = array();
-        foreach ($choices as $choice) {
-            if ($choice['correct']) {
-                $ppo->validChoices[$choice['id']] = $choice['content'];
-            }
-        }
-
-        if (count($ppo->validChoices) == 1) {
-            $ppo->validChoice = reset($ppo->validChoices);
-        }
-
-        // Les réponses de l'utilisateur
-
-        $ppo->error = null;
-        foreach ($responses as $response) {
-            if (!isset($ppo->validChoices[$response->id_choice])){
-                $ppo->error = CopixI18N::get('quiz.errors.wrongAnswer');
-                break;
-            }
-        }
-
-        $ppo->nextQ = $this->flash->nextAnsw;
-
-        // TODO : placer ce code dans une zone !
-        //check the current pos in queue, and build array for nav
-        $ppo->questionTpl = array();
-        $qQueue = $this->session->load('questions');
-        foreach($qQueue as $key => $qe){
-            $ppo->questionTpl[$key+1] = $qe;
-            //if queue id == current id
-            if($qe == $qId){
-                $ppo->questionTpl[$key+1] = 'current';
-                $prev = (isset($qQueue[$key-1])) ? $qQueue[$key-1] : false;
-                $next = (isset($qQueue[$key+1])) ? $qQueue[$key+1] : false;
-            }
-
-        }
-
-        return _arPPO($ppo, 'answer.tpl');
+        return _arRedirect(_url('quiz|default|question', array ('id' => qSession('id'), 'qId' => $qId, 'sRes' => 1)));
     }
-
+    
     public function processEndQuestions()
     {
         $pId = CopixRequest::getInt('id', false);

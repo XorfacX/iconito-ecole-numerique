@@ -669,3 +669,12 @@ RESPONSES ADMIN
 input[type="radio"] + label {
 	margin-right:0.5em;
 }
+
+/* Good and right answer */
+
+.quiz-user-right {
+	color: #89c233;
+}
+.quiz-user-wrong {
+	color: red;
+}
