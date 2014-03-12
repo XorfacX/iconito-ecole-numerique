@@ -88,21 +88,24 @@
 			{/if}
 			{if $ppo->alreadyShowRes}
 				{$ppo->question.answer_detail}
-				<p>
-					<strong>Légende : </strong>
-					<span class="quiz-user-right">En vert</span> 
+				<br>
+				<p class="quiz-user-legend">
+					Légende :
+					<br>
 					{if $ppo->repCorrect > 1}
-						les bonnes réponses possibles
+						Les bonnes réponses possibles affichées
 					{else}
-						la bonne réponse
+						La bonne réponse affichée
 					{/if}
+					<span class="quiz-user-right">en vert</span> 
 					{if $ppo->wrong}
-						 / <span class="quiz-user-wrong">En rouge</span> 
+						<br>
 						{if $ppo->repWrong > 1}
-							les mauvaises réponses
+							Les mauvaises réponses affichées
 						{else}
-							la mauvaise réponse
+							La mauvaise réponse affichée
 						{/if}
+						<span class="quiz-user-wrong">en rouge</span> 
 					{/if}
 				</p>
 			{/if}
