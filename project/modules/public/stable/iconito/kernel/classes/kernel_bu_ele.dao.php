@@ -525,9 +525,11 @@ class DAOKernel_bu_ele
             FROM kernel_bu_ecole_classe kbec
             INNER JOIN kernel_mod_enabled kme ON kbec.id = kme.node_id
             INNER JOIN kernel_bu_eleve_affectation kbea ON kbea.classe = kbec.id
+            INNER JOIN kernel_bu_annee_scolaire kbas ON kbea.annee_scol = kbas.id_as
             WHERE kme.module_type = :moduleName
             AND kme.node_type = 'BU_CLASSE'
             AND kbea.current = 1
+            AND kbas.current = 1
             AND kbea.eleve = :studentId;
 SQL;
 
