@@ -172,12 +172,13 @@ class ActionGroupAdminArticle extends CopixActionGroup
     if($id_bact!=null) {
       // EDITION D'UN ARTICLE
       $article = $articleDAO->get($id_bact);
+      $real_author = $article->author_bact;
       $this->_validFromPostProperties($article);
       if (!$article->date_bact) $article->date_bact = date('d/m/Y');
       if (!$article->time_bact) $article->time_bact = date('H:i');
       $article->date_bact = CopixDateTime::dateToTimestamp($article->date_bact);
       $article->time_bact = timeToBD($article->time_bact);
-      $article->author_bact = $user->userId;
+      $article->author_bact = $real_author;
       $tpl->assign ('TITLE_PAGE', CopixI18N::get('blog.get.edit.article.title'));
             //print_r($article);
       $errors = $articleDAO->check($article);

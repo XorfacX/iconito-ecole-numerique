@@ -39,6 +39,7 @@
 			<table class="viewItems">
             	<tr>
                 	<th>{i18n key='dao.blogarticle.fields.name_bact'}</th>
+                	<th>{i18n key='dao.blogarticle.fields.author_bact'}</th>
                     <th>{i18n key="dao.blogarticle.fields.is_online"}</th>
                     <th colspan="3">{i18n key="blog.list.actions"}</th>
                  </tr>   
@@ -64,7 +65,7 @@
                                         {assign var=cptCat value=$cptCat+1}
                              {/foreach}
 							 {if !$article->categories|@count}{i18n key="blog.article.nocategory" assign="listCat"}{/if}
-							 {i18n key="blog.message.theAtIn" day=$article->date_bact|datei18n:text time=$article->time_bact|hour_format:"%H:%i" categ=$listCat noEscape=1}
+							 {i18n key="blog.message.theAtIn" day=$article->date_bact|datei18n time=$article->time_bact|hour_format:"%H:%i" categ=$listCat noEscape=1}
                         </div>
                              <DIV ID="expand{$article->id_bact}" CLASS="displayNone">
 								<DIV CLASS="expand">
@@ -75,6 +76,7 @@
 								</DIV>
 								</DIV>
 						</td>
+                        <td class="center">{user label=$article->from_id_infos userType=$article->from.type userId=$article->from.id linkAttribs='STYLE="text-decoration:none;";'}</td>
                         <td class="center">{if $article->is_online}<img src="{copixurl}themes/default/images/button-action/action_confirm.png" alt="{i18n key="blog.oui"}" />{else}<img src="{copixurl}themes/default/images/button-action/action_cancel.png" alt="{i18n key="blog.non"}" />{/if}</td>
                         <td class="action">{if $canDelete || ! $article->is_online}<a class="button button-update" href="{copixurl dest="blog|admin|prepareEditArticle" id_bact=$article->id_bact id_blog=$id_blog kind=$kind}" title="{i18n key="blog.messages.update"}">{i18n key="blog.messages.update"}</a>{/if}</td>
                         {if $canDelete}<td class="action">

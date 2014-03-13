@@ -3,7 +3,7 @@
 * @package Iconito
 * @subpackage	Blog
 * @version   $Id: showblogarticle.zone.php,v 1.13 2007-12-20 16:17:27 cbeyer Exp $
-* @author	Vallat Cédric.
+* @author	Vallat CÃ©dric.
 * @copyright 2001-2005 CopixTeam
 * @link      http://copix.aston.fr
 * @link      http://copix.org
@@ -33,7 +33,7 @@ class ZoneShowBlogArticle extends CopixZone
         $selectMonth = $this->getParam('selectMonth', '');
         $id_bact = $this->getParam('id_bact', '');
 
-        // Recherche de toutes les catégories de la base
+        // Recherche de toutes les catÃ©gories de la base
         $query = null;
         $clause='';
         if(strlen($selectCategory)>0) {
@@ -47,21 +47,25 @@ class ZoneShowBlogArticle extends CopixZone
         $blogArticleDAO = _dao('blog|blogarticle');
         $res = $blogArticleDAO->findArticles($id_blog, $id_bacg, $query);
         //print_r($res);
-        // Manipulation du tableau résultat.
+        // Manipulation du tableau rï¿½sultat.
         $commentDAO = _dao('blog|blogarticlecomment');
         $tabArticles = Array();
         foreach($res as $r) {
             $r->categories = array();
             $r->categories = $blogArticleDAO->findCategoriesForArticle($r->id_bact);
+            if ($userInfo = Kernel::getUserInfo("ID", $r->author_bact)) {
+                $r->from = $userInfo;
+                $r->from_id_infos = $userInfo["prenom"] . " " . $userInfo["nom"] . " (" . $userInfo["login"] . ")";
+            }
             $r->nbComment = $commentDAO->countNbCommentForArticle($r->id_bact);
             $r->nbComment_offline = $commentDAO->countNbCommentForArticle($r->id_bact, 0);
             if($id_bact==$r->id_bact) $r->expand=true; else $r->expand=false;
             array_push($tabArticles, $r);
         }
-        // Préparation du filtre CATEGORIES
+        // PrÃ©paration du filtre CATEGORIES
         $blogArticleCategoryDAO = _dao('blog|blogarticlecategory');
         $tabArticleCategory = $blogArticleCategoryDAO->findAllOrder($id_blog);
-        // Préparation du filtre MOIS
+        // PrÃ©paration du filtre MOIS
         $resArticleMonth = $blogArticleDAO->findListMonthForArticle($id_blog);
         $tabArticleMonth = array();
         $lastMonth = null;

@@ -73,8 +73,7 @@ function doUrl (pUrl) {
         {inputtext class="datepicker" name="date_bact" value=$article->date_bact|datei18n}
         
         &nbsp;&nbsp;<input type="text" size="5" id="time_bact" name="time_bact" value="{$article->time_bact|escape}" /> {i18n key="blog.get.edit.article.heure_help"}
-<br/>
-{i18n key="blog.get.edit.article.date_help"}
+		{i18n key="blog.get.edit.article.date_help"}
 
 </td>
 	   </tr>
