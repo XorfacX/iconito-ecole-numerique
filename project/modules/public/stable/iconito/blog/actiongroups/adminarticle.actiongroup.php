@@ -103,11 +103,13 @@ class ActionGroupAdminArticle extends CopixActionGroup
         }
 
         $kind = $this->getRequest('kind', '0');
+        $backM = $this->getRequest('backM', null);
 
         $tpl->assign ('MAIN', CopixZone::process ('EditArticle', array('id_blog'=>$id_blog,
                                                     'id_bact'=>$id_bact,
                                                     'article'=>$article,
                                                     'kind'=>$kind,
+                                                    'backM'=>$backM,
                                                     'tabArticleCategory'=>$tabArticleCategory,
                                                     )));
 
@@ -139,10 +141,10 @@ class ActionGroupAdminArticle extends CopixActionGroup
     CopixHTMLHeader::addJSLink (_resource("js/jquery/jquery.ui.datepicker-fr.js"));
 
     $id_blog = $this->getRequest('id_blog', null);
-        $go = $this->getRequest('go', 'preview');
+    $go = $this->getRequest('go', 'preview');
     //die ("go=$go");
 
-    if ($id_blog==null){
+    if ($id_blog==null || _ioDAO('blog|blog')->getBlogById($id_blog) == false){
       return CopixActionGroup::process ('genericTools|Messages::getError',
       array ('message'=>CopixI18N::get ('blog.error.param'),
       'back'=>CopixUrl::get ('blog|admin|listBlog')));
@@ -199,7 +201,18 @@ class ActionGroupAdminArticle extends CopixActionGroup
         $artctgDAO = CopixDAOFactory::create('blog|blogarticle_blogarticlecategory');
         $artctgDAO->deleteAndInsert($article->id_bact, $tabSelectCat);
 
-        return new CopixActionReturn (COPIX_AR_REDIRECT, CopixUrl::get ('blog|admin|showBlog', array("id_blog"=>$id_blog, "kind"=>$this->getRequest('kind', '0'))));
+        // Pas de droit de publication => notification aux modérateurs de demande de publication de l'article
+        if(!BlogAuth::canMakeInBlog('ADMIN_ARTICLE_MAKE_ONLINE',create_blog_object($id_blog))){
+            $articleUrl = CopixUrl::get('blog|admin|prepareEditArticle', array('kind'=>_request('kind'), 'id_blog'=>_request('id_blog'), 'id_bact'=>_request('id_bact'), 'backM'=>1)); 
+            sendArticleNotif($id_blog, $id_bact, $user->userId, $articleUrl);
+        }
+        
+        // go back to minimail for moderators who followed publishing link from minimail
+        $backM = $this->getRequest('backM', null);
+        if($backM == 1)
+            return new CopixActionReturn (COPIX_AR_REDIRECT, CopixUrl::get ('minimail||getListRecv'));
+        else 
+            return new CopixActionReturn (COPIX_AR_REDIRECT, CopixUrl::get ('blog|admin|showBlog', array("id_blog"=>$id_blog, "kind"=>$this->getRequest('kind', '0'))));
       }
     } else {
       // CREATION D'UN ARTICLE
@@ -234,6 +247,12 @@ class ActionGroupAdminArticle extends CopixActionGroup
         $artctgDAO = CopixDAOFactory::create('blog|blogarticle_blogarticlecategory');
         $artctgDAO->deleteAndInsert($article->id_bact, $tabSelectCat);
 
+        // Pas de droit de publication => notification aux modérateurs de demande de publication de l'article
+        if(!BlogAuth::canMakeInBlog('ADMIN_ARTICLE_MAKE_ONLINE',create_blog_object($id_blog))){
+            $articleUrl = CopixUrl::get('blog|admin|prepareEditArticle', array('kind'=>_request('kind'), 'id_blog'=>_request('id_blog'), 'id_bact'=>$article->id_bact, 'backM'=>1)); 
+            sendArticleNotif($id_blog, $article->id_bact, $user->userId, $articleUrl);
+        }
+        
         return new CopixActionReturn (COPIX_AR_REDIRECT,
         CopixUrl::get ('blog|admin|showBlog', array("id_blog"=>$id_blog, "kind"=>$this->getRequest('kind', '0'))));
       }
@@ -254,6 +273,7 @@ class ActionGroupAdminArticle extends CopixActionGroup
                                                                     'id_bact'=>$id_bact,
                                                                     'article'=>$article,
                                                                     'kind'=>$this->getRequest('kind', '0'),
+                                                                    'backM'=>$this->getRequest('backM',null),
                                                                     'errors'=>$errors,
                                                                     'showErrors'=>$showErrors,
                                                                     'tabArticleCategory'=>$tabArticleCategory,
@@ -261,8 +281,6 @@ class ActionGroupAdminArticle extends CopixActionGroup
                                                                     )));
     return new CopixActionReturn (COPIX_AR_DISPLAY, $tpl);
   }
-
-
 
   /**
     * apply updates to the edited object
