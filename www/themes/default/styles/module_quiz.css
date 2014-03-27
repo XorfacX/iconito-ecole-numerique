@@ -318,13 +318,13 @@ input.qf-date {
 #quiz-do .qd-alert {
 	float: left;
 	text-align: left;
-	color: #89c233;
+	color: #BAD521;
 	text-transform: uppercase;
 	}
 
 #quiz-do .qd-usermsg {
 	text-align: center;
-	color: #89c233;
+	color: #BAD521;
 	margin-bottom: 12px;
 	padding-bottom: 6px;
 	border-bottom: solid 1px #ddd;
@@ -332,7 +332,7 @@ input.qf-date {
 
 #quiz-do .qd-usererror {
     text-align: center;
-    color: red;
+    color: #f00;
     margin-bottom: 12px;
     padding-bottom: 6px;
     border-bottom: solid 1px #ddd;
@@ -563,7 +563,7 @@ input.qf-date {
 	background-color: green;
 }
 .quiz-adm-resp{
-	background-color: red;
+	background-color: #f00;
 }
 
 #quiz-form legend, #qf-form-answ legend, #qf-form-resp legend{
@@ -678,8 +678,8 @@ input[type="radio"] + label {
 }
 
 .quiz-user-right {
-	color: #89c233;
+	color: #BAD521;
 }
 .quiz-user-wrong {
-	color: red;
+	color: #f00;
 }

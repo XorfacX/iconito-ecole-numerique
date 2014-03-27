@@ -269,7 +269,7 @@ class ActionGroupDefault extends enicActionGroup
         //data preparation
         $i=0;
         $correct = 0;
-        $repWrong = 0;
+        $respWrong = 0;
 
         $choiceReturn = array();
         $wrongAnswer = false;
@@ -284,7 +284,7 @@ class ActionGroupDefault extends enicActionGroup
             if($choice['correct'] == 1)
                 $correct++;
             else
-            	$repWrong++;
+            	$respWrong++;
                 
             foreach($responsesDatas as $response){
                 if((int)$response['id_choice'] == (int)$choice['id']){
@@ -346,8 +346,8 @@ class ActionGroupDefault extends enicActionGroup
         $ppo->quiz = $quiz;
         if($pSRes) {
         	$ppo->alreadyShowRes = true;
-        	$ppo->repCorrect = $correct;
-        	$ppo->repWrong = $repWrong;
+        	$ppo->respCorrect = $correct;
+        	$ppo->respWrong = $respWrong;
         }
 
         if(Kernel::getLevel( 'MOD_QUIZ', $pId) >= PROFILE_CCV_ADMIN){
@@ -424,8 +424,9 @@ class ActionGroupDefault extends enicActionGroup
      */
     public function processSaveAndGetAnswer()
     {
-    	if (!$this->flash->has('nextAnsw'))
-            return $this->error('quiz.errors.badOperation');
+    	if (!$this->flash->has('nextAnsw')) {
+            return $this->error('quiz.errors.badOperation');            
+        }
 
         // Récupération du quiz
         $quizData = $this->service('QuizService')->getQuizFromQSession('id');
