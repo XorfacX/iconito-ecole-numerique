@@ -103,13 +103,13 @@ class ActionGroupAdminArticle extends CopixActionGroup
         }
 
         $kind = $this->getRequest('kind', '0');
-        $backM = $this->getRequest('backM', null);
+        $backMinimail = $this->getRequest('backMinimail', null);
 
         $tpl->assign ('MAIN', CopixZone::process ('EditArticle', array('id_blog'=>$id_blog,
                                                     'id_bact'=>$id_bact,
                                                     'article'=>$article,
                                                     'kind'=>$kind,
-                                                    'backM'=>$backM,
+                                                    'backMinimail'=>$backMinimail,
                                                     'tabArticleCategory'=>$tabArticleCategory,
                                                     )));
 
@@ -203,13 +203,13 @@ class ActionGroupAdminArticle extends CopixActionGroup
 
         // Pas de droit de publication => notification aux modérateurs de demande de publication de l'article
         if(!BlogAuth::canMakeInBlog('ADMIN_ARTICLE_MAKE_ONLINE',create_blog_object($id_blog))){
-            $articleUrl = CopixUrl::get('blog|admin|prepareEditArticle', array('kind'=>_request('kind'), 'id_blog'=>_request('id_blog'), 'id_bact'=>_request('id_bact'), 'backM'=>1)); 
+            $articleUrl = CopixUrl::get('blog|admin|prepareEditArticle', array('kind'=>_request('kind'), 'id_blog'=>_request('id_blog'), 'id_bact'=>_request('id_bact'), 'backMinimail'=>1)); 
             sendArticleNotif($id_blog, $id_bact, $user->userId, $articleUrl);
         }
         
         // go back to minimail for moderators who followed publishing link from minimail
-        $backM = $this->getRequest('backM', null);
-        if($backM == 1)
+        $backMinimail = $this->getRequest('backMinimail', null);
+        if($backMinimail == 1)
             return new CopixActionReturn (COPIX_AR_REDIRECT, CopixUrl::get ('minimail||getListRecv'));
         else 
             return new CopixActionReturn (COPIX_AR_REDIRECT, CopixUrl::get ('blog|admin|showBlog', array("id_blog"=>$id_blog, "kind"=>$this->getRequest('kind', '0'))));
@@ -249,7 +249,7 @@ class ActionGroupAdminArticle extends CopixActionGroup
 
         // Pas de droit de publication => notification aux modérateurs de demande de publication de l'article
         if(!BlogAuth::canMakeInBlog('ADMIN_ARTICLE_MAKE_ONLINE',create_blog_object($id_blog))){
-            $articleUrl = CopixUrl::get('blog|admin|prepareEditArticle', array('kind'=>_request('kind'), 'id_blog'=>_request('id_blog'), 'id_bact'=>$article->id_bact, 'backM'=>1)); 
+            $articleUrl = CopixUrl::get('blog|admin|prepareEditArticle', array('kind'=>_request('kind'), 'id_blog'=>_request('id_blog'), 'id_bact'=>$article->id_bact, 'backMinimail'=>1)); 
             sendArticleNotif($id_blog, $article->id_bact, $user->userId, $articleUrl);
         }
         
@@ -273,11 +273,11 @@ class ActionGroupAdminArticle extends CopixActionGroup
                                                                     'id_bact'=>$id_bact,
                                                                     'article'=>$article,
                                                                     'kind'=>$this->getRequest('kind', '0'),
-                                                                    'backM'=>$this->getRequest('backM',null),
+                                                                    'backMinimail'=>$this->getRequest('backMinimail',null),
                                                                     'errors'=>$errors,
                                                                     'showErrors'=>$showErrors,
                                                                     'tabArticleCategory'=>$tabArticleCategory,
-                                    'preview'=>(($go=='preview') ? 1 : 0),
+                                                                    'preview'=>(($go=='preview') ? 1 : 0),
                                                                     )));
     return new CopixActionReturn (COPIX_AR_DISPLAY, $tpl);
   }

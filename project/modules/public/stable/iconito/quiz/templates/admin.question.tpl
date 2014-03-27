@@ -127,7 +127,7 @@ jQuery(document).ready(function($){
         <div>
 		{i18n key="quiz.question.answersSort" noEscape=1}<br/>
 		{i18n key="quiz.question.answersChoose" noEscape=1}<br/>
-		<span class="quiz-admin-answers-warning">{i18n key="quiz.question.answersChooseWarning" noEscape=1}</span><br/><br/>
+		<p class="mesgInfo">{i18n key="quiz.question.answersChooseWarning" noEscape=1}</p>
         </div>
 
         <ul id="qf-answers">

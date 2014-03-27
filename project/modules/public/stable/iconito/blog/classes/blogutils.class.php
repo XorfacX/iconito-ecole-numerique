@@ -247,7 +247,7 @@ function sendArticleNotif($id_blog, $id_bact, $fromId, $articleUrl)
     
     $userInfo = Kernel::getUserInfo();
     $auteur = $userInfo["prenom"] . " " . $userInfo["nom"] . " (" . $userInfo["login"] . ")";
-    $title = "Demande de publication d'un article de blog";
+    $title = CopixI18N::get('blog|blog.moderation.mailTitle');
     $categories = "";
     $nbCat = 0;
     foreach($articleDAO->findCategoriesForArticle($id_bact) as $cat) {
@@ -257,7 +257,7 @@ function sendArticleNotif($id_blog, $id_bact, $fromId, $articleUrl)
         }
         $categories .= $cat->name_bacg;
     }          
-    $message = "<p>" . $auteur . " demande la publication d'un article dans le blog " . _ioDAO('blog|blog')->getBlogById($id_blog)->name_blog . ", rubrique : " . $categories . ".</p><p>Pour vous rendre sur l'article en question : <a href=\"" . $articleUrl . "\">Cliquez ici</a>.</p>";
+    $message = CopixI18N::get('blog|blog.moderation.mailContent', array($auteur, _ioDAO('blog|blog')->getBlogById($id_blog)->name_blog, $categories, $articleUrl));
     
     $tabDest = getModeratorList($id_blog, PROFILE_CCV_MODERATE);
     
@@ -274,8 +274,17 @@ function sendArticleNotif($id_blog, $id_bact, $fromId, $articleUrl)
  */
 function getModeratorList($id_blog, $right)
 {
-    $sql = 'SELECT klb2u.user_id FROM kernel_link_bu2user klb2u JOIN kernel_link_user2node klu2n ON klu2n.user_id = klb2u.bu_id AND klu2n.user_type = klb2u.bu_type JOIN module_blog mb ON mb.id_blog = klu2n.node_id WHERE klu2n.droit >= ' . $right . ' AND mb.id_blog = '.$id_blog;
-    $destList = _doQuery ($sql);
+    $sql = 'SELECT klb2u.user_id
+            FROM kernel_link_bu2user klb2u
+            JOIN kernel_link_user2node klu2n
+                ON klu2n.user_id = klb2u.bu_id
+                AND klu2n.user_type = klb2u.bu_type
+            JOIN module_blog mb
+                ON mb.id_blog = klu2n.node_id
+            WHERE klu2n.droit >= :right
+            AND mb.id_blog = :blogId';
+    
+    $destList = _doQuery($sql, array(':right' => $right, ':blogId' => $id_blog));
     $tabDest = array();
     foreach($destList as $dest) {
         $tabDest[$dest->user_id] = $dest->user_id;

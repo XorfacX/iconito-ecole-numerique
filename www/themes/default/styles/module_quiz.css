@@ -672,11 +672,6 @@ input[type="radio"] + label {
 
 /* Good and right answer */
 
-.quiz-user-legend, .quiz-admin-answers-warning {
-	font-style: italic;
-	font-size: 0.9em;
-}
-
 .quiz-user-right {
 	color: #BAD521;
 }

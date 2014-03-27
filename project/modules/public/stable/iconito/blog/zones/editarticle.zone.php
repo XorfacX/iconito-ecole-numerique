@@ -28,7 +28,7 @@ class ZoneEditArticle extends CopixZone
         
         $tpl->assign ('article'           , $this->getParam('article',null));
         $tpl->assign ('kind'              , $this->getParam('kind',null));
-        $tpl->assign ('backM'              , $this->getParam('backM',null));
+        $tpl->assign ('backMinimail'      , $this->getParam('backMinimail',null));
         $tpl->assign ('id_blog'           , $id_blog);
         $tpl->assign ('id_bact'           , $this->getParam('id_bact', ''));
         $tpl->assign ('errors'            , $this->getParam('errors', ''));
