@@ -22,7 +22,7 @@ class enicNodeMatrix extends enicTree
         $this->member_of = false;
         $this->descendant_of = false;
         $this->admin_of = false;
-    $this->animator = false;
+        $this->animator = false;
         $this->kernelChildren = array();
         $this->kernelParent = null;
         $this->director_of = false;
@@ -42,6 +42,7 @@ class loadRightMatrix
     public $agent_ville;
     public $administratif;
     public $invite;
+    public $animateur;
     public $voir;
     public $communiquer;
     public $count;
@@ -56,6 +57,7 @@ class loadRightMatrix
         $this->agent_ville = new loadRightMatrixAction();
         $this->administratif = new loadRightMatrixAction();
         $this->invite = new loadRightMatrixAction();
+        $this->animateur = new loadRightMatrixAction();
         $this->voir = new loadRightMatrixTypeUser();
         $this->communiquer = new loadRightMatrixTypeUser();
 
@@ -91,6 +93,9 @@ class loadRightMatrix
             case 'USER_EXT':
                 return $this->invite;
             break;
+            case 'USER_ATI':
+                return $this->animateur;
+            break;
             case 'VOIR':
                 return $this->voir;
             break;
@@ -111,6 +116,7 @@ class loadRightMatrixTypeUser
     public $directeur;
     public $agent_ville;
     public $invite;
+    public $animateur;
 
     //build right tree
     public function __construct()
@@ -125,7 +131,7 @@ class loadRightMatrixTypeUser
         $this->agent_ville = $bool;
         $this->invite = $bool;
         $this->administratif = $bool;
-    $this->animateur = $bool;
+        $this->animateur = $bool;
 
     }
     public function __get($name)
