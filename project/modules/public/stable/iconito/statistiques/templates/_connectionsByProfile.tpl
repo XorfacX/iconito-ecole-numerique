@@ -3,7 +3,7 @@ Il y a eu <strong>{$ppo->requestClass->getNombreConnexions($ppo->profile)}</stro
 <h3 class="mt2 mb1">Statistiques annuelles</h3>
 
 <table class="viewItems visualize">
-    <caption>Statistiques annuelles</caption>
+    <caption>Statistiques annuelles (nombre de connexions sur l'année entière)</caption>
     <thead>
         <tr>
             <td></td>
@@ -27,7 +27,7 @@ Il y a eu <strong>{$ppo->requestClass->getNombreConnexions($ppo->profile)}</stro
 {assign var=connexionsMensuelles value=$ppo->requestClass->getConnexionsMensuelles($ppo->profile)}
 {if count($connexionsMensuelles.statistiques) <= 12}
     <table class="viewItems visualize">
-        <caption>Statistiques mensuelles</caption>
+        <caption>Statistiques mensuelles (nombre de connexions sur le mois entier)</caption>
         <thead>
             <tr>
                 <td></td>
@@ -47,7 +47,7 @@ Il y a eu <strong>{$ppo->requestClass->getNombreConnexions($ppo->profile)}</stro
     </table>
 {else}
     <table class="viewItems">
-        <caption>Statistiques mensuelles</caption>
+        <caption>Statistiques mensuelles (nombre de connexions sur le mois entier)</caption>
         <thead>
             <tr>
                 <td></td>
@@ -80,7 +80,9 @@ Il y a eu <strong>{$ppo->requestClass->getNombreConnexions($ppo->profile)}</stro
             <tr>
                 <th scope="row">Nb de connexions</th>
                 {foreach from=$connexionsMensuelles.moyennes key=month item=numberOfConnection}
-                    <td>{$numberOfConnection}</td>
+                    <td {if $numberOfConnection.aide}title="{$numberOfConnection.aide}"{/if}>
+                        {$numberOfConnection.valeur}
+                    </td>
                 {/foreach}
             </tr>
         </tbody>
@@ -93,7 +95,7 @@ Il y a eu <strong>{$ppo->requestClass->getNombreConnexions($ppo->profile)}</stro
 
 {if count($connexionsHebdomadaires.statistiques) <= 10 }
     <table class="viewItems visualize">
-        <caption>Statistiques hebdomadaires</caption>
+        <caption>Statistiques hebdomadaires (nombre de connexions sur la semaine entière)</caption>
         <thead>
             <tr>
                 <td></td>
@@ -113,7 +115,7 @@ Il y a eu <strong>{$ppo->requestClass->getNombreConnexions($ppo->profile)}</stro
     </table>
 {else}
     <table class="viewItems">
-        <caption>Statistiques hebdomadaires</caption>
+        <caption>Statistiques hebdomadaires (nombre de connexions sur la semaine entière)</caption>
         <thead>
             <tr>
                 <td></td>
@@ -169,7 +171,9 @@ Il y a eu <strong>{$ppo->requestClass->getNombreConnexions($ppo->profile)}</stro
             <tr>
                 <th scope="row">Nb de connexions</th>
                 {foreach from=$connexionsJournalieres.moyennes key=day item=numberOfConnection}
-                    <td>{$numberOfConnection}</td>
+                    <td {if $numberOfConnection.aide}title="{$numberOfConnection.aide}"{/if}>
+                        {$numberOfConnection.valeur}
+                    </td>
                 {/foreach}
             </tr>
         </tbody>
@@ -193,7 +197,9 @@ Il y a eu <strong>{$ppo->requestClass->getNombreConnexions($ppo->profile)}</stro
         <tr>
             <th scope="row">Nb de connexions</th>
             {foreach from=$connexionsHoraires.moyennes key=hour item=numberOfConnection}
-                <td>{$numberOfConnection}</td>
+                <td {if $numberOfConnection.aide}title="{$numberOfConnection.aide}"{/if}>
+                    {$numberOfConnection.valeur}
+                </td>
             {/foreach}
         </tr>
     </tbody>

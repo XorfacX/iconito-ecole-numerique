@@ -127,7 +127,10 @@ class ApiUserRequest extends ApiBaseRequest
         $mustShowAverage = false;
 
         foreach ($months as $month) {
-            $connexionsMoyennes[$month] = 0;
+            $connexionsMoyennes[$month] = array(
+                'valeur' => 0,
+                'aide'   => null
+            );
             $nombreDeMois[$month] = 0;
         }
 
@@ -152,16 +155,24 @@ class ApiUserRequest extends ApiBaseRequest
 
             $connexionsMensuelles[$monthName . ' ' . $year] += $period->counter;
 
-            $connexionsMoyennes[$monthName] += $period->counter;
+            $connexionsMoyennes[$monthName]['valeur'] += $period->counter;
         }
 
         // On termine par le calcul des moyennes
-        foreach ($connexionsMoyennes as $index => &$count) {
+        foreach ($connexionsMoyennes as $index => &$data) {
+            $nombreConnexion = $data['valeur'];
             if ($nombreDeMois[$index] > 0) {
-                $count = round($count / $nombreDeMois[$index], 2);
+                $data['valeur'] = round($data['valeur'] / $nombreDeMois[$index], 2);
             } else {
-                $count = 0;
+                $data['valeur'] = 0;
             }
+
+            $data['aide'] = sprintf('%s connexions les mois de %s / %s mois de %s dans la période choisie',
+                $nombreConnexion,
+                $index,
+                $nombreDeMois[$index],
+                $index
+            );
         }
 
         return array(
@@ -280,7 +291,10 @@ class ApiUserRequest extends ApiBaseRequest
         $mustShowAverage = false;
 
         foreach ($days as $day) {
-            $connexionsMoyennes[$day] = 0;
+            $connexionsMoyennes[$day] = array(
+                'valeur' => 0,
+                'aide'   => null
+            );
             $nombreDeJours[$day] = 0;
         }
 
@@ -312,16 +326,24 @@ class ApiUserRequest extends ApiBaseRequest
 
             $connexionsJournalieres[$day.' '.$date->format('d/m/Y')] += $period->counter;
 
-            $connexionsMoyennes[$day] += $period->counter;
+            $connexionsMoyennes[$day]['valeur'] += $period->counter;
         }
 
         // On termine par le calcul des moyennes
-        foreach ($connexionsMoyennes as $index => &$count) {
+        foreach ($connexionsMoyennes as $index => &$data) {
+            $nombreConnexion = $data['valeur'];
             if ($nombreDeJours[$index] > 0) {
-                $count = round($count / $nombreDeJours[$index], 2);
+                $data['valeur'] = round($data['valeur'] / $nombreDeJours[$index], 2);
             } else {
-                $count = 0;
+                $data['valeur'] = 0;
             }
+
+            $data['aide'] = sprintf('%s connexions les %s / %s %s dans la période choisie',
+                $nombreConnexion,
+                $index,
+                $nombreDeJours[$index],
+                $index
+            );
         }
 
         return array(
@@ -367,7 +389,10 @@ class ApiUserRequest extends ApiBaseRequest
         $nombreHeures = array();
 
         foreach ($hours as $hour) {
-            $connexionsMoyennes[$hour] = 0;
+            $connexionsMoyennes[$hour] = array(
+                'valeur' => 0,
+                'aide'   => null
+            );
             $nombreHeures[$hour] = 0;
         }
 
@@ -383,16 +408,27 @@ class ApiUserRequest extends ApiBaseRequest
         foreach ($this->getConnexionsParPeriode(static::PERIOD_HOURLY, $profil) as $period) {
             $date = new DateTime($period->published);
 
-            $connexionsMoyennes[$hours[$date->format('H')]] += $period->counter;
+            $connexionsMoyennes[$hours[$date->format('H')]]['valeur'] += $period->counter;
         }
 
         // On termine par le calcul des moyennes
-        foreach ($connexionsMoyennes as $index => &$count) {
+        foreach ($connexionsMoyennes as $index => &$data) {
+            $nombreConnexion = $data['valeur'];
+            $nextHour = ($index + 1) % 24;
             if ($nombreHeures[$index] > 0) {
-                $count = round($count / $nombreHeures[$index], 2);
+                $data['valeur'] = round($data['valeur'] / $nombreHeures[$index], 2);
             } else {
-                $count = 0;
+                $data['valeur'] = 0;
             }
+
+            $data['aide'] = sprintf('%s connexions entre %02dh et %02dh / %s fois l\'intervalle %02dh-%02dh dans la période choisie',
+                $nombreConnexion,
+                $index,
+                $nextHour,
+                $nombreHeures[$index],
+                $index,
+                $nextHour
+            );
         }
 
         return array(

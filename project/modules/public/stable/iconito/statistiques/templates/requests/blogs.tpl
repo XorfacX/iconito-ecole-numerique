@@ -6,8 +6,8 @@
         <li><strong>{$blogsVisibles.visible_annuaire}</strong> blog(s) visible(s) dans l'annuaire <span class="average">(<strong>{$blogsVisibles.non_visible}</strong> blogs non-visibles dans l'annuaire)</span></li>
         {assign var=visibilite value=$ppo->requestClass->getBlogVisibleEtVisibilite()}
         <li><strong>{$visibilite.visible_internet}</strong> blog(s) visible(s) sur internet</li>
-        <li><strong>{$visibilite.visible_membres_groupe}</strong> blog(s) visible(s) par les membres des groupes</li>
         <li><strong>{$visibilite.visible_membres_iconito}</strong> blog(s) visible(s) par les membres Iconito</li>
+        <li><strong>{$visibilite.visible_membres_groupe}</strong> blog(s) visible(s) par les membres des groupes</li>
         {assign var=nombreRubriquesEtRatio value=$ppo->requestClass->getNombreRubriquesEtRatio()}
         <li><strong>{$nombreRubriquesEtRatio.rubriques}</strong> rubrique(s) <span class="average">(<strong>{$nombreRubriquesEtRatio.ratio}</strong> rubrique(s) par blog)</span></li>
         {assign var=nombrePagesEtRatio value=$ppo->requestClass->getNombrePagesEtRatio()}
