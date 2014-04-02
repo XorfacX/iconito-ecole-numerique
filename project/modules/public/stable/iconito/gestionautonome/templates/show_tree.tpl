@@ -15,6 +15,7 @@
     {elseif $ppo->save eq 'studentRemoved'}L'affectation de {customi18n key="gestionautonome|gestionautonome.message.%%definite__structure_element_person%%" catalog=$ppo->vocabularyCatalog->id_vc} a bien été supprimée.
     {elseif $ppo->save eq 'studentDeleted'}{customi18n key="gestionautonome|gestionautonome.message.%%definite__structure_element_Person%%" catalog=$ppo->vocabularyCatalog->id_vc} a bien été supprimé.
     {elseif $ppo->save eq 'personnelDeleted'}Le personnel a bien été supprimé.
+    {elseif $ppo->save eq 'personnelAdded'}Le personnel a bien été ajouté.
     {elseif $ppo->save eq 'personnelRemoved'}L'affectation du personnel a bien été supprimée.
     {elseif $ppo->save eq 'principalRemoved'}Le personnel n'est plus directeur.
     {elseif $ppo->save eq 'personInChargeDeleted'}Le responsable a bien été supprimé.

@@ -38,31 +38,36 @@
 
 <div id="assigned-persons">
   <ul>
-  {foreach from=$ppo->destinationAssignments item=assignments key=levelId}
+  {foreach from=$ppo->destinationAssignments item=assignments key=levelId}    
     {foreach from=$assignments item=persons key=classroomId}
       <li class="classroom" data-classroom-id={$classroomId}{if $levelId} data-classroom-level={$levelId}{/if}>
-      {if $levelId}
-        {assign var='classroomKey' value=$classroomId|cat:'-'|cat:$levelId}
-      {else}
-        {assign var='classroomKey' value=$classroomId}
-      {/if}
-      <h3><a href="#" class="{if !isset($ppo->openedClassrooms.destination.$classroomKey)}classroomClosed{else}classroomOpen{/if}" onclick="toggleClassroomState('{copixurl dest=gestionautonome|default|changeManageAssignmentClassroomState}', this, 'destination'); if (event.preventDefault) event.preventDefault(); else event.returnValue=false;">{$ppo->classrooms.$classroomId} {if $levelId}<span class="level">({$ppo->classroomLevels.$levelId})</span>{/if}<span class="count"> - {$persons|@count} {if $ppo->filters.originUserType eq "USER_ELE"}{if $persons|@count > 1}{customi18n key="gestionautonome|gestionautonome.message.%%structure_element_persons%%" catalog=$ppo->vocabularyCatalog->id_vc}{else}{customi18n key="gestionautonome|gestionautonome.message.%%structure_element_person%%" catalog=$ppo->vocabularyCatalog->id_vc}{/if}{else}{if $persons|@count > 1}{customi18n key="gestionautonome|gestionautonome.message.%%structure_element_staff_persons%%" catalog=$ppo->vocabularyCatalog->id_vc}{else}{customi18n key="gestionautonome|gestionautonome.message.%%structure_element_staff_person%%" catalog=$ppo->vocabularyCatalog->id_vc}{/if}{/if}</span></a></h3>
-      <div class="class-box">
-        {if count($persons) > 0}
-          <ul>
-            {foreach from=$persons item=person}
-              <li data-user-id={$person->user_id} data-user-type={$person->user_type}>
-                {$person->nom} {$person->prenom}
-                {if $ppo->filters.originUserType eq "USER_ELE"}
-                  <a href="" class="remove-person"><img src="{copixurl}themes/default/images/icon-16/action-exit.png" title="{customi18n key="gestionautonome|gestionautonome.message.remove%%definite__structure_element_person%%to%%definite__structure_element%%" catalog=$ppo->vocabularyCatalog->id_vc}" /></a>
-                {else}
-                  <a href="" class="remove-person"><img src="{copixurl}themes/default/images/icon-16/action-exit.png" title="{customi18n key="gestionautonome|gestionautonome.message.remove%%definite__structure_element_staff_person%%to%%definite__structure_element%%" catalog=$ppo->vocabularyCatalog->id_vc}" /></a>
-                {/if}
-              </li>
-            {/foreach}
-          </ul>
+        {if $levelId}
+          {assign var='classroomKey' value=$classroomId|cat:'-'|cat:$levelId}
+        {else}
+          {assign var='classroomKey' value=$classroomId}
         {/if}
-      </div>
+        <h3><a href="#" class="{if !isset($ppo->openedClassrooms.destination.$classroomKey)}classroomClosed{else}classroomOpen{/if}" onclick="toggleClassroomState('{copixurl dest=gestionautonome|default|changeManageAssignmentClassroomState}', this, 'destination'); if (event.preventDefault) event.preventDefault(); else event.returnValue=false;">{$ppo->classrooms.$classroomId} {if $levelId}<span class="level">({$ppo->classroomLevels.$levelId})</span>{/if}<span class="count"> - {$persons|@count} {if $ppo->filters.originUserType eq "USER_ELE"}{if $persons|@count > 1}{customi18n key="gestionautonome|gestionautonome.message.%%structure_element_persons%%" catalog=$ppo->vocabularyCatalog->id_vc}{else}{customi18n key="gestionautonome|gestionautonome.message.%%structure_element_person%%" catalog=$ppo->vocabularyCatalog->id_vc}{/if}{else}{if $persons|@count > 1}{customi18n key="gestionautonome|gestionautonome.message.%%structure_element_staff_persons%%" catalog=$ppo->vocabularyCatalog->id_vc}{else}{customi18n key="gestionautonome|gestionautonome.message.%%structure_element_staff_person%%" catalog=$ppo->vocabularyCatalog->id_vc}{/if}{/if}</span></a></h3>
+        <div class="class-box">
+          {if count($persons) > 0}
+            <ul>
+              {foreach from=$persons item=person}
+                <li data-user-id={$person->user_id} data-user-type={$person->user_type}>
+                  {$person->nom} {$person->prenom}
+                  {if $ppo->filters.originUserType eq "USER_ELE"}
+                    <a href="" class="remove-person"><img src="{copixurl}themes/default/images/icon-16/action-exit.png" title="{customi18n key="gestionautonome|gestionautonome.message.remove%%definite__structure_element_person%%to%%definite__structure_element%%" catalog=$ppo->vocabularyCatalog->id_vc}" /></a>
+                  {else}
+                    <a href="" class="remove-person"><img src="{copixurl}themes/default/images/icon-16/action-exit.png" title="{customi18n key="gestionautonome|gestionautonome.message.remove%%definite__structure_element_staff_person%%to%%definite__structure_element%%" catalog=$ppo->vocabularyCatalog->id_vc}" /></a>
+                  {/if}
+                </li>
+              {/foreach}
+            </ul>
+          {/if}
+          
+          {if $ppo->personsLimitByClassroom > 0 && $ppo->totalPersonsByClassroom[$classroomId] >= $ppo->personsLimitByClassroom}
+            {assign var='message' value='gestionautonome|gestionautonome.message.%%'|cat:$ppo->filters.originUserType|lower|cat:'%%limitbyclassroomreached'}
+            <p class="help">{customi18n key=$message catalog=$ppo->vocabularyCatalog->id_vc}</p>
+          {/if}
+        </div>
       </li>
     {/foreach}
   {/foreach}

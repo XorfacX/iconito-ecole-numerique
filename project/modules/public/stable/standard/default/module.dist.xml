@@ -48,6 +48,8 @@
 			<parameter name="conf_Cas_host" captioni18n="parameter.conf_Cas_host"  default="" />
 			<parameter name="conf_Cas_port" captioni18n="parameter.conf_Cas_port"  default="" />
 			<parameter name="conf_Cas_path" captioni18n="parameter.conf_Cas_path"  default="" />
+			<parameter name="conf_Saml_actif" captioni18n="parameter.conf_Saml_actif"  default="0" />
+			<parameter name="conf_Saml_caslogouturl" captioni18n="parameter.conf_Saml_caslogouturl"  default="" />
 
 			<parameter name="conf_Ceriseprim_actif" captioni18n="parameter.conf_Ceriseprim_actif"  default="0" />
 			<parameter name="conf_Ceriseprim_url" captioni18n="parameter.conf_Ceriseprim_url"  default="" />
@@ -57,6 +59,7 @@
 			<parameter name="conf_ModClasseur_upload" caption="Upload dans le classeur" default="0" />
 
 			<parameter name="rssEtagereEnabled" caption="Centre de ressource active" default="0" />
+			<parameter name="rssEtagereEnt" caption="Identifiant unique ENT" default="" />
 
 			<parameter name="conf_Edito_type" caption="Type du noeud servant d'edito" default="" />
 			<parameter name="conf_Edito_id" caption="Id du noeud servant d'edito" default="" />
@@ -70,7 +73,8 @@
 			<parameter name="can_pref_assistance"          caption="Activation du module Assistance"                       default="1" />
 			<parameter name="can_module_ressources"        caption="Autorise le module Ressouces"                          default="1" />
 			<parameter name="can_module_rssfeed"           caption="Autorise le module Flux RSS agrégé"                    default="1" />
-
+			<parameter name="can_search_by_name"           caption="Autorise la recherche par nom dans la gestion des usagers / Outil d'affectations" default="1" />
+			<parameter name="use_class_validity"           caption="Utilise la date de validité des classes"               default="0" />
 			<parameter name="notification_maxnodes"        caption="Nombre max de noeuds dans le dashboard pour activer les nitofocations" default="30" />
 		</group>
 	</parameters>

@@ -14,9 +14,9 @@
  *
  * @category  Zend
  * @package   Zend_Uri
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
- * @version   $Id: Uri.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version   $Id: Uri.php 24593 2012-01-05 20:35:02Z matthew $
  */
 
 /**
@@ -24,7 +24,7 @@
  *
  * @category  Zend
  * @package   Zend_Uri
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
  */
 abstract class Zend_Uri
@@ -41,7 +41,7 @@ abstract class Zend_Uri
      *
      * @var array
      */
-    protected static $_config = array(
+    static protected $_config = array(
         'allow_unwise' => false
     );
 
@@ -169,7 +169,7 @@ abstract class Zend_Uri
      *
      * @param Zend_Config|array $config
      */
-    public static function setConfig($config)
+    static public function setConfig($config)
     {
         if ($config instanceof Zend_Config) {
             $config = $config->toArray();

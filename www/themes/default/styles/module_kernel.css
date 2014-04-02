@@ -44,6 +44,10 @@ div.dashpanel .title span {
 	font-size: 160%;
 	text-transform:uppercase;
 	}
+div.dashpanel .title span.validitydate {
+	font-size: 100%;
+	float:right;
+	}
 	
 div.dashpanel div.content {
 	position: relative;
