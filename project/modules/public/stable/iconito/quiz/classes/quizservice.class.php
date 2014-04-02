@@ -455,7 +455,10 @@ GROUP BY quiz.id
 
         // On redéfini les champs
         $quiz->gr_id = enic::get('session')->load('id_gr_quiz');
-        $quiz->name = $quiz->name . ' - import&eacute;';
+        $quiz->name = $quiz->name . ' - importé';
+
+        // Le quiz est dans un status non publié (is_locked)
+        $quiz->is_locked = 1;
 
         // On insère le nouveau quiz
         $daoQuiz->insert($quiz);
