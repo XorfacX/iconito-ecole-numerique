@@ -1,0 +1,1 @@
+<a href="{copixurl dest="statistiques||exportcsv" part=$ppo->part options=$ppo->options}" class="export-csv-button">Export CSV</a>
