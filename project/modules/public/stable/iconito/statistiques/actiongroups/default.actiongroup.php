@@ -54,7 +54,7 @@ class ActionGroupDefault extends enicActionGroup
 
         $ppo->mapping = new ApiMapping;
 
-        $ppo->contexts = Kernel::getContextTree(true);
+        $ppo->contexts = Kernel::getStatisticsScopeChoices();
 
         $userExtras = _currentUser()->getExtras();
         $ppo->isAdmin = is_array($userExtras['link']);

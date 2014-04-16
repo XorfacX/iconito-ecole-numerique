@@ -119,8 +119,19 @@ class ConsolidatedStatisticFilter extends ConsolidatedStatistic
     {
         $this->target = $target;
 
-        list($type, $id) = explode('|', $target);
-        $targetResource = Kernel::getNode($type, $id)->toResource();
+        $choices = Kernel::getStatisticsScopeChoices();
+
+        $selected = $choices->getSelectedChoice($target);
+
+        if (null === $selected) {
+            throw new Exception('Impossible de récupérer la valeur sélectionnée');
+        }
+
+        if (null === $selected->getResource() || !$selected->getResource() instanceof ActivityStream\Client\Model\ResourceInterface) {
+            throw new Exception('Aucune ressource attachée à la valeur sélectionnée ou la ressource ne peut être transformée en ressource ActivityStream (doit implémenter l\'interface "ActivityStream\Client\Model\ResourceInterface")');
+        }
+
+        $targetResource = $selected->getResource()->toResource();
 
         $this->setTargetObjectType($targetResource->getObjectType());
         $this->setTargetDisplayName($targetResource->getDisplayName());

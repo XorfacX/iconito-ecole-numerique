@@ -7,18 +7,16 @@
         <label for="context" class="form_libelle">Périmètre  <img src="{copixresource path="img/red-star.png"}" alt="{i18n key='kernel|kernel.required'}" /></label>
         {assign var=current value=$ppo->filter->target }
         <select name="target">
-            {foreach from=$ppo->contexts key=key item=context}
-                {if get_class($context.element) == 'CompiledDAORecordkernel_bu_groupe_villes'}
-                    <option value="{$key}" {if $key == $current}selected="selected" {/if}{if !isAdmin && !in_array($key, $ppo->userGroups)}disabled="disabled"{/if}>{$context.element->nom_groupe}</option>
-                {/if}
-                {if get_class($context.element) == 'CompiledDAORecordkernel_bu_ville'}
-                    <option value="{$key}" {if $key == $current}selected="selected" {/if}{if !isAdmin && !in_array($key, $ppo->userGroups)}disabled="disabled"{/if}>&nbsp;&nbsp;{$context.element->nom}</option>
-                {/if}
-                {if get_class($context.element) == 'CompiledDAORecordkernel_bu_ecole'}
-                    <option value="{$key}" {if $key == $current}selected="selected" {/if}{if !isAdmin && !in_array($key, $ppo->userGroups)}disabled="disabled"{/if}>&nbsp;&nbsp;&nbsp;&nbsp;{$context.element->nom}</option>
-                {/if}
-                {if get_class($context.element) == 'CompiledDAORecordkernel_bu_ecole_classe'}
-                    <option value="{$key}" {if $key == $current}selected="selected" {/if}{if !isAdmin && !in_array($key, $ppo->userGroups)}disabled="disabled"{/if}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$context.element->nom}</option>
+            <option value="">Sélectionnez un périmètre</option>
+            {foreach from=$ppo->contexts item=choice}
+                {if count($choice->getChoices()) }
+                    <optgroup label="{$choice->getLabel()}">
+                        {foreach from=$choice->getChoices() item=subChoice}
+                            <option value="{$subChoice->computeKey()}" {if $subChoice->computeKey() == $current}selected="selected"{/if}>{$subChoice->getLabel()}</option>
+                        {/foreach}
+                    </optgroup>
+                {else}
+                    <option value="{$choice->computeKey()}" {if $choice->computeKey() == $current}selected="selected"{/if}>{$choice->getLabel()}</option>
                 {/if}
             {/foreach}
         </select>

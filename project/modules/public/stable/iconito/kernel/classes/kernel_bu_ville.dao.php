@@ -5,8 +5,17 @@ use \ActivityStream\Client\Model\ResourceInterface;
 
 class DAORecordKernel_bu_ville implements ResourceInterface
 {
+  /** @var array Groupes de villes, à ne pas confondre avec les groupements de villes */
   protected $_citiesGroup = null;
 
+  /** @var array les groupements de villes (notion en dehors de l'arbre des ressources) */
+  protected $groupementsVilles = null;
+
+  /**
+   * Retoune les groupes de villes pour la ville courante
+   *
+   * @return array
+   */
   public function getCitiesGroup ()
   {
     if (is_null($this->_citiesGroup)) {
@@ -17,6 +26,20 @@ class DAORecordKernel_bu_ville implements ResourceInterface
     }
 
     return $this->_citiesGroup;
+  }
+
+  /**
+   * Retourne les groupements de villes
+   *
+   * @return array
+   */
+  public function getGroupementsVilles()
+  {
+    if (null === $this->groupementsVilles) {
+      $this->groupementsVilles = _ioDAO('regroupements|grvilles')->getGroupementByVille($this);
+    }
+
+    return $this->groupementsVilles;
   }
 
   /**
