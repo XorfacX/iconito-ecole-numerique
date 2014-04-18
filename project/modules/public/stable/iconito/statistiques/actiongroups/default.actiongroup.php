@@ -13,6 +13,10 @@ class ActionGroupDefault extends enicActionGroup
 {
     public function beforeAction()
     {
+        if (!(bool)CopixConfig::get('statistiques|enabled')) {
+            return new CopixActionReturn (CopixActionReturn::HTTPCODE, CopixHTTPHeader::get404 (), "Page inaccessible");
+        }
+
 //        _currentUser()->assertCredential('module:*||access|@statistiques');
         $this->addJs('js/excanvas.js');  // For IE
         $this->addJs('js/jquery/jquery.visualize.js');

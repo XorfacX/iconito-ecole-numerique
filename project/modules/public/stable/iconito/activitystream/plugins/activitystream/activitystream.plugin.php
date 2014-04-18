@@ -12,6 +12,11 @@ class PluginActivityStream extends CopixPlugin
      */
     public function beforeProcess(& $action)
     {
+        // Si le module de statistiques n'est pas activé, on s'arrête simplement
+        if (!(bool)CopixConfig::get('statistiques|enabled')) {
+            return;
+        }
+
         _classInclude('activitystream|ActivityStreamListener');
         _classInclude('eventdispatcher|EventDispatcherFactory');
 

@@ -6,6 +6,7 @@
     </general>
 
     <parameters>
+        <parameter name="enabled" captioni18n="statistiques.parameter.enabled" default="0" />
         <parameter name="apiQueryUrl" captioni18n="statistiques.parameter.apiQueryUrl" default="http://api-stats.iconito.fr/api/query.json" />
         <parameter name="moduleTitle" captioni18n="statistiques.parameter.moduleTitle" default="Statistiques" />
     </parameters>
