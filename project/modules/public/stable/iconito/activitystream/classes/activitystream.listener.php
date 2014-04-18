@@ -93,7 +93,7 @@ class ListenerActivityStream extends CopixListener
             'create',
             $this->activityStreamService->getPersonFromUserInfo(_currentUser()->getExtras()),
             $file->toResource(),
-            $event->getParam('folder')->toResource(),
+            (null !== $event->getParam('folder')) ? $event->getParam('folder')->toResource() : null,
             $this->activityStreamService->getContextResources('MOD_CLASSEUR', $file->classeur_id)
         );
     }

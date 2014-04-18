@@ -1,4 +1,4 @@
-<h2>{$ppo->label}</h2>
+<h2>{$ppo->label} {copixzone process=statistiques|exportcsv part='blogs'}</h2>
 <p>Au <span class="dateStats">{$ppo->filter->publishedTo->format('d/m/Y')}</span>, il y a :
     <ul>
         <li><strong>{$ppo->requestClass->getNombreBlogs()}</strong> blog(s) ouvert(s).</li>
@@ -28,7 +28,7 @@
     </ul>
 </p>
 
-<h3>Détail des rédaction d'article par profil</h3>
+<h3>Détail des rédaction d'article par profil {copixzone process=statistiques|exportcsv part='articlesBlogParProfil'}</h3>
 
 <table class="viewItems visualize">
     <tbody>

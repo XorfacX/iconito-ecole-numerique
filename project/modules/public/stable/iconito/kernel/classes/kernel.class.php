@@ -3353,8 +3353,8 @@ if(DEBUG) {
                 return static::getNode('regroupements|grecoles', $id);
             case "MOD_BLOG":
                 return static::getNode('blog|blog');
-//            case "MOD_":
-//                return static::getNode('blog|blog');
+            case "MOD_CLASSEUR":
+                return static::getNode('classeur|classeur');
             default:
               $object = $id ? _dao($type)->get($id) : _record($type);
         }
