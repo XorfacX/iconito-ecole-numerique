@@ -121,11 +121,15 @@ class ActivityStreamService
      */
     public function getContexts($type, $id)
     {
+        $contexts = array();
+
+        $node = Kernel::getNode($type, $id);
+
         $parent = Kernel::getContextParent($type, $id);
 
         // On s'arrête de remonter dès que le parent est null ou ROOT
         if (null !== $parent && $parent['type'] !== 'ROOT'){
-            return array_filter(
+            $contexts = array_filter(
                 array_merge(
                     array(
                         $parent
@@ -134,9 +138,32 @@ class ActivityStreamService
                 )
             );
         }
-        else {
-            return array();
+
+        // Si le noeud était de type Ville ou Ecole
+        // alors on va récupérer et ajouter dans le context les groupes correspondants
+        if ($node instanceof DAORecordKernel_bu_ville) {
+          $groupementsVilles = $node->getGroupementsVilles();
+
+          foreach ($groupementsVilles as $groupementVille) {
+            $contexts[] = array(
+              'type' => 'GROUPE_VILLE',
+              'id'   => $groupementVille->id
+            );
+          }
         }
+
+        if ($node instanceof DAORecordKernel_bu_ecole) {
+          $groupementsEcoles = $node->getGroupementsEcoles();
+
+          foreach ($groupementsEcoles as $groupementEcole) {
+            $contexts[] = array(
+                'type' => 'GROUPE_ECOLE',
+                'id'   => $groupementEcole->id
+            );
+          }
+        }
+
+        return $contexts;
     }
 
     /**

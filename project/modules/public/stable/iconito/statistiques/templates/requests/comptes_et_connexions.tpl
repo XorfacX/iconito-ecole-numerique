@@ -2,7 +2,7 @@
 
 <p>Au <span class="dateStats">{$ppo->filter->publishedTo->format('d/m/Y')}</span>, il y a <strong>{$ppo->requestClass->getNombreComptes()}</strong> compte(s).</p>
 <div>
-    <h3 class="mt2 mb1">Nombre de compte par profil</h3>
+    <h3 class="mt2 mb1">Nombre de compte par profil {copixzone process=statistiques|exportcsv part='comptesParProfil'}</h3>
     {assign var=comptesParProfil value=$ppo->requestClass->getNombreComptesParProfil()}
     <table class="viewItems visualize">
         <caption>Nombre de compte par profil</caption>

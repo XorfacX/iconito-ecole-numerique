@@ -22,3 +22,15 @@ table caption {display:none;}
 
 .mt2 {margin-top:2em;}
 .mb1 {margin-bottom:1em;}
+
+/* export CSV buttons */
+.export-csv-button {
+    background: url(../images/file_csv_off.png) no-repeat left center;
+    padding-left: 35px;
+    display: inline-block;
+    text-indent: -9999px;
+}
+
+.export-csv-button:hover {
+    background: url(../images/file_csv_on.png) no-repeat left center;
+}

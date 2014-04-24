@@ -13,6 +13,10 @@ class ActionGroupDefault extends enicActionGroup
 {
     public function beforeAction()
     {
+        if (!(bool)CopixConfig::get('statistiques|enabled')) {
+            return new CopixActionReturn (CopixActionReturn::HTTPCODE, CopixHTTPHeader::get404 (), "Page inaccessible");
+        }
+
 //        _currentUser()->assertCredential('module:*||access|@statistiques');
         $this->addJs('js/excanvas.js');  // For IE
         $this->addJs('js/jquery/jquery.visualize.js');
@@ -54,7 +58,7 @@ class ActionGroupDefault extends enicActionGroup
 
         $ppo->mapping = new ApiMapping;
 
-        $ppo->contexts = Kernel::getContextTree(true);
+        $ppo->contexts = Kernel::getStatisticsScopeChoices();
 
         $userExtras = _currentUser()->getExtras();
         $ppo->isAdmin = is_array($userExtras['link']);
@@ -68,8 +72,9 @@ class ActionGroupDefault extends enicActionGroup
     }
 
     /**
-    * R�cup�ration en session des param�tres de l'�v�nement en �dition
-    * @access: private.
+     * R�cup�ration en session des param�tres de l'�v�nement en �dition
+     *
+     * @return ConsolidatedStatisticFilter
     */
     public function _getSessionConsolidationStatisticFilter ()
     {
@@ -127,5 +132,29 @@ class ActionGroupDefault extends enicActionGroup
       $str[0] = strtolower($str[0]);
       $func = create_function('$c', 'return "_" . strtolower($c[1]);');
       return preg_replace_callback('/([A-Z])/', $func, $str);
+    }
+
+    /**
+     * Action d'export en CSV d'un tableau de données
+     */
+    public function processExportCsv()
+    {
+        _classInclude('statistiques|CsvExporter');
+
+        if (!$filter = $this->_getSessionConsolidationStatisticFilter()) {
+            // On renvoi une erreur si le filtre n'est pas en session
+            return new CopixActionReturn (CopixActionReturn::HTTPCODE, CopixHTTPHeader::get404 (), "Page introuvable");
+        }
+
+        if (!$filter->getTarget() || !$filter->getPublishedFrom() || !$filter->getPublishedTo()) {
+            // On revoi une erreur si les paramètre requis ne sont pas présents
+            return new CopixActionReturn (CopixActionReturn::HTTPCODE, CopixHTTPHeader::get404 (), "Page introuvable");
+        }
+
+        $csv = new CsvExporter($filter, _request('part'));
+
+        $csv->generate((is_array(_request('options')) ? _request('options') : (array)_request('options')));
+
+        return $csv->send('Ecole numérique - statistiques.csv');
     }
 }

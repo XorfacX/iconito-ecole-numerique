@@ -3058,6 +3058,7 @@ class Kernel
       }
 
       $tree = array();
+
       foreach ($citiesGroups as $citiesGroup) {
         if ($flat) {
           $tree['BU_GRVILLE|'.$citiesGroup->id_grv] = array('element' => $citiesGroup, 'parent' => null);
@@ -3112,6 +3113,162 @@ class Kernel
       }
 
       return $tree;
+    }
+
+    /**
+     * Retourne les scopes visibles par le membre connecté en fonction de ses rôles
+     *
+     * @return StatisticsScopeChoiceGroup
+     */
+    public static function getStatisticsScopeChoices()
+    {
+      _classInclude('kernel|Regroupement_Villes');
+      _classInclude('kernel|Regroupement_Ecoles');
+
+      $schoolDAO = _ioDAO('kernel|kernel_bu_ecole');
+      $classroomDAO = _ioDAO('kernel|kernel_bu_ecole_classe');
+      $animateurs2regroupements_dao = _ioDAO("kernel|kernel_animateurs2regroupements");
+      $ien2regroupements_dao = _ioDAO("kernel|kernel_ien2regroupements");
+
+      $ecoles = array();
+      $classes = array();
+      $groupesVilles = array();
+      $groupesEcoles = array();
+
+      foreach (self::getGroupsFromUserInfos(self::getUserInfo()) as $group) {
+        switch ($group['type']) {
+          case 'BU_ECOLE':
+            $ecoles[] = $schoolDAO->get($group['id']);
+            break;
+          case 'BU_CLASSE':
+            $classes[] = $classroomDAO->get($group['id']);
+            break;
+        }
+      }
+
+      $regroupementsAnimateur = $animateurs2regroupements_dao->findByUser(
+          _currentUser()->getExtra("type"),
+          _currentUser()->getExtra("id")
+      );
+      foreach ($regroupementsAnimateur as $groupementAnimateur) {
+        $regroupement = self::getRegroupement($groupementAnimateur);
+
+        if ($regroupement instanceof RegroupementVilles) {
+          $groupesVilles[] = $regroupement;
+        }
+
+        if ($regroupement instanceof RegroupementEcoles) {
+          $groupesEcoles[] = $regroupement;
+        }
+      }
+
+
+      $regroupementsIen = $ien2regroupements_dao->findByUser(
+          _currentUser()->getExtra("type"),
+          _currentUser()->getExtra("id")
+      );
+      foreach ($regroupementsIen as $groupementIen) {
+        $regroupement = self::getRegroupement($groupementIen);
+
+        if ($regroupement instanceof RegroupementVilles) {
+          $groupesVilles[] = $regroupement;
+        }
+
+        if ($regroupement instanceof RegroupementEcoles) {
+          $groupesEcoles[] = $regroupement;
+        }
+      }
+
+      _classInclude('statistiques|statistics_scope_choice');
+      _classInclude('statistiques|statistics_scope_choice_group');
+
+      $choices = new StatisticsScopeChoiceGroup('', 'Choices');
+
+      $ecolesChoices = new StatisticsScopeChoiceGroup('BU_ECOLE', 'Écoles');
+      foreach ($ecoles as $ecole) {
+        $ecolesChoices->addChoice(new StatisticsScopeChoice($ecole->numero, $ecole->nom, $ecole));
+      }
+      if (count($ecolesChoices->getChoices())) {
+        $choices->addChoice($ecolesChoices);
+      }
+
+      $classesChoices = new StatisticsScopeChoiceGroup('BU_CLASSE', 'Classes');
+      foreach ($classes as $classe) {
+        $classesChoices->addChoice(new StatisticsScopeChoice($classe->id, $classe->nom, $classe));
+      }
+      if (count($classesChoices->getChoices())) {
+        $choices->addChoice($classesChoices);
+      }
+
+      $groupesVillesChoices = new StatisticsScopeChoiceGroup('GROUPE_VILLE', 'Groupes de villes');
+      foreach ($groupesVilles as $groupeVille) {
+        $groupesVillesChoices->addChoice(new StatisticsScopeChoice($groupeVille->getId(), $groupeVille->getName(), $groupeVille));
+      }
+      if (count($groupesVillesChoices->getChoices())) {
+        $choices->addChoice($groupesVillesChoices);
+      }
+
+      $groupesEcolesChoices = new StatisticsScopeChoiceGroup('GROUPE_ECOLE', 'Groupes d\'écoles');
+      foreach ($groupesEcoles as $groupeEcole) {
+        $groupesEcolesChoices->addChoice(new StatisticsScopeChoice($groupeEcole->getId(), $groupeEcole->getName(), $groupeEcole));
+      }
+      if (count($groupesEcolesChoices->getChoices())) {
+        $choices->addChoice($groupesEcolesChoices);
+      }
+
+      return $choices;
+    }
+
+    /**
+     * Procède à l'instanciation d'un Regroupement en fonction du type de regroupement passé en entrée
+     *
+     * @param $regroupementItem
+     *
+     * @return RegroupementEcoles|RegroupementVilles
+     */
+    private static function getRegroupement($regroupementItem)
+    {
+      $grvilles_dao = _ioDAO("regroupements|grvilles");
+      $grvilles_gr2ville_dao = _ioDAO("regroupements|grvilles_gr2ville");
+      $grecoles_dao = _ioDAO("regroupements|grecoles");
+      $grecoles_gr2ecole_dao = _ioDAO("regroupements|grecoles_gr2ecole");
+
+      _classInclude('kernel|Regroupement_Villes');
+      _classInclude('kernel|Regroupement_Ecoles');
+
+      // Si c'est un groupe de villes...
+      if($regroupementItem->regroupement_type == 'villes') {
+        // On récupère le groupement de ville afin d'avoir son nom
+        $groupeVilles = $grvilles_dao->get($regroupementItem->regroupement_id);
+
+        if (false !== $groupeVilles) {
+          $regroupement = new RegroupementVilles($groupeVilles->id, $groupeVilles->nom, $groupeVilles);
+
+          // Pour toutes les villes du groupe
+          $villes = $grvilles_gr2ville_dao->findByGroupe($regroupementItem->regroupement_id);
+          foreach ($villes AS $ville) {
+            $regroupement->addVille($ville);
+          }
+        }
+      }
+
+      // Si c'est un groupe d'écoles...
+      if($regroupementItem->regroupement_type == 'ecoles') {
+        // On récupère le groupement d'écoles afin d'avoir son nom
+        $groupeEcoles = $grecoles_dao->get($regroupementItem->regroupement_id);
+
+        if (false !== $groupeEcoles) {
+          $regroupement = new RegroupementEcoles($groupeEcoles->id, $groupeEcoles->nom, $groupeEcoles);
+
+          // Pour toutes les écoles du groupe
+          $ecoles = $grecoles_gr2ecole_dao->findByGroupe($regroupementItem->regroupement_id);
+          foreach ($ecoles AS $ecole) {
+            $regroupement->addEcole($ecole);
+          }
+        }
+      }
+
+      return $regroupement;
     }
 
     /**
@@ -3214,48 +3371,44 @@ class Kernel
     {
         $object = false;
 
-      $dao = _ioDAO('kernel|kernel_bu_groupe_villes');
+        $dao = _ioDAO('kernel|kernel_bu_groupe_villes');
 
         switch ($type) {
             case "BU_GRVILLE":
-                $object = $id ? _dao('kernel|kernel_bu_groupe_villes')->get($id) : _record('kernel|kernel_bu_groupe_villes');
-                break;
+                return static::getNode('kernel|kernel_bu_groupe_villes', $id);
             case "BU_VILLE":
-                $object = $id ? _dao('kernel|kernel_bu_ville')->get($id) : _record('kernel|kernel_bu_ville');
-                break;
+                return static::getNode('kernel|kernel_bu_ville', $id);
             case "BU_ECOLE":
-                $object = $id ? _dao('kernel|kernel_bu_ecole')->get($id) : _record('kernel|kernel_bu_ecole');
-                break;
+                return static::getNode('kernel|kernel_bu_ecole', $id);
             case "BU_CLASSE":
-                $object = $id ? _dao('kernel|kernel_bu_ecole_classe')->get($id) : _record('kernel|kernel_bu_ecole_classe');
-                break;
+                return static::getNode('kernel|kernel_bu_ecole_classe', $id);
             case "CLUB":
-                $object = $id ? _dao('groupe|groupe')->get($id) : _record('groupe|groupe');
-                break;
+                return static::getNode('groupe|groupe', $id);
             case "USER_ENS": // Enseignant
             case "USER_VIL": // Agent de ville
             case "USER_ADM": // Administratif ecole
             case "USER_DIR": // Directeur
-                $object = $id ? _dao('kernel|kernel_bu_personnel')->get($id) : _record('kernel|kernel_bu_personnel');
-                break;
+                return static::getNode('kernel|kernel_bu_personnel', $id);
             case "USER_ELE":
-                $object = $id ? _dao('kernel|kernel_bu_ele')->get($id) : _record('kernel|kernel_bu_ele');
-                break;
+                return static::getNode('kernel|kernel_bu_ele', $id);
             case 'USER_RES':
-                $object = $id ? _dao('kernel|kernel_bu_res')->get($id) : _record('kernel|kernel_bu_res');
-                break;
+                return static::getNode('kernel|kernel_bu_res', $id);
             case "USER_EXT":
-                $object = $id ? _dao('kernel|kernel_ext_user')->get($id) : _record('kernel|kernel_ext_user');
-                break;
+                return static::getNode('kernel|kernel_ext_user', $id);
             case "MOD_TELEPROCEDURES":
                 return static::getNode('teleprocedures|teleprocedure', $id);
-
             case "MOD_LISTE":
                 return static::getNode('liste|liste_listes', $id);
-
             case "MOD_AGENDA":
                 return static::getNode('agenda|agenda', $id);
-
+            case "GROUPE_VILLE":
+                return static::getNode('regroupements|grvilles', $id);
+            case "GROUPE_ECOLE":
+                return static::getNode('regroupements|grecoles', $id);
+            case "MOD_BLOG":
+                return static::getNode('blog|blog');
+            case "MOD_CLASSEUR":
+                return static::getNode('classeur|classeur');
             default:
               $object = $id ? _dao($type)->get($id) : _record($type);
         }

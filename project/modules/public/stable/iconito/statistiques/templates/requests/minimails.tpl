@@ -1,4 +1,4 @@
-<h2>{$ppo->label}</h2>
+<h2>{$ppo->label} {copixzone process=statistiques|exportcsv part='minimails'}</h2>
 <p>
     Du <span class="dateStats">{$ppo->filter->publishedFrom->format('d/m/Y')}</span> au <span class="dateStats">{$ppo->filter->publishedTo->format('d/m/Y')}</span> :
     <ul>
@@ -7,7 +7,7 @@
     </ul>
 </p>
 
-<h3>Détail par profil</h3>
+<h3>Détail par profil {copixzone process=statistiques|exportcsv part='minimailsParProfil'}</h3>
 
 <table class="viewItems visualize">
     <tbody>

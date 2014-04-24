@@ -8,7 +8,11 @@ class ZoneDashboardStatistics extends CopixZone
         $ppo = new CopixPPO ();
         $toReturn = "";
 
-        $toReturn = $this->_usePPO ($ppo, 'dashboardStatistics.tpl');
+        // Si le module de statistiques est activé, on rend le template
+        if ((bool)CopixConfig::get('statistiques|enabled')) {
+            $toReturn = $this->_usePPO ($ppo, 'dashboardStatistics.tpl');
+        }
+
         return true;
     }
 

@@ -10,6 +10,10 @@ class ZoneConnectionsByProfile extends CopixZone
         $ppo->requestClass = $this->getParam('requestClass');
         $ppo->profile = $this->getParam('profile');
 
+        $ppo->options = array(
+            'profile' => $ppo->profile
+        );
+
         $toReturn = $this->_usePPO ($ppo, '_connectionsByProfile.tpl');
         return true;
     }

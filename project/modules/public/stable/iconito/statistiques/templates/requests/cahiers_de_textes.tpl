@@ -1,4 +1,4 @@
-<h2>{$ppo->label}</h2>
+<h2>{$ppo->label} {copixzone process=statistiques|exportcsv part='cahiersDeTextes'}</h2>
 <p>
     Du <span class="dateStats">{$ppo->filter->publishedFrom->format('d/m/Y')}</span> au <span class="dateStats">{$ppo->filter->publishedTo->format('d/m/Y')}</span> :
     <ul>

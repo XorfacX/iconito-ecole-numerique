@@ -6,8 +6,10 @@ use \ActivityStream\Client\Model\ResourceInterface;
 class DAORecordKernel_bu_ecole implements ResourceInterface
 {
     protected $_city = null;
+    protected $groupementsEcoles;
 
-    public function __toString() {
+    public function __toString ()
+    {
         return $this->nom;
     }
 
@@ -36,6 +38,20 @@ class DAORecordKernel_bu_ecole implements ResourceInterface
         }
         return $oHas;
     }
+
+  /**
+   * Retourne les groupements d'écoles
+   *
+   * @return array
+   */
+  public function getGroupementsEcoles()
+  {
+    if (null === $this->groupementsEcoles) {
+      $this->groupementsEcoles = _ioDAO('regroupements|grecoles')->getGroupementByEcole($this);
+    }
+
+    return $this->groupementsEcoles;
+  }
 
   /**
    * Return a resource from the current Object

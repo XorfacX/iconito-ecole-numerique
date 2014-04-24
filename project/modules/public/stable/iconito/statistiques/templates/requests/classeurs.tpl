@@ -1,4 +1,4 @@
-<h2>{$ppo->label}</h2>
+<h2>{$ppo->label} {copixzone process=statistiques|exportcsv part='classeurs'}</h2>
 <p>Au <span class="dateStats">{$ppo->filter->publishedTo->format('d/m/Y')}</span>, il y a :</p>
 <ul>
     <li><strong>{$ppo->requestClass->getNombreClasseurs()}</strong> classeur(s)</li>
