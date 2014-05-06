@@ -1,11 +1,1 @@
--- On supprime tous les accès minimails
-DELETE FROM `kernel_mod_enabled` WHERE module_type = 'MOD_MINIMAIL';
-
--- Autorisation par défaut des minimails pour toutes les classes
-INSERT INTO `kernel_mod_enabled`
-    SELECT 'BU_CLASSE', id, 'MOD_MINIMAIL', 0
-    FROM `kernel_bu_ecole_classe`
-    WHERE annee_scol IN (
-        SELECT id_as AS annee from `kernel_bu_annee_scolaire` WHERE current = 1
-    )
-;
+ALTER TABLE  `module_admindash` CHANGE  `social_stream`  `social_stream` VARCHAR( 1024 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL

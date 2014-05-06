@@ -8,8 +8,7 @@ class DAORecordKernel_bu_ecole implements ResourceInterface
     protected $_city = null;
     protected $groupementsEcoles;
 
-    public function __toString ()
-    {
+    public function __toString() {
         return $this->nom;
     }
 
@@ -23,6 +22,7 @@ class DAORecordKernel_bu_ecole implements ResourceInterface
 
         return $this->_city;
     }
+
 
     /**
      * Determine si l'ecole a une adresse renseignee ou non
@@ -39,67 +39,66 @@ class DAORecordKernel_bu_ecole implements ResourceInterface
         return $oHas;
     }
 
-  /**
-   * Retourne les groupements d'écoles
-   *
-   * @return array
-   */
-  public function getGroupementsEcoles()
-  {
-    if (null === $this->groupementsEcoles) {
-      $this->groupementsEcoles = _ioDAO('regroupements|grecoles')->getGroupementByEcole($this);
+    /**
+     * Retourne les groupements d'écoles
+     *
+     * @return array
+     */
+    public function getGroupementsEcoles()
+    {
+        if (null === $this->groupementsEcoles) {
+            $this->groupementsEcoles = _ioDAO('regroupements|grecoles')->getGroupementByEcole($this);
+        }
+
+        return $this->groupementsEcoles;
     }
 
-    return $this->groupementsEcoles;
-  }
+    /**
+     * Return a resource from the current Object
+     *
+     * @return Resource
+     */
+    public function toResource()
+    {
+        $resource = new EcoleNumeriqueActivityStreamResource(
+            $this->nom,
+            get_class($this),
+            $this->numero
+        );
 
-  /**
-   * Return a resource from the current Object
-   *
-   * @return Resource
-   */
-  public function toResource()
-  {
-    $resource = new EcoleNumeriqueActivityStreamResource(
-      $this->nom,
-      get_class($this),
-      $this->numero
-    );
+        $attributes = array(
+          'type',
+          'num_rue',
+          'num_seq',
+          'adresse1',
+          'adresse2',
+          'code_postal',
+          'commune',
+          'tel',
+          'id_ville',
+          'num_plan_interactif',
+        );
 
-    $attributes = array(
-      'type',
-      'num_rue',
-      'num_seq',
-      'adresse1',
-      'adresse2',
-      'code_postal',
-      'commune',
-      'tel',
-      'id_ville',
-      'num_plan_interactif',
-    );
+        $attributesValues = array();
+        foreach ($attributes as $attribute) {
+            $attributesValues[$attribute] = $this->$attribute;
+        }
 
-    $attributesValues = array();
-    foreach ($attributes as $attribute) {
-      $attributesValues[$attribute] = $this->$attribute;
+        $resource->setAttributes($attributesValues);
+
+        return $resource;
     }
 
-    $resource->setAttributes($attributesValues);
-
-    return $resource;
-  }
-
-  /**
-   * L'adresse de l'ecole en une ligne
-   *
-   * @author Christophe Beyer <cbeyer@cap-tic.fr>
-   * @since 2011/11/02
-   * @return string L'adresse
-   */
-  public function getFullAddress()
-  {
-      $address = AnnuaireService::googleMapsFormatAdresse('ecole', $this);
-      return $address;
+    /**
+     * L'adresse de l'ecole en une ligne
+     *
+     * @author Christophe Beyer <cbeyer@cap-tic.fr>
+     * @since 2011/11/02
+     * @return string L'adresse
+     */
+    public function getFullAddress() {
+        $address = AnnuaireService::googleMapsFormatAdresse('ecole', $this);
+        return $address;
     }
 
     /**
@@ -127,6 +126,18 @@ class DAOKernel_bu_ecole extends enicService {
         parent::__construct();
         $this->db = & enic::get('model');
     }
+
+    /**
+     * Récupérer le(s) message(s) d'erreurs
+     *
+     * @author Philippe ROSER <proser@cap-tic.fr>
+     * @since 2012/12/06
+     * @return array
+     */
+    public function getErrorsMessages() {
+        return $this->errorsMessages;
+    }
+
 
     /**
      * Retourne les classes pour une ville donnée
@@ -208,16 +219,6 @@ class DAOKernel_bu_ecole extends enicService {
         return new CopixDAORecordIterator(_doQuery($sql), $this->getDAOId());
     }
 
-    /**
-     * Récupérer le(s) message(s) d'erreurs
-     *
-     * @author Philippe ROSER <proser@cap-tic.fr>
-     * @since 2012/12/06
-     * @return array
-     */
-    public function getErrorsMessages() {
-        return $this->errorsMessages;
-    }
 
     /**
      * Vérifier la conformité d'un élément de l'école
@@ -340,4 +341,5 @@ SQL;
 
         return null;
     }
+
 }

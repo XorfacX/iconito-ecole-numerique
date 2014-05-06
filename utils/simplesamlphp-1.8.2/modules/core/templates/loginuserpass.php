@@ -10,7 +10,7 @@ $this->includeAtTemplateBase('includes/header.php');
 
 ?>
 
-<h2 class="normal"><?php echo $this->t('{login:user_pass_header}'); ?></h2>
+<h2 class="normal"><?php echo $this->t('{login:user_pass_header}'); ?> <a href="../../../" class="button button-back">Retour</a></h2>
 
 
 <?php

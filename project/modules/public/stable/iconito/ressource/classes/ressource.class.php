@@ -30,9 +30,9 @@ class Ressource
 
     public function searchRessources( $params, $annu=-1 )
     {
-        // Découpage du pattern
+        // Dï¿½coupage du pattern
         $testpattern=str_replace(array(" ","%20"), "%20", $params["text"]);
-        $temp = split ("%20", $testpattern);
+        $temp = explode ("%20", $testpattern);
 
         // Conditions de recherche
         $conditions = _daoSp ();
@@ -57,7 +57,7 @@ class Ressource
         $conditions->addCondition("ressources_id_annu", "=", $annu);
         */
 
-        // Récupération de la liste des ressources
+        // Rï¿½cupï¿½ration de la liste des ressources
         $ressources_dao = CopixDAOFactory::create("ressource_ressources");
         return $ressources_dao->findBy($conditions);
     }

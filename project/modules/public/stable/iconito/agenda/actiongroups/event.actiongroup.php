@@ -449,7 +449,7 @@ class ActionGroupEvent extends CopixActionGroup
             if (!ereg("([0-2])?[0-9]:[0-5][0-9]", $obj->heuredeb_event)){
                 $toReturn[] = CopixI18N::get('agenda|agenda.error.formheuredeb');
             } else {
-                $heure = split(":", $obj->heuredeb_event);
+                $heure = explode(":", $obj->heuredeb_event);
                 if($heure[0] < 0 || $heure[0] > 23 || $heure[1] < 0 || $heure[1] > 59){
                     $toReturn[] = CopixI18N::get('agenda|agenda.error.formheuredeb');
                 }
@@ -460,7 +460,7 @@ class ActionGroupEvent extends CopixActionGroup
             if (!ereg("([0-2])?[0-9]:[0-5][0-9]",$obj->heurefin_event)){
                 $toReturn[] = CopixI18N::get('agenda|agenda.error.formheurefin');
             } else {
-                $heure = split(":", $obj->heurefin_event);
+                $heure = explode(":", $obj->heurefin_event);
                 if($heure[0] < 0 || $heure[0] > 23 || $heure[1] < 0 || $heure[1] > 59){
                     $toReturn[] = CopixI18N::get('agenda|agenda.error.formheurefin');
                 }

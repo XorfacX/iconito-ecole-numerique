@@ -68,9 +68,10 @@ class ZoneArborescenceClasseurs extends enicZone
         $classeurDAO = _dao("classeur|classeur");
         foreach ($classeurIds as $classeurId) {
             $classeur = $classeurDAO->get($classeurId);
+            $classeur->titre = $classeur->realName();
             $ppo->classeurs[] = $classeur;
         }
-
+        
         _classInclude('classeurservice');
         $ppo->classeursOuverts = ClasseurService::getClasseursTreeState ();
         if (!is_array($ppo->classeursOuverts)) {

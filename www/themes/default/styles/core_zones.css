@@ -609,3 +609,17 @@ form .format, form .ui-datepicker-append {
 	 display:inline-block;
 	 margin:0.5em 0;
  }
+
+/************************************************
+ * TWITTER WIDGET
+ ***********************************************/
+
+.twitterLabel {
+    float:left;
+}
+
+.twitterWidget {
+    width:50%;
+    height:100px;
+    margin:0 0 0 5px;
+}
