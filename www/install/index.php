@@ -422,6 +422,8 @@ TABLE.conftable TD {
             }
         } else {
             display_message( _LOGO_GOOD."F&eacute;licitations, ICONITO Ecole Num&eacute;rique est install&eacute; !" );
+            display_message( "Avant de l'utiliser, vous devez imp&eacute;rativement mettre &agrave; jour votre base de donn&eacute;es." );
+            display_link( "Pour mettre &agrave; jour la base de donn&eacute;es, cliquez ici", "upgrade_bdd.php" );
             display_message( "Pour vous connecter, utilisez le login <b>admin</b> et le mot de passe d'administration choisi pr&eacute;c&eacute;dement." );
             display_link( "Cliquez ici pour y acc&eacute;der", ".." );
             display_message( "Afin de d&eacute;couvrir Iconito, vous pouvez utiliser le \"jeu d'essai\", un ensemble de comptes d'acc&egrave;s et de contenus de d&eacute;monstration. Pour l'installer, connectez-vous en administrateur et allez dans le module d'utilitaires syst&egrave;me." );

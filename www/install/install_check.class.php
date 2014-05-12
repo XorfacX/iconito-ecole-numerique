@@ -263,7 +263,7 @@ function check_mysql_tables($database)
     $sql = "SHOW TABLES FROM $database";
     $result = mysql_query($sql);
 
-    while ($row = mysql_fetch_array($result)) {
+    if($result) while ($row = mysql_fetch_array($result)) {
         $data[] = $row[0];
     }
     return $data;

@@ -1,12 +1,7 @@
 <?php
 
-$version = trim(file_get_contents('version.txt'));
-
-$version_txt = ($version) ? $version : 'inconnue';
-
 if (!defined('_MAIN_TITLE'))
-    define( '_MAIN_TITLE', "Installation d'Iconito Ecole Num&eacute;rique ".$version_txt );
-define( '_VERSION_TXT', $version_txt);
+    define( '_MAIN_TITLE', "Installation d'Iconito Ecole Num&eacute;rique" );
 
 function display_menu()
 {
@@ -18,7 +13,7 @@ function display_menu()
 ?>
 <html>
 <head>
-  <title>Installation d'Iconito Ecole Num&eacute;rique <?php echo _VERSION_TXT ?></title>
+  <title>Installation d'Iconito Ecole Num&eacute;rique</title>
 <style>
 <!--
 @font-face {
