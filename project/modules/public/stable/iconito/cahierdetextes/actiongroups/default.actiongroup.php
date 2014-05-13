@@ -1017,11 +1017,15 @@ class ActionGroupDefault extends BaseMemoActionGroup
         $cahierInfos            = Kernel::getModParent('MOD_CAHIERDETEXTES', $ppo->cahierId);
         $ppo->nodeInfos         = array('type' => $cahierInfos[0]->module_type, 'id' => $cahierInfos[0]->module_id);
 
+        $memoDAO    = _ioDAO ('cahierdetextes|cahierdetextesmemo');
+        $memo2fichiersDAO    = _ioDAO ('cahierdetextes|cahierdetextesmemo2files');
+        $memo2eleveDAO            = _ioDAO ('cahierdetextes|cahierdetextesmemo2eleve');
+        $fichierMalleDAO     = _ioDAO('malle|malle_files');
+        $fichierClasseurDAO  = _ioDAO('classeur|classeurfichier');
+
         if (is_null($memoId = _request('memoId', null))) {
             $ppo->memo = _record ('cahierdetextes|cahierdetextesmemo');
-        }
-        else {
-            $memoDAO    = _ioDAO ('cahierdetextes|cahierdetextesmemo');
+        } else {
             $ppo->memo  = $memoDAO->get($memoId);
 
             // Le mémo n'a pas été trouvé d'après son identifiant -> erreur
@@ -1039,7 +1043,6 @@ class ActionGroupDefault extends BaseMemoActionGroup
             $ppo->memo->date_max_signature = CopixDateTime::yyyymmddToDate($ppo->memo->date_max_signature);
 
             // Récupération des élèves liés au mémo
-            $memo2eleveDAO           = _ioDAO ('cahierdetextes|cahierdetextesmemo2eleve');
             $ppo->elevesSelectionnes = $memo2eleveDAO->findElevesParMemo ($ppo->memo->id);
 
             _classInclude('cahierdetextes|cahierdetextesmemoservices');
