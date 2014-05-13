@@ -1,7 +1,7 @@
 <?php
 
 _classInclude('statistiques|consolidatedstatisticfilter');
-_classInclude('statistiques|apimapping');
+_classInclude('statistiques|statistiquesconfiguration');
 
 /**
  * Actiongroup du module Statistiques
@@ -56,7 +56,7 @@ class ActionGroupDefault extends enicActionGroup
           $ppo->stat = _request('stat','comptesEtConnexions'); // On affiche l'onglet Comptes par défaut si aucun n'est sélectionné
         }
 
-        $ppo->mapping = new ApiMapping;
+        $ppo->mapping = new StatistiquesConfiguration();
 
         $ppo->contexts = Kernel::getStatisticsScopeChoices();
 

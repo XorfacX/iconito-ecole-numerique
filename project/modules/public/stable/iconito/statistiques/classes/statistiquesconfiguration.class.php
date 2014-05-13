@@ -1,8 +1,11 @@
 <?php
 
-class ApiMapping
+_classInclude('statistiques|StatistiquesFormFilter');
+_classInclude('statistiques|StatistiquesFactory');
+
+class StatistiquesConfiguration
 {
-    public function getFiltersCategories()
+    public function getCategories()
     {
         return array(
             'comptesEtConnexions' => array('label' => 'Usagers', 'template' => 'requests/comptes_et_connexions.tpl', 'class' => function($filter) {_classInclude('statistiques|apiuserrequest'); return new ApiUserRequest($filter); }),
@@ -17,61 +20,64 @@ class ApiMapping
     }
 
     /**
-     * Returns infos concering filter
+     * Retourne la configuration d'une catégorie de statistiques
      *
-     * @param string $key the key o the filter
+     * @param string $category La clé de la catégorie
      *
      * @throws Exception
      *
      * @return array
      */
-    public function getFilterCategory($key)
+    public function getConfiguration($category)
     {
-        $filters = $this->getFiltersCategories();
+        $categories = $this->getCategories();
 
-        if (!isset($filters[$key])) {
+        if (!isset($categories[$category])) {
             throw new Exception('The requested key is invalid');
         }
 
-        return $filters[$key];
+        return $categories[$category];
     }
 
     /**
-     * Get label for selected key
+     * Retourne le libellé d'une statistique donnée
      *
-     * @param string $key
-     * @return array
+     * @param string $category
+     *
+     * @return string
      */
-    public function getLabel($key)
+    public function getLabel($category)
     {
-        $filter = $this->getFilterCategory($key);
+        $configuration = $this->getConfiguration($category);
 
-        return $filter['label'];
+        return $configuration['label'];
     }
 
     /**
-     * Get label for selected key
+     * Retourne le template d'une statistique donnée
      *
-     * @param string $key
-     * @return array
+     * @param string $category
+     *
+     * @return string
      */
-    public function getTemplate($key)
+    public function getTemplate($category)
     {
-        $filter = $this->getFilterCategory($key);
+        $configuration = $this->getConfiguration($category);
 
-        return $filter['template'];
+        return $configuration['template'];
     }
 
     /**
-     * Get label for selected key
+     * Retourne la classe de récupération des valeurs de statistiques
      *
-     * @param string $key
-     * @return array
+     * @param string $category
+     *
+     * @return BaseStatistiques
      */
-    public function getClass($key, $baseFilter)
+    public function getClass($category, StatistiquesFormFilter $formFilter)
     {
-        $filter = $this->getFilterCategory($key);
+        $configuration = $this->getConfiguration($category);
 
-        return $filter['class']($baseFilter);
+        return StatistiquesFactory::get($configuration['class'], $formFilter);
     }
 }

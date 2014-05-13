@@ -1,5 +1,7 @@
 <?php
 
+_classInclude('statistiques|statistiquesconfiguration');
+
 /**
  * @package    Iconito
  * @subpackage Gestionautonome
@@ -18,7 +20,7 @@ class ZoneApiRequest extends CopixZone
         $filter = $this->getParam('filter');
 
         if ($stat) {
-            $mapping = new ApiMapping;
+            $mapping = new StatistiquesConfiguration();
             $class = $mapping->getClass($stat, $filter);
             $template = $mapping->getTemplate($stat);
             $ppo->requestClass = $class;

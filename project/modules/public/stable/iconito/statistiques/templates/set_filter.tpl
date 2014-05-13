@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+{foreach from=$ppo->mapping->getCategories() key=stat item=infos}
+    <a href="{copixurl dest="statistiques|default|index" stat=$stat}" class="button">{$infos.label}</a>
+{/foreach}
+
 <h2>{i18n key="statistiques.label.title"}</h2>
 
 <form action="{copixurl dest="statistiques|default|index" stat=$ppo->stat}" method="post" class="edit">
