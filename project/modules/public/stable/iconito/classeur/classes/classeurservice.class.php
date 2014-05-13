@@ -552,7 +552,7 @@ class ClasseurService
                 }
             }
         }
-        
+
         return $datas;
     }
 
@@ -570,10 +570,10 @@ class ClasseurService
     {
         $dir = realpath('./static/classeur').'/'.$classeur->id.'-'.$classeur->cle.'/';
         $extension = strtolower(strrchr($name, '.'));
-        
+
         $fichierDAO = _ioDAO ('classeur|classeurfichier');
         $fichier    = _record ('classeur|classeurfichier');
-                       
+
         $fichier->classeur_id   = $classeur->id;
         $fichier->dossier_id    = $dossier ? $dossier->id : 0;
         $fichier->titre         = _request('fichier_titre', substr(substr($name, 0, strrpos($name, '.')), 0, 63));
@@ -584,13 +584,13 @@ class ClasseurService
         $fichier->date_upload   = date('Y-m-d H:i:s');
         $fichier->user_type     = _currentUser()->getExtra('type');
         $fichier->user_id       = _currentUser()->getExtra('id');
-        
+
         if (isset($dossier) && $dossier->casier) {
             $fichier->fichier = $fichier->titre.'_'._currentUser()->getExtra('prenom').'_'._currentUser()->getExtra('nom').$extension;
         } else {
             $fichier->fichier = $name;
         }
-        
+
         $fichierDAO->insert($fichier);
 
         $dossierDAO = _ioDAO('classeur|classeurdossier');
@@ -1015,8 +1015,11 @@ class ClasseurService
   {
       if (isset($_ENV['DYLD_LIBRARY_PATH']) && $_ENV['DYLD_LIBRARY_PATH']== '/Applications/MAMP/Library/lib:') // Patch MAMP
           $dossierTmp = '/tmp';
-      else
-          $dossierTmp = sys_get_temp_dir();
+      elseif (ini_get('upload_tmp_dir')) {
+          $dossierTmp = ini_get('upload_tmp_dir');
+      } else {
+           $dossierTmp = sys_get_temp_dir();
+      }
       if (substr($dossierTmp, -1) != '/') {
           $dossierTmp = $dossierTmp.'/';
       }

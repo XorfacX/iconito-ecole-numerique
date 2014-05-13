@@ -2,12 +2,7 @@
 ob_start();
 session_start();
 
-$version = trim(file_get_contents('version.txt'));
-
-$version_txt = ($version) ? $version : 'inconnue';
-
-
-define( '_MAIN_TITLE', "Mise &agrave; jour de la base de donn&eacute;es d'<a href=\"../\">ICONITO - Ecole Num&eacute;rique</a> (version ".$version_txt.")" );
+define( '_MAIN_TITLE', "Mise &agrave; jour de la base de donn&eacute;es d'<a href=\"../\">ICONITO - Ecole Num&eacute;rique</a>" );
 
 
 require_once ("install_check.class.php");
@@ -125,9 +120,10 @@ if (!$connexion) {
 
   } else {
 
-    display_message(_LOGO_WARNING . "Votre base de donn&eacute;es est &agrave; jour !");
+    display_message(_LOGO_GOOD . "Votre base de donn&eacute;es est &agrave; jour !");
   }
 
+  display_link("Cliquez ici pour revenir &agrave; votre Iconito &Eacute;cole Num&eacute;rique", '..');
 
 
 
