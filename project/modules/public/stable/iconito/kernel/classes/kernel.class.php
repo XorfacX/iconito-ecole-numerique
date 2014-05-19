@@ -1595,6 +1595,7 @@ class Kernel
         if (0 == strncmp($node_type, "USER_", 5)) {
             $perso_list = array('MOD_ANNUAIRE', 'MOD_MINIMAIL', 'MOD_GROUPE', 'MOD_RESSOURCE');
             foreach ($perso_list AS $perso_module) {
+                $perso = new CopixPPO();
                 $perso->node_type = $node_type;
                 $perso->node_id = $node_id;
                 $perso->module_id = NULL;
