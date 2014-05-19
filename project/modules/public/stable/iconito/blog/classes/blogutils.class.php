@@ -300,14 +300,16 @@ function getModeratorList($id_blog, $right)
         case "BU_CLASSE" :
             $owners = $annuaireService->getEnseignantInClasse($nId);
             foreach($owners as $owner) {
-                $user_id = Kernel::getUserInfo('USER_ENS', $owner['id'])['user_id'];
+                $user_infos = Kernel::getUserInfo('USER_ENS', $owner['id']);
+                $user_id = $user_infos['user_id'];
                 $tabDest[$user_id] = $user_id;
             }
             break;
         case "BU_ECOLE" :
             $owners = $annuaireService->getDirecteurInEcole($nId);
             foreach($owners as $owner) {
-                $user_id = Kernel::getUserInfo('USER_ENS', $owner['id'])['user_id'];
+                $user_infos = Kernel::getUserInfo('USER_ENS', $owner['id']);
+                $user_id = $user_infos['user_id'];
                 $tabDest[$user_id] = $user_id;
             }
             break;
@@ -317,7 +319,8 @@ function getModeratorList($id_blog, $right)
             foreach($owners as $owner) {
                 if($owner['droit'] >= PROFILE_CCV_ADMIN)
                 {
-                    $user_id = Kernel::getUserInfo($owner['type'], $owner['id'])['user_id'];
+                    $user_infos = Kernel::getUserInfo($owner['type'], $owner['id']);
+                    $user_id = $user_infos['user_id'];
                     $tabDest[$user_id] = $user_id;
                 }
             }
@@ -328,7 +331,8 @@ function getModeratorList($id_blog, $right)
             foreach($owners as $owner) {
                 if($owner['type']== 'USER_VIL')
                 {
-                    $user_id = Kernel::getUserInfo($owner['type'], $owner['id'])['user_id'];
+                    $user_infos = Kernel::getUserInfo($owner['type'], $owner['id']);
+                    $user_id = $user_infos['user_id'];
                     $tabDest[$user_id] = $user_id;
                 }
             }
@@ -339,7 +343,8 @@ function getModeratorList($id_blog, $right)
             foreach($owners as $owner) {
                 if($owner['type']== 'USER_VIL')
                 {
-                    $user_id = Kernel::getUserInfo($owner['type'], $owner['id'])['user_id'];
+                    $user_infos = Kernel::getUserInfo($owner['type'], $owner['id']);
+                    $user_id = $user_infos['user_id'];
                     $tabDest[$user_id] = $user_id;
                 }
             }
