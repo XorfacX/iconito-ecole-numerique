@@ -45,7 +45,7 @@
 <h2>{i18n key="statistiques.label.results"}</h2>
 <div id="tabs" class="ui-tabs ui-widget ui-widget-content ui-corner-all">
     <ul class="ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all">
-    {foreach from=$ppo->mapping->getFiltersCategories() key=stat item=infos}
+    {foreach from=$ppo->mapping->getCategories() key=stat item=infos}
         <li class="ui-state-default ui-corner-top ui-tabs-active {if $stat eq $ppo->stat}ui-state-active{/if}"><a href="{copixurl dest="statistiques|default|index" stat=$stat}">{$infos.label}</a></li>
     {/foreach}
     </ul>
