@@ -37,7 +37,8 @@ class ZoneUserLogged extends enicZone
         $this->addCss('styles/module_auth.css');
 
         $ppo->conf_Cas_actif = (CopixConfig::exists('default|conf_Cas_actif')?CopixConfig::get ('default|conf_Cas_actif'):0);
-
+        $ppo->conf_Saml_actif = (CopixConfig::exists('default|conf_Saml_actif')?CopixConfig::get ('default|conf_Saml_actif'):0);
+        
         //load tpl
         $toReturn = $this->_usePPO ($ppo, 'userlogged.tpl');
     }

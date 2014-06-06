@@ -15,9 +15,9 @@
  * @category   Zend
  * @package    Zend_Locale
  * @subpackage Data
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
- * @version    $Id: Data.php 24140 2011-06-14 02:11:19Z adamlundrigan $
+ * @version    $Id: Data.php 24766 2012-05-06 02:51:42Z adamlundrigan $
  */
 
 /**
@@ -31,7 +31,7 @@ require_once 'Zend/Locale.php';
  * @category   Zend
  * @package    Zend_Locale
  * @subpackage Data
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Locale_Data
@@ -114,12 +114,12 @@ class Zend_Locale_Data
                         if (empty($attribute)) {
                             // Case 1
                             $temp[] = (string) $found;
-                        } elseif (empty($temp[(string) $found[$attribute]])){
+                        } else if (empty($temp[(string) $found[$attribute]])){
                             // Case 2
                             $temp[(string) $found[$attribute]] = (string) $found;
                         }
 
-                    } elseif (empty ($temp[$value])) {
+                    } else if (empty ($temp[$value])) {
 
                         if (empty($attribute)) {
                             // Case 3
@@ -343,7 +343,7 @@ class Zend_Locale_Data
                             unset($temp[$key]);
                         }
                     }
-                } elseif ($value === 2) {
+                } else if ($value === 2) {
                     foreach($temp as $key => $value) {
                         if (is_numeric($key) or ($key == 'QO') or ($key == 'QU')) {
                             unset($temp[$key]);
@@ -361,7 +361,7 @@ class Zend_Locale_Data
                 break;
 
             case 'type':
-                if (empty($type)) {
+                if (empty($value)) {
                     $temp = self::_getFile($locale, '/ldml/localeDisplayNames/types/type', 'type');
                 } else {
                     if (($value == 'calendar') or

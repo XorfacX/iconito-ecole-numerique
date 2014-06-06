@@ -36,6 +36,11 @@ class ActionGroupCharte extends enicActionGroup
             return $this->go(isset($this->flash->redirect) ? $this->flash->redirect : '||');
         }else{
             $ppo = new CopixPPO();
+            if( CopixConfig::exists('default|conf_Saml_actif') && CopixConfig::get ('default|conf_Saml_actif') ) {
+                $ppo->conf_Saml_actif = true;
+            } else {
+                $ppo->conf_Saml_actif = false;
+            }
             return _arPPO($ppo, 'charte.no.tpl');
         }
 

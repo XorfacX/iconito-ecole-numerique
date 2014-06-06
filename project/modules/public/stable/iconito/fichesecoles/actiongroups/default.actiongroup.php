@@ -79,6 +79,8 @@ class ActionGroupDefault extends EnicActionGroup
             'txt' => CopixCustomI18N::get('annuaire|annuaire.back%%structure%%', array('catalog' => $vocabularyCatalog->id_vc)),
           );
         }
+        if( CopixConfig::exists('|can_annuaire_menu') && !CopixConfig::get('|can_annuaire_menu') )
+            $menu = array();
 
         $tpl->assign('MENU', $menu);
         $tpl->assign("MAIN", $main);

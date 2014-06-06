@@ -143,6 +143,10 @@ class ActionGroupAnnuaire extends EnicActionGroup
         $menu[] = array('txt' => CopixI18N::get('groupe|groupe.annuaire'), 'url' => CopixUrl::get('groupe||getListPublic'), 'size' => '110');
         }
         $menu[] = array('txt' => CopixI18N::get('public|public.blog.annuaire'), 'url' => CopixUrl::get('public||getListBlogs'));
+
+        if( CopixConfig::exists('|can_annuaire_menu') && !CopixConfig::get('|can_annuaire_menu') ) {
+            $menu = array();
+        }
         $tpl->assign('MENU', $menu);
 
         $tpl->assign("MAIN", $result);
@@ -231,6 +235,9 @@ class ActionGroupAnnuaire extends EnicActionGroup
             'txt' => CopixI18N::get('annuaire|annuaire.backVille'),
         );
 
+        if( CopixConfig::exists('|can_annuaire_menu') && !CopixConfig::get('|can_annuaire_menu') ) {
+            $menu = array();
+        }
         $tpl->assign('MENU', $menu);
         $tpl->assign("MAIN", $result);
 
@@ -301,6 +308,9 @@ class ActionGroupAnnuaire extends EnicActionGroup
         $menu[] = array('txt' => CopixI18N::get('annuaire|annuaire.backEcole'), 'url' => CopixUrl::get('|getAnnuaireEcole', array('ecole' => $ecole)));
         $menu[] = array('txt' => CopixI18N::get('annuaire|annuaire.backVille'), 'url' => CopixUrl::get('|getAnnuaireVille', array('ville' => $rEcole['ALL']->vil_id_vi)));
 
+        if( CopixConfig::exists('|can_annuaire_menu') && !CopixConfig::get('|can_annuaire_menu') ) {
+            $menu = array();
+        }
         $tpl->assign('MENU', $menu);
         $tpl->assign('MAIN', $result);
 

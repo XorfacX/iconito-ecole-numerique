@@ -14,9 +14,9 @@
  *
  * @category  Zend
  * @package   Zend_Locale
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
- * @version   $Id: Locale.php 23775 2011-03-01 17:25:24Z ralph $
+ * @version   $Id: Locale.php 24593 2012-01-05 20:35:02Z matthew $
  */
 
 /**
@@ -24,7 +24,7 @@
  *
  * @category  Zend
  * @package   Zend_Locale
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license   http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Locale
@@ -381,7 +381,7 @@ class Zend_Locale
             if ($language !== 'C') {
                 if (strpos($language, '.') !== false) {
                     $language = substr($language, 0, strpos($language, '.'));
-                } elseif (strpos($language, '@') !== false) {
+                } else if (strpos($language, '@') !== false) {
                     $language = substr($language, 0, strpos($language, '@'));
                 }
 
@@ -830,7 +830,7 @@ class Zend_Locale
             trigger_error('You are running Zend_Locale in compatibility mode... please migrate your scripts', E_USER_NOTICE);
             if (isset(self::$_localeData[$locale]) === true) {
                 return $locale;
-            } elseif (!$strict) {
+            } else if (!$strict) {
                 $locale = explode('_', $locale);
                 if (isset(self::$_localeData[$locale[0]]) === true) {
                     return $locale[0];
@@ -839,7 +839,7 @@ class Zend_Locale
         } else {
             if (isset(self::$_localeData[$locale]) === true) {
                 return true;
-            } elseif (!$strict) {
+            } else if (!$strict) {
                 $locale = explode('_', $locale);
                 if (isset(self::$_localeData[$locale[0]]) === true) {
                     return true;

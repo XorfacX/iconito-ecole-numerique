@@ -62,6 +62,12 @@ class ZoneInfosEcole extends CopixZone
             $tpl->assign ('classes', $classes);
 
             // BOOST 1s
+            if( CopixConfig::exists('|can_annuaire_menu') && !CopixConfig::get('|can_annuaire_menu') ) {
+                $tpl->assign ('displayComboEcoles', false);
+            } else {
+                $tpl->assign ('displayComboEcoles', true);
+            }
+
             $tpl->assign ('comboecoles', CopixZone::process ('annuaire|comboecolesinville', array('droit'=>'VOIR', 'ville'=>$rEcole['ALL']->vil_id_vi, 'value'=>$ecole, 'fieldName'=>'ecole', 'attribs'=>'CLASS="annu_combo_popup" ONCHANGE="if (this.value) this.form.submit();"')));
 
         $toReturn = $tpl->fetch ('infosecole.tpl');

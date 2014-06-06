@@ -16,8 +16,8 @@
  * @category   Zend
  * @package    Zend_Http
  * @subpackage Response
- * @version    $Id: Stream.php 23775 2011-03-01 17:25:24Z ralph $
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @version    $Id: Stream.php 24593 2012-01-05 20:35:02Z matthew $
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 
@@ -28,7 +28,7 @@
  *
  * @package    Zend_Http
  * @subpackage Response
- * @copyright  Copyright (c) 2005-2011 Zend Technologies USA Inc. (http://www.zend.com)
+ * @copyright  Copyright (c) 2005-2012 Zend Technologies USA Inc. (http://www.zend.com)
  * @license    http://framework.zend.com/license/new-bsd     New BSD License
  */
 class Zend_Http_Response_Stream extends Zend_Http_Response
@@ -83,8 +83,7 @@ class Zend_Http_Response_Stream extends Zend_Http_Response
      *
      * @return boolean
      */
-    public function getCleanup()
-    {
+    public function getCleanup() {
         return $this->_cleanup;
     }
 
@@ -93,8 +92,7 @@ class Zend_Http_Response_Stream extends Zend_Http_Response
      *
      * @param bool $cleanup Set cleanup trigger
      */
-    public function setCleanup($cleanup = true)
-    {
+    public function setCleanup($cleanup = true) {
         $this->_cleanup = $cleanup;
     }
 
@@ -103,8 +101,7 @@ class Zend_Http_Response_Stream extends Zend_Http_Response
      *
      * @return string
      */
-    public function getStreamName()
-    {
+    public function getStreamName() {
         return $this->stream_name;
     }
 
@@ -114,8 +111,7 @@ class Zend_Http_Response_Stream extends Zend_Http_Response
      * @param string $stream_name Name to set
      * @return Zend_Http_Response_Stream
      */
-    public function setStreamName($stream_name)
-    {
+    public function setStreamName($stream_name) {
         $this->stream_name = $stream_name;
         return $this;
     }

@@ -1,0 +1,4 @@
+#page .thm-logo {
+	background: url(../img/thm_header_logo.png) no-repeat 5px 3px;
+}
+#page .thm-logo a.logo {width:185px;}

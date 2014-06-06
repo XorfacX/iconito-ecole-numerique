@@ -168,6 +168,51 @@ class ActionGroupDashboard extends enicActionGroup
                 $nodes[$node['type']][$node['id']] = $node;
         }
 
+        if( CopixConfig::exists('|use_class_validity') && CopixConfig::get('|use_class_validity') ) {
+            $tplModule->assign("use_class_validity", 1);
+            if(isset($nodes['BU_CLASSE'])) {
+                foreach( $nodes['BU_CLASSE'] as $classe_id => $classe_data ) {
+                    $validity_timestamp = Kernel::getValidityDateForClass( $classe_data['id'] );
+                    
+                    if($validity_timestamp) {
+                        $nodes['BU_CLASSE'][$classe_id]['validity_timestamp'] = $validity_timestamp;
+                        $nodes['BU_CLASSE'][$classe_id]['validity_date']      = date('d/m/Y',$validity_timestamp);
+                        // Si l'école existe : mémoriser max validity
+
+                        if(isset($nodes['BU_ECOLE'][ $nodes['BU_CLASSE'][$classe_id]['ALL']->cla_ecole ])) {
+                            if(
+                                !isset($nodes['BU_ECOLE'][ $nodes['BU_CLASSE'][$classe_id]['ALL']->cla_ecole ]['validity_timestamp'])
+                                ||
+                                $nodes['BU_ECOLE'][ $nodes['BU_CLASSE'][$classe_id]['ALL']->cla_ecole ]['validity_timestamp'] < $validity_timestamp
+                            ) {
+                                $nodes['BU_ECOLE'][ $nodes['BU_CLASSE'][$classe_id]['ALL']->cla_ecole ]['validity_timestamp'] = $validity_timestamp;
+                                $nodes['BU_ECOLE'][ $nodes['BU_CLASSE'][$classe_id]['ALL']->cla_ecole ]['validity_date']      = date('d/m/Y',$validity_timestamp);
+                            }
+                        }
+                    }
+                }
+            }
+
+            $count_validity_ok  = 0;
+            $count_validity_bad = 0;
+            foreach( $nodes as $node_type => $node_type_list ) {
+                foreach( $node_type_list as $node_id => $node ) {
+                    if(isset($nodes[$node_type][$node_id]['validity_timestamp'])) {
+                        if($nodes[$node_type][$node_id]['validity_timestamp']<time()) {
+                            unset($nodes[$node_type][$node_id]);
+                            $count_validity_bad++;
+                        } else {
+                            $count_validity_ok++;
+                        }
+                    }
+                }
+            }
+
+        } else {
+            $tplModule->assign("use_class_validity", 0);
+        }
+
+
 
         /* DRAFT WORKING */
         // _dump($nodes);

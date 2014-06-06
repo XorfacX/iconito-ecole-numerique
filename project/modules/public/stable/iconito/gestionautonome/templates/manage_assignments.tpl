@@ -13,15 +13,19 @@
 <form action="{copixurl dest="gestionautonome||filterAndDisplayAssignments"}" method="post" id="filter-form">
     <div id="origin" class="filterClass">
         
-        <ul class="originTab">
-            <li><a href="#originStructure">{i18n key="gestionautonome|gestionautonome.message.searchByStructure}</a></li>
-            <li><a href="#originName">{i18n key="gestionautonome|gestionautonome.message.searchByName}</a></li>
-        </ul>
-        
-        <select name="search_mode" id="search-mode" class="hiddenClean">
-            <option value="byName">Par nom</option>
-            <option value="byStructure" selected>Par structure</option>
-        </select>
+        {if $can_search_by_name}
+            <ul class="originTab">
+                <li><a href="#originStructure">{i18n key="gestionautonome|gestionautonome.message.searchByStructure}</a></li>
+                <li><a href="#originName">{i18n key="gestionautonome|gestionautonome.message.searchByName}</a></li>
+            </ul>
+            
+            <select name="search_mode" id="search-mode" class="hiddenClean">
+                <option value="byName">Par nom</option>
+                <option value="byStructure" selected>Par structure</option>
+            </select>
+        {else}
+            <input type="hidden" name="search_mode" id="search-mode" value="byStructure" />
+        {/if}
         
         <div id="originStructure">
             <h3>{i18n key="gestionautonome|gestionautonome.message.origin}</h3>
@@ -82,29 +86,33 @@
             </div>
         </div>
         
-        <div id="originName">
-            <h3>{i18n key="gestionautonome|gestionautonome.message.origin}</h3>
-            <div class="field" id="origin-usertype-search">
-                <label for="origin_usertype_search">{i18n key="gestionautonome|gestionautonome.message.type"}</label>
-                <select class="form" name="origin_usertype_search" id="origin_usertype_search">
-                    <option value="USER_ELE" label="Elève"{if $ppo->filters.originUserTypeSearch eq "USER_ELE"} selected="selected"{/if}>Elève</option>
-                    {if isset($ppo->filters.originSchool)}
-                        {assign var='hasCredentialTeacherUpdate' value=$ppo->user->testCredential("module:school|`$ppo->filters.originSchool`|teacher|update@gestionautonome")}
-                        {if $hasCredentialTeacherUpdate}
-                            <option value="USER_ENS" label="Enseignant"{if $ppo->filters.originUserTypeSearch eq "USER_ENS"} selected="selected"{/if}>Enseignant</option>
+        {assign var='hasCredentialTeacherUpdate' value=$ppo->user->testCredential("module:school|`$ppo->filters.originSchool`|teacher|update@gestionautonome")}
+        {if $can_search_by_name}
+            <div id="originName">
+                <h3>{i18n key="gestionautonome|gestionautonome.message.origin}</h3>
+                <div class="field" id="origin-usertype-search">
+                    <label for="origin_usertype_search">{i18n key="gestionautonome|gestionautonome.message.type"}</label>
+                    <select class="form" name="origin_usertype_search" id="origin_usertype_search">
+                        <option value="USER_ELE" label="Elève"{if $ppo->filters.originUserTypeSearch eq "USER_ELE"} selected="selected"{/if}>Elève</option>
+                        {if isset($ppo->filters.originSchool)}
+                            {if $hasCredentialTeacherUpdate}
+                                <option value="USER_ENS" label="Enseignant"{if $ppo->filters.originUserTypeSearch eq "USER_ENS"} selected="selected"{/if}>Enseignant</option>
+                            {/if}
                         {/if}
-                    {/if}
-                </select>
+                    </select>
+                </div>
+                <div class="field" id="origin-lastname-search">
+                    <label for="origin_lastname_search">{i18n key="gestionautonome|gestionautonome.message.lastname"}</label>
+                    <input type="text" name="origin_lastname_search" id="origin_lastname_search" value="{$ppo->filters.originLastnameSearch}" />
+                </div>
+                <div class="field" id="origin-firstname-search">
+                    <label for="origin_firstname_search">{i18n key="gestionautonome|gestionautonome.message.firstname"}</label>
+                    <input type="text" name="origin_firstname_search" id="origin_firstname_search" value="{$ppo->filters.originFirstnameSearch}" />
+                </div>
             </div>
-            <div class="field" id="origin-lastname-search">
-                <label for="origin_lastname_search">{i18n key="gestionautonome|gestionautonome.message.lastname"}</label>
-                <input type="text" name="origin_lastname_search" id="origin_lastname_search" value="{$ppo->filters.originLastnameSearch}" />
-            </div>
-            <div class="field" id="origin-firstname-search">
-                <label for="origin_firstname_search">{i18n key="gestionautonome|gestionautonome.message.firstname"}</label>
-                <input type="text" name="origin_firstname_search" id="origin_firstname_search" value="{$ppo->filters.originFirstnameSearch}" />
-            </div>
-        </div>
+        {else}
+            <input type="hidden" name="origin_usertype_search" id="origin_usertype_search" value="{if isset($ppo->filters.originSchool) && $hasCredentialTeacherUpdate && $ppo->filters.originUserTypeSearch eq "USER_ENS"}USER_ENS{else}USER_ELE{/if}" />
+        {/if}
     </div>
   
   <div id="destination" class="filterClass">
