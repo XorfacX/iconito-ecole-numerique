@@ -1513,7 +1513,10 @@ class Kernel
 
         foreach ($list as $v) {
             if (!$full) {
-            // Si le nodeType est une classe, on n'ajoute pas le minimail (si présent dans la réponse
+                if ($v->module_type == 'MOD_MAGICMAIL') {
+                    continue;
+                }
+                // Si le nodeType est une classe, on n'ajoute pas le minimail (si présent dans la réponse
                 if ($v->module_type == 'MOD_MINIMAIL' && $node_type === 'BU_CLASSE') {
                     continue;
                 }
