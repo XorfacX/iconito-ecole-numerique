@@ -980,22 +980,21 @@ class ActionGroupDefault extends enicActionGroup
             $ppo->errors = $schoolDAO->getErrorsMessages();
         }
         
-        $uairequired = CopixConfig::get('|school_uai_rne_required');
-        $siretrequired = CopixConfig::get('|school_siret_required');
-        
-        if($uairequired && !$ppo->school->uai){
-            $ppo->errors[] = "Veuillez renseigner un Numéro UAI (RNE)";
+        if (!$ppo->school->nom) {
+            $ppo->errors[] = CopixI18N::get('gestionautonome|gestionautonome.message.required.nom');;
         }
         
-        if($siretrequired && !$ppo->school->siret){
-            $ppo->errors[] = "Veuillez renseigner un Numéro de SIRET";
+        $uaiRequired = CopixConfig::get('|school_uai_rne_required');
+        $siretRequired = CopixConfig::get('|school_siret_required');
+        
+        if($uaiRequired && !$ppo->school->uai){
+            $ppo->errors[] = CopixI18N::get('gestionautonome|gestionautonome.message.required.uai');
+        }
+        
+        if($siretRequired && !$ppo->school->siret){
+            $ppo->errors[] = CopixI18N::get('gestionautonome|gestionautonome.message.required.siret');
         }
     
-        if (!$ppo->school->nom) {
-
-            $ppo->errors[] = 'Saisissez un nom';
-        }
-
         if (!empty($ppo->errors)) {
 
             $cityDAO = _ioDAO('kernel|kernel_bu_ville');
