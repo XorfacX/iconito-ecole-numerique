@@ -30,5 +30,4 @@ class ZoneApiRequest extends CopixZone
 
         $toReturn = $this->_usePPO($ppo, $template);
     }
-
 }

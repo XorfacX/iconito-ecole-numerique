@@ -67,14 +67,15 @@ class StatistiquesConfiguration
         return $configuration['template'];
     }
 
-    /**
-     * Retourne la classe de récupération des valeurs de statistiques
-     *
-     * @param string $category
-     *
-     * @return BaseStatistiques
-     */
-    public function getClass($category, StatistiquesFormFilter $formFilter)
+  /**
+   * Retourne la classe de récupération des valeurs de statistiques
+   *
+   * @param string                      $category
+   * @param ConsolidatedStatisticFilter $formFilter
+   *
+   * @return BaseStatistiques
+   */
+    public function getClass($category, ConsolidatedStatisticFilter $formFilter)
     {
         $configuration = $this->getConfiguration($category);
 
