@@ -890,7 +890,7 @@ class ActionGroupDefault extends enicActionGroup
     public function processUpdateSchool()
     {
         $ppo = new CopixPPO ();
-
+        
         // Récupération des paramètres
         $ppo->nodeId = _request('nodeId', null);
         if (is_null($ppo->nodeId)) {
@@ -980,7 +980,16 @@ class ActionGroupDefault extends enicActionGroup
             $ppo->errors = $schoolDAO->getErrorsMessages();
         }
         
+        $uairequired = CopixConfig::get('|school_uai_rne_required');
+        $siretrequired = CopixConfig::get('|school_siret_required');
         
+        if($uairequired && !$ppo->school->uai){
+            $ppo->errors[] = "Veuillez renseigner un Numéro UAI (RNE)";
+        }
+        
+        if($siretrequired && !$ppo->school->siret){
+            $ppo->errors[] = "Veuillez renseigner un Numéro de SIRET";
+        }
     
         if (!$ppo->school->nom) {
 
