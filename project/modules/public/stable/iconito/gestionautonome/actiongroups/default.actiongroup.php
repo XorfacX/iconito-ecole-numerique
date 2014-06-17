@@ -890,7 +890,7 @@ class ActionGroupDefault extends enicActionGroup
     public function processUpdateSchool()
     {
         $ppo = new CopixPPO ();
-
+        
         // Récupération des paramètres
         $ppo->nodeId = _request('nodeId', null);
         if (is_null($ppo->nodeId)) {
@@ -980,13 +980,21 @@ class ActionGroupDefault extends enicActionGroup
             $ppo->errors = $schoolDAO->getErrorsMessages();
         }
         
-        
-    
         if (!$ppo->school->nom) {
-
-            $ppo->errors[] = 'Saisissez un nom';
+            $ppo->errors[] = CopixI18N::get('gestionautonome|gestionautonome.message.required.nom');;
         }
-
+        
+        $uaiRequired = CopixConfig::get('|school_uai_rne_required');
+        $siretRequired = CopixConfig::get('|school_siret_required');
+        
+        if($uaiRequired && !$ppo->school->uai){
+            $ppo->errors[] = CopixI18N::get('gestionautonome|gestionautonome.message.required.uai');
+        }
+        
+        if($siretRequired && !$ppo->school->siret){
+            $ppo->errors[] = CopixI18N::get('gestionautonome|gestionautonome.message.required.siret');
+        }
+    
         if (!empty($ppo->errors)) {
 
             $cityDAO = _ioDAO('kernel|kernel_bu_ville');

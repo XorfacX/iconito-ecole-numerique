@@ -1513,8 +1513,11 @@ class Kernel
 
         foreach ($list as $v) {
             if (!$full) {
-            // Si le nodeType est une classe, on n'ajoute pas le minimail (si présent dans la réponse
-                if ($v->module_type == 'MOD_MAGICMAIL' && $node_type === 'BU_CLASSE') {
+                if ($v->module_type == 'MOD_MAGICMAIL') {
+                    continue;
+                }
+                // Si le nodeType est une classe, on n'ajoute pas le minimail (si présent dans la réponse
+                if ($v->module_type == 'MOD_MINIMAIL' && $node_type === 'BU_CLASSE') {
                     continue;
                 }
             }
@@ -1694,7 +1697,29 @@ class Kernel
             $perso->module_nom = Kernel::Code2Name('MOD_CERISEPRIM');
             $modules[] = clone $perso;
         }
+        
+        // Si le nodeType est une classe, et que la personne connecté est enseignant de cette classe,
+        // alors on ajoute un lien de configuration
+        if ($node_type === 'BU_CLASSE' && Kernel::isEnseignantOfClasse($node_id)) {
+            $modClassParameters              = new stdClass();
+            $modClassParameters->node_type   = $node_type;
+            $modClassParameters->node_id     = $node_id;
+            $modClassParameters->module_type = 'MOD_CLASSE';
+            $modClassParameters->module_id   = 0;
+            $modClassParameters->module_nom  = CopixI18N::get('classe|classe.configuration.buttonLabel');
+            $modules[]                       = $modClassParameters;
+        }
 
+        _ioDAO('kernel|kernel_bu_personnel_entite'); // Pour accéder aux constantes de roles
+        if( Kernel::hasRole(DAOKernel_bu_personnel_entite::ROLE_PRINCIPAL, 'ecole', $node_id) && $node_type == "BU_ECOLE") {
+            $cahierdetexte->node_type   = $node_type;
+            $cahierdetexte->node_id     = $node_id;
+            $cahierdetexte->module_type = 'MOD_CAHIERDETEXTES';
+            $cahierdetexte->module_id   = $node_id;
+            $cahierdetexte->module_nom  = Kernel::Code2Name ('SUBMODULE_MEMO');
+            $modules[] = clone $cahierdetexte;
+        }
+        
         // _dump($modules);
         if ($notification) {
             Kernel::getModlistNotifications($modules);
