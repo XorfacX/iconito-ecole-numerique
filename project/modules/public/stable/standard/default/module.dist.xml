@@ -79,8 +79,8 @@
 			<parameter name="ssoActivated" caption="Activation du SSO" default="0" />
 			<parameter name="ssoSecret" caption="Mot de passe secret d'authentification" default="12345" />
 			<parameter name="ssoTimeout" caption="Timeout valabilité lien (minutes)" default="30" />
-                        <parameter name="school_uai_rne_required"  captioni18n="parameter.school_uai_rne_required"  default="0" />
-                        <parameter name="school_siret_required"  captioni18n="parameter.school_siret_required"  default="0" />
+			<parameter name="school_uai_rne_required"  captioni18n="parameter.school_uai_rne_required"  default="0" />
+			<parameter name="school_siret_required"  captioni18n="parameter.school_siret_required"  default="0" />
 		</group>
 	</parameters>
 </moduledefinition>

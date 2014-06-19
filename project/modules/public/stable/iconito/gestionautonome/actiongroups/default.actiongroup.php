@@ -984,8 +984,11 @@ class ActionGroupDefault extends enicActionGroup
             $ppo->errors[] = CopixI18N::get('gestionautonome|gestionautonome.message.required.nom');;
         }
         
-        $uaiRequired = CopixConfig::get('|school_uai_rne_required');
-        $siretRequired = CopixConfig::get('|school_siret_required');
+        $uaiRequired = $siretRequired = 0;
+        if (CopixConfig::exists('|school_uai_rne_required'))
+            $uaiRequired = CopixConfig::get('|school_uai_rne_required');
+        if (CopixConfig::exists('|school_siret_required'))
+            $siretRequired = CopixConfig::get('|school_siret_required');
         
         if($uaiRequired && !$ppo->school->uai){
             $ppo->errors[] = CopixI18N::get('gestionautonome|gestionautonome.message.required.uai');
