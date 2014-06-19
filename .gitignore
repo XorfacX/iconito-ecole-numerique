@@ -22,6 +22,7 @@
 !/project/themes/default
 !/www/themes/default
 !/www/themes/iconitoplus
+!/www/themes/iconitoclic
 /utils/simplesamlphp/config/authsources.php
 
 # Les fichiers inclus via composer
