@@ -785,7 +785,10 @@ class ActionGroupDefault extends enicActionGroup
         _currentUser()->assertCredential('module:city|'.$ppo->parentId.'|school|create@gestionautonome');
 
         $ppo->types = array('Maternelle', 'Elémentaire', 'Primaire');
-
+        
+        $ppo->uaiRequired = $this->isUaiRequired();
+        $ppo->siretRequired = $this->isSiretRequired();
+        
         // Breadcrumbs
         $breadcrumbs = array();
         $breadcrumbs[] = array('txt' => 'Gestion de la structure scolaire', 'url' => CopixUrl::get('gestionautonome||showTree'));
@@ -850,8 +853,18 @@ class ActionGroupDefault extends enicActionGroup
         }
         
         if (!$ppo->school->nom) {
-
-            $ppo->errors[] = 'Saisissez un nom';
+            $ppo->errors[] = CopixI18N::get('gestionautonome|gestionautonome.message.required.nom');;
+        }
+        
+        $ppo->uaiRequired = $this->isUaiRequired();
+        $ppo->siretRequired = $this->isSiretRequired();
+        
+        if($ppo->uaiRequired && !$ppo->school->uai){
+            $ppo->errors[] = CopixI18N::get('gestionautonome|gestionautonome.message.required.uai');
+        }
+        
+        if($ppo->siretRequired && !$ppo->school->siret){
+            $ppo->errors[] = CopixI18N::get('gestionautonome|gestionautonome.message.required.siret');
         }
 
         if (!empty($ppo->errors)) {
@@ -929,10 +942,39 @@ class ActionGroupDefault extends enicActionGroup
         // Get vocabulary catalog to use
         $nodeVocabularyCatalogDAO = _ioDAO('kernel|kernel_i18n_node_vocabularycatalog');
         $ppo->vocabularyCatalog = $nodeVocabularyCatalogDAO->getCatalogForNode('BU_ECOLE', $ppo->nodeId);
+        
 
+        $ppo->uaiRequired = $this->isUaiRequired();
+        $ppo->siretRequired = $this->isSiretRequired();
+        
         return _arPPO($ppo, 'edit_school.tpl');
     }
 
+    /**
+     * Check in config if UAI is a required field
+     * 
+     * Default false
+     * 
+     * @return boolean
+     */
+    public function isUaiRequired(){
+        if (CopixConfig::exists('|school_uai_rne_required'))
+            return CopixConfig::get('|school_uai_rne_required');
+        return false;
+    }
+    
+    /**
+     * Check in config if SIRET is a required field
+     * 
+     * Default false
+     * 
+     * @return boolean
+     */
+    public function isSiretRequired(){
+        if (CopixConfig::exists('|school_siret_required'))
+            return CopixConfig::get('|school_siret_required');
+        return false;
+    }
     /**
      * validateSchoolUpdate
      *
@@ -984,17 +1026,14 @@ class ActionGroupDefault extends enicActionGroup
             $ppo->errors[] = CopixI18N::get('gestionautonome|gestionautonome.message.required.nom');;
         }
         
-        $uaiRequired = $siretRequired = 0;
-        if (CopixConfig::exists('|school_uai_rne_required'))
-            $uaiRequired = CopixConfig::get('|school_uai_rne_required');
-        if (CopixConfig::exists('|school_siret_required'))
-            $siretRequired = CopixConfig::get('|school_siret_required');
+        $ppo->uaiRequired = $this->isUaiRequired();
+        $ppo->siretRequired = $this->isSiretRequired();
         
-        if($uaiRequired && !$ppo->school->uai){
+        if($ppo->uaiRequired && !$ppo->school->uai){
             $ppo->errors[] = CopixI18N::get('gestionautonome|gestionautonome.message.required.uai');
         }
         
-        if($siretRequired && !$ppo->school->siret){
+        if($ppo->siretRequired && !$ppo->school->siret){
             $ppo->errors[] = CopixI18N::get('gestionautonome|gestionautonome.message.required.siret');
         }
     

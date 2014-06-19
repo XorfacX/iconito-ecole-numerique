@@ -40,11 +40,11 @@
     
     <div class="field">
       <label for="uai" class="form_libelle"> Numéro UAI/RNE</label>
-      <input class="form" type="text" name="uai" id="uai" value="{$ppo->school->uai|escape}" />
+      <input class="form" type="text" name="uai" id="uai"{if $ppo->uaiRequired} required{/if} value="{$ppo->school->uai|escape}" />
     </div>
     <div class="field">
       <label for="siret" class="form_libelle">Numéro SIRET</label>
-      <input class="form" type="text" name="siret" id="siret" value="{$ppo->school->siret|escape}" />
+      <input class="form" type="text" name="siret" id="siret" {if $ppo->siretRequired} required{/if} value="{$ppo->school->siret|escape}" />
     </div>
     </fieldset>
     
