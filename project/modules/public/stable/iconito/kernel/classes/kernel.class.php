@@ -3445,6 +3445,8 @@ class Kernel
                 return static::getNode('blog|blog');
             case "MOD_CLASSEUR":
                 return static::getNode('classeur|classeur');
+            case "MOD_QUIZ":
+                return static::getNode('quiz|quiz_quiz', $id);
             default:
               $object = $id ? _dao($type)->get($id) : _record($type);
         }
