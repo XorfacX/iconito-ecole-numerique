@@ -43,7 +43,6 @@ class ActionGroupDefault extends enicActionGroup
                                             ORDER BY date_end DESC')
                                     ->toArray();
 
-        $this->addCss('styles/module_quiz.css');
         $this->js->button('.button');
 
         $ppo = new CopixPPO();

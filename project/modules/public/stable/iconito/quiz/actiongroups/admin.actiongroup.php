@@ -8,7 +8,6 @@ class ActionGroupAdmin extends enicActionGroup
 
     public function processList()
     {
-        $this->addCss("styles/module_quiz.css");
 
         //get the active quiz liste
         $action = $this->request('qaction', 'str');
@@ -143,7 +142,6 @@ class ActionGroupAdmin extends enicActionGroup
         $this->js->inputPreFilled('.qf-description', 'quiz.admin.setDescription');
 
 
-        $this->addCss('styles/module_quiz.css');
         $ppo->success = (isset($this->flash->success)) ? $this->flash->success : null;
         $ppo->quiz = $quizDatas;
         $ppo->questions = $questionsDatas;
@@ -377,8 +375,6 @@ class ActionGroupAdmin extends enicActionGroup
         }else{
             $tabDatas = '';
         }
-
-        $this->addCss('styles/module_quiz.css');
 
         $this->js->wysiwyg('#aw-content');
         $this->js->wysiwyg('#answer-detail');
@@ -691,7 +687,6 @@ class ActionGroupAdmin extends enicActionGroup
                         }
         }
 
-                $this->addCss("styles/module_quiz.css");
         $this->addCss("styles/datatable.css");
 
         $this->addJs('js/datatable/jquery.dataTables.min.js');
