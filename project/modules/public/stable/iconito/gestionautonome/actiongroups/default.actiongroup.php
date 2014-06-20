@@ -843,6 +843,7 @@ class ActionGroupDefault extends enicActionGroup
         $ppo->school->tel = _request('tel', null);
         $ppo->school->uai = _request('uai', null);
         $ppo->school->siret = _request('siret', null);
+        $ppo->school->mail = _request('mail', null);
 
         // Traitement des erreurs
         $ppo->errors = array();
@@ -916,7 +917,6 @@ class ActionGroupDefault extends enicActionGroup
 
             return CopixActionGroup::process('generictools|Messages::getError', array('message' => "Une erreur est survenue.", 'back' => CopixUrl::get('gestionautonome||showTree')));
         }
-        
         _currentUser()->assertCredential('module:school|'.$ppo->school->numero.'|school|update@gestionautonome');
 
         // Mise en session du noeud courant
@@ -1014,6 +1014,7 @@ class ActionGroupDefault extends enicActionGroup
         $ppo->school->tel = _request('tel', null);
         $ppo->school->uai = _request('uai', null);
         $ppo->school->siret = _request('siret', null);
+        $ppo->school->mail = _request('mail', null);
         
         // Traitement des erreurs
         $ppo->errors = array();

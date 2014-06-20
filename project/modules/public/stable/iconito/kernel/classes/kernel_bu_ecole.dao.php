@@ -67,16 +67,17 @@ class DAORecordKernel_bu_ecole implements ResourceInterface
         );
 
         $attributes = array(
-          'type',
-          'num_rue',
-          'num_seq',
-          'adresse1',
-          'adresse2',
-          'code_postal',
-          'commune',
-          'tel',
-          'id_ville',
-          'num_plan_interactif',
+            'type',
+            'num_rue',
+            'num_seq',
+            'adresse1',
+            'adresse2',
+            'code_postal',
+            'commune',
+            'tel',
+            'id_ville',
+            'num_plan_interactif',
+            'mail',
         );
 
         $attributesValues = array();
@@ -228,8 +229,8 @@ class DAOKernel_bu_ecole extends enicService {
      * @return boolean
      */
     public function validate($schoolDatas) {
-
-        $validationEntries = array('siret', 'uai');
+        
+        $validationEntries = array('siret', 'uai', 'mail');
 
         $noError = true;
         foreach ($validationEntries as $validationEntry) {
@@ -271,6 +272,16 @@ class DAOKernel_bu_ecole extends enicService {
         }
         $this->errorsMessages[] = 'Votre numéro UAI n\'est pas conforme';
         return false;
+    }
+    
+    protected function validateMAIL($entry = null, $id = null) {
+        if(!filter_var($entry, FILTER_VALIDATE_EMAIL)){
+            $this->errorsMessages[] = "Cette adresse email n'est pas valide";
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 
     /**

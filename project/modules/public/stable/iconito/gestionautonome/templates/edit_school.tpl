@@ -51,6 +51,10 @@
     <fieldset>
       <legend>Coordonnées</legend>
     <div class="field">
+      <label for="mail" class="form_libelle"> E-mail</label>
+      <input class="form text" type="email" name="mail" id="mail" value="{$ppo->school->mail|escape}" />
+    </div>
+    <div class="field">
       <label for="adresse1" class="form_libelle"> Adresse</label>
       <input class="form short-text" type="text" name="num_rue" id="num_rue" value="{$ppo->school->num_rue|escape}" />
       <input class="form text" type="text" name="adresse1" id="adresse1" value="{$ppo->school->adresse1|escape}" />
