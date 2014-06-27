@@ -494,7 +494,7 @@ GROUP BY quiz.id
         // Récupération de la liste des années scolaires disponibles pour select
         $gradesDAO = _ioDAO('kernel|kernel_bu_annee_scolaire');
         $c = _daoSp();
-        $c->orderBy(array('id_as', 'DESC'));
+        $c->orderBy(array('dateDebut', 'ASC'));
 
         $grades = array();
 
