@@ -457,6 +457,8 @@ GROUP BY quiz.id
         $quiz->gr_id = enic::get('session')->load('id_gr_quiz');
         $quiz->name = $quiz->name . ' - importé';
 
+        $quiz->id_owner = _currentUser()->getExtra('user_id');
+
         // Le quiz est dans un status non publié (is_locked)
         $quiz->is_locked = 1;
 
@@ -531,5 +533,20 @@ SQL;
         }
 
         return null;
+    }
+
+    public function getClassroomsForYears($ecole, $years)
+    {
+        $ecoleClasseDAO = _ioDAO ('kernel|kernel_bu_ecole_classe');
+
+        $classes = array();
+
+        foreach ($years as $year) {
+            foreach ($ecoleClasseDAO->getBySchool($ecole->numero, $year)->fetchAll() as $tmpClasse) {
+                $classes[$tmpClasse->id] = $tmpClasse;
+            }
+        }
+
+        return $classes;
     }
 }
