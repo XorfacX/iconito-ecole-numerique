@@ -1568,18 +1568,6 @@ class Kernel
             }
         }
         
-        if ($node_type == 'BU_ECOLE' && CopixConfig::exists('default|rssEtagereEnabled') && CopixConfig::get('default|rssEtagereEnabled')) {
-            _classInclude('sysutils|coreprimService');
-            $coreprim = new coreprimService();
-                $modRssEtagere = new stdClass();
-                $modRssEtagere->node_type = "BU_CLASSE";
-                $modRssEtagere->node_id = $node_id;
-                $modRssEtagere->module_type = 'MOD_RSSETAGERE';
-                $modRssEtagere->module_id = "BU_ECOLE-".$node_id;
-                $modRssEtagere->module_nom = kernel::Code2Name('MOD_RSSETAGERE');
-                $modules[] = $modRssEtagere;
-        }
-        
         if (CopixConfig::exists('|conf_ModTeleprocedures') && CopixConfig::get('|conf_ModTeleprocedures') == 0) {
             // Pas de module de tÈlÈprocÈdures...
         } else {
