@@ -671,7 +671,17 @@ input[type="radio"] + label {
 }
 
 /* Good and right answer */
-
+.quiz-user-legend {
+    margin-top:2em; padding:0.5em; border:1px solid #eee;
+    border-radius:5px;
+    font-size:0.9em;
+}
+.quiz-user-legend h2 {
+    margin:0 0 0.6em; border-bottom:0;
+    color:#666;
+    font-size:1em; font-style:italic;
+}
+.quiz-user-legend p {margin:0.2em 0;}
 .quiz-user-right {
 	color: #BAD521;
 }

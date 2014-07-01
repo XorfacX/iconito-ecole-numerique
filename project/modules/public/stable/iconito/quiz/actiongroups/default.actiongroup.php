@@ -43,7 +43,6 @@ class ActionGroupDefault extends enicActionGroup
                                             ORDER BY date_end DESC')
                                     ->toArray();
 
-        $this->addCss('styles/module_quiz.css');
         $this->js->button('.button');
 
         $ppo = new CopixPPO();
@@ -168,8 +167,6 @@ class ActionGroupDefault extends enicActionGroup
 
         //var_dump($questionsReturn);
         //start TPL
-        $this->addCss('styles/module_quiz.css');
-//        $this->js->button('.button');
         $ppo = new CopixPPO();
         //global data for quiz
         $ppo->name = $quizData->name;
@@ -322,9 +319,7 @@ class ActionGroupDefault extends enicActionGroup
         $this->flash->typeAnsw = $questionDatas['opt_type'];
 
         //build tpl
-        CopixHTMLHeader::addCSSLink (_resource("styles/module_quiz.css"));
         CopixHTMLHeader::addCSSLink (_resource("styles/jquery.fancybox-1.3.4.css"));
-//        $this->js->button('.button');
         $ppo = new CopixPPO();
         $ppo->error =  ($this->flash->has('error')) ? $this->flash->error : null;
 		if($pSRes && $wrongAnswer){
@@ -468,7 +463,6 @@ class ActionGroupDefault extends enicActionGroup
             return CopixActionGroup::process('quiz|default::Quiz', array ('id' => $pId));
         }
         $ppo = new CopixPPO();
-        CopixHTMLHeader::addCSSLink (_resource("styles/module_quiz.css"));
         return _arPPO($ppo, 'end_questions.tpl');
     }
 }

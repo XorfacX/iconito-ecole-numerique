@@ -88,26 +88,27 @@
                 {/if}
                 {if $ppo->alreadyShowRes}
                     {$ppo->question.answer_detail}
-                    <br>
-                    <p class="quiz-user-legend">
-                        {i18n key="quiz.msg.legend" noEscape=1}
-                        <br>
+                    
+                    <div class="quiz-user-legend">
+                        <h2>{i18n key="quiz.msg.legend" noEscape=1}</h2>
+                        <p class="quiz-user-right">
                         {if $ppo->respCorrect > 1}
                             {i18n key="quiz.msg.legendGoodAnswers" noEscape=1}
                         {else}
                             {i18n key="quiz.msg.legendGoodAnswer" noEscape=1}
                         {/if}
-                        <span class="quiz-user-right">{i18n key="quiz.msg.legendGreen" noEscape=1}</span> 
+                        </p>
+                        
                         {if $ppo->wrong}
-                            <br>
+                            <p class="quiz-user-wrong">
                             {if $ppo->respWrong > 1}
                                 {i18n key="quiz.msg.legendWrongAnswers" noEscape=1}
                             {else}
                                 {i18n key="quiz.msg.legendWrongAnswer" noEscape=1}
                             {/if}
-                            <span class="quiz-user-wrong">{i18n key="quiz.msg.legendRed" noEscape=1}</span> 
+                            </p> 
                         {/if}
-                    </p>
+                    </div>
                 {/if}
             </div>
 	</td>
