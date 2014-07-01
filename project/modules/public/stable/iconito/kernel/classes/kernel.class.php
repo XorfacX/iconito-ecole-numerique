@@ -1567,7 +1567,19 @@ class Kernel
                 $modules[] = $modRssEtagere;
             }
         }
-
+        
+        if ($node_type == 'BU_ECOLE' && CopixConfig::exists('default|rssEtagereEnabled') && CopixConfig::get('default|rssEtagereEnabled')) {
+            _classInclude('sysutils|coreprimService');
+            $coreprim = new coreprimService();
+                $modRssEtagere = new stdClass();
+                $modRssEtagere->node_type = "BU_CLASSE";
+                $modRssEtagere->node_id = $node_id;
+                $modRssEtagere->module_type = 'MOD_RSSETAGERE';
+                $modRssEtagere->module_id = "BU_ECOLE-".$node_id;
+                $modRssEtagere->module_nom = kernel::Code2Name('MOD_RSSETAGERE');
+                $modules[] = $modRssEtagere;
+        }
+        
         if (CopixConfig::exists('|conf_ModTeleprocedures') && CopixConfig::get('|conf_ModTeleprocedures') == 0) {
             // Pas de module de tÈlÈprocÈdures...
         } else {
@@ -2647,49 +2659,19 @@ class Kernel
         $interdits = array(" ", "'", "-");
         $nom      = $user_infos['nom'];
         $prenom   = $user_infos['prenom'];
-        $nom_init = $prenom_init = '';
-        // Recherche des initiales : la première lettre de chaque entité dans un nom/prenom.
-        $separateur_init = implode('', $interdits);
-        $tok = strtok($nom, $separateur_init);
-        while ($tok !== false) {
-            $nom_init .= $tok{0};
-            $tok = strtok($separateur_init);
-        }
-        $tok = strtok($prenom, $separateur_init);
-        while ($tok !== false) {
-            $prenom_init .= $tok{0};
-            $tok = strtok($separateur_init);
-        }
-        // Retrait des caractères spéciaux des noms/prénoms.
-        $nom = str_replace($interdits, "", $nom);
-        $prenom = str_replace($interdits, "", $prenom);
-
+        
         // Simplification (accents, majuscules, etc.)
         $nom = Kernel::simpleName($nom);
-        $nom_init = Kernel::simpleName($nom_init);
         $prenom = Kernel::simpleName($prenom);
-        $prenom_init = Kernel::simpleName($prenom_init);
+        
         $login_parts = array();
-        switch ($user_infos['type']) {
-            case 'USER_VIL': // Officiels : prénom et nom séparés par un point
-                if (trim($prenom) != '') {
-                    $login_parts[] = $prenom;
-                }
-                if (trim($nom) != '') {
-                    $login_parts[] = $nom;
-                }
-                $login = implode('.', $login_parts);
-                break;
-            default; // Par défaut : initiale du prénom et nom
-                if (trim($prenom_init) != '') {
-                    $login_parts[] = $prenom_init;
-                }
-                if (trim($nom) != '') {
-                    $login_parts[] = $nom;
-                }
-                $login = implode('', $login_parts);
-                break;
+        if (trim($prenom) != '') {
+            $login_parts[] = $prenom;
         }
+        if (trim($nom) != '') {
+            $login_parts[] = $nom;
+        }
+        $login = implode('.', $login_parts);
         $ext = '';
         $fusible = 1000; // Fusible pour éviter les boucles sans fin.
         $get = _dao('kernel|kernel_copixuser')->getByLogin($login . $ext);
@@ -2700,7 +2682,6 @@ class Kernel
             else {
                 $ext++;
             }
-
             $get = _dao('kernel|kernel_copixuser')->getByLogin($login . $ext);
         }
 
