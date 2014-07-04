@@ -45,12 +45,18 @@ class accountservice extends enicService
                     'validity_date' => $this->db->quote($class->validityDate)
                 )
         );
-        if($class->coreprim){
-          $this->db->create(
-                'module_coreprim_access',
-                array('classroom_id', $class_id));  
-        }
-        
+    }
+    
+    /**
+     * Activate coreprim for a specific class 
+     * 
+     * @param type $class_id
+     */
+    public function activateCoreprim($class_id)
+    {
+        $this->db->create(
+              'module_coreprim_access',
+              array('classroom_id', $class_id));  
     }
 
     public function cityDatasProxy($soapCity)
