@@ -319,6 +319,12 @@ class soapClassModel
      * @var int 
      */
     public $type;
+    
+    /**
+     * Class' coreprim
+     * @var bool
+     */
+    public $coreprim;
 
 }
 
