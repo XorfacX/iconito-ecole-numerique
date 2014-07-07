@@ -102,8 +102,22 @@ class soapserverservice
         }
     }
 
+    /**
+     * Activate Coreprim for a class
+     * 
+     * @param type $class_id
+     */
     public function activateCoreprim($class_id){
         $this->accountService->activateCoreprim($class_id);
+    }
+    
+    /**
+     * Disable Coreprim
+     * 
+     * @param type $class_id
+     */
+    public function disableCoreprim($class_id){
+        $this->accountService->disableCoreprim($class_id);
     }
     
     /**
