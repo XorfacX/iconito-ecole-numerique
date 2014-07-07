@@ -54,8 +54,10 @@ class accountservice extends enicService
      */
     public function activateCoreprim($class_id)
     {
+        $sql='SELECT id_class_EN FROM module_account_class WHERE id_class_SUB=(?)';
+        $class_id_en = _doQuery($sql, array($class_id));
         $query = 'INSERT INTO module_coreprim_access (classroom_id) VALUE (?)';
-         _doQuery($query, array($class_id));
+        _doQuery($query, array($class_id_en[0]->id_class_EN));
     }
 
     public function cityDatasProxy($soapCity)
