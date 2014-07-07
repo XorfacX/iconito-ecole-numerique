@@ -54,9 +54,8 @@ class accountservice extends enicService
      */
     public function activateCoreprim($class_id)
     {
-        $this->db->create(
-              'module_coreprim_access',
-              array('classroom_id', $class_id));  
+        $query = 'INSERT INTO module_coreprim_access (classroom_id) VALUE (?)';
+         _doQuery($query, array($class_id));
     }
 
     public function cityDatasProxy($soapCity)
