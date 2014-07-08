@@ -31,5 +31,5 @@ Au sein des forums :
 <p>
     {assign var=nombreMinimailsEtRatio value=$ppo->requestClass->getNombreMinimailEtRatio() }
     <strong>{$nombreMinimailsEtRatio.number}</strong>
-    minimails envoyés <span class="average">(soit <strong>{$nombreMinimailsEtRatio.ratio}</strong> minimails par groupe de travail et <strong>{$nombreMinimailsEtRatio.average}</strong> minimails par jour)</span>
+    minimails envoyés via les listes de diffusion des groupes de travail <span class="average">(soit <strong>{$nombreMinimailsEtRatio.ratio}</strong> minimails par groupe de travail et <strong>{$nombreMinimailsEtRatio.average}</strong> minimails par jour pour l'ensemble des groupes)</span>
 </p>
