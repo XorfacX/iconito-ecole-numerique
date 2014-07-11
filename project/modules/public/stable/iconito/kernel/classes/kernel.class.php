@@ -3198,9 +3198,9 @@ class Kernel
       }
 
       $classesChoices = new StatisticsScopeChoiceGroup('BU_CLASSE', 'Classes');
-      $curScolYear = Kernel::getAnneeScolaireCourante()->id_as;
+      $currentSchoolYear  = Kernel::getAnneeScolaireCourante()->id_as;
       foreach ($classes as $classe) {
-          if($curScolYear == $classe->annee_scol){
+          if($currentSchoolYear == $classe->annee_scol){
               $classesChoices->addChoice(new StatisticsScopeChoice($classe->id, $classe->nom, $classe));
           }
       }
