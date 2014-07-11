@@ -290,6 +290,7 @@ class ActionGroupAdmin extends enicActionGroup
 
     public function processQuestions()
     {
+
         if(!isset($this->flash->quizId))
             return $this->error('quiz.admin.noRight');
 
@@ -723,6 +724,17 @@ class ActionGroupAdmin extends enicActionGroup
             return $this->error('quiz.admin.noRight');
         }
 
+        $classInfos = CopixSession::get('myNode');
+        if ($classInfos['type'] !== 'BU_CLASSE') {
+            return $this->error('quiz.errors.badOperation');
+        }
+
+        CopixHtmlHeader::addJSLink(CopixUrl::get().'js/iconito/module_quiz.js');
+
+        $ecoleClasseDAO = _ioDAO ('kernel|kernel_bu_ecole_classe');
+        $classe = $ecoleClasseDAO->get($classInfos['id']);
+        $ecole = $classe->getSchool();
+
         $ppo = new CopixPPO();
 
         // On récupère toutes les années scolaires
@@ -743,6 +755,27 @@ class ActionGroupAdmin extends enicActionGroup
             $ppo->selectedGrade = $ppo->gradesIds[$grade];
         }
 
+        // On s'occupe ensuite des classes
+        $ppo->classrooms = $this->service('QuizService')->getClassroomsForYears($ecole, $ppo->gradesIds);
+        $classroomsChoices = array('' => 'Toutes les classes') + array_map(function($classroom) {
+            return $classroom->nom;
+        }, $ppo->classrooms);
+
+        $ppo->classroomsIds = array_keys($classroomsChoices);
+        $ppo->classroomsValues = array_values($classroomsChoices);
+
+        $ppo->classroomsMapByYears = array();
+        foreach ($ppo->classrooms as $classroom) {
+            if (!isset($ppo->classroomsMapByYears[$classroom->annee_scol])) {
+                $ppo->classroomsMapByYears[$classroom->annee_scol] = array();
+            }
+
+            $ppo->classroomsMapByYears[$classroom->annee_scol][] = $classroom->id;
+        }
+
+        // L'année scolaire de la requête
+        $ppo->selectedClassroom = isset($ppo->classrooms[_request('classroom')]) ? $ppo->classrooms[_request('classroom')] : null;
+
         if ($this->flash->has('successMessage')) {
             $ppo->successMessage = $this->flash->successMessage;
         }
@@ -750,12 +783,7 @@ class ActionGroupAdmin extends enicActionGroup
         // Récupération de tous les quiz que l'on peut importer
         $quizDao = _ioDAO('quiz|quiz_quiz');
 
-        $classInfos = CopixSession::get('myNode');
-        if ($classInfos['type'] !== 'BU_CLASSE') {
-            return $this->error('quiz.errors.badOperation');
-        }
-
-        $ppo->quizList = $quizDao->findQuizForClassroomOwnerAndYear($classInfos['id'], _currentUser()->getId(), $ppo->selectedGrade);
+        $ppo->quizList = $quizDao->findForImport($ecole, $ppo->selectedGrade, $ppo->selectedClassroom);
 
         $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.listActive'),
                              'type' => 'list-active',
@@ -784,11 +812,6 @@ class ActionGroupAdmin extends enicActionGroup
         $quizDatas = $this->service('QuizService')->getQuizDatas($quizId);
         if (empty($quizDatas)) {
             return $this->error('quiz.errors.inexistant');
-        }
-
-        // check if the quiz is owned by the current user
-        if ($quizDatas['id_owner'] !== _currentUser()->getId()) {
-            return $this->error('quiz.admin.noRight');
         }
 
         // On contrôle que l'utilisateur est un enseignant

@@ -10,8 +10,17 @@
         <select class="form" name="grade" id="grade">
             {html_options values=$ppo->gradesIds output=$ppo->gradesNames selected=$ppo->selectedGrade}
         </select>
+        <label for="classroom" class="form_libelle"> Classe :</label>
+        <select class="form" name="classroom" id="classroom">
+            {html_options values=$ppo->classroomsIds output=$ppo->classroomsValues selected=$ppo->selectedClassroom->id}
+        </select>
         <input type="submit" class="button button-search" value="Voir" id="search-button" />
     </form>
+    <script>
+        {literal}$(function(){{/literal}
+            initClassroomRelatedToYear({$ppo->classroomsMapByYears|@json_encode});
+        {literal}});{/literal}
+    </script>
 </div>
 
 {if count($ppo->quizList)}
