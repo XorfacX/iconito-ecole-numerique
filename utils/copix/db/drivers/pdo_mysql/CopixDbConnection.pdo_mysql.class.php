@@ -99,19 +99,19 @@ class CopixDBConnectionPDO_MySQL extends CopixDBPDOConnection
             $field->primary = (strtolower ($val->Key) == 'pri');
             $field->isAutoIncrement = strtolower ($val->Extra) == 'auto_increment';
 
-            if (eregi('^(set|enum)\((.+)\)$', $type, $tmp)){
+            if (preg_match('/^(set|enum)\((.+)\)$/i', $type, $tmp)){
                 $type   = $tmp[1];
-                $length = substr(ereg_replace('([^,])\'\'', '\\1\\\'', ',' . $tmp[2]), 1);
+                $length = substr(preg_replace('/([^,])\'\'/', '\\1\\\'', ',' . $tmp[2]), 1);
             } else {
                 $length = $type;
-                $type   = chop(eregi_replace('\\(.*\\)', '', $type));
+                $type   = chop(preg_replace('/\\(.*\\)/i', '', $type));
                 if (!empty($type)) {
                     if (strpos($length, 'unsigned') !== false) {
                         $length = substr($length, strpos($length, '(') + 1);
                         $length = str_replace(') unsigned', '', trim ($length));
                     } else {
-                        $length = eregi_replace("^$type\(", '', $length);
-                        $length = eregi_replace('\)$', '', trim ($length));
+                        $length = preg_replace("/^$type\(/", '', $length);
+                        $length = preg_replace('/\)$/', '', trim ($length));
                     }
                 }
                 if ($length == $type) {
