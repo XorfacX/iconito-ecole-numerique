@@ -3452,7 +3452,7 @@ class Kernel
             }
         }
 
-        if (is_array($userInfos['link']['CLUB'])) {
+        if (is_array($userInfos['link']) && is_array($userInfos['link']['CLUB'])) {
             foreach (array_keys($userInfos['link']['CLUB']) as $id) {
                 $groups[] = array('type' => 'CLUB', 'id' => $id);
             }
