@@ -3198,8 +3198,11 @@ class Kernel
       }
 
       $classesChoices = new StatisticsScopeChoiceGroup('BU_CLASSE', 'Classes');
+      $curScolYear = Kernel::getAnneeScolaireCourante()->id_as;
       foreach ($classes as $classe) {
-        $classesChoices->addChoice(new StatisticsScopeChoice($classe->id, $classe->nom, $classe));
+          if($curScolYear == $classe->annee_scol){
+              $classesChoices->addChoice(new StatisticsScopeChoice($classe->id, $classe->nom, $classe));
+          }
       }
       if (count($classesChoices->getChoices())) {
         $choices->addChoice($classesChoices);
@@ -3220,7 +3223,7 @@ class Kernel
       if (count($groupesEcolesChoices->getChoices())) {
         $choices->addChoice($groupesEcolesChoices);
       }
-
+      
       return $choices;
     }
 
