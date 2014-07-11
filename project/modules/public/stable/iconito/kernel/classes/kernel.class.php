@@ -1984,9 +1984,9 @@ class Kernel
 
         $res = (strtr($res, $tofind, $replac));
         $res = strtolower($res);
-        $res = ereg_replace("\"", "-", $res);
-        $res = ereg_replace("[^a-z0-9\.-]", "-", $res);
-        $res = ereg_replace("[-]{2,}", "-", $res);
+        $res = preg_replace("/\"/", "-", $res);
+        $res = preg_replace("/[^a-z0-9\.-]/", "-", $res);
+        $res = preg_replace("/[-]{2,}/", "-", $res);
 
         if (substr($res, 0, 1) == "-") {
             $res = substr($res, 1);
