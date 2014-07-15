@@ -7,9 +7,10 @@ class ZoneDashboardStatistics extends CopixZone
     {
         $ppo = new CopixPPO ();
         $toReturn = "";
+        $userType = _currentUser()->getExtra("type");
 
         // Si le module de statistiques est activé, on rend le template
-        if ((bool)CopixConfig::get('statistiques|enabled')) {
+        if ((bool)CopixConfig::get('statistiques|enabled') &&  $userType != "USER_ELE" && $userType != "USER_RES") {
             $toReturn = $this->_usePPO ($ppo, 'dashboardStatistics.tpl');
         }
 
