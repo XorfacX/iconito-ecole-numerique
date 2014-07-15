@@ -1279,7 +1279,7 @@ class Kernel
                     $user["civilite"] = $reponsable->res_civilite;
                     $user["sexe"] = $reponsable->res_id_sexe;
                     $user["ALL"] = $reponsable;
-                    $user['link'] = new stdClass();
+                    $user['link'] = array();
 
                     $parents = Kernel::getNodeParents("USER_RES", $userval->bu_id);
 
@@ -1290,7 +1290,7 @@ class Kernel
                                     foreach ($parent['link'] as $nodeType => $nodeValue) {
                                         if (!isset($user['link'][$nodeType])) {
                                             $user['link'][$nodeType] = array();
-                                        }
+                                        }   
                                         foreach ($nodeValue as $id => $value) {
                                             $user['link'][$nodeType][$id] = $value;
                                         }
