@@ -31,6 +31,15 @@ class ActionGroupDefault extends enicActionGroup
         $ppo->user = _currentUser();
 
         $ppo->TITLE_PAGE = CopixConfig::get('statistiques|moduleTitle');
+        
+        if (!Kernel::is_connected())
+            return CopixActionGroup::process('genericTools|Messages::getError', array('message' => CopixI18N::get('kernel|kernel.error.nologin'), 'back' => CopixUrl::get('||')));
+
+        // Si le module de statistiques est activé et que l'utilisateur n'est un eleve ni un responsable d'eleve, on continue, sinon en renvois un message d'erreur
+        $userType = $ppo->user->getExtra("type");
+        if (!(bool)CopixConfig::get('statistiques|enabled') ||  $userType == "USER_ELE" ||  $userType == "USER_RES") {
+            return CopixActionGroup::process('genericTools|Messages::getError', array('message' => CopixI18N::get ('kernel|kernel.error.noRights'), 'back' => CopixUrl::get('||')));
+        }
 
         if (!$filter = $this->_getSessionConsolidationStatisticFilter()) {
             $filter = new ConsolidatedStatisticFilter();
