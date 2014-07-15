@@ -37,7 +37,8 @@ class ActionGroupDefault extends enicActionGroup
 
         // Si le module de statistiques est activé et que l'utilisateur n'est un eleve ni un responsable d'eleve, on continue, sinon en renvois un message d'erreur
         $userType = $ppo->user->getExtra("type");
-        if (!(bool)CopixConfig::get('statistiques|enabled') ||  $userType == "USER_ELE" ||  $userType == "USER_RES") {
+        $groupsDenied = array("USER_ELE", "USER_RES", "USER_EXT");
+        if (!(bool)CopixConfig::get('statistiques|enabled') || (in_array($userType, $groupsDenied)) && ! Kernel::isAdmin()) {
             return CopixActionGroup::process('genericTools|Messages::getError', array('message' => CopixI18N::get ('kernel|kernel.error.noRights'), 'back' => CopixUrl::get('||')));
         }
 
