@@ -37,10 +37,12 @@ class ActionGroupDefault extends enicActionGroup
         
         $animateur_dao = & CopixDAOFactory::create("kernel|kernel_animateurs");
         $animateur = $animateur_dao->get(_currentUser()->getExtra("type"), _currentUser()->getExtra("id"));
+        $inspecteur_dao = & CopixDAOFactory::create("kernel|kernel_ien");
+        $inspecteur = $inspecteur_dao->get(_currentUser()->getExtra("type"), _currentUser()->getExtra("id"));
         $groupsDenied = array("USER_ELE", "USER_RES", "USER_EXT");
         
         // Si le module de statistiques est activé et que l'utilisateur a les droits d'accès, on continue, sinon en renvois un message d'erreur
-        if (!(bool)CopixConfig::get('statistiques|enabled') || (in_array($userType, $groupsDenied)) && ! Kernel::isAdmin() && ! $animateur) {
+        if (!(bool)CopixConfig::get('statistiques|enabled') || (in_array($userType, $groupsDenied)) && ! Kernel::isAdmin() && ! $animateur && ! $inspecteur) {
             return CopixActionGroup::process('genericTools|Messages::getError', array('message' => CopixI18N::get ('kernel|kernel.error.noRights'), 'back' => CopixUrl::get('||')));
         }
 
