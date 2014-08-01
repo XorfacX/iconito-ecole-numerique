@@ -155,8 +155,6 @@ class ActionGroupDashboard extends enicActionGroup
 
                 $content = $content_tpl->fetch('dashboard.nodes.tpl');
 
-                //add css
-                $this->addCss('styles/dashboard_zone.css');
                 //free memory
                 unset($content_tpl);
                 /*
