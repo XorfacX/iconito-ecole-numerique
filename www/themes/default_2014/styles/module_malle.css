@@ -1,0 +1,199 @@
+.malle-table {
+	width: 100%;
+	border-collapse: collapse;
+	border: none;
+	margin: 0px;
+	padding: 0px;
+	font-size: 100%;
+}
+
+.malle-table td {
+	padding: 4px;
+}
+
+.malle-table-folder {
+	background-color: #ddd;
+	border-bottom: solid 2px #f0f4f0;
+}
+
+.malle-table-file {
+	background-color: #e9e9e9;
+	border-bottom: solid 2px #f0f4f0;
+}
+
+.malle-table-add {
+	background-color: #f0f4f0;
+	border-bottom: none;
+}
+
+td.malle-table-icon {
+	width: 18px;
+}
+td.malle-table-name {
+}
+td.malle-table-content {
+	width: 120px;
+	color: #666;
+	text-align: right;
+}
+td.malle-table-size {
+	width: 60px;
+	color: #aaa;
+	font-size: 70%;
+}
+td.malle-table-edit {
+	width: 24px;
+}
+td.malle-table-action {
+	width: 24px;
+}
+
+.malle-footer {
+	padding: 6px;
+	font-size: 90%;
+}
+
+
+
+
+.malle_actions_bloc {
+	float: right;
+	width: 210px;
+	clear: both;
+  margin-top:-25px;
+}
+
+.malle_actions_bloc div.lucien {
+  height:63px;
+  display:block;
+  background-image: url(../images/lucien_coude.gif);
+	background-repeat: no-repeat;
+	background-position: 97% 0;
+}
+
+
+DIV.malle_petit_poucet {
+	margin: 0px 3px 6px 3px;
+	font-size: 11px;
+}
+
+
+DIV.malle_folder_line {
+	margin: 1px 1px 1px 1px;
+	background-color: #ddd;
+	font-size: 12px;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	-khtml-border-radius: 6px;
+	padding: 2px 2px 2px 27px;
+	width: 560px;
+}
+IMG.malle_folder_line_img {
+	position: absolute;
+	margin: 1px 0px 0px -21px;
+}
+
+
+DIV.malle_file_line {
+	margin: 1px 1px 1px 1px;
+	background-color: #e9e9e9;
+	font-size: 12px;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	-khtml-border-radius: 6px;
+	padding: 2px 2px 2px 27px;
+	width: 560px;
+}
+IMG.malle_file_line_img {
+	position: absolute;
+	margin: 1px 0px 0px -21px;
+}
+DIV.malle_file_line_size {
+	color: #aaa;
+	width: 70px;
+	display: inline;
+	float: right;
+	font-size: 10px;
+	text-align: left;
+	margin: 3px 3px 3px 10px;
+}
+DIV.malle_file_line_type {
+	color: #56593F;
+	display: inline;
+	float: right;
+	text-align: right;
+	margin: 1px;
+}
+DIV.malle_file_line_checked {
+	float: right;
+}
+DIV.new_name {
+	float: right;
+	text-align: left;
+	width: 240px;	
+}
+DIV.new_name INPUT {
+	background-color: #FFF;
+	border: 0;
+	font-size: inherit;
+	width: 240px;	
+}
+
+DIV.malle_actions_line {
+	margin: 1px 1px 1px 1px;
+	background-color: #fff;
+	font-size: 10px;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	-khtml-border-radius: 6px;
+	padding: 2px 2px 2px 4px;
+	width: 583px;
+}
+.malle_go_folder_form {
+	float: right;
+	height: 19px;
+	margin-bottom: 3px;
+  width: 465px;
+}
+.malle_go_folder_form SELECT {
+	font-size: 10px;
+	border: solid 1px #fff;
+	padding: 0;
+	margin: 0;
+}
+
+/* POPUP */
+#popup_actions {
+}
+#popup_actions h1 {
+  font-size:110%;
+  margin:2px;
+}
+#popup_actions h2 {
+  font-size:105%;
+  margin:1px;
+}
+#popup_actions div.bloc {
+  float: left;
+  margin-left: 3px;
+  margin-right: 40px;
+}
+
+.malle_go_folder_form FORM, .malle_actions_bloc FORM {
+  margin:0;
+}
+
+/* ADDON S.Holtz */
+.malle-breadcrumb {
+	background-color: #f0f4f0;
+	}
+
+label.web {
+  width:85px;
+}  
+input.malle-web-form-nom {
+  width:250px;
+}
+input.malle-web-form-url {
+  width:380px;
+}

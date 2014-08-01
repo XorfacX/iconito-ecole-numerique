@@ -1,0 +1,131 @@
+/**
+ * module_welcome.css
+  *
+ * @package	Iconito 2010
+ * @cdate 15.09.2010
+ * @mdate 15.09.2010
+ * @author	Stephane Holtz <sholtz@cap-tic.fr>
+ */
+
+
+
+.ie67 .grid2 > * {
+	width:48.5%;
+}
+.ie67 .actualites {width:27.4%;}
+.actualites .bart_item + .bart_item {
+	margin:20px 0; padding:20px 0 0;
+	border-top:2px dotted #fff;
+}
+.actualites .bart_date {
+	color:#555;
+	font-style:italic; font-size:0.8em;
+}
+.actualites .bart_title {
+	margin-bottom:0.5em;
+	color:#C10071;
+	font-weight:bold; font-size:1.1em;
+}
+
+
+.grid2-1 {
+	font-size:1.2em;
+}
+.blogsLink, .blogsLink:link {
+    display:block;
+    background:#0097ba url(../img/modules-sprite.png) no-repeat 95% 11px; color:#fff;
+    text-transform:uppercase;
+}
+.blogsLink:visited {
+    color:#eee;
+}
+.blogsLink:hover {
+    background-color:#fff; color:#0097ba;
+    text-decoration:underline;
+}
+.ecoles .content-panel {
+    padding:0;
+    background:none;
+}
+.ecoles ul {
+    padding:0 0 0 20px;
+}
+.ecoles ul li {
+    margin-bottom:0.3em;
+}
+
+/* bloc "slideshow" */
+.nav-hp .slideshow {
+    top: -32px;
+    left: 328px;
+    clear: left;
+}
+
+/* @NOTE : slider */
+#slider_photos {
+    position:relative; 
+    width: 268px;
+    height: 210px;
+    overflow: auto;
+}
+
+#slider_photos .slide {
+    position: absolute; 
+    top: 0; 
+    left: 0;
+    padding:0;
+}
+
+#slider_photos .slide li {
+    list-style:none;
+    width: 268px; 
+    height: 184px;
+}
+
+.slideshow .slide .legend {
+    position:relative; bottom:0; left:0;
+    padding:0.2em;
+    background:#C10071; background:rgba(193,0,113,0.8); color:#fff;
+    text-align:center;
+}
+
+/* @NOTE : slider => navigation */
+.slider-nav > a {
+    position: absolute;
+    bottom: 110px;
+    z-index: 10;
+}
+
+#sliderprev { left: -7px; }
+#slidernext { right: -7px; }
+
+/* @NOTE : slider => pagination */
+#sliderposition {
+    position: absolute;
+    bottom: 8px;
+    z-index: 12;
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding:0;
+}
+
+#sliderposition li {
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    background: #6c695a;
+    border: 2px solid #fff;
+    color: #6c695a;
+    list-style:none; list-style-image:none;
+    font-size: 1px;
+}
+.ie7 #sliderposition li {
+    display:inline;
+}
+
+#sliderposition li.on {
+    color: #23201e;
+    background: #23201e;
+}

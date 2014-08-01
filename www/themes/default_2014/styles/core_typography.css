@@ -1,0 +1,56 @@
+/**
+ * THEMES - typography.css
+ * Styles typographiques
+ *
+ * @package	Iconito 2010
+ * @cdate 22.01.2010
+ * @mdate 22.01.2010
+ * @author	Stephane Holtz <sholtz@cap-tic.fr>
+ */
+
+/************************************************
+ * CUSTOM FONTS DECLARATION
+ ***********************************************/
+
+
+
+/************************************************
+ * FONT MODEL
+ ***********************************************/
+body, input, textarea {
+	font-family: "Trebuchet MS", Lucida grande, Arial, Helvetica, sans-serif;
+}
+
+.font_dash * {
+	font-family: "Trebuchet MS", Lucida grande, Arial, Helvetica, sans-serif;
+}
+.font_dash select {font-family:"Lucida Grande", sans-serif;}
+
+.font_cursive {
+	font-family: "Trebuchet MS", Lucida grande, Arial, Helvetica, sans-serif;
+	font-size: 20px;
+	text-transform: uppercase;
+	color: #b3903c;
+	text-align: center;
+	border-bottom: solid 1px #b3903c;
+	margin-bottom: 12px;
+}
+
+a {
+    -webkit-transition: all 0.3s ease-in;
+    transition: all 0.3s ease-in;
+    text-decoration:none;
+}
+a:link {
+    color:#c10071;
+}
+a:visited {
+	color:#3578A3;
+}
+a:hover, a:focus {
+    text-decoration:underline;
+	color:#000;
+}
+a:active {
+}
+	

@@ -1,0 +1,614 @@
+/**
+ * THEMES - core_zones.css
+ * Mise en forme des Zones Copix
+ *
+ * @package	Iconito 2010
+ * @cdate 25.01.2010
+ * @mdate 25.01.2010
+ * @author	Stephane Holtz <sholtz@cap-tic.fr>
+ */
+
+
+/************************************************
+ * HEADER
+ ***********************************************/
+header {
+	background:#fff url(../img/bg-header.png) no-repeat 50% 0%;
+}
+.logo {
+    float:left;
+    width:200px;
+}
+.bgPrimary {background:#0097ba;}
+.bgPrimary h1, .bgPrimary a {color:#fff; font-weight:bold;}
+
+
+/************************************************
+ * USER LOGIN
+ ***********************************************/
+.userlogged {
+    margin:0;
+	/*width:200px;*/
+}
+.ie67 .userlogged {position:absolute; top:0; right:0;}
+.userlogged fieldset {margin:0; padding:0;}
+.userlogged .field, .userlogged .submit {
+    float:left;
+    margin-left:0.5em;
+}
+.userlogged .field {
+    width:129px;
+}
+.userlogged .submit {margin-top:1.45em;}
+.userlogged label {
+	display:block;
+}
+.userlogged form input, .userlogged form input[type="text"] {
+    display:block;
+	margin:0 0 10px; padding:2px; border:1px solid #E0002C; border-radius:0;
+	width:100%;
+	background:#fff;
+	font-size:1em; line-height:1.5em;
+}
+.ie67 .userlogged form input {
+	width:97%;
+}
+.userlogged form input:hover, .userlogged form input[type="text"]:hover, .userlogged form input:focus {
+	border:1px solid #E0002C; border-radius:0; -webkit-box-shadow:0 0 3px #E0002C; -o-box-shadow:0 0 3px #E0002C; box-shadow:0 0 3px #E0002C;
+}
+.userlogged form input[type="submit"] {
+	float:right;
+	margin:0; padding:2px 12px;
+	width:auto;
+	color:#fff; background:#E0002C;
+}
+.userlogged form input[type="submit"]:hover {
+	color:#E0002C; background:#FFF;
+	font-weight:bold;
+	cursor:pointer;
+}
+.user {
+	line-height:1;
+}
+
+/* Bouton SAML */
+.userlogged a {
+    margin:5px 10px; padding:6px;
+    font-size:1.2em;
+}
+
+/************************************************
+ * USER MENU
+ ***********************************************/
+div.usermenu {
+	float: right;
+	padding:3px 0;
+}
+ul.usermenu {
+	list-style-type: none;
+	list-style-position: outside;
+	list-style-image: none;
+	margin: 0px;
+	padding: 0px;
+	}
+
+ul.usermenu li {
+    position:relative;
+	float: left;
+    margin-right:0.5em;
+	}
+	
+ul.usermenu li a.item {
+	display: block;
+	width: 30px;
+	margin: 1px;
+	padding-top: 30px;
+	text-align: center;
+	overflow: hidden;
+	}
+	
+ul.usermenu li a.logout {
+	margin-left: 6px;
+	}
+
+.usermenu #counter, .toolset .counter {
+	position:absolute; top:0; right:0;
+	display: inline-block;
+	width: 18px; height: 18px;
+	border-radius: 50%;
+	background: #888; color:#fff;
+	border: 1px solid #fff;
+	font-size: 0.8em; font-weight:bold;
+	line-height:2em;
+	text-align:center; text-decoration:none;
+}
+
+
+/************************************************
+ * DASHBOARD BLOCS TOOLBARS
+ ***********************************************/
+div.toolbar ul {
+	list-style-type: none;
+	list-style-position: outside;
+	list-style-image: none;
+	margin: 0px;
+	padding: 0px;
+	}
+	
+div.toolbar ul li {
+	float: left;
+	}
+	
+div.toolbar ul li a.action {
+	border-radius: 4px;
+	/*behavior: url(/htc/PIE.htc);*/
+	padding: 2px;
+	margin: 0px 1px;
+	line-height: 28px;
+	border: solid 1px #666666;
+	background: #F0F0F0;
+	font-size: 85%;
+	}
+	
+div.toolbar ul li a.action:hover {
+	background: #D9E575;
+	}
+
+	
+/************************************************
+ * SIDE COLUMNS
+ ***********************************************/
+#right div.kernel, #left div.kernel {
+	background: #f4f8f4;
+	margin-bottom: 12px;
+	padding: 6px;
+	border: 2px solid #fff;
+	font-size: 110%;
+	color: #444433;
+	border-radius: 8px;
+	/*behavior: url(/htc/PIE.htc);*/
+	}
+
+#right div.kernel a, #left div.kernel a {
+	color: #444433;
+}
+
+#right div.kernel a:hover, #left div.kernel a:hover {
+	text-decoration: underline;
+}
+
+#right div.kernel h1, #left div.kernel h1 {
+	font-size:120%;
+	text-transform: uppercase;
+	margin-top:0px;
+	color: #b28001;
+}
+	
+#right div.kernel ul, #left div.kernel ul {
+	list-style-position: outside;
+	padding-left: 15px;
+}
+#right div.kernel li, #left div.kernel li {
+}
+
+#right div.dashboardwelcome li, #left div.dashboardwelcome li {
+}
+	
+
+/************************************************
+ * FOOTER
+ ***********************************************/
+footer {
+	padding-top:5px; border-top:2px solid #000;
+	color:#716F64;
+	font-size:1em;
+}
+footer a {color:#000;}
+.legalLinks {
+	list-style:none;
+}
+.legalLinks li {margin-left:15px;}
+
+
+/************************************************
+ * LEGALS
+ ***********************************************/
+div.legals {
+	text-align: center;
+	text-transform: uppercase;
+	font-size: 80%;
+	}
+div.legals a {
+	color: #000;
+	font-weight: bold;
+	}
+	
+/************************************************
+ * STANDARD CONTENT PANEL
+ ***********************************************/
+.content-panel {
+	background: #fff;
+	padding: 6px;
+	border-radius: 6px;
+	/*behavior: url(/htc/PIE.htc);*/
+	margin-bottom: 6px;
+	}
+ 
+.content-panel-edit {
+	background: #fff url(../../../themes/default/images/menu/menu_update.png) 8px 8px no-repeat;
+	padding-left: 42px;
+	}
+
+.content-panel-button {
+	text-align: center;
+	padding: 3px;
+	}
+
+.content-info {
+	padding: 6px 0px;
+	margin-bottom: 6px;
+	font-style: italic;
+	}
+
+/************************************************
+ * JQueryUI HACKS
+ ***********************************************/
+.content .ui-widget {font-size:1em;}
+
+img.ui-datepicker-trigger {
+	vertical-align:middle;
+	}
+	
+p.ui-state-error {
+	padding: 0 6px;
+	border: solid 1px #ddd;
+	}
+
+.ui-widget-overlay {
+	background: #666;
+	}
+
+/************************************************
+ * POPUPS
+ ***********************************************/
+.popup-title {
+	display: block;
+	background: #0c92b1;
+	font-size: 150%;
+	color: #fff;
+	padding: 6px;
+	}
+
+.popup-subtitle {
+	display: block;
+	font-size: 120%;
+	padding: 0px;
+	margin: 6px 0;
+	border-bottom: solid 1px #ddd;
+	}
+
+/************************************************
+ * USER WARNINGS
+ ***********************************************/
+.warning {
+	position: relative;
+	display: inline-block;
+	font-size: 12px;
+	padding: 3px 6px 3px 6px;
+	min-width: 42px;
+	min-height: 42px;
+	background-color : #fff;
+	border: solid 1px #fff;
+	border-radius: 6px;
+	/*behavior: url(/htc/PIE.htc);*/
+	font-size: 14px;
+}
+
+.warning-exclamation { padding-left: 60px; background: #fff url(../../../themes/default/images/warn_exclamation.png) 4px 50% no-repeat; }
+.warning-information { padding-left: 60px; background: #fff url(../../../themes/default/images/warn_information.png) 4px 50% no-repeat; }
+
+.error {
+    font-weight: bold;
+    font-style: italic;
+    color: red;
+    font-size: 0.9em;
+}
+
+p.mesgSuccess, ul.mesgErrors, div.mesgErrors ul, div.mesgSuccess ul, p.mesgError, p.mesgInfo {
+	margin:10px 0 15px; padding:5px 5px 5px 28px; border:1px solid #a3c300; -o-border-radius:10px; border-radius:10px;
+	background:url(../../../themes/default/images/button-action/action_confirm.png) no-repeat 5px 50% #fff; color:#a3c300;
+	font-weight:bold;
+}
+ul.mesgErrors, div.mesgErrors ul, p.mesgError {
+	border-color:#f00;
+	background:url(../../../themes/default/images/button-action/action_warning.png) no-repeat 5px 50% #fff; color:#f00;
+	list-style:none;
+}
+p.mesgInfo {
+	border-color:#49BFCD;
+	background:url(../../../themes/default/images/button-action/action_info.png) no-repeat 5px 50% #fff; color:#49BFCD;
+}
+#contentmain > p.mesgSuccess, #contentmain > p.mesgInfo, #contentmain > p.mesgError {
+	margin:25px 25px 15px;
+	font-size:1.1em;
+}
+
+/************************************************
+ * MODAL MESSAGES
+ ***********************************************/
+#dialog-message {
+	padding: 12px;
+	font-size: 14px;
+	text-align: center;
+	}
+
+#dialog-message ul {
+	padding: 12px;
+	font-size: 14px;
+	list-style-type: none;
+	text-align: left;
+	}
+
+#dialog {
+	padding: 12px;
+	font-size: 14px;
+	}
+
+#dialog ul {
+	padding: 12px;
+	font-size: 14px;
+	list-style-type: none;
+	text-align: left;
+	}
+
+/************************************************
+ * PROGRESSION BADGES
+ ***********************************************/
+.badge {
+	display: inline-block;
+	width: 17px;
+	height: 16px;
+	padding: 1px 1px 1px 0;
+	border-radius: 12px;
+	/*behavior: url(/htc/PIE.htc);*/
+	background: #a3c300;
+	color: #fff;
+	font-size: 90%;
+	text-align: center;
+	letter-spacing: -0.1em;
+	}
+	
+.badge-off {
+	background: #999;
+	color: #fff;
+	}
+	
+.badge-on {
+	background: #a3c300;
+	color: #fff;
+	}
+	
+.badge-current {
+	background: #f3a807;
+	color: #fff;
+	}
+
+/************************************************
+ * FORMS
+ ***********************************************/
+input[type="submit"], input[type="button"] {
+    font-size:1em;
+}
+form.edit p {margin:0;}
+form.edit .field {
+	clear:both;
+	margin-bottom:5px;
+}
+form.edit .field > label, form.edit .field > p.label {
+	float:left;
+	margin:0 1% 0 0;
+	width:40%;
+	text-align:right;
+	line-height:1.8em;
+}
+form.edit .submit {
+	margin:15px 0 0 41%;
+}
+form.edit .submit input {
+	margin-left:5px;
+}
+form.edit .input {
+	margin:0 0 0 41%;
+}
+
+input.form_button {
+	border: solid 1px #333333;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	background: #F0F0F0;
+	color: #333333;
+}
+
+input.form_button:hover {
+	border: solid 1px #333333;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	background: #D9E575;
+	color: #333333;
+}
+
+form input[type="text"], form input[type="url"], form input[type="email"], form input[type="date"], form textarea {
+	border: solid 1px #f0f4f0;
+	border-radius: 6px;
+	/*behavior: url(/htc/PIE.htc);*/
+	padding: 3px;
+	}
+	
+input.label-overlayed {
+	color: #aaa;
+	}
+	
+form input[type="text"]:hover, form textarea:hover {
+	border: solid 1px #a3c300;
+	}
+
+form label {
+	display: inline-block;
+	}
+
+form label a {
+	display: inline-block;
+	}
+
+form select {
+	border:1px solid #f0f4f0;
+	border-radius: 6px;
+	padding: 3px;
+}
+
+form select:hover {
+	border:1px solid #a3c300;
+	}
+
+input.file-attach {
+	width: 400px;
+}
+
+input.preFilled, textarea.preFilled {
+    color: #cccccc;
+}
+
+form select.multicombo {
+	height: 120px;
+}
+
+form fieldset {
+    border-color:#eeebe4;
+    border-radius:8px;
+}
+#content-popup .option-bar {
+	border-top: solid 1px #f0f4f0;
+	border-bottom: solid 1px #f0f4f0;
+	padding: 3px;	
+	}
+
+#content-popup .option-bar .option1 {
+	float: left;
+	width: 50%;
+	margin-right: 30px;	
+	}
+
+#content-popup .popup-panel {
+	background-color: #f0f4f0;
+	border-radius: 6px;
+	/*behavior: url(/htc/PIE.htc);*/
+	padding: 6px;	
+	}
+
+input[required] { -webkit-box-shadow:0 0 3px #f00; -o-box-shadow:0 0 3px #f00; box-shadow:0 0 3px #f00;
+}
+.asterisque {
+	display:inline-block;
+	width:10px; height:16px;
+	background:url(../img/red-star.png) no-repeat 0 0;
+	font-size:0px;
+	vertical-align:top;
+}
+form .format, form .ui-datepicker-append {
+	padding:0 0 0 .5em;
+	color:#777;
+	font-size:0.85em; font-style:italic;
+}
+
+/************************************************
+ * Prise de controle
+ ***********************************************/
+
+.prise_controle {
+	width:40%;
+	margin:0 auto;
+}
+.prise_controle .message {
+	padding:5px 5px 5px 28px;
+	border:1px solid #f00;
+	background:url(../../../themes/default/images/button-action/action_warning.png) no-repeat 5px 50% #fff; color:#f00; border-radius:8px;
+	-webkit-box-shadow:0 0 5px rgba(255,255,255,0.7);
+	box-shadow:0 0 5px rgba(255,255,255,0.7);
+	font-weight:bold;
+}
+.prise_controle a {
+	margin-top:0.4em;
+	font-size:1em;
+}
+.prise_controle a:link {color:#000;}
+.prise_controle a:hover {color:#f00; text-decoration:underline;}
+
+
+/************************************************
+ * FANCYBOX LINK
+ ***********************************************/
+ a.fancyframe {
+	 display:inline-block;
+	 margin:0;
+ }
+#fancybox-wrap {padding:0 !important;}
+#fancybox-content {-webkit-box-sizing:content-box; -moz-box-sizing:content-box; box-sizing:content-box;}
+
+
+/************************************************
+ * TWITTER WIDGET
+ ***********************************************/
+.twitterLabel {
+    float:left;
+}
+.twitterWidget {
+    width:50%;
+    height:100px;
+    margin:0 0 0 5px;
+}
+
+
+/************************************************
+ * TOOLTIP
+ ***********************************************/
+a.tooltip em {
+    display:none;
+}
+a.tooltip:hover {
+    border: 0;
+    position: relative;
+    z-index: 500;
+    text-decoration:none;
+}
+a.tooltip:hover em {
+    font-style: normal;
+    display: block;
+    position: absolute;
+    top: 20px;
+    left: -2px;
+    padding: 5px;
+    color: #000;
+    border: 1px solid #bbb;
+    background: #ffc;
+		text-align:left;
+    width:300px;
+		font-weight:normal;
+    white-space:normal;
+
+}
+a.tooltip:hover em span {
+    position: absolute;
+    top: -7px;
+    left: 5px;
+    height: 7px;
+    width: 11px;
+    background: transparent url(../img_styles/tooltip-arrow.gif);
+		background-repeat:no-repeat;
+    margin:0;
+    padding: 0;
+    border: 0;
+}
+a.tooltip70px:hover em {	width:70px; }
+a.tooltip80px:hover em {	width:80px; }
+a.tooltip90px:hover em {	width:90px; }
+a.tooltip100px:hover em {	width:100px; }
