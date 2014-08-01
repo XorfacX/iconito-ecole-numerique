@@ -23,8 +23,8 @@ $module = CopixRequest::get ('module');?>
 	<meta http-equiv="X-UA-Compatible" content="IE=10">
 	<title><?php echo isset ($TITLE_BAR) ? $TITLE_BAR : ''; ?></title>
 	<meta name="viewport" content="initial-scale=1.0">
-	<meta name="description" content="ICONITO Ecole Numérique - Roubaix">
-	<meta name="keywords" content="ent roubaix iconito">
+	<meta name="description" content="ICONITO Ecole Numérique">
+	<meta name="keywords" content="ent iconito cap tic">
     <link rel="icon" type="image/x-icon" href="<?php echo CopixUrl::getRequestedScriptPath(); ?>favicon.ico" />
 
     <link  rel="stylesheet" href="<?php echo CopixUrl::getResource ("styles/knacss.css");?>" />
