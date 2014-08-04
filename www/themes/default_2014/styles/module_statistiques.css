@@ -1,0 +1,36 @@
+@charset "UTF-8";
+/* CSS Document */
+
+#tabs .ui-tabs-nav a:hover {cursor:pointer;}
+#tabs .container {padding:0 0.5em 0.5em;}
+.average {
+	padding-left:1em;
+	color:#2e6e9e;
+	font-style:italic; font-size:0.9em;
+}
+.dateStats {
+	color:#2e6e9e;
+	font-weight:bold;
+}
+table caption {display:none;}
+
+.info {
+	color:#666;
+	font-size:0.85em; font-style:italic;
+}
+
+
+.mt2 {margin-top:2em;}
+.mb1 {margin-bottom:1em;}
+
+/* export CSV buttons */
+.export-csv-button {
+    background: url(../images/file_csv_off.png) no-repeat left center;
+    padding-left: 35px;
+    display: inline-block;
+    text-indent: -9999px;
+}
+
+.export-csv-button:hover {
+    background: url(../images/file_csv_on.png) no-repeat left center;
+}

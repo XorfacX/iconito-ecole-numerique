@@ -21,6 +21,8 @@
 /www/themes/*
 !/project/themes/default
 !/www/themes/default
+!/project/themes/default_2014
+!/www/themes/default_2014
 !/www/themes/iconitoplus
 !/www/themes/iconitoclic
 /utils/simplesamlphp/config/authsources.php

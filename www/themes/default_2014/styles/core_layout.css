@@ -1,0 +1,166 @@
+/**
+ * THEMES - core_layout.css
+ * Mise en page globale
+ *
+ * @package	Iconito 2010
+ * @cdate 22.01.2010
+ * @mdate 22.01.2010
+ * @author	Stephane Holtz <sholtz@cap-tic.fr>
+ */
+
+/************************************************
+ * DEBUG STUFF
+ ***********************************************/
+body.debug .debug-layout {
+	position: absolute;
+	font-size: 9px;
+	color: #000;
+	background: #fff;
+	z-index: 0;
+	opacity: 0.5;
+	border: solid 1px #000;
+	padding: 1px;
+	}
+
+body.debug .debug, body.debug .debug a, body.debug .debug a:visited  {
+	font-size: 9px;
+	color: #BBB;
+}
+
+body.nodebug .debug, body.nodebug .debug a, body.nodebug .debug a:visited  {
+	display: none;
+}
+
+/************************************************
+ * MAIN DESIGN POSITIONNING
+ ***********************************************/
+/*#main-wrapper 	{ width: 960px; }
+#left 			{ width: 188px; margin-right: -200px; padding: 12px 12px 12px 0; }
+#right 			{ width: 188px; margin-left: -200px; padding: 12px 12px 12px 0; }
+#content		{ margin-left : 200px; } 	/* #left width [+ additional white space] */
+/*#content		{ margin-right : 200px; }	/* #right width [+ additional white space] */
+
+.clear		{ clear: both; }
+.clearBoth 	{ clear: both; width:100%; }
+
+.show 	{ visibility:visible; }
+.hidden { visibility: hidden; display: none; }
+.displayNone { display: none; }
+.hiddenClean {position:absolute; top:-999em; left:-999em;}
+
+.left 	{ text-align: left; }
+.center	{ text-align: center; }
+.right 	{ text-align: right; }
+
+.floatleft 	{ float: left; }
+.floatright { float: right; }
+
+a img {border:0;}
+
+.opacity100 {
+	opacity : 1;
+/*	filter : alpha(opacity=100); */
+	}
+
+.opacity50 {
+	opacity : 0.7;
+/*	filter : alpha(opacity=70); */
+	}
+
+.wrapper 			{ clear: both; position: relative; margin: 8px auto; }
+.wrapper-expander 	{ clear: both; position: relative; width: 200%; }
+.wrapper-shifter 	{ position: relative; float: left; left: 50%; width: 50%; }
+
+
+.skip-links a:link, .skip-links a:visited {
+	color:#fff;
+	font-size:1.2em;
+}
+aside {
+	max-width:240px;
+}
+section, .section, aside > .kernel {
+	margin-bottom:30px; padding:15px 20px; border:2px solid #E1DCD7;
+	background:#f5f5f5;
+	-webkit-box-shadow:1px 1px 5px #ddd;
+	box-shadow:1px 1px 5px #ddd;
+}
+aside > .kernel {
+	padding:10px 15px;
+}
+.ie67 section {
+	zoom:1;
+}
+.actualites, aside .rssmix {
+	border:2px solid #fff;
+	background:#E1DCD7;
+}
+
+section h1, section .bpage_title {
+	margin:0 0 .8077em 0;
+	text-transform:uppercase;
+	font-size: 1.5714em; /* equiv 22px */
+	font-weight:bold;
+}
+section li {
+	list-style-image:url(../img/puce.png);
+}
+.rssmix h1 {margin-top:0;}
+.ie67 .filler {height:0;}
+
+
+
+/* jQuery UI */
+
+/* Affichage des tableaux */
+table.viewItems {
+	margin:3px 0; padding:2px; border-radius:6px;
+	width:100%;
+	background:#FFFFFF;
+        table-layout:fixed;
+    font-size:1em;
+}
+table.viewItems tr.even {
+	background:#F5F5F5;
+}
+table.viewItems th {
+	background:#eee;
+	text-align:center;
+}
+table.viewItems th.actions {
+	width:200px;
+}
+table.viewItems th.extraSmall {width:30px;}
+table.viewItems td {
+    max-width:50%;
+    overflow:hidden;
+}
+table.viewItems td a.button:link, 
+table.viewItems td a.button:visited {
+	border:1px solid #ddd;
+}
+table.viewItems ul {
+	margin:0; padding:.3em 0 .3em 2em;
+}
+
+table.editItems {
+	margin:3px 0; padding:2px;
+	width:100%;
+}
+table.editItems th {
+	text-align:right;
+	width:40%;
+}
+table.editItems .submit input {margin:5px 10px;}
+
+
+/* Accordion */
+.accordion {
+    padding-left: 1.6em;
+    background-position: 0 50%; background-repeat: no-repeat;
+    background-image: url(../../../themes/default/images/sort_right_off.png);
+
+}
+.accordionOpen {
+    background-image: url(../../../themes/default/images/sort_down_off.png);
+}

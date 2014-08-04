@@ -1,0 +1,472 @@
+/**
+ * THEMES - core_buttons.css
+ * Mise en forme des boutons
+ *
+ * @package	Iconito 2010
+ * @cdate 22.01.2010
+ * @mdate 22.01.2010
+ * @author	Stephane Holtz <sholtz@cap-tic.fr>
+ */
+
+/************************************************
+ * STANDARD BUTTONS
+ ***********************************************/
+.loading-button {
+	position: relative;
+	display: inline-block;
+	vertical-align: middle;
+	width: 48%;
+	margin: auto;
+	float:left;
+	}
+
+.loading-button a {
+	position: relative;
+    display: block;
+    width: 80%;
+    min-height: 140px;
+    font-size: 100%;
+    text-align: center;
+    margin: 5% 10%;
+	border-radius: 10px;
+	/*behavior: url(/htc/PIE.htc);*/
+    background-color: #fff;
+    padding: 6px;
+	}
+
+.loading-button a:hover {
+    background-color: #ffffff;
+	}
+
+.loading-button a div.button-title {
+	font-size: 220%;
+	color: #999;
+	margin: 40px 0;
+	}
+
+.loading-button a div.button-subline {
+    font-size: 90%;
+    line-height: 90%;
+    color:#aaa;
+	}
+
+.button {
+	position: relative;
+	display: inline-block;
+	padding:0.3em 0.8em;
+	min-width: 26px;
+	background:#0097BA; background-position:4px 50%; background-repeat:no-repeat;
+    color:#fff;
+	border: solid 1px #fff; border-radius:3px;
+	}
+.bu_ecole .button {background-color:#a3c300;}
+.button-cancel, .bu_ecole .button-cancel {background-color:#ccc;}
+.button:link, .button:visited {color:#fff;}
+.button:hover {
+	background-color:#f5f5f5; color:#333;
+	border:1px solid #dcdcdc;
+	cursor:pointer;
+	}
+
+.submit input:hover {
+    cursor:pointer;
+    border-color:#DCDCDC; color:#333;
+	background:#f5f5f5;
+}
+
+/*.button-view		{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_read.png) 4px 50% no-repeat; }
+.button-update		{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_update.png) 4px 50% no-repeat; }
+.button-results		{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_results.png) 4px 50% no-repeat; }
+.button-save		{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_save.png) 4px 50% no-repeat; }
+.button-add			{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_add.png) 4px 50% no-repeat; }
+.button-delete		{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_delete.png) 4px 50% no-repeat; }
+.button-cancel		{ padding-left: 26px; background: #f9f9f9 url(../../../themes/default/images/button-action/action_cancel.png) 4px 50% no-repeat; }
+.button-continue	{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_continue.png) 4px 50% no-repeat; }
+.button-back		{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_back.png) 4px 50% no-repeat; }
+.button-next		{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_next.png) 4px 50% no-repeat; }
+.button-previous	{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_previous.png) 4px 50% no-repeat; }
+.button-continue	{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_continue.png) 4px 50% no-repeat; }
+.button-info		{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_info.png) 4px 50% no-repeat; }
+.button-attach		{ display:inline; margin-top:5px; padding-left:26px; background: #fff url(../../../themes/default/images/button-action/action_attach.png) 4px 50% no-repeat; }
+.button-file		{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_attach.png) 4px 50% no-repeat; }
+.button-confirm		{ padding-left: 26px !important; background-image: url(../img/button-confirm.png); }
+.button-print		{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_print.png) 4px 50% no-repeat; }
+.button-reload		{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_reload.png) 4px 50% no-repeat; }
+.button-up			{ padding-left: 24px; background: #fff url(../../../themes/default/images/button-action/action_up.png) 4px 50% no-repeat; }
+.button-down		{ padding-left: 24px; background: #fff url(../../../themes/default/images/button-action/action_down.png) 4px 50% no-repeat; }
+.button-download	{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_download.png) 3px 50% no-repeat; }
+.button-upload		{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_upload.png) 3px 50% no-repeat; }
+.button-move		{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_move.png) 3px 50% no-repeat; }
+.button-copy		{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_copy.png) 3px 50% no-repeat; }
+.button-image		{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_image.png) 4px 50% no-repeat; }
+.button-imagevalid	{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_imagevalid.png) 4px 50% no-repeat; }
+.button-imagedelete	{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_imagedelete.png) 4px 50% no-repeat; }
+.button-directory	{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_directory.png) 4px 50% no-repeat; }
+.button-search		{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_search.png) 4px 50% no-repeat; }
+.button-chart		{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_chart.png) 4px 50% no-repeat; }
+
+.button-p-first		{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_p_first.png) 4px 50% no-repeat; }
+.button-p-previous	{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_p_previous.png) 4px 50% no-repeat; }
+.button-p-play		{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_p_play.png) 4px 50% no-repeat; }
+.button-p-pause		{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_p_pause.png) 4px 50% no-repeat; }
+.button-p-stop		{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_p_stop.png) 4px 50% no-repeat; }
+.button-p-open		{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_p_open.png) 4px 50% no-repeat; }
+.button-p-next		{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_p_next.png) 4px 50% no-repeat; }
+.button-p-last		{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_p_last.png) 4px 50% no-repeat; }
+.button-p-record	{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_p_record.png) 4px 50% no-repeat; }
+.button-p-replay	{ padding-left: 26px; background: #fff url(../../../themes/default/images/button-action/action_p_replay.png) 4px 50% no-repeat; }
+*/
+.button-sortup, .button-sortdown {
+	padding-left:26px;
+	background:#fff 4px 50% no-repeat;
+}
+
+.button-sortup { background-image:url(../../../themes/default/images/sort_up_off.png);}
+.button-sortdown { background-image:url(../../../themes/default/images/sort_down_off.png);}
+
+.button-sortup:hover { background-image:url(../../../themes/default/images/sort_up_on.png);}
+.button-sortdown:hover { background-image:url(../../../themes/default/images/sort_down_on.png);}
+	
+.button-drag {
+	position: relative;
+	display: inline-block;
+	margin: 0;
+	padding: 0;
+	height: 36px;
+	width: 11px;
+	vertical-align: middle;
+	}
+	
+/************************************************
+ * MODULES SUBMENU BUTTONS
+ ***********************************************/
+#submenu {
+	position: absolute;
+	overflow: hidden;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	z-index: 999;
+	filter: alpha(opacity=95);
+	-moz-opacity: 0.95;
+	opacity: 0.95;
+	border-bottom: solid 1px #fff;
+	}
+
+.submenu-marger {
+	margin-top: 42px;
+	}
+
+#submenu .menuitems {
+	position: relative;
+/*	display: none;*/
+	display: block;
+	background:#e0e0e0;
+	border-bottom: solid 1px #ccc;
+	font-size:90%;
+	line-height: 90%;
+	}
+
+#submenu .menuitems ul {
+	position: relative;
+	list-style-type: none;
+	list-style-position: outside;
+	list-style-image: none;
+	overflow:auto;
+	margin: 0px;
+	padding: 2px;
+	text-align: center;
+/*	height:38px; overflow:hidden;*/
+	}
+
+#submenu .menuitems ul li {
+	position: relative;
+	display:inline;
+	overflow: hidden;
+	vertical-align: middle;
+	text-align: left;
+	padding: 2px;
+	}
+	
+#submenu .menuitems ul li a {
+	position: relative;
+	display:inline; display:inline-block;
+	white-space:nowrap;
+	overflow: hidden;
+	vertical-align: middle;
+	padding: 2px 2px 2px 28px;
+	width:auto;
+	height: 28px;
+	background-color : #f0f4f0;
+	background-position: 2px 50%;
+	background-repeat: no-repeat;
+	border: solid 1px #f0f4f0;
+	border-radius: 6px;
+    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+}
+#submenu .menuitems a:link, #submenu .menuitems a:visited {
+    color:#000;
+}
+
+#submenu .menuitems a.current {
+	background-color: #ccc;
+	border: solid 1px #bbb;
+	color: #fff;
+	}
+
+#submenu .menuitems ul li a span {
+	position: relative;
+	vertical-align: middle;
+	display: inline-block;
+	white-space: normal;
+	overflow: visible;
+    line-height:1;
+	}
+.ie67 #submenu .menuitems ul li a span,
+.ie67 div.dashpanel div.toolset ul li a span.label {line-height:1.2;}
+#submenu .menuitems ul li.newGroupItems {margin-left:50px;}
+
+span.valign {
+	height: 100%;
+	}
+
+#submenu .menuitems a 				{ background-image: url(../../../themes/default/images/menu/menu_default.png); }
+#submenu .menuitems a.create 		{ background-image: url(../../../themes/default/images/menu/menu_create.png); }
+#submenu .menuitems a.read			{ background-image: url(../../../themes/default/images/menu/menu_read.png); }
+#submenu .menuitems a.update		{ background-image: url(../../../themes/default/images/menu/menu_update.png); }
+#submenu .menuitems a.delete		{ background-image: url(../../../themes/default/images/menu/menu_delete.png); }
+#submenu .menuitems a.list			{ background-image: url(../../../themes/default/images/menu/menu_list.png); }
+#submenu .menuitems a.list-active	{ background-image: url(../../../themes/default/images/menu/menu_list_active.png); }
+#submenu .menuitems a.list-inactive	{ background-image: url(../../../themes/default/images/menu/menu_list_inactive.png); }
+#submenu .menuitems a.viewList		{ background-image: url(../../../themes/default/images/menu/menu_viewList.png); }
+#submenu .menuitems a.viewThumbs	{ background-image: url(../../../themes/default/images/menu/menu_viewThumbs.png); }
+#submenu .menuitems a.results		{ background-image: url(../../../themes/default/images/menu/menu_results.png); }
+#submenu .menuitems a.article		{ background-image: url(../../../themes/default/images/menu/menu_article.png); }
+#submenu .menuitems a.link			{ background-image: url(../../../themes/default/images/menu/menu_link.png); }
+#submenu .menuitems a.tag			{ background-image: url(../../../themes/default/images/menu/menu_tag.png); }
+#submenu .menuitems a.image			{ background-image: url(../../../themes/default/images/menu/menu_image.png); }
+#submenu .menuitems a.page			{ background-image: url(../../../themes/default/images/menu/menu_page.png); }
+#submenu .menuitems a.rss			{ background-image: url(../../../themes/default/images/menu/menu_rss.png); }
+#submenu .menuitems a.acl			{ background-image: url(../../../themes/default/images/menu/menu_acl.png); }
+#submenu .menuitems a.users			{ background-image: url(../../../themes/default/images/menu/menu_users.png); }
+#submenu .menuitems a.document		{ background-image: url(../../../themes/default/images/menu/menu_attach.png); }
+#submenu .menuitems a.options		{ background-image: url(../../../themes/default/images/menu/menu_options.png); }
+#submenu .menuitems a.agendalist	{ background-image: url(../../../themes/default/images/menu/menu_agendalist.png); }
+#submenu .menuitems a.week			{ background-image: url(../../../themes/default/images/menu/menu_week.png); }
+#submenu .menuitems a.download		{ background-image: url(../../../themes/default/images/menu/menu_download.png); }
+#submenu .menuitems a.export		{ background-image: url(../../../themes/default/images/menu/menu_export.png); }
+#submenu .menuitems a.import		{ background-image: url(../../../themes/default/images/menu/menu_import.png); }
+#submenu .menuitems a.addfile		{ background-image: url(../../../themes/default/images/menu/menu_addfile.png); }
+#submenu .menuitems a.addfolder		{ background-image: url(../../../themes/default/images/menu/menu_addfolder.png); }
+#submenu .menuitems a.write			{ background-image: url(../../../themes/default/images/menu/menu_write.png); }
+#submenu .menuitems a.move			{ background-image: url(../../../themes/default/images/menu/menu_move.png); }
+#submenu .menuitems a.copy			{ background-image: url(../../../themes/default/images/menu/menu_copy.png); }
+#submenu .menuitems a.todo			{ background-image: url(../../../themes/default/images/menu/menu_todo.png); }
+#submenu .menuitems a.classroom		{ background-image: url(../../../themes/default/images/menu/menu_classroom.png); }
+#submenu .menuitems a.chart			{ background-image: url(../../../themes/default/images/menu/menu_chart.png); }
+#submenu .menuitems a.page			{ background-image: url(../../../themes/default/images/menu/menu_full_page.png); }
+#submenu .menuitems a.event			{ background-image: url(../../../themes/default/images/menu/menu_event.png); }
+#submenu .menuitems a.back			{ background-image: url(../../../themes/default/images/menu/menu_back.png); }
+#submenu .menuitems a.print			{ background-image: url(../../../themes/default/images/menu/menu_print.png); }
+
+#submenu .menuitems a:hover			{ background-color: #fff; border: solid 1px #a3c300; color:#999; }
+
+/************************************************
+ * MODULES BUTTONS
+ ***********************************************/
+.tools_left div.dashpanel .toolset ul li a,
+.tools_right div.dashpanel .toolset ul li a,
+ul.usermenu li a, 
+a.dashclose {
+    background-image:url(../img/modules-sprite.png); background-repeat:no-repeat;
+    -webkit-transition-duration:0; transition-duration:0;
+}
+
+a.MOD_CHARTE 			      { background-position:100% -960px; }
+a.MOD_CHARTE:hover		      { background-position:100% -990px; }
+a.MOD_SYSUTILS 			      { background-position:100% -1080px; }
+a.MOD_SYSUTILS:hover	      { background-position:100% -1110px; }
+a.menu-agenda,
+a.MOD_AGENDA 			      { background-position:100% -120px; }
+a.menu-agenda:hover,
+a.MOD_AGENDA:hover		      { background-position:100% -150px; }
+/*a.MOD_ALBUM 			      { background-position:100% -px; }*/
+a.MOD_BLOG 				      { background-position:100% 0; }
+a.MOD_BLOG:hover              { background-position:100% -30px; }
+a.MOD_MALLE,
+a.menu-malle,
+a.menu-classeur, 
+a.MOD_CLASSEUR 			      { background-position:100% -60px;}
+a.MOD_MALLE:hover,
+a.menu-malle:hover,
+a.menu-classeur:hover,
+a.MOD_CLASSEUR:hover	      { background-position:100% -90px;}
+/*a.MOD_CARNET 			      { background-position:100% -px; }
+a.MOD_COMPTES			      { background-position:100% -px; }*/
+a.MOD_FORUM				      { background-position:100% -900px; }
+a.MOD_FORUM:hover		      { background-position:100% -930px; }
+a.MOD_QUIZ				      { background-position:100% -780px; }
+a.MOD_QUIZ:hover       	      { background-position:100% -810px; }
+a.MOD_REGROUPEMENTS		      { background-position:100% -1200px; }
+a.MOD_REGROUPEMENTS:hover     { background-position:100% -1230px; }
+a.MOD_LISTE				      { background-position:100% -1140px; }
+a.MOD_LISTE:hover		      { background-position:100% -1170px; }
+a.MOD_RESSOURCE,
+a.MOD_RSSETAGERE,
+a.menu-ressource              { background-position:100% -1020px; }
+a.MOD_RESSOURCE:hover,
+a.MOD_RSSETAGERE:hover,
+a.menu-ressource:hover        { background-position:100% -1050px; }
+/*a.MOD_SSOGAEL			      { background-position:100% -px; }
+a.MOD_TELEPROCEDURES	      { background-position:100% -px; }
+a.MOD_MAGICMAIL			      { background-position:100% -px; }*/
+a.MOD_GESTIONAUTONOME	      { background-position:100% -180px; }
+a.MOD_GESTIONAUTONOME:hover	  { background-position:100% -210px; }
+/*a.MOD_CONTACT                 { background-position:100% -px; }
+a.MOD_KNE                     { background-position:100% -px;  }*/
+a.MOD_CAHIERDETEXTES          { background-position:100% -420px;}
+a.MOD_CAHIERDETEXTES:hover    { background-position:100% -450px;}
+a.bu_ecole .MOD_CAHIERDETEXTES { background-position:100% -480px;}
+a.bu_ecole .MOD_CAHIERDETEXTES:hover { background-position:100% -510px;}
+/*a.MOD_CERISEPRIM              { background-position:100% -px;}*/
+a.MOD_CLASSE, 
+a.MOD_ADMIN, a.menu-prefs    { background-position:100% -540px;}
+a.MOD_CLASSE:hover, 
+a.MOD_ADMIN:hover, a.menu-prefs:hover { background-position:100% -570px;}
+a.menu-aide                   { background-position:100% -240px;}
+a.menu-aide:hover             { background-position:100% -270px;}
+a.logout                      { background-position:100% -300px;}
+a.logout:hover                { background-position:100% -330px;}
+a.menu-annuaire                      { background-position:100% -360px;}
+a.menu-annuaire:hover                { background-position:100% -390px;}
+a.menu-minimail                      { background-position:100% -600px;}
+a.menu-minimail:hover                { background-position:100% -630px;}
+a.menu-assistance                      { background-position:100% -660px;}
+a.menu-assistance:hover                { background-position:100% -690px;}
+a.MOD_VISIOSCOPIA, 
+a.menu-visio                      { background-position:100% -720px;}
+a.MOD_VISIOSCOPIA:hover, 
+a.menu-visio:hover                { background-position:100% -750px;}
+a.dashclose                      { background-position:100% -840px;}
+a.dashclose:hover                { background-position:100% -870px;}
+
+
+/************************************************
+ * ASK FOR NEW ACCOUNT BUTTON
+ ***********************************************/
+a.usr-newaccount {
+    position: relative;
+    display: block;
+    width: 48px;
+    height: 48px;
+    background: url(../../../themes/default/images/usr_newaccount.png) no-repeat center center;
+    }
+
+/************************************************
+ * CONTEXTUAL PROGRESS BAR
+ ***********************************************/
+#stepbar {
+	position: absolute;
+	display: inline;
+	padding: 0px;
+	margin: 0px;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	height: 50px;
+	background: #f0f4f0 url(../../../themes/default/images/thm_stepbar_bg.png) repeat-x 0 0;
+	}
+ 
+#stepbar-restore {
+	position: relative;
+	margin-top: 50px;
+	}
+ 
+#stepbar .sb-step {
+	position: relative;
+	float: left;
+	display: block;
+	height: 30px;
+	margin: 0px;
+	padding: 14px 14px 6px 6px;
+	background: url(../../../themes/default/images/thm_stepbar_arrow.png) no-repeat 100% 0;
+	color: #666;
+	font-size: 16px;
+	letter-spacing: -0.02em;
+	z-index: 999;
+	}
+ 
+#stepbar .sb-step-active {
+	position: relative;
+	float: left;
+	display: block;
+	height: 30px;
+	margin: 0px;
+	margin-left: -16px;
+	padding: 14px 14px 6px 22px;
+	background: url(../../../themes/default/images/thm_stepbar_arrow_active.png) no-repeat 100% 0;
+	color: #444;
+	font-size: 16px;
+	letter-spacing: -0.02em;
+	}
+ 
+#stepbar .sb-step-first {
+	position: relative;
+	float: left;
+	display: block;
+	height: 42px;
+	margin: 0px;
+	padding: 4px 16px 4px 4px;
+	background: url(../../../themes/default/images/thm_stepbar_arrow.png) no-repeat 100% 0;
+	z-index: 999;
+	}
+ 
+#stepbar .sb-message {
+	position: relative;
+	float: left;
+	display: block;
+	padding: 14px 6px 6px 6px;
+	font-style: italic;
+	color: #444;
+	}
+ 
+a.sb-list {
+	position: relative;
+	display: inline-block;
+	background: url(../../../themes/default/images/button_list_off.png) no-repeat 100% 0;
+	top: 0px;
+	left: 0px;
+	height: 42px;
+	width: 42px;
+	margin: 0px;
+	padding: 0px;
+	}
+ 
+a.sb-list:hover {
+	background: url(../../../themes/default/images/button_list_on.png) no-repeat 100% 0;
+	}
+
+
+/************************************************
+ * MULTI-PAGE LINKS
+ ***********************************************/
+.pagerContainer {
+	position:relative;
+	clear:both;
+	margin:15px 0 5px; 
+	text-align:center;
+}
+.pagerContainer .totalPages {
+	position:absolute; top:0; right:2px;
+	color:#777;
+	font-size:0.9em; font-style:italic;
+}
+.pagerContainer p {margin:0 0 4px;}
+.pagerContainer strong {
+	border-bottom:1px dotted;
+}
+.pagerContainer a img {
+	margin-bottom:-2px; border:none;
+}

@@ -1,0 +1,107 @@
+
+#ecole_infos_bloc {
+	float: right;
+	display: block;
+	width: 250px;
+}
+
+#ecole_infos {
+}	
+
+#ecole_infos_bloc div.lucien {
+  height:63px;
+  display:block;
+  background-image: url(../images/lucien_coude.gif);
+	background-repeat: no-repeat;
+	background-position: 97% 0;
+}
+
+#ecole_infos H2 {
+	border-bottom: solid 2px #eee;
+	font-size: 16px;
+	margin-bottom: 5px;	
+}	
+
+H2 {
+	margin-top: 8px;	
+	margin-bottom: 2px;	
+}
+H3 {
+	border-bottom: solid 1px #eee;
+	font-size: 14px;
+	margin-top: 15px;	
+	margin-bottom: 5px;	
+}
+#eleves {
+	margin-left: 15px;
+	/*font-size: 11px;*/
+}
+#eleves IMG {
+}
+#ecoles {
+
+}
+#ecoles ul {
+  list-style-type:none; 
+  padding:0;
+  margin:0;
+}
+#ecoles ul li {
+  line-height:1.5em;
+}
+#ecoles ul li:hover {
+  background:#fff;
+}
+#ecoles ul li .directeur {
+  color:#666;
+  /*font-size:0.9em;*/
+}
+#ecoles ul li a:hover {
+  text-decoration:underline;
+}
+
+DIV.ecole_web {
+  font-size:0.9em;
+	color: #A6B24D;
+	display: inline;
+	float: right;
+	text-align: left;
+}
+DIV.ecole_classe_enseignant {
+	display: inline;
+	float: right;
+	text-align: right;
+}
+
+
+
+SELECT.annu_combo_popup {
+	width: 190px;
+	font-size: 10px;
+	margin: 1px;
+}
+
+/* POPUP */
+#annu_popup_filtrage {
+	background-image: url(../images/lucien_coude.gif);
+	background-repeat: no-repeat;
+	background-position: bottom right;
+}
+#annu_popup_filtrage form {
+  margin: 0;
+}
+DIV.annu_popup_zone {
+	text-align: right;
+	float: left;
+	display: block;
+	margin: 0px 6px -1em 6px;
+}
+p.annu_write_all {
+    text-align: center;
+}
+p.explain {
+    text-align:center;
+}
+p.endForm {
+    text-align:center;
+}

@@ -1,0 +1,76 @@
+TABLE.regroupements LABEL.gras {
+	font-weight: bold;
+}
+
+TABLE.regroupements H2 {
+	padding: 0px;
+	margin: 0px;
+	font-size: 1.1em;
+}
+
+TABLE.regroupements DIV.button_like {
+	margin-bottom: 10px;
+}
+
+TABLE.regroupements UL {
+	padding: 0px;
+	padding-left: 20px;
+	margin: 0px;
+	margin-top: 5px;
+	list-style-type: square;
+}
+
+TABLE.regroupements P {
+	margin: 0px;
+}
+
+TABLE.regroupements P.form_nom {
+	padding-top: 20px;
+	padding-bottom: 15px;
+}
+
+TABLE.regroupements P.form_submit {
+	padding-right: 20px;
+	text-align: right;
+}
+
+TABLE.regroupements A.button_like {
+	height: 20px;
+}
+
+TABLE.regroupements P#delete_confirm {
+	padding: 30px;
+	padding-bottom: 10px;
+	text-align: center;
+}
+
+DIV.ecolesByVille UL.villes {
+	list-style-type: none;
+	padding:0;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+DIV.ecolesByVille LI.ville {
+}
+
+DIV.ecolesByVille UL.ecoles {
+	list-style-type: none;
+	padding:0;
+	padding-left:10px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+DIV.ecolesByVille LI.ecole {
+}
+
+DIV.ecolesByVille H1.ville {
+	font-size: 110%;
+	margin-bottom: 0px;
+}
+
+DIV.ecolesByVille H1.ville SPAN {
+	font-size: 60%;
+}
+

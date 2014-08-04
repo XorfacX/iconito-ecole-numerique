@@ -1,0 +1,7 @@
+
+div.carnet_message {
+	border: solid 1px gray;
+	page-break-inside: avoid;
+  width:100%;
+}
+

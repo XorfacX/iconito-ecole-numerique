@@ -1,0 +1,26 @@
+#rssmix-content h4 {
+	margin:0.2em 0 0.5em;
+	font-size:1em;
+}
+#rssmix-content h4 span {
+	display:block;
+	color:#999;
+	font-style:italic; font-weight:normal; font-size:.9em;
+}
+#rssmix-content a:link, 
+#rssmix-content a:visited {
+	border:1px solid #ddd;
+}
+.widget-rssmix .rm-title{
+    overflow:hidden; max-height: 71px;
+}
+.widget-rssmix li {
+	width:100%;
+	height:113px;
+	margin-bottom:15px;
+	text-align:left;
+}
+
+#rm-i-file {margin-top:5px;}
+
+
