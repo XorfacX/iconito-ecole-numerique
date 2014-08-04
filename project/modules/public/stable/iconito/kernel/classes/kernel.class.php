@@ -2238,7 +2238,7 @@ class Kernel
      */
     public function isEnseignantOfClasse($idClasse)
     {
-        return (_currentUser()->getExtra('type') == 'USER_ENS' && in_array($idClasse, _currentUser()->getExtra('link')->classe));
+        return (_currentUser()->getExtra('type') == 'USER_ENS' && is_array(_currentUser()->getExtra('link')->classe) && in_array($idClasse, _currentUser()->getExtra('link')->classe));
     }
 
     /**
