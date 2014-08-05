@@ -14,7 +14,7 @@ class ZoneConnectionsByProfile extends CopixZone
             'profile' => $ppo->profile
         );
 
-        $toReturn = $this->_usePPO ($ppo, '_connectionsByProfile.tpl');
+        $toReturn = $this->_usePPO ($ppo, '_connectionsbyprofile.tpl');
         return true;
     }
 
