@@ -76,7 +76,7 @@ class accountservice extends enicService
     public function cityDatasProxy($soapCity)
     {
         $city = new stdClass();
-        $city->nom = utf8_decode($soapCity);
+        $city->nom = $soapCity;
         $city->nomCanonique = Kernel::createCanon($city->nom);
 
         return $city;
