@@ -907,7 +907,7 @@ class ActionGroupAlbum extends CopixActionGroup
         CopixHTMLHeader::addCSSLink (_resource("styles/module_album.css"));
         CopixHTMLHeader::addCSSLink (_resource("styles/module_album_popup.css"));
 
-        return _arPPO ($ppo, array ('template'=>'popup_ppo.tpl', 'mainTemplate'=>'default|main_popup.php'));
+        return _arPPO ($ppo, array ('template'=>'popup_ppo.tpl', 'mainTemplate'=>'main|main_popup.php'));
 
     }
 
@@ -1001,7 +1001,7 @@ class ActionGroupAlbum extends CopixActionGroup
             CopixHTMLHeader::addOthers ('<meta HTTP-EQUIV="REFRESH" content="0; url='.CopixUrl::get ('album||vignettes', array('album'=>$pAlbum, 'dossier'=>$pDossier, 'key'=>$pKey)).'"');
 
         $ppo->CAN_CLOSE = false;
-        return _arPPO ($ppo, array ('template'=>'vignettes_ppo.tpl', 'mainTemplate'=>'default|main_popup.php'));
+        return _arPPO ($ppo, array ('template'=>'vignettes_ppo.tpl', 'mainTemplate'=>'main|main_popup.php'));
 
         //return new CopixActionReturn (COPIX_AR_DISPLAY_IN, $tpl, "album|vignettes.tpl" );
     }
