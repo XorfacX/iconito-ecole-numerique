@@ -1637,8 +1637,12 @@ class ActionGroupDefault extends enicActionGroup
                     _currentUser()->assertCredential('module:school|'.$ppo->nodeId.'|administration_staff|create@gestionautonome');
                     break;
                 } else {
-
-                    _currentUser()->assertCredential('module:school|'.$ppo->nodeId.'|principal|create@gestionautonome');
+                    // Si les droits Copix sont donnés pour qu'un directeur puisse ajouter un personnel administratif, il faut tester le type d'ajout
+                    if ($ppo->role == 3) {
+                        _currentUser()->assertCredential('module:school|'.$ppo->nodeId.'|administration_staff|create@gestionautonome');
+                    } else {
+                        _currentUser()->assertCredential('module:school|'.$ppo->nodeId.'|principal|create@gestionautonome');
+                    }
                     break;
                 }
             case 'BU_CLASSE':
