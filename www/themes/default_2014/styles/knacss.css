@@ -398,8 +398,7 @@ source https://github.com/stubbornella/oocss/blob/master/core/spacing/space.css
 /* ----------------------------- */
 /* ==forms */
 /* ----------------------------- */
-form,
-fieldset {
+form {
 	border: none;
 }
 input,

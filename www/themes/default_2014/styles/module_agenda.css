@@ -1,3 +1,7 @@
+/* FIX Knacss*/
+img {
+    max-width:none;
+}
 div.agendaList ul {
 	list-style: none;
 	list-style-position: outside;
@@ -26,7 +30,7 @@ div#div_agendas div.titreAgenda {
 	margin:2px;
 }
 
-/*Template d'affichage de la saisie d'évènement*/
+/*Template d'affichage de la saisie d'Ã©vÃ¨nement*/
 table.saisieEvent {
 	border:0;
 	width:100%;
@@ -165,7 +169,7 @@ div.evenement {
 	text-decoration: none ;
 }
 
-/*Affichage des leçons*/
+/*Affichage des leÃ§ons*/
 td.lecon{
 	vertical-align:top;
   font-size: 75%;
@@ -240,9 +244,7 @@ div.popupEvent2 {
   visibility: hidden;
 	display: block;
 	font-size: 80%;
-	border-radius: 5px;
-	-moz-border-radius:5px;
-	-khtml-border-radius:5px;
+	border-radius:5px;
 	filter: alpha(opacity=97);
 	-moz-opacity: 0.97;
 	opacity: 0.97;
