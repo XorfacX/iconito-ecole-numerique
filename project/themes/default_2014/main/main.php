@@ -27,12 +27,10 @@ $module = CopixRequest::get ('module');?>
 	<meta name="keywords" content="ent iconito cap tic">
     <link rel="icon" type="image/x-icon" href="<?php echo CopixUrl::getRequestedScriptPath(); ?>favicon.ico" />
 
-    <link  rel="stylesheet" href="<?php echo CopixUrl::getResource ("styles/knacss.css");?>" />
     <?php include_once COPIX_PROJECT_PATH."themes/default_2014/styles.php"; ?>
     <?php include_once COPIX_PROJECT_PATH."themes/default_2014/scripts.php"; ?>
     <?php echo $HTML_HEAD; ?>
 	
-	<!--[if lt IE 9]><script src="<?php echo CopixUrl::getResource ("js/html5shiv.js");?>"></script><![endif]-->
 
 </head>
     <!-- MAIN -->

@@ -9,6 +9,7 @@
     Copyright (c) 2010 CAP-TIC <http://www.cap-tic.fr>
 */
 ?>
+<link rel="stylesheet" href="<?php echo CopixUrl::getResource ("styles/knacss.css");?>" />
 <link rel="stylesheet" href="<?php echo CopixUrl::getResource ("styles/core_layout.css"); ?>" type="text/css"/>
 <link rel="stylesheet" href="<?php echo CopixUrl::getResource ("styles/core_typography.css"); ?>" type="text/css"/>
 <link rel="stylesheet" href="<?php echo CopixUrl::getResource ("styles/core_buttons.css"); ?>" type="text/css"/>

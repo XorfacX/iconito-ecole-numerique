@@ -230,3 +230,5 @@ $(document).ready(function(){
 });
 
 </script>
+
+<!--[if lt IE 9]><script src="<?php echo CopixUrl::getResource ("js/html5shiv.js");?>"></script><![endif]-->
