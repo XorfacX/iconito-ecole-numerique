@@ -113,8 +113,9 @@ class CopixResource
         $resDir = dirname($path);
         $resDir = $resDir == "." ? "" : "${resDir}/";
         $resName = basename($path);
-        $theme = (!empty($theme) && is_dir("themes/${theme}")) ? $theme : 'default';
-
+        $base_theme = Kernel::getBaseTheme();
+        $theme = (!empty($theme) && is_dir("themes/${theme}")) ? $theme : $base_theme;
+        
         if(isset ($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
             $urlBase = 'https://';
         } else {
@@ -125,7 +126,7 @@ class CopixResource
 
         $resourceDirs = CopixConfig::instance()->copixresource_getDirectories();
 
-        if($theme != 'default') {
+        if($theme != $base_theme) {
             if($moduleName) {
                 if($toReturn = self::_checkGlobal($resourceDirs, "themes/${theme}/modules/${moduleName}/", $resDir, $resName, $useI18N, $lang, $country)) {
                     return array($toReturn, $urlBase.$toReturn);
@@ -139,7 +140,7 @@ class CopixResource
             if($toReturn = self::_checkI18N("${modulePath}www/", $resDir, $resName, $useI18N, $lang, $country)) {
                 return array($toReturn, self::getResourceBaseUrl($urlBase, $theme, $lang, $country).$moduleName.'/'.$path);
             }
-        } elseif($toReturn = self::_checkGlobal($resourceDirs, "themes/default/", $resDir, $resName, $useI18N, $lang, $country)) {
+        } elseif($toReturn = self::_checkGlobal($resourceDirs, "themes/".$base_theme."/", $resDir, $resName, $useI18N, $lang, $country)) {
             return array($toReturn, $urlBase.$toReturn);
         } elseif($toReturn = self::_checkGlobal($resourceDirs, "", $resDir, $resName, $useI18N, $lang, $country)) {
             return array($toReturn, $urlBase.$toReturn);
@@ -228,9 +229,12 @@ class CopixResource
         if($toReturn = self::_checkGlobal($searchPaths, $theme.DIRECTORY_SEPARATOR.$moduleName.DIRECTORY_SEPARATOR, "", $path, $useI18N, $lang, $country)) {
             return $toReturn;
         }
+        
+        // Récupère le thème de base courant
+        $base_theme = Kernel::getBaseTheme();
 
         // Cherche dans le thème par défaut
-        if($theme != "default" && ($toReturn = self::_checkGlobal($searchPaths, "default".DIRECTORY_SEPARATOR.$moduleName.DIRECTORY_SEPARATOR, "", $path, $useI18N, $lang, $country))) {
+        if($theme != $base_theme && ($toReturn = self::_checkGlobal($searchPaths, $base_theme.DIRECTORY_SEPARATOR.$moduleName.DIRECTORY_SEPARATOR, "", $path, $useI18N, $lang, $country))) {
             return $toReturn;
         }
 

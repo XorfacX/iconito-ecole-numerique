@@ -2570,6 +2570,22 @@ class Kernel
         return $theme;
     }
 
+    /**
+     * Le theme utilise actuellement. Regarde si on force un template selon l'URL.
+     *
+     * @author Philippe Roser <proser@cap-tic.fr>
+     * @since 2014/08/07
+     * @param non
+     * @return string Nom du theme de base
+     */
+    public function getBaseTheme()
+    {
+        $base_theme = self::getKernelLimits('base_theme');
+        
+        return (!is_null($base_theme) ? $base_theme : 'default');
+    }
+    
+    
     public function setTheme($pTheme)
     {
         CopixSession::set('theme', $pTheme);
