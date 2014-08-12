@@ -41,6 +41,7 @@ class ZoneModuleContext extends enicZone
             if (count($parent)) {
                 $modules = Kernel::getModEnabled($parent[0]['type'], $parent[0]['id'], _currentUser()->getExtra('type'), _currentUser()->getExtra('id'));
             }
+            $perso = new stdClass();
             $perso->node_type = $ppo->myNode['type'];
             $perso->node_id = $ppo->myNode['id'];
             $perso->module_type = 'MOD_CARNET';
