@@ -249,7 +249,7 @@ class ActionGroupDefault extends BaseMemoActionGroup
       $travail2eleveDAO = _ioDAO ('cahierdetextes|cahierdetextestravail2eleve');
       $ppo->eleves = $travail2eleveDAO->findElevesParTravail($ppo->travail->id);
 
-      return _arPPO ($ppo, array ('template' => 'voir_concernes_par_travail.tpl', 'mainTemplate' => 'main|main_fancy.php'));
+      return _arPPO ($ppo, array ('template' => 'voir_concernes_par_travail.tpl', 'mainTemplate' => 'main|main_popup.php'));
     }
 
     /**
@@ -343,7 +343,7 @@ class ActionGroupDefault extends BaseMemoActionGroup
       }
     }
 
-    return _arPPO ($ppo, array ('template' => 'rendre_travail.tpl', 'mainTemplate' => 'main|main_fancy.php'));
+    return _arPPO ($ppo, array ('template' => 'rendre_travail.tpl', 'mainTemplate' => 'main|main_popup.php'));
     }
 
     /**

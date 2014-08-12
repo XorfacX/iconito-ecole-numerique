@@ -82,9 +82,6 @@ div.dashpanel div.content {
 	border-top:none;
 	min-height: 160px; -webkit-box-shadow:1px 1px 5px #ddd; box-shadow:1px 1px 5px #ddd;
 	}
-div.contentmain-fancybox {
-  font-size: 100%;
-}
 
 div.dashpanel div.toolset {
 	position: absolute;

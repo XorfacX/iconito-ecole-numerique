@@ -342,6 +342,6 @@ class ActionGroupAgenda extends CopixActionGroup
         $ppo->agendasSelectionnes = $agendaAffiches;
 
         CopixHTMLHeader::addCSSLink (_resource("styles/module_agenda.css"));
-        return _arPPO ($ppo, array ('template'=>'popup_agendalist.agenda.tpl', 'mainTemplate'=>'main|main_fancy.php'));
+        return _arPPO ($ppo, array ('template'=>'popup_agendalist.agenda.tpl', 'mainTemplate'=>'main|main_popup.php'));
     }
 }

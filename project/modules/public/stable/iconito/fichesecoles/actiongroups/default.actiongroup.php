@@ -90,7 +90,7 @@ class ActionGroupDefault extends EnicActionGroup
             $ppo = new CopixPPO ();
             $ppo->fiche = $fiche;
             $ppo->TITLE = $title;
-            return _arPPO($ppo, array('template' => 'fiche_popup.tpl', 'mainTemplate' => 'main|main_fancy.php'));
+            return _arPPO($ppo, array('template' => 'fiche_popup.tpl', 'mainTemplate' => 'main|main_popup.php'));
         }
 
         return new CopixActionReturn(COPIX_AR_DISPLAY, $tpl);

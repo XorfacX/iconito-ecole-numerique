@@ -151,7 +151,7 @@ abstract class BaseMemoActionGroup extends CopixActionGroup
         $memo2eleveDAO  = _ioDAO ('cahierdetextes|cahierdetextesmemo2eleve');
         $ppo->suivis    = $memo2eleveDAO->findSuiviElevesParMemo($ppo->memo->id);
 
-        return _arPPO ($ppo, array ('template' => 'suivi_memo.tpl', 'mainTemplate' => 'main|main_fancy.php'));
+        return _arPPO ($ppo, array ('template' => 'suivi_memo.tpl', 'mainTemplate' => 'main|main_popup.php'));
     }
 
     /**

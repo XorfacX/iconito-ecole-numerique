@@ -3,6 +3,7 @@ body.thm {
   padding:5px;
 }
 
+#content-popup {font-size:100%;}
 
 /* Pop-up du Classeur */
 a.button-add {
