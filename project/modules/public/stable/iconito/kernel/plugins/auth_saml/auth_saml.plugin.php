@@ -9,7 +9,8 @@ class PluginAuth_Saml extends CopixPlugin {
 		
 		$asId = 'iconito-sql';
 		$as = new SimpleSAML_Auth_Simple($asId);
-		$ppo->user = _currentUser();
+		$ppo = new CopixPPO();
+        $ppo->user = _currentUser();
 		
 		if ($as->isAuthenticated() && !$ppo->user->isConnected()) {
 			$attributes = $as->getAttributes();
