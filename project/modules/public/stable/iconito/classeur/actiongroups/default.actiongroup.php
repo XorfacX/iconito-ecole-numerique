@@ -1953,6 +1953,7 @@ class ActionGroupDefault extends enicActionGroup
   public function processGetClasseurPopup ()
   {
     $classeurDAO = _ioDAO('classeur|classeur');
+      $ppo = new CopixPPO ();
     if (is_null($ppo->classeur = $classeurDAO->get(_request ('classeurId', null)))) {
 
       return CopixActionGroup::process ('generictools|Messages::getError',
