@@ -3554,6 +3554,7 @@ class ActionGroupDefault extends enicActionGroup
      */
     public function processPersonInChargeCreation()
     {
+        $ppo = new CopixPPO ();
         $ppo->nodeId = _request('nodeId', null);
         $ppo->nodeType = _request('nodeType', null);
         $ppo->studentId = _request('studentId', false);
