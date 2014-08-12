@@ -19,6 +19,7 @@ header {
     float:left;
     width:200px;
 }
+.logo img {max-width:100%;}
 .bgPrimary {background:#0097ba;}
 .bgPrimary h1, .bgPrimary a {color:#fff; font-weight:bold;}
 
