@@ -50,6 +50,8 @@
 			<parameter name="conf_Cas_path" captioni18n="parameter.conf_Cas_path"  default="" />
 			<parameter name="conf_Saml_actif" captioni18n="parameter.conf_Saml_actif"  default="0" />
 			<parameter name="conf_Saml_caslogouturl" captioni18n="parameter.conf_Saml_caslogouturl"  default="" />
+			<parameter name="conf_Saml_authSource" captioni18n="parameter.conf_Saml_caslogouturl"  default="iconito-sql" />
+			<parameter name="conf_Saml_uidAttribute" captioni18n="parameter.conf_Saml_caslogouturl"  default="login_dbuser" />
 
 			<parameter name="conf_Ceriseprim_actif" captioni18n="parameter.conf_Ceriseprim_actif"  default="0" />
 			<parameter name="conf_Ceriseprim_url" captioni18n="parameter.conf_Ceriseprim_url"  default="" />

@@ -21,14 +21,10 @@ class ActionGroupSaml extends EnicActionGroup {
 		require_once(COPIX_UTILS_PATH.'../../simplesamlphp/lib/_autoload.php');
 		
 		$asId = 'iconito-sql';
+		if (CopixConfig::exists('default|conf_Saml_authSource') && CopixConfig::get('default|conf_Saml_authSource')) {
+			$asId = CopixConfig::get('default|conf_Saml_authSource');
+		}
 		$as = new SimpleSAML_Auth_Simple($asId);
-		
-		
-		
-		
-		
-		
-		
 		
 		$_SESSION['chartValid'] = false;
 		$ppo = new CopixPPO ();
@@ -53,7 +49,19 @@ class ActionGroupSaml extends EnicActionGroup {
 			
 			$attributes = $as->getAttributes();
 			
-			$ppo->saml_user = $attributes['login_dbuser'][0];
+			$uidAttribute = 'login_dbuser';
+			if (CopixConfig::exists('default|conf_Saml_uidAttribute') && CopixConfig::get('default|conf_Saml_uidAttribute')) {
+				$uidAttribute = CopixConfig::get('default|conf_Saml_uidAttribute');
+			}
+
+			$ppo->saml_user = null;
+			if (isset($attributes[$uidAttribute]) && isset($attributes[$uidAttribute][0])) {
+				$ppo->saml_user = $attributes[$uidAttribute][0];
+			} else {
+				$ppo->saml_error = 'bad-conf-uidattribute';
+				return _arPpo ($ppo, 'saml-error.tpl');
+			}
+			
 			if($ppo->saml_user) {
 
 				$ppo->iconito_user = Kernel::getUserInfo( "LOGIN", $ppo->saml_user );
@@ -65,8 +73,8 @@ class ActionGroupSaml extends EnicActionGroup {
 
 					return new CopixActionReturn (COPIX_AR_REDIRECT, $url_return);
 				} else {
-					$ppo->cas_error = 'no-iconito-user';
-					return _arPpo ($ppo, 'cas.tpl');
+					$ppo->saml_error = 'no-iconito-user';
+					return _arPpo ($ppo, 'saml-error.tpl');
 				}
 			}
 		}
@@ -76,6 +84,9 @@ class ActionGroupSaml extends EnicActionGroup {
 		require_once(COPIX_UTILS_PATH.'../../simplesamlphp/lib/_autoload.php');
 		
 		$asId = 'iconito-sql';
+		if (CopixConfig::exists('default|conf_Saml_authSource') && CopixConfig::get('default|conf_Saml_authSource')) {
+			$asId = CopixConfig::get('default|conf_Saml_authSource');
+		}
 		$as = new SimpleSAML_Auth_Simple($asId);
 		
 		$ppo = new CopixPPO ();
