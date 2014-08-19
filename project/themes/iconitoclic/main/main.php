@@ -56,7 +56,7 @@ $module = CopixRequest::get ('module');?>
             <div class="mt3 clear bgPrimary"> 
                 <div class="marginCenter w960p bfc">
                     <?php getZones('menu', false);?>
-                    <h1 class="main-title mb0 mt0"><a href="<?=CopixUrl::get();?>">Ecole Numérique</a></h1>
+                    <h1 class="main-title mb0 mt0"><a href="<?=CopixUrl::get();?>">ICONITO Clic : Votre école en ligne</a></h1>
                 </div>
             </div>
         </header><!-- header -->
