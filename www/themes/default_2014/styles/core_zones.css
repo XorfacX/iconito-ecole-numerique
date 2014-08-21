@@ -443,6 +443,7 @@ form input[type="text"], form input[type="url"], form input[type="email"], form 
 	border-radius: 6px;
 	/*behavior: url(/htc/PIE.htc);*/
 	padding: 3px;
+    min-width:200px;
 	}
 	
 input.label-overlayed {

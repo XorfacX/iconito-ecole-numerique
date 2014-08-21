@@ -3,18 +3,18 @@
 	<input type="hidden" name="user_id"   value="{$ppo->animateur->user_id}"   />
 	<input type="hidden" name="save"      value="1" />
 	
-	<table cellspacing="1" cellpadding="5" border="0" align="center" width="90%" class="comptes_animateurs comptes_animateurs_edit">
+	<table class="editItems comptes_animateurs comptes_animateurs_edit">
 		<tr>
-			<td class="form_libelle" width="30%">Nom : </td>
+			<th class="form_libelle">Nom </th>
 			<td class="form_saisie">{$ppo->animateur->user_infos.nom|escape}</td>
 		</tr>
 		<tr>
-			<td class="form_libelle">Pr&eacute;nom : </td>
+			<th class="form_libelle">Pr&eacute;nom </th>
 			<td class="form_saisie">{$ppo->animateur->user_infos.prenom|escape}</td>
 		</tr>
 		
 		<tr>
-			<td class="form_libelle">Regroupements de villes : <div class="help">Vous pouvez associer ce compte &agrave; des regroupements de ville pour des t&acirc;ches d'assistance ou d'administration.</div></td>
+			<th class="form_libelle">Regroupements de villes <div class="help">Vous pouvez associer ce compte &agrave; des regroupements de ville pour des t&acirc;ches d'assistance ou d'administration.</div></th>
 			<td class="form_saisie">
 				{foreach from=$ppo->grvilles item=grville name=grvilles}
 				{assign var=id_grville value=$grville->id}
@@ -26,7 +26,7 @@
 		</tr>
 
 		<tr>
-			<td class="form_libelle">Regroupements d'&eacute;coles : <div class="help">Vous pouvez associer ce compte &agrave; des regroupements d'&eacute;coles pour des t&acirc;ches d'assistance ou d'administration.</div></td>
+			<th class="form_libelle">Regroupements d'&eacute;coles <div class="help">Vous pouvez associer ce compte &agrave; des regroupements d'&eacute;coles pour des t&acirc;ches d'assistance ou d'administration.</div></th>
 			<td class="form_saisie">
 				{foreach from=$ppo->grecoles item=grecole name=grecoles}
 				{assign var=id_grecole value=$grecole->id}
@@ -38,7 +38,7 @@
 		</tr>
 
 		<tr>
-			<td class="form_libelle">Pouvoirs : <div class="help">Autoriser les actions suivantes, restreintes aux regroupements de villes s&eacute;lectionn&eacute;s ci-dessus.</div></td>
+			<th class="form_libelle">Pouvoirs <div class="help">Autoriser les actions suivantes, restreintes aux regroupements de villes s&eacute;lectionn&eacute;s ci-dessus.</div></th>
 			<td class="form_saisie">
 				{foreach from=$ppo->pouvoirs item=pouvoir}
 				{assign var=id_pouvoir value=$pouvoir.id}
@@ -50,7 +50,7 @@
 		</tr>
 
 		<tr>
-			<td class="form_libelle">Annuaire : </td>
+			<th class="form_libelle">Annuaire </th>
 			<td class="form_saisie">
 				<div>
 					<input type="checkbox" name="annuaire" id="annuaire" value="1" {if $ppo->animateur->is_visibleannuaire}checked{/if} /> <label for="annuaire">Visible dans l'annuaire des usagers, en tant que &laquo;AC/TICE&raquo;</label>
@@ -61,7 +61,7 @@
 		<tr>
 			<td></td>
 			<td>
-				<a class="button button-delete" href="#delete_confirm" onclick="$('#delete_confirm').show();" class="no_button_like">Supprimer cet animateur</a>
+				<a class="button button-delete button-cancel" href="#delete_confirm" onclick="$('#delete_confirm').show();" class="no_button_like">Supprimer cet animateur</a>
 				<input class="button button-save" type="submit" class="button_like" value="Enregistrer" />
 				<p id="delete_confirm" style="display: none;">
 					<a class="button button-confirm" href="{copixurl dest="comptes|animateurs|delete" user_type=$ppo->animateur->user_type user_id=$ppo->animateur->user_id}">Confirmez la suppression</a>

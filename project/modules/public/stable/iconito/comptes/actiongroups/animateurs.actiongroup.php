@@ -3,14 +3,14 @@
 * @package  Iconito
 * @subpackage Comptes
 * @version   $Id: animateurs.actiongroup.php,v 1.1 2009-08-31 10:00:17 fmossmann Exp $
-* @author   Frédéric Mossmann
+* @author   FrÃ©dÃ©ric Mossmann
 * @copyright 2009 CAP-TIC
 * @link      http://www.cap-tic.fr
 * @licence  http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public Licence, see LICENCE file
 */
 
 /**
- * @author	Frédéric Mossmann
+ * @author	FrÃ©dÃ©ric Mossmann
  */
 class ActionGroupAnimateurs extends enicActionGroup
 {
@@ -43,23 +43,22 @@ class ActionGroupAnimateurs extends enicActionGroup
     /**
      * list
      *
-     * Affiche le formulaire de modification d'un utilisateur extérieur
+     * Affiche le formulaire de modification d'un utilisateur extÃ©rieur
      *
      * @package	Comptes
-     * @author	Frédéric Mossmann <fmossmann@cap-tic.fr>
+     * @author	FrÃ©dÃ©ric Mossmann <fmossmann@cap-tic.fr>
      */
     public function getList()
     {
         if( !Kernel::isAdmin() )
             return new CopixActionReturn (COPIX_AR_REDIRECT, CopixUrl::get ('||' ) );
 
-        CopixHTMLHeader::addCSSLink (_resource("styles/module_comptes.css"));
-
         $tpl = new CopixTpl ();
         $tplAnimateurs = new CopixTpl ();
 
         $animateurs_dao = & CopixDAOFactory::create("kernel|kernel_animateurs");
         $animateurs = $animateurs_dao->findAll();
+        $ppo = new CopixPPO();
         $ppo->animateurs = array();
 
         foreach( $animateurs AS $animateur ) {
@@ -129,8 +128,6 @@ class ActionGroupAnimateurs extends enicActionGroup
         if( !Kernel::isAdmin() )
             return new CopixActionReturn (COPIX_AR_REDIRECT, CopixUrl::get ('||' ) );
 
-        CopixHTMLHeader::addCSSLink (_resource("styles/module_comptes.css"));
-
         $tpl = new CopixTpl ();
         $tplAnimateurs = new CopixTpl ();
 
@@ -144,6 +141,7 @@ class ActionGroupAnimateurs extends enicActionGroup
 
         $user = Kernel::getUserInfo();
 
+        $ppo = new CopixPPO();
         $ppo->pouvoirs = array(
             array('id'=>'can_connect',        'nom'=>'Se connecter en tant qu\'un enseignant/directeur' ),
             array('id'=>'can_tableaubord',    'nom'=>'Tableau de bord des usages'),
@@ -256,13 +254,12 @@ class ActionGroupAnimateurs extends enicActionGroup
         if( !Kernel::isAdmin() )
             return new CopixActionReturn (COPIX_AR_REDIRECT, CopixUrl::get ('||' ) );
 
-        CopixHTMLHeader::addCSSLink (_resource("styles/module_comptes.css"));
-
         $tpl = new CopixTpl ();
         $tplAnimateurs = new CopixTpl ();
 
         $animateurs_dao = _dao("kernel|kernel_animateurs");
         $animateurs = $animateurs_dao->findAll();
+        $ppo = new CopixPPO();
         $ppo->animateurs = array();
 
         foreach( $animateurs AS $animateur ) {
@@ -279,7 +276,7 @@ class ActionGroupAnimateurs extends enicActionGroup
         }
         foreach( $ppo->userext AS $user_key => $user_val ) {
             if( isset($ppo->animateurs["USER_EXT-".$user_val->ext_id]) ) {
-                // Si la personne est déjà animateur
+                // Si la personne est dÃ©jÃ  animateur
                 unset($ppo->userext[$user_key]);
             } else {
                 $ppo->userext[$user_key]->user_infos = Kernel::getUserInfo( 'USER_EXT', $user_val->ext_id );

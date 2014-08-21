@@ -3,14 +3,14 @@
 * @package  Iconito
 * @subpackage Comptes
 * @version   $Id: comptes.actiongroup.php,v 1.35 2009-08-31 10:00:17 fmossmann Exp $
-* @author   Frédéric Mossmann
+* @author   FrÃ©dÃ©ric Mossmann
 * @copyright 2006 CAP-TIC
 * @link      http://www.cap-tic.fr
 * @licence  http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public Licence, see LICENCE file
 */
 
 /**
- * @author	Frédéric Mossmann
+ * @author	FrÃ©dÃ©ric Mossmann
  */
 class ActionGroupComptes extends enicActionGroup
 {
@@ -38,14 +38,13 @@ class ActionGroupComptes extends enicActionGroup
         if( $session && is_array($session) && sizeof($session) ) {
             $this->menu[] = array( 'txt' => CopixI18N::get('comptes.strings.showloginresult', sizeof($session) ), 'url' => CopixUrl::get ('comptes||getLoginResult'), 'size'=>145, 'current'=>(_request('action')=='getLoginResult'?'current':'') );
         }
-        //CopixHTMLHeader::addCSSLink (_resource("styles/module_comptes.css"));
     }
 
     /**
      * go
      *
-     * Appel automatique, avec détection du noeud à afficher.
-     * @author	Frédéric Mossmann
+     * Appel automatique, avec dÃ©tection du noeud Ã  afficher.
+     * @author	FrÃ©dÃ©ric Mossmann
      * @since	09.02.2006
      *
      */
@@ -60,8 +59,8 @@ class ActionGroupComptes extends enicActionGroup
     /**
      * getNode
      *
-     * Affiche les informations d'un noeud et les utilisateurs qui y sont attachés.
-     * @author	Frédéric Mossmann
+     * Affiche les informations d'un noeud et les utilisateurs qui y sont attachÃ©s.
+     * @author	FrÃ©dÃ©ric Mossmann
      * @since	09.02.2006
      *
      */
@@ -252,8 +251,8 @@ class ActionGroupComptes extends enicActionGroup
     /**
      * getLoginForm
      *
-     * Affiche la liste des comptes à créer, avec proposition de login/passwd.
-     * @author	Frédéric Mossmann
+     * Affiche la liste des comptes Ã  crÃ©er, avec proposition de login/passwd.
+     * @author	FrÃ©dÃ©ric Mossmann
      * @since	14.02.2006
      *
      */
@@ -283,7 +282,7 @@ class ActionGroupComptes extends enicActionGroup
                     $user_id   = $user_infos[2];
                     $user_infos = Kernel::getUserInfo( $user_type, $user_id );
 
-                    // Vérification de l'existance d'un login.
+                    // VÃ©rification de l'existance d'un login.
                     // -> Si c'est le cas, il ne faut pas proposer un nouveau login.
                     $bu_user = $bu_dao->getByBUID( $user_type, $user_id );
 
@@ -351,8 +350,8 @@ class ActionGroupComptes extends enicActionGroup
     /**
      * doLoginCreate
      *
-     * Execute la création des comptes et sauvegarde les infos en session.
-     * @author	Frédéric Mossmann
+     * Execute la crÃ©ation des comptes et sauvegarde les infos en session.
+     * @author	FrÃ©dÃ©ric Mossmann
      * @since	16.02.2006
      *
      */
@@ -367,45 +366,45 @@ class ActionGroupComptes extends enicActionGroup
         $pPasswd = _request('passwd', array());
         $pReset = _request('reset', '');
 
-        // Parcours de tous les utilisateurs de la liste précédente...
+        // Parcours de tous les utilisateurs de la liste prÃ©cÃ©dente...
         foreach( _request('typeid') AS $typeid ) {
-            // Si l'utilisateur est sélectionné, on crée le compte. Sinon, on ne fait rien.
+            // Si l'utilisateur est sÃ©lectionnÃ©, on crÃ©e le compte. Sinon, on ne fait rien.
             if( isset($pConfirm[$typeid]) && $pConfirm[$typeid] == 1 ) {
-                // Vérification du format de type "USER_ENS-23", et extraction des valeurs.
+                // VÃ©rification du format de type "USER_ENS-23", et extraction des valeurs.
                 if( ereg( '(.+)-(.+)', $typeid, $bu_infos ) ) {
                     $user_type = $bu_infos[1];
                     $user_id   = $bu_infos[2];
 
                     $olduser = _dao("kernel|kernel_copixuser")->getByLogin($pLogin[$typeid]);
 
-                    // Test de préexistance du login dans la base. Si existe déjà : erreur.
+                    // Test de prÃ©existance du login dans la base. Si existe dÃ©jÃ  : erreur.
                     if( ! count($olduser) ) {
 
-                        // Récupération des information de l'utilisateur dans la base unique.
+                        // RÃ©cupÃ©ration des information de l'utilisateur dans la base unique.
                         $user_infos = Kernel::getUserInfo( $user_type, $user_id );
 
-                        // Création d'un login dans CopixUser
+                        // CrÃ©ation d'un login dans CopixUser
                         $user_new = CopixDAOFactory::createRecord("kernel|kernel_copixuser");
                         $user_new->login_dbuser = $pLogin[$typeid];
                         $user_new->password_dbuser = md5($pPasswd[$typeid]);
                         $user_new->email_dbuser = '';
                         $user_new->enabled_dbuser = 1;
 
-                        // Enregistrement et vérification de l'insertion.
+                        // Enregistrement et vÃ©rification de l'insertion.
                         if( $user_dao->insert( $user_new ) ) {
 
-                            // Création du lien entre l'utilisateur de la base unique et le login.
+                            // CrÃ©ation du lien entre l'utilisateur de la base unique et le login.
                             $bu_new = _record("kernel|kernel_bu2user2");
                             $bu_new->user_id = $user_new->id_dbuser;
                             $bu_new->bu_type = $user_type;
                             $bu_new->bu_id = $user_id;
 
-                            // Enregistrement et vérification de l'insertion.
+                            // Enregistrement et vÃ©rification de l'insertion.
                             if( _dao("kernel|kernel_bu2user2")->insert( $bu_new ) ) {
 
                                 $node_infos = Kernel::getNodeInfo( _request('type'), _request('id'), false );
 
-                                // Garder en mémoire les comptes créés pour impression des passwords
+                                // Garder en mÃ©moire les comptes crÃ©Ã©s pour impression des passwords
                                 if (!$session = _sessionGet ('modules|comptes|doLoginCreate|success'))
                                     $session = array();
 
@@ -426,7 +425,7 @@ class ActionGroupComptes extends enicActionGroup
 
                             } else { // Si le lien entre la BU et le login ne fonctionne pas...
 
-                                // Garder en mémoire les echecs pour proposer une nouvelle insertion
+                                // Garder en mÃ©moire les echecs pour proposer une nouvelle insertion
                                 if (!$session = _sessionGet ('modules|comptes|doLoginCreate|error'))
                                     $session = array();
 
@@ -441,15 +440,15 @@ class ActionGroupComptes extends enicActionGroup
                                 );
                                 _sessionSet ('modules|comptes|doLoginCreate|error', $session);
 
-                                // Prévoir un Rollback pour effacer le login ?
+                                // PrÃ©voir un Rollback pour effacer le login ?
                             }
 
-                        } else { // Si le login est impossible à créer...
+                        } else { // Si le login est impossible Ã  crÃ©er...
 
                             if (!$session = _sessionGet ('modules|comptes|doLoginCreate|error'))
                                 $session = array();
 
-                            // Garder en mémoire les echecs pour proposer une nouvelle insertion
+                            // Garder en mÃ©moire les echecs pour proposer une nouvelle insertion
                             $session[$typeid] = array(
                                 'login'   => $pLogin[$typeid],
                                 'passwd'  => $pPasswd[$typeid],
@@ -490,7 +489,7 @@ class ActionGroupComptes extends enicActionGroup
                         );
                         _sessionSet ('modules|comptes|doLoginCreate|success', $session);
 
-                    } else { // Si le login existe déjà, vérification qu'il ne s'agit pas de la même personne.
+                    } else { // Si le login existe dÃ©jÃ , vÃ©rification qu'il ne s'agit pas de la mÃªme personne.
                         // Si c'est le cas, ce n'est pas une erreur, mais un doublon.
                         $bu_dao = & CopixDAOFactory::create("kernel|kernel_bu2user");
                         $bu_user = $bu_dao->getByLogin($pLogin[$typeid]);
@@ -507,7 +506,7 @@ class ActionGroupComptes extends enicActionGroup
                             if (!$session = _sessionGet ('modules|comptes|doLoginCreate|error'))
                                 $session = array();
 
-                            // Garder en mémoire les echecs pour proposer une nouvelle insertion
+                            // Garder en mÃ©moire les echecs pour proposer une nouvelle insertion
                             $session[$typeid] = array(
                                 'login'   => $pLogin[$typeid],
                                 'passwd'  => $pPasswd[$typeid],
@@ -532,8 +531,8 @@ class ActionGroupComptes extends enicActionGroup
     /**
      * getLoginResult
      *
-     * Affiche le résultat de la création de comptes (login, passwd) dans différents formats (html, txt, csv, etc.).
-     * @author	Frédéric Mossmann
+     * Affiche le rÃ©sultat de la crÃ©ation de comptes (login, passwd) dans diffÃ©rents formats (html, txt, csv, etc.).
+     * @author	FrÃ©dÃ©ric Mossmann
      */
     public function getLoginResult()
     {
@@ -611,8 +610,8 @@ class ActionGroupComptes extends enicActionGroup
     /**
      * getPurgeResult
      *
-     * Propose l'effacement les information de création de comptes, mémorisées en session.
-     * @author	Frédéric Mossmann
+     * Propose l'effacement les information de crÃ©ation de comptes, mÃ©morisÃ©es en session.
+     * @author	FrÃ©dÃ©ric Mossmann
      */
     public function getPurgeResult()
     {
@@ -640,8 +639,8 @@ class ActionGroupComptes extends enicActionGroup
     /**
      * doPurgeResult
      *
-     * Efface les information de création de comptes, mémorisées en session.
-     * @author	Frédéric Mossmann
+     * Efface les information de crÃ©ation de comptes, mÃ©morisÃ©es en session.
+     * @author	FrÃ©dÃ©ric Mossmann
      */
     public function doPurgeResult()
     {
@@ -819,10 +818,10 @@ class ActionGroupComptes extends enicActionGroup
     /**
      * getUserExt
      *
-     * Affiche la liste des utilisateurs extérieurs
+     * Affiche la liste des utilisateurs extÃ©rieurs
      *
      * @package	Comptes
-     * @author	Frédéric Mossmann <fmossmann@cap-tic.fr>
+     * @author	FrÃ©dÃ©ric Mossmann <fmossmann@cap-tic.fr>
      */
     public function getUserExt()
     {
@@ -861,10 +860,10 @@ class ActionGroupComptes extends enicActionGroup
     /**
      * getUserExtMod
      *
-     * Affiche le formulaire de modification d'un utilisateur extérieur
+     * Affiche le formulaire de modification d'un utilisateur extÃ©rieur
      *
      * @package	Comptes
-     * @author	Frédéric Mossmann <fmossmann@cap-tic.fr>
+     * @author	FrÃ©dÃ©ric Mossmann <fmossmann@cap-tic.fr>
      */
     public function getUserExtMod()
     {
@@ -1047,10 +1046,10 @@ class ActionGroupComptes extends enicActionGroup
     /**
      * getRoles
      *
-     * Affiche le menu des rôles d'utilisateurs
+     * Affiche le menu des rÃ´les d'utilisateurs
      *
      * @package	Comptes
-     * @author	Frédéric Mossmann <fmossmann@cap-tic.fr>
+     * @author	FrÃ©dÃ©ric Mossmann <fmossmann@cap-tic.fr>
      */
     public function getRoles()
     {
@@ -1075,8 +1074,6 @@ class ActionGroupComptes extends enicActionGroup
 
         $tpl = new CopixTpl ();
         $tplRegroupements = new CopixTpl ();
-
-        // CopixHTMLHeader::addCSSLink (_resource("styles/module_grvilles.css"));
 
         // $tpl->assign ('TITLE_PAGE', CopixI18N::get ('grvilles|grvilles.module.titre'));
 

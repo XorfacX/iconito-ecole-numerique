@@ -25,38 +25,11 @@ TABLE.comptes_animateurs_off TR TD {
 	background-color: #E5EDA3;
 }
 
-TABLE.comptes_animateurs {
-	width: 100%;
+.form_libelle DIV.help {
+	font-size:0.8em; font-weight:normal; font-style:italic;
+	line-height:1;
 }
 
-TABLE.comptes_animateurs TR TH {
-	text-align: left;
-	padding: 5px;
-	vertical-align: bottom;
-}
-
-TABLE.comptes_animateurs_list TR TD {
-	padding-left: 5px;
-	padding-right: 5px;
-}
-
-TABLE.comptes_animateurs_list TR.last TD {
-	border-bottom: none;
-}
-
-TD.form_libelle DIV.help {
-	margin-top: 5px;
-	font-size: 11px;
-	font-weight: normal;
-	padding-left: 30px;
-	font-style: italic;
-	line-height: 11px;
-}
-
-
-TABLE.comptes_animateurs_new TR.last TD {
-	padding-bottom: 15px;
-}
 
 div.error {
 	color: red;
