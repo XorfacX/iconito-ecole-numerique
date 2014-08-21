@@ -5,8 +5,12 @@
 	</a>
 </div>
 <div class="loading-button">
-	<a href="{copixurl dest="sysutils|stats|"}" class="button floatleft">
-	<div class="button-title">{i18n key="sysutils|admin.menu.stats"}</div>
+    {if $typeStats}
+        <a href="{copixurl dest="statistiques||"}" class="button floatleft">
+    {else}
+	    <a href="{copixurl dest="sysutils|stats|"}" class="button floatleft">
+    {/if}
+    <div class="button-title">{i18n key="sysutils|admin.menu.stats"}</div>
 	<div class="button-subline">{i18n key="sysutils|admin.menu.stats_sub"}</div>
 	</a>
 </div>

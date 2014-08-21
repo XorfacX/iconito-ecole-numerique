@@ -30,6 +30,15 @@ class ActionGroupAdmin extends CopixActionGroup
         $tpl->assign ('TITLE_PAGE', CopixI18N::get ('sysutils|admin.moduleDescription'));
         $tpl->assign ('MENU', Admin::getMenu('sysutils'));
 
+        $typeStats = 0; // 0 = old, 1 = new Statistiques
+        $userType = _currentUser()->getExtra("type");
+        $groupsDenied = array("USER_ELE", "USER_RES", "USER_EXT");
+       
+        // Si le module de statistiques est activé et que l'utilisateur a les droits d'accès, on rend le template
+        if ((bool)CopixConfig::get('statistiques|enabled') &&  (!in_array($userType, $groupsDenied) || Kernel::isAdmin() || $animateur || $inspecteur) ) {
+            $typeStats = 1;
+        }
+        $tplHome->assign('typeStats', $typeStats);
         $tplHome->assign('superadmin', Kernel::isSuperAdmin());
         $tplHome->assign('adminfonctionnel', Kernel::isAdminFonctionnel());
         $tpl->assign ('MAIN', $tplHome->fetch('sysutils|home.tpl'));
