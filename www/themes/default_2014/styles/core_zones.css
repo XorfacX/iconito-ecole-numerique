@@ -32,7 +32,7 @@ header {
 	/*width:200px;*/
 }
 .ie67 .userlogged {position:absolute; top:0; right:0;}
-.userlogged fieldset {margin:0; padding:0;}
+.userlogged fieldset {margin:0; padding:0; border:0;}
 .userlogged .field, .userlogged .submit {
     float:left;
     margin-left:0.5em;
@@ -55,16 +55,16 @@ header {
 	width:97%;
 }
 .userlogged form input:hover, .userlogged form input[type="text"]:hover, .userlogged form input:focus {
-	border:1px solid #E0002C; border-radius:0; -webkit-box-shadow:0 0 3px #E0002C; -o-box-shadow:0 0 3px #E0002C; box-shadow:0 0 3px #E0002C;
+	border:1px solid #E0002C; border-radius:0; -o-box-shadow:0 0 3px #E0002C; box-shadow:0 0 3px #E0002C;
 }
 .userlogged form input[type="submit"] {
 	float:right;
 	margin:0; padding:2px 12px;
 	width:auto;
-	color:#fff; background:#E0002C;
+	color:#fff; background:#c10071;
 }
 .userlogged form input[type="submit"]:hover {
-	color:#E0002C; background:#FFF;
+	color:#c10071; background:#FFF;
 	font-weight:bold;
 	cursor:pointer;
 }
@@ -506,7 +506,7 @@ form fieldset {
 	padding: 6px;	
 	}
 
-input[required] { -webkit-box-shadow:0 0 3px #f00; -o-box-shadow:0 0 3px #f00; box-shadow:0 0 3px #f00;
+input[required] { -o-box-shadow:0 0 3px #f00; box-shadow:0 0 3px #f00;
 }
 .asterisque {
 	display:inline-block;
@@ -533,7 +533,6 @@ form .format, form .ui-datepicker-append {
 	padding:5px 5px 5px 28px;
 	border:1px solid #f00;
 	background:url(../../../themes/default/images/button-action/action_warning.png) no-repeat 5px 50% #fff; color:#f00; border-radius:8px;
-	-webkit-box-shadow:0 0 5px rgba(255,255,255,0.7);
 	box-shadow:0 0 5px rgba(255,255,255,0.7);
 	font-weight:bold;
 }
@@ -553,7 +552,7 @@ form .format, form .ui-datepicker-append {
 	 margin:0;
  }
 #fancybox-wrap {padding:0 !important;}
-#fancybox-content {-webkit-box-sizing:content-box; -moz-box-sizing:content-box; box-sizing:content-box;}
+#fancybox-content { -moz-box-sizing:content-box; box-sizing:content-box;}
 
 
 /************************************************
