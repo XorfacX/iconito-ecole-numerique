@@ -77,7 +77,7 @@ class accountservice extends enicService
     {
         $city = new stdClass();
         $city->nom = $soapCity;
-        $city->nomCanonique = Kernel::createCanon($city->nom);
+        $city->nomCanonique = Kernel::createCanon($city->nom, true);
 
         return $city;
     }

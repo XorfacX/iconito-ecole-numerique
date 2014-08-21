@@ -2765,8 +2765,12 @@ class Kernel
      * @author Jérémy FOURNAISE
      * @return string slug
      */
-    public function createCanon($cityName)
+    public function createCanon($cityName, $stripSpecialChars = false)
     {
+        if($stripSpecialChars) {
+            $cityName = Kernel::simpleName($cityName);
+        }
+        
         $canon = strtolower(trim($cityName));
 
         $cityDAO = _ioDAO('kernel|kernel_bu_ville');
