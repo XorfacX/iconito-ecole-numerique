@@ -1,11 +1,10 @@
 
 div.minimail_message {
-	width:100%; /* 730px;*/
-	background-color: #FFFFFF;
-	font-size: 12px;
+	clear:both;
+    margin-top:1em; padding:0.4em;
 	border-radius: 6px;
-	-moz-border-radius: 6px;
-	padding: 2px;
+	background-color: #FFFFFF;
+	
 }
 div.minimail_message div.render a {
   text-decoration:underline;
@@ -14,19 +13,17 @@ div.minimail_message div.render a:hover {
   color:#000;
 }
 
-
-tr.minimail_navig {
-	background-color: #EEEEEE;
-	font-size: 10px;
+.minimail_navig {
+    padding:0.3em;
+    overflow:hidden;
+	font-size:0.9em;
 	border-radius: 6px;
-	-moz-border-radius: 6px;
 	color: #DDDDDD;
 
 }
-
-
-hr.minimail_hr {
-	margin: 5px;
+.minimail_header {
+	margin-bottom:0.5em; border-bottom:1px solid #999;
+    overflow:hidden;
 }
 
 div.minimail_attachment {
@@ -50,6 +47,7 @@ textarea#dest {
 	border:0;
 	width:100%;
 	border-collapse:collapse;
+    font-size:1em;
 }
 
 /* Téléchargement des PJ vers un classeur */

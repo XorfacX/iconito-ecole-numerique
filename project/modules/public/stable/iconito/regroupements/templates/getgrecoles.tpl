@@ -20,7 +20,7 @@ function ville_toggle( ville, mode ) {
 <table border="0" cellpadding="10" cellspacing="10" width="100%" class="regroupements">
 <tr height="100">
 	<td width="30%" bgcolor="white" valign="top">
-		<div class="button_like right"><a href="{copixurl dest="regroupements|ecoles|" groupe="0"}" class="button button-add">Nouveau regroupement</a></div>
+		<div class="button_like"><a href="{copixurl dest="regroupements|ecoles|" groupe="0"}" class="button button-add">Nouveau regroupement</a></div>
 		<div>
 			<h2>Regroupements existants</h2>
 			{if $grecoles_list|@count gt 0}

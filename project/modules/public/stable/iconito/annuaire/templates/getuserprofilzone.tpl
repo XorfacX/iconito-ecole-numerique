@@ -6,12 +6,12 @@
 
 <div>
     <div class="right"><a href="#" onClick="return hideUser();">{i18n key="annuaire.btn.close"}</a></div>
-    <!--<DIV ALIGN="RIGHT">{$usr.civilite}</DIV>-->
+    <!--<DIV class="right">{$usr.civilite}</DIV>-->
 
-    <div style="font-weight:bold; font-size:140%; margin-top: 3px; margin-bottom: 3px;">{if $usr.avatar}<img src="{copixurl}{$usr.avatar}" align="right" />{/if}{if $usr.sexe == 1}<img src="{copixurl}themes/default/images/icon-16/user-male.png" />{elseif $usr.sexe == 2}<img src="{copixurl}themes/default/images/icon-16/user-female.png" />{/if}{$usr.prenom|escape} {$usr.nom|escape}</div>
+    <h1>{if $usr.avatar}<img src="{copixurl}{$usr.avatar}" align="right" />{/if}{if $usr.sexe == 1}<img src="{copixurl}themes/default/images/icon-16/user-male.png" />{elseif $usr.sexe == 2}<img src="{copixurl}themes/default/images/icon-16/user-female.png" />{/if}{$usr.prenom|escape} {$usr.nom|escape}</h1>
 
     <!--
-<DIV ALIGN="RIGHT">
+<DIV class="right">
 {if $usr.ALL->ele_date_nais}Né(e) le {$usr.ALL->ele_date_nais|datei18n:"date_short"}{/if}
 </DIV>
 -->
@@ -34,7 +34,7 @@
             <div id="">
                 {foreach from=$parents item=item}
                     <div>{if $item.sexe == 1}<img src="{copixurl}themes/default/images/icon-16/user-male.png" />{elseif $item.sexe == 2}<img src="{copixurl}themes/default/images/icon-16/user-female.png" />{/if}
-                        {user label=$item.prenom|cat:" "|cat:$item.nom userType=$item.type userId=$item.id linkAttribs='STYLE="text-decoration:none;"' login=$item.login dispMail=1}
+                        {user label=$item.prenom|cat:" "|cat:$item.nom userType=$item.type userId=$item.id login=$item.login dispMail=1}
 
                     </div>
                 {/foreach}
@@ -44,7 +44,7 @@
             <div style="font-weight:bold; font-size:110%;">{i18n key="annuaire.hisEnfants"}</div>
             <div id="">
                 {foreach from=$enfants item=item}
-                    <div>{if $item.sexe == 1}<img src="{copixurl}themes/default/images/icon-16/user-male.png" />{elseif $item.sexe == 2}<img src="{copixurl}themes/default/images/icon-16/user-female.png" />{/if} {user label=$item.prenom|cat:" "|cat:$item.nom userType=$item.type userId=$item.id linkAttribs='STYLE="text-decoration:none;"' login=$item.login dispMail=1}
+                    <div>{if $item.sexe == 1}<img src="{copixurl}themes/default/images/icon-16/user-male.png" />{elseif $item.sexe == 2}<img src="{copixurl}themes/default/images/icon-16/user-female.png" />{/if} {user label=$item.prenom|cat:" "|cat:$item.nom userType=$item.type userId=$item.id login=$item.login dispMail=1}
 
                     </div>
                 {/foreach}

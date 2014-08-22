@@ -613,3 +613,20 @@ a.tooltip70px:hover em {	width:70px; }
 a.tooltip80px:hover em {	width:80px; }
 a.tooltip90px:hover em {	width:90px; }
 a.tooltip100px:hover em {	width:100px; }
+
+
+/************************************************
+ * Info-bulle utilisateur
+ ***********************************************/
+#divUserProfil {
+    display:none;
+    position:absolute;
+    padding:0.5em; border:1px solid #999;
+    border-radius:6px;
+    background:#fff;
+}
+#divUserProfil h1 {
+    clear:both;
+    margin-top:0;
+    font-size:1.4em;
+}

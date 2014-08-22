@@ -26,7 +26,7 @@
 {/if}
 
 <br/>
-<table>
+<table class="editItems">
 	<tr>
 		<td CLASS="form_libelle"><nobr>{i18n key="minimail.form.dest"}{help mode="tooltip" text_i18n="minimail|minimail.help.dest"}</nobr>
 

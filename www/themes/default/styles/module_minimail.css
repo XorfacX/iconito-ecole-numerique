@@ -6,6 +6,7 @@ div.minimail_message {
 	border-radius: 6px;
 	-moz-border-radius: 6px;
 	padding: 2px;
+    clear:both; margin-top:1em;
 }
 div.minimail_message div.render a {
   text-decoration:underline;
@@ -15,18 +16,18 @@ div.minimail_message div.render a:hover {
 }
 
 
-tr.minimail_navig {
-	background-color: #EEEEEE;
-	font-size: 10px;
+.minimail_navig {
+    padding:0.3em;
+    overflow:hidden;
+	font-size:0.9em;
 	border-radius: 6px;
-	-moz-border-radius: 6px;
 	color: #DDDDDD;
 
 }
 
-
-hr.minimail_hr {
-	margin: 5px;
+.minimail_header {
+	margin-bottom:0.5em; border-bottom:1px solid #999;
+    overflow:hidden;
 }
 
 div.minimail_attachment {
