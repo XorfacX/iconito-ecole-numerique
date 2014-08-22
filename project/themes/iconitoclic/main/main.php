@@ -47,7 +47,7 @@ $module = CopixRequest::get ('module');?>
         <div id="popup"><?php getZones("popup"); ?></div>
         <header id="header" role="banner" class="">
             <div class="marginCenter w960p ">
-                <a href="<?php echo CopixUrl::get() ?>" class="logo"><img class="mt1 mb1" src="<?=CopixUrl::getResource('img/Logo-Iconito-Clic.png');?>" alt="ICONITO Clic" /></a>
+                <a href="<?php echo CopixUrl::get() ?>" class="logo"><img class="mt1 mb1" src="<?php echo CopixUrl::getResource('img/Logo-Iconito-Clic.png');?>" alt="ICONITO Clic" /></a>
                 <div class="right mt2 mb1">
                     <?php getZones('login');?>
                 </div>
@@ -56,7 +56,7 @@ $module = CopixRequest::get ('module');?>
             <div class="mt3 clear bgPrimary"> 
                 <div class="marginCenter w960p bfc">
                     <?php getZones('menu', false);?>
-                    <h1 class="main-title mb0 mt0"><a href="<?=CopixUrl::get();?>">ICONITO Clic : Votre école en ligne</a></h1>
+                    <h1 class="main-title mb0 mt0"><a href="<?php echo CopixUrl::get();?>">ICONITO Clic : Votre école en ligne</a></h1>
                 </div>
             </div>
         </header><!-- header -->
