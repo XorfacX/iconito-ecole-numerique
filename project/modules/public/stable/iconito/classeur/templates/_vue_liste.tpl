@@ -2,7 +2,7 @@
   <table id="folder-content" class="listView">
     <thead>
       <tr>
-        <th class="left"><input type="checkbox" id="check_all" /></th>
+        <th class="txtleft"><input type="checkbox" id="check_all" /></th>
         <th>
           {if $ppo->tri.colonne eq "titre" && $ppo->tri.direction eq "ASC"}
             {assign var=direction value='DESC'}
@@ -83,10 +83,10 @@
             {/if}
           </td>
           <td><a href="{copixurl dest="classeur||voirContenu" classeurId=$ppo->classeurId dossierId=$contenu->id}" title="{i18n key="classeur.message.openFolder" nom=$contenu->titre noEscape=1}" class="icon iconFolder {if $contenu->casier}iconFolderLocked{/if}">{$contenu->titre|escape}</a></td>
-          <td class="center">&nbsp;</td>
-          <td class="center">{$contenu->type}</td>
+          <td class="txtcenter">&nbsp;</td>
+          <td class="txtcenter">{$contenu->type}</td>
           <td>{$contenu->date|datei18n:"date_short_time"}</td>
-          <td class="right">
+          <td class="txtright">
             {if $contenu->nb_dossiers neq 0}
               {$contenu->nb_dossiers} {if $contenu->nb_dossiers eq 1}{i18n key="classeur.message.folder"}{else}{i18n key="classeur.message.folders"}{/if}
             {/if}
@@ -95,7 +95,7 @@
             {/if}
             {$contenu->taille|human_file_size}
           </td>
-          <td class="center actions">
+          <td class="txtcenter actions">
             {if ($ppo->dossierId eq 0 && !$contenu->casier) || $ppo->dossierId neq 0}
               {if $ppo->niveauUtilisateur >= PROFILE_CCV_MEMBER || ($contenu->user_id eq $ppo->idUtilisateur && $contenu->user_type eq $ppo->typeUtilisateur)}
                 <a href="{copixurl dest="classeur||editerDossier" classeurId=$ppo->classeurId dossierId=$contenu->id}" title="{i18n key="classeur.message.modify"}">
@@ -120,11 +120,11 @@
           <tr class="{$contenu->type} {if $index%2 eq 0}odd{else}even{/if}">
             <td><input type="checkbox" class="check" name="fichiers[]" value="{$contenu->id}" /></td>
             <td><a href="{$contenu->lien}" title="{i18n key="classeur.message.openFile" titre=$contenu->nom noEscape=1}" class="icon iconFavorite" target="_blank">{$contenu->titre|escape}</a></td>
-            <td class="center">{$contenu->origine}</td>
-            <td class="center">{$contenu->type}</td>
+            <td class="txtcenter">{$contenu->origine}</td>
+            <td class="txtcenter">{$contenu->type}</td>
             <td>{$contenu->date|datei18n:"date_short_time"}</td>
-            <td class="right">{$contenu->taille|human_file_size}</td>
-            <td class="center actions">
+            <td class="txtright">{$contenu->taille|human_file_size}</td>
+            <td class="txtcenter actions">
               {if $ppo->niveauUtilisateur >= PROFILE_CCV_MEMBER || ($contenu->user_id eq $ppo->idUtilisateur && $contenu->user_type eq $ppo->typeUtilisateur)}
               <a href="{copixurl dest="classeur||editerFavori" classeurId=$ppo->classeurId dossierId=$contenu->parent_id favoriId=$contenu->id}" title="{i18n key="classeur.message.modify"}">
                 <img src="{copixurl}themes/default/images/button-action/action_update.png" alt="{i18n key="classeur.message.modify"}" />
@@ -152,11 +152,11 @@
           <tr class="{if $index%2 eq 0}odd{else}even{/if}">
             <td><input type="checkbox" class="check" name="fichiers[]" value="{$contenu->id}" /></td>
             <td><a href="{copixurl dest="classeur||telechargerFichier" classeurId=$ppo->classeurId fichierId=$contenu->id}" title="{i18n key="classeur.message.openFile" titre=$titre noEscape=1}" class="icon icon{$contenu->type|lower}" target="_blank">{$titre}</a></td>
-            <td class="center">{$contenu->origine}</td>
-            <td class="center">{$contenu->type}</td>
+            <td class="txtcenter">{$contenu->origine}</td>
+            <td class="txtcenter">{$contenu->type}</td>
             <td>{$contenu->date|datei18n:"date_short_time"}</td>
-            <td class="right">{$contenu->taille|human_file_size}</td>
-            <td class="center actions">
+            <td class="txtright">{$contenu->taille|human_file_size}</td>
+            <td class="txtcenter actions">
               {if $ppo->niveauUtilisateur >= PROFILE_CCV_MEMBER || ($contenu->user_id eq $ppo->idUtilisateur && $contenu->user_type eq $ppo->typeUtilisateur)}
               <a href="{copixurl dest="classeur||editerFichiers" classeurId=$ppo->classeurId dossierId=$contenu->parent_id fichierId=$contenu->id}" title="{i18n key="classeur.message.modify"}">
                 <img src="{copixurl}themes/default/images/button-action/action_update.png" alt="{i18n key="classeur.message.modify"}" />

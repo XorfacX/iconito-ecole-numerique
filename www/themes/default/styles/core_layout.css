@@ -53,9 +53,9 @@ body {
 .displayNone { display: none; }
 .hiddenClean {position:absolute; top:-999em; left:-999em;}
 
-.left 	{ text-align: left; }
-.center	{ text-align: center; }
-.right 	{ text-align: right; }
+.left, .txtleft 	{ text-align: left; }
+.center, .txtcenter	{ text-align: center; }
+.right, .txtright 	{ text-align: right; }
 
 .floatleft 	{ float: left; }
 .floatright { float: right; }
@@ -244,7 +244,7 @@ div.fixed {
 
 /* Affichage des tableaux */
 table.viewItems {
-	margin:3px 0; padding:2px; -moz-border-radius:6px; -webkit-border-radius:6px; border-radius:6px;
+	margin:3px 0; padding:2px; border-radius:6px;
 	width:100%;
 	background:#FFFFFF;
         table-layout:fixed;
