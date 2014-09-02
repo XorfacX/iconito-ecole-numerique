@@ -280,7 +280,7 @@ span.valign {
 ul.usermenu li a, 
 a.dashclose {
     background-image:url(../img/modules-sprite.png); background-repeat:no-repeat;
-    -webkit-transition-duration:0; transition-duration:0;
+    -webkit-transition:none; transition:none;
 }
 
 a.MOD_CHARTE 			      { background-position:100% -960px; }

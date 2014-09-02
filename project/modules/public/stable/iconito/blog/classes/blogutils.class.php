@@ -169,6 +169,7 @@ function returnAllBlogFunctions()
     $results = array();
     $arMaj = array ('article_bfct', 'archive_bfct', 'find_bfct', 'link_bfct', 'rss_bfct', 'photo_bfct', 'option_bfct');
     foreach ($arMaj as $var){
+        $function = new stdClass();
         $function->value  = $var;
         //$function->text = 'blog|dao.blogfunctions.fields.'.$var;
         $function->text = CopixI18N::get('blog|dao.blogfunctions.fields.'.$var);

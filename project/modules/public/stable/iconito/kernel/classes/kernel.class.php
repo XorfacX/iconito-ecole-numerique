@@ -1712,6 +1712,7 @@ class Kernel
 
         _ioDAO('kernel|kernel_bu_personnel_entite'); // Pour accéder aux constantes de roles
         if( Kernel::hasRole(DAOKernel_bu_personnel_entite::ROLE_PRINCIPAL, 'ecole', $node_id) && $node_type == "BU_ECOLE") {
+            $cahierdetexte = new stdClass();
             $cahierdetexte->node_type   = $node_type;
             $cahierdetexte->node_id     = $node_id;
             $cahierdetexte->module_type = 'MOD_CAHIERDETEXTES';
