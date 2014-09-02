@@ -13,7 +13,7 @@ class enicHtml extends enicMod
 
     public function addImg($iPath)
     {
-        return CopixUrl::getResource('images/'.$iPath);
+        return CopixUrl::getResource('img/'.$iPath);
     }
 
 }

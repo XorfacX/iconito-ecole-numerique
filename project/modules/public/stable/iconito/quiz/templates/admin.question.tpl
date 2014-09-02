@@ -102,7 +102,7 @@ jQuery(document).ready(function($){
         <!-- process data's, integrity check by server side sessions storage -->
         <input type="hidden" name="aw-id" value="{$ppo->id}" />
     </div>
-    <div class="content-panel right">
+    <div class="content-panel txtright">
         <input type="submit" class="button button-save" value="{i18n key="quiz.question.save" noEscape=1}"/>
     </div>
 </form>
@@ -154,7 +154,7 @@ jQuery(document).ready(function($){
 		{/if}
 
         </ul>
-        <div class="left">
+        <div class="txtleft">
             <button id="qf-addanswer" class="button button-add">{i18n key="quiz.question.answersAdd" noEscape=1}</button>
         </div>
     </div>
@@ -166,7 +166,7 @@ jQuery(document).ready(function($){
             <textarea class="qf-description" id="answer-detail" name="answer-detail">{$ppo->answerDetail}</textarea>
         </div>
     {/if}
-    <div class="content-panel right">
+    <div class="content-panel txtright">
         <input type="submit" class="qf-submit button button-save" value="{i18n key="quiz.question.answersSave" noEscape=1}"/>
     </div>
 </form>

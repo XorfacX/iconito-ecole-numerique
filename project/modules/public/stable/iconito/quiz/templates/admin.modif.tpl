@@ -91,9 +91,7 @@
 						{$question.respNum} {i18n key="quiz.question.answersCount" noEscape=1}
 					</td>
 					<td class="quiz-col80">
-						<a href="{copixurl dest="quiz|admin|delAnsw"}" id="a-suppr" class="button button-delete">
-						{i18n key="quiz.question.delete" noEscape=1}&nbsp;&nbsp;&nbsp;
-						</a>
+						<a href="{copixurl dest="quiz|admin|delAnsw"}" id="a-suppr" class="button button-delete">{i18n key="quiz.question.delete" noEscape=1}</a>
 					</td>
 				</tr>
 			{/foreach}

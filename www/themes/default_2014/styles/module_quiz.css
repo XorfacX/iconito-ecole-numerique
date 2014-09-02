@@ -29,11 +29,11 @@
 .quiz .loading-button a {
     min-height: 42px;
     padding-top: 128px;
-    background: url(../images/quiz_icon.png) top center no-repeat; color:inherit;
+    background: url(../img/quiz/quiz_icon.png) top center no-repeat; color:inherit;
 	}
 
 .quiz .loading-button a:hover {
-    background: #ffffff url(../images/quiz_icon.png) top center no-repeat;
+    background: #ffffff url(../img/quiz/quiz_icon.png) top center no-repeat;
 }
 
 .quiz .noquiz-button {
@@ -46,7 +46,7 @@
     line-height: 20px;
 	border-radius: 10px;
 	behavior: url(/htc/PIE.htc);
-    background: #fff url(../images/quiz_icon_no.png) top center no-repeat;
+    background: #fff url(../img/quiz/quiz_icon_no.png) top center no-repeat;
     border: solid 1px #ddd;
     padding-top: 128px;
 	}
@@ -70,7 +70,7 @@
 	}
 
 .quiz-colstart	{
-	background: #fff url(../images/quiz_icon_65.png) 4px 50% no-repeat;
+	background: #fff url(../img/quiz/quiz_icon_65.png) 4px 50% no-repeat;
 	padding-left: 72px;
 	-moz-border-radius-topleft: 12px;
 	-moz-border-radius-bottomleft: 12px;
@@ -103,14 +103,14 @@
 
 #quiz-table .quiz-published {
 	display: inline-block;
-	background: url(../images/state_true.png) 0 0 no-repeat;
+	background: url(../img/quiz/state_true.png) 0 0 no-repeat;
 	width: 20px;
 	height: 20px;
 	}
 
 #quiz-table .quiz-unpublished {
 	display: inline-block;
-	background: url(../images/state_false.png) 0 0 no-repeat;
+	background: url(../img/quiz/state_false.png) 0 0 no-repeat;
 	width: 20px;
 	height: 20px;
 	}
@@ -179,10 +179,10 @@ div.qf-head {
 	min-height: 122px;
 	}
 
-input.qf-date {
+form input.qf-date {
 	border: 0px;
 	font-size: 90%;
-	width: 64px;
+	min-width:64px; width:64px;
 	}
 
 .quiz-itemlist {
@@ -224,11 +224,11 @@ input.qf-date {
 	behavior: url(/htc/PIE.htc);
 	margin-bottom: 6px;
 	padding:0px;
-	background: #ffffff url(../images/drag_handle_off.png) 0 50% no-repeat;
+	background: #ffffff url(../img/quiz/drag_handle_off.png) 0 50% no-repeat;
 	}
 
 #qf-answers li.drag-on {
-	background: #faf9d9 url(../images/drag_handle_on.png) 0 50% no-repeat;
+	background: #faf9d9 url(../img/quiz/drag_handle_on.png) 0 50% no-repeat;
 	}
 
 #qf-answer-tpl {
@@ -260,7 +260,7 @@ input.qf-date {
 	}
 
 #quiz-do .qd-header {
-	background: #fff url(../images/quiz_icon_65.png) 8px 8px no-repeat;
+	background: #fff url(../img/quiz/quiz_icon_65.png) 8px 8px no-repeat;
 	padding-left: 72px;
 	min-height: 72px;
 	}
@@ -303,7 +303,7 @@ input.qf-date {
 	}
 
 #quiz-do ul li a.qd-question-done {
-	background: url(../images/quiz_question_done.png) 100% 50% no-repeat;
+	background: url(../img/quiz/quiz_question_done.png) 100% 50% no-repeat;
 	}
 
 #quiz-do ul li a.qd-question-todo {
@@ -394,18 +394,18 @@ input.qf-date {
 
 #quiz-do .qd-button-back {
 	float: left;
-	background: url(../images/quiz_arrows_back_off.png) 100% 50% no-repeat;
+	background: url(../img/quiz/quiz_arrows_back_off.png) 100% 50% no-repeat;
 	}
 #quiz-do .qd-button-back:hover {
-	background: url(../images/quiz_arrows_back_on.png) 100% 50% no-repeat;
+	background: url(../img/quiz/quiz_arrows_back_on.png) 100% 50% no-repeat;
 	}
 
 #quiz-do .qd-button-next {
 	float: right;
-	background: url(../images/quiz_arrows_next_off.png) 0 50% no-repeat;
+	background: url(../img/quiz/quiz_arrows_next_off.png) 0 50% no-repeat;
 	}
 #quiz-do .qd-button-next:hover {
-	background: url(../images/quiz_arrows_next_on.png) 0 50% no-repeat;
+	background: url(../img/quiz/quiz_arrows_next_on.png) 0 50% no-repeat;
 	}
 #help-data {
 	display: none;
@@ -420,7 +420,7 @@ input.qf-date {
     margin-top: 5px;
 	border-radius: 10px;
 	behavior: url(/htc/PIE.htc);
-    background: #fff url(../images/quiz_icon.png) top center no-repeat;
+    background: #fff url(../img/quiz/quiz_icon.png) top center no-repeat;
     border:solid 1px #ddd;
     padding-top: 128px;
     text-align: center;
@@ -530,7 +530,7 @@ input.qf-date {
     line-height: 14px;
 }
 .quiz-comment{
-    background-image: url('../img/datatable/comment.png');
+    background-image: url('../img/quiz/comment.png');
     height: 16px;
     width: 16px;
     float: left;

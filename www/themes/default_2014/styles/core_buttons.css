@@ -387,7 +387,6 @@ a.usr-newaccount {
 	position: relative;
 	float: left;
 	display: block;
-	height: 30px;
 	margin: 0px;
 	padding: 14px 14px 6px 6px;
 	background: url(../../../themes/default/images/thm_stepbar_arrow.png) no-repeat 100% 0;
@@ -401,7 +400,6 @@ a.usr-newaccount {
 	position: relative;
 	float: left;
 	display: block;
-	height: 30px;
 	margin: 0px;
 	margin-left: -16px;
 	padding: 14px 14px 6px 22px;

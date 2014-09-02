@@ -46,7 +46,7 @@ class enicJavascript extends enicMod
 
         $js .= '$("'.$iIdDom.'").datepicker({';
         $js .= 'showOn: "button",
-                buttonImage: "'.$html->addImg('colorful/24x24/calendar.png').'",
+                buttonImage: "'.$html->addImg('quiz/calendar.png').'",
                 buttonImageOnly: true';
         if($iType == 'full'){
             $js .= ',
