@@ -42,7 +42,7 @@
 }
 
 a.dashclose {
-	position:absolute; top:1px; right:2px;
+	position:absolute; top:5px; right:5px;
     display:block;
 	width:30px;	height:30px;
 	}
@@ -70,21 +70,24 @@ div.dashpanel .title span {
 	font-size: 160%;
 	text-transform:uppercase;
 	}
-	
+
+.kernel div.dashpanel div.content {
+    position:static;
+}
 div.dashpanel div.content {
 	position: relative;
-	overflow: hidden;
+    overflow: hidden;
 	font-size: 120%;
 	padding: 10px;
 	margin: 0px;
 	background: #f7f7f7;
 	border:2px solid #E1DCD7;
 	border-top:none;
-	min-height: 160px; -webkit-box-shadow:1px 1px 5px #ddd; box-shadow:1px 1px 5px #ddd;
+	min-height: 160px; box-shadow:1px 1px 5px #ddd;
 	}
 
 div.dashpanel div.toolset {
-	position: absolute;
+	float:right;
 	margin: 0px;
 	top: 0px;
 	right:-36px;
@@ -93,7 +96,7 @@ div.dashpanel div.toolset {
 	z-index: 999;
 	width: 36px;
 	overflow: hidden;
-	padding:25px 1px 2px 1px;
+	padding:2px 1px 2px 1px;
 	}
 
 div.dashpanel div.toolset-expand {
@@ -168,6 +171,7 @@ div.tools_left {
 
 div.tools_left div.dashpanel {
 	width: 94%;
+    overflow:hidden;
 	}
 /* Admin Dashboard min-height */
 div.tools_left .root .content {height:130px;}
@@ -185,7 +189,9 @@ div.tools_left .root .content {height:130px;}
 div.tools_right {
 	}
 div.tools_right div.dashpanel div.toolset {
-	padding:32px 1px 2px 0px;
+    position:absolute; top:42px;
+    float:none;
+	padding:4px 1px 2px 0px;
 }
 /*div.tools_right div.dashpanel div.toolset-expand ul li {
 	text-align: left;
