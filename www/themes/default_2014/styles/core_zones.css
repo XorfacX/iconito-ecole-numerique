@@ -194,6 +194,10 @@ div.toolbar ul li a.action:hover {
 
 #right div.dashboardwelcome li, #left div.dashboardwelcome li {
 }
+
+@media (max-width: 768px) {
+    aside.right {display:none;}
+}
 	
 
 /************************************************

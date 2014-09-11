@@ -12,6 +12,10 @@
 #kernel {
 	margin-right:250px;
 }
+@media (max-width: 768px) {
+    #kernel {margin-right:0;}
+}
+	
 
 .dashboard-item {
     padding:5px;
