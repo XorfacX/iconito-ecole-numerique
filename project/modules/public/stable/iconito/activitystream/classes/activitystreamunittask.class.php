@@ -399,7 +399,7 @@ SQL;
         $results = _doQuery($sql);
 
         foreach ($results as $result) {
-            $object = new EcoleNumeriqueActivityStreamResource('Discussion', 'DAORecordliste_messages', null, null, array('privacy' => $result->privacy));
+            $object = new EcoleNumeriqueActivityStreamResource('Discussion', 'DAORecordliste_messages');
 
             $context = $this->activityStreamService->getContextResources($result->target_node_type, $result->target_node_id);
             $target = Kernel::getNode($result->target_node_type, $result->target_node_id);
