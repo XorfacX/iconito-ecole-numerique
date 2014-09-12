@@ -107,7 +107,7 @@ class DAORecordKernel_ext_user implements ResourceInterface
     $resource = new EcoleNumeriqueActivityStreamResource(
       'Intervenant externe',
       get_class($this),
-      $this->id
+      $this->ext_id
     );
 
     $attributes = array(

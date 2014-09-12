@@ -24,7 +24,7 @@ class DAORecordKernel_bu_res implements ResourceInterface
     $resource = new EcoleNumeriqueActivityStreamResource(
       'Responsable',
       get_class($this),
-      $this->id
+      $this->res_numero
     );
 
     $attributes = array(

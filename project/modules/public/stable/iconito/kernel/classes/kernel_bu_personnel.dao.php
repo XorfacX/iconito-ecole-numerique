@@ -631,7 +631,7 @@ class DAORecordKernel_bu_personnel implements ResourceInterface
     $resource = new EcoleNumeriqueActivityStreamResource(
       'Personnel',
       get_class($this),
-      $this->numero
+      $this->pers_numero
     );
 
     $attributes = array(

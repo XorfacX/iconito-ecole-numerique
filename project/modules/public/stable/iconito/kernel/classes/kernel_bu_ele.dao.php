@@ -554,7 +554,7 @@ class DAORecordKernel_bu_ele implements ResourceInterface
     $resource = new EcoleNumeriqueActivityStreamResource(
       'Eleve',
       get_class($this),
-      $this->idEleve
+      $this->ele_idEleve
     );
 
     $attributes = array(
