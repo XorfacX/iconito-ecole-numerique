@@ -1,10 +1,9 @@
 /*visualize extension styles*/
 .visualize { 
-	margin:1em auto; padding:70px 40px 60px; 
-	background:#eee;
-	background:-moz-linear-gradient(top, #fefefe, #eee); background:-webkit-linear-gradient(top, #fefefe, #eee); background:linear-gradient(top, #fefefe, #eee);
+	margin:1em auto; padding:70px 40px 75px; 
+	background:#eee; background:-webkit-linear-gradient(top, #fefefe, #eee); background:linear-gradient(top, #fefefe, #eee);
 	/* url(../images/chartbg-vanilla.png) top repeat-x; */
-	border: 1px solid #ddd; -moz-border-radius: 12px; -webkit-border-radius: 12px; border-radius: 12px; 
+	border: 1px solid #ddd; border-radius: 12px; 
 }
 .visualize canvas { border: 1px solid #aaa; margin: -1px; background: #fff; }
 .visualize-labels-x, .visualize-labels-y { top: 70px; left: 40px; z-index: 100; }
