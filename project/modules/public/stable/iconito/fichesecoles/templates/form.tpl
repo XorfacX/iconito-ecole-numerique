@@ -84,16 +84,6 @@
     <th><label for="zone4_texte">{i18n key="fichesecoles.fields.content}</label></th>
     <td>{$form_zone4_texte}</td>
 </tr>
-
-
-<tr>
-	<td colspan="2"><h2>{i18n key="fichesecoles.fields.doc"}</h2></td>
-</tr>
-<tr>
-    <th><label for="doc1_fichier">{i18n key="dao.fiches_ecoles.fields.doc1_fichier"}</label></th>
-    <td>{if $rForm->doc1_fichier}<a href="{copixurl dest="fichesecoles||doc" fichier=$rForm->doc1_fichier}">{$rForm->getDocumentNom(1)}</a> &bull; <input type="checkbox" id="doc1_suppr" name="doc1_suppr" value="1" /><label for="doc1_suppr"> {i18n key="kernel|kernel.btn.delete"}</label> &bull; {i18n key="fichesecoles.fields.fileModify"}{/if}
-    <input type="file" name="doc1_fichier" class="form file"></td>
-</tr>
 <tr>
     <th><label for="doc1_titre">{i18n key="dao.fiches_ecoles.fields.doc1_titre"}</label></th>
     <td><input type="text" name="doc1_titre" value="{$rForm->doc1_titre|escape}" class="form doc_titre" maxlength="200"></td>

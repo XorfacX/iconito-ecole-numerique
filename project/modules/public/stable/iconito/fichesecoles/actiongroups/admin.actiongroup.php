@@ -67,7 +67,6 @@ class ActionGroupAdmin extends enicActionGroup
 
             $rForm->id = $id;
             $rForm->photo = ($rFiche) ? $rFiche->photo : '';
-            $rForm->doc1_fichier = ($rFiche) ? $rFiche->doc1_fichier : '';
 
             if (is_uploaded_file($_FILES['photoFile']['tmp_name'])) {
                 if ($size = @getimagesize($_FILES['photoFile']['tmp_name'])) {
@@ -112,53 +111,6 @@ class ActionGroupAdmin extends enicActionGroup
                         break;
                 }
             }
-
-
-            $rForm->doc1_titre = _request('doc1_titre');
-
-            if (_request('doc1_suppr')) {
-                if ($rForm->doc1_fichier) {
-                    $file = COPIX_VAR_PATH . CopixConfig::get('fichesecoles|docPath') . $rForm->doc1_fichier;
-                    if (file_exists($file)) {
-                        @unlink($file);
-                    }
-                }
-                $rForm->doc1_fichier = null;
-                $rForm->doc1_titre = null;
-            } elseif (is_uploaded_file($_FILES['doc1_fichier']['tmp_name'])) {
-                if ($rFiche) {
-                    $file = COPIX_VAR_PATH . CopixConfig::get('fichesecoles|docPath') . $rFiche->doc1_fichier;
-                    if (file_exists($file)) {
-                        @unlink($file);
-                    }
-                }
-                $fileName = $rForm->id . "_" . $_FILES['doc1_fichier']['name'];
-                $file = COPIX_VAR_PATH . CopixConfig::get('fichesecoles|docPath') . $fileName;
-                if (@move_uploaded_file($_FILES['doc1_fichier']['tmp_name'], $file)) {
-                    $rForm->doc1_fichier = $fileName;
-                }
-            } else {
-                switch ($_FILES['doc1_fichier']['error']) {
-                    case 0: //no error; possible file attack!
-                        $errors[] = CopixI18N::get('malle|malle.error.upload_default', $_FILES['doc1_fichier']['type']);
-                        break;
-                    case 1: //uploaded file exceeds the upload_max_filesize directive in php.ini
-                        $errors[] = CopixI18N::get('malle|malle.error.upload_toobig', $_FILES['doc1_fichier']['type']);
-                        break;
-                    case 2: //uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the html form
-                        $errors[] = CopixI18N::get('malle|malle.error.upload_toobig', $_FILES['doc1_fichier']['type']);
-                        break;
-                    case 3: //uploaded file was only partially uploaded
-                        $errors[] = CopixI18N::get('malle|malle.error.upload_partial', $_FILES['doc1_fichier']['type']);
-                        break;
-                    case 4: // Pas d'upload
-                        break;
-                    default:
-                        $errors[] = CopixI18N::get('malle|malle.error.upload_default', $_FILES['doc1_fichier']['type']);
-                        break;
-                }
-            }
-
 
             $rForm->horaires = $horaires;
             for ($i = 1; $i <= $nbZones; $i++) {
