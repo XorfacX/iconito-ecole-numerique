@@ -1702,7 +1702,7 @@ class ActionGroupDefault extends enicActionGroup
                 $id_ville = $ppo->nodeId;
                 break;
             case 'BU_ECOLE':
-                if ($ppo->type == 'USER_ADM') {
+                if ($ppo->type == 'USER_ADM' || $ppo->role == "3") {
 
                     _currentUser()->assertCredential('module:school|'.$ppo->nodeId.'|administration_staff|create@gestionautonome');
                 } else {
