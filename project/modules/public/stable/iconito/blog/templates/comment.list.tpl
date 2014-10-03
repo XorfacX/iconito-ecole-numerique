@@ -13,7 +13,7 @@
 			
 		 			<DIV class="commentBody"><div class="is_online{$comment->is_online}"><DIV CLASS="commentAuthor"><div class="commentCount"><A>{$cptCom}</A></div>
 
-	       <b>{i18n key="blog.messages.comment2" 1=$comment->authorname_bacc|escape 2=$comment->date_bacc|datei18n 3=$comment->time_bacc|escape}
+	       <b>{i18n key="blog.messages.comment2" 1=$comment->authorname_bacc|strip_tags 2=$comment->date_bacc|datei18n 3=$comment->time_bacc|escape}
 		
 		{if $comment->authorweb_bacc!=null}<a rel="nofollow" href="{$comment->authorweb_bacc}" title="" target="_blank">{i18n key="blog.comment.web"}</a>{/if}
 

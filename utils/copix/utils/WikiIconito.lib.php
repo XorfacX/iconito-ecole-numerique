@@ -126,22 +126,22 @@ function iconito_multimedia ($contents, $attr)
 <p id="player-'.$rand.'"><a href="http://www.macromedia.com/go/getflashplayer">Get the Flash Player</a> to see this player.</p>
 <script type="text/javascript">
         var FU = { movie:"'.CopixUrl::getRequestedScriptPath().'flvplayer/flvplayer.swf",width:"'.$width.'",height:"'.$height.'",majorversion:"7",build:"0",bgcolor:"#FFFFFF",
-                                flashvars:"file='.(!ereg("^https?://",$file)?CopixUrl::get():"").$file.'&showdigits=true&autostart=false" };
+                                flashvars:"file='.(!preg_match("/^https?:\/\//",$file)?CopixUrl::get():"").$file.'&showdigits=true&autostart=false" };
         UFO.create(FU, "player-'.$rand.'");
 </script>';
             } elseif ($mode == 'youtube') {
-                if (ereg("^([a-zA-Z0-9_-]+)$", $file))
+                if (preg_match("/^([a-zA-Z0-9_-]+)$/", $file))
                     $id = $file;
-                elseif (ereg("v=([a-zA-Z0-9_-]+)", $file, $regs))
+                elseif (preg_match("/v=([a-zA-Z0-9_-]+)/", $file, $regs))
                     $id = $regs[1];
                 if ($id)
                     $ret = '<div><object width="425" height="350" type="application/x-shockwave-flash" data="http://www.youtube.com/v/'.$id.'"><param name="movie" value="http://www.youtube.com/v/'.$id.'" /><param name="wmode" value="transparent" /><img src="'._resource ('images/film.png').'" width="16" height="16" border="0" title="vidéo" alt="vidéo" /></object></div>';
                 else
                     $ret = '<div>Problème de paramètre</div>';
             } elseif ($mode == 'googlevideo') {
-                if (ereg("^([0-9-]+)$", $file))
+                if (preg_match("/^([0-9-]+)$/", $file))
                     $id = $contents[0];
-                elseif (ereg("docid=([0-9-]+)", $file, $regs))
+                elseif (preg_match("/docid=([0-9-]+)/", $file, $regs))
                     $id = $regs[1];
                 if ($id)
                     $ret = '<div><object width="400" height="326" type="application/x-shockwave-flash" data="http://video.google.com/googleplayer.swf?docId='.$id.'"><param name="movie" value="http://video.google.com/googleplayer.swf?docId='.$id.'" /><param name="allowScriptAccess" value="sameDomain" /><param name="quality" value="best" /><param name="scale" value="noScale" /><param name="wmode" value="transparent" /><param name="salign" value="TL" /><param name="FlashVars" value="playerMode=embedded" /><img src="'._resource ('images/film.png').'" width="16" height="16" border="0" title="vidéo" alt="vidéo" /></object></div>';
