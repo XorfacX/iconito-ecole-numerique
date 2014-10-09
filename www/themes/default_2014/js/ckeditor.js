@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -9,7 +9,10 @@ CKEDITOR.editorConfig = function( config )
 	// config.language = 'fr';
 	// config.uiColor = '#AADC6E';
 
-        config.toolbar = 'Iconito';
+    config.toolbar = 'Iconito';
+    
+    // Autorise tous les contenus (nécessaire pour l'insertion de vidéos dans les blogs)
+    config.allowedContent = true;
 
 	config.toolbar_full =
 	[
