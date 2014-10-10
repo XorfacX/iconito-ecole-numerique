@@ -1,0 +1,1 @@
+ALTER TABLE  `module_admindash` CHANGE  `social_stream`  `social_stream` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL ;
