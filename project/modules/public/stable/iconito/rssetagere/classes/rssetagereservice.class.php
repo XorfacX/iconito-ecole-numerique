@@ -9,6 +9,7 @@
         public function loadXml()
         {
         if (!is_null($myNode = _sessionGet('myNode'))) {
+            $ppo = new CopixPPO();
             $ppo->targetId   = $myNode['id'];
             $ppo->targetType = $myNode['type'];
             $ppo->myNodeInfos = Kernel::getNodeInfo ($myNode['type'], $myNode['id']);
