@@ -60,6 +60,7 @@
 	border: solid 1px #fff; border-radius:3px;
 	}
 .bu_ecole .button {background-color:#a3c300;}
+.club .button {background-color:#f29400;}
 .button-cancel, .bu_ecole .button-cancel {background-color:#ccc;}
 .button:link, .button:visited {color:#fff;}
 .button:hover {
