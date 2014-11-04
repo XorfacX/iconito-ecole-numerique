@@ -112,14 +112,13 @@ ul.usermenu li a.logout {
 	margin-left: 6px;
 	}
 
-.usermenu #counter, .toolset .counter {
+.usermenu #counter, div.dashpanel div.toolset ul li a.counter {
 	position:absolute; top:0; right:0;
-	display: inline-block;
-	width: 18px; height: 18px;
-	border-radius: 50%;
-	background: #888; color:#fff;
-	border: 1px solid #fff;
-	font-size: 0.8em; font-weight:bold;
+	display:inline-block;
+	padding:0; border:1px solid #fff; border-radius: 50%;
+	width:18px; height:18px;
+	background:#888; color:#fff;
+	font-size:0.8em; font-weight:bold;
 	line-height:2em;
 	text-align:center; text-decoration:none;
 }

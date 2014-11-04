@@ -122,7 +122,8 @@ div.dashpanel div.toolset ul {
 	}
 
 div.dashpanel div.toolset ul li {
-	display: block;
+	position:relative;
+    display: block;
 	white-space: nowrap;
 	margin: 0px;
 	padding: 0px;
