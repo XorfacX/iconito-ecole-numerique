@@ -290,9 +290,9 @@ div.dashboard div.club .title	{ background: #f29400; color:#fff; }
 /*div.dashboard div.club div.content	{ border: 2px solid #f29400; }*/
 div.dashboard div.club div.toolset	{ background: #f29400; }
 
-div.dashboard div.user_ele .title	{ background: #00B3E7; }
+div.dashboard div.user_ele .title	{ background: #0097ba; }
 /*div.dashboard div.user_ele div.content	{ border: 2px solid #009EE0; }*/
-div.dashboard div.user_ele div.toolset	{ background: #00B3E7; }
+div.dashboard div.user_ele div.toolset	{ background: #0097ba; }
 
 /*div#kernel div.dashpanel div.toolset a.counter span.counter-text {
     color: #333333;
