@@ -95,6 +95,7 @@ class DAOBlogLink
 
        // Reorder
        $sqlOrdre = 'UPDATE module_blog_link SET order_blnk=order_blnk - 1 WHERE order_blnk > '.$item->order_blnk;
+       $sqlOrdre.= ' AND id_blog = '.$item->id_blog;
        _doQuery($sqlOrdre);
    }
     /**
