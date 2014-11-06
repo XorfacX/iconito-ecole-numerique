@@ -96,6 +96,7 @@ class DAOBlogFluxRss
 
        // Reorder
        $sqlOrdre = 'UPDATE module_blog_fluxrss SET order_bfrs=order_bfrs - 1 WHERE order_bfrs > '.$item->order_bfrs;
+       $sqlOrdre.= ' AND id_blog = '.$item->id_blog;
        _doQuery($sqlOrdre);
    }
 

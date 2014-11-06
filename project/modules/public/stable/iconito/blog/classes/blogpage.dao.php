@@ -130,6 +130,7 @@ class DAOBlogPage
 
        // Reorder
        $sqlOrdre = 'UPDATE module_blog_page SET order_bpge=order_bpge - 1 WHERE order_bpge > '.$item->order_bpge;
+       $sqlOrdre.= ' AND id_blog = '.$item->id_blog;
        _doQuery($sqlOrdre);
    }
 
