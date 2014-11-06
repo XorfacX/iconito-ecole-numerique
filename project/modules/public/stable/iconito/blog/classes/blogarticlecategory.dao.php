@@ -132,6 +132,7 @@ class DAOBlogarticlecategory
 
        // Reorder
        $sqlOrdre = 'UPDATE module_blog_articlecategory SET order_bacg=order_bacg - 1 WHERE order_bacg > '.$item->order_bacg;
+       $sqlOrdre.= ' AND id_blog = '.$item->id_blog;
        _doQuery($sqlOrdre);
    }
 
