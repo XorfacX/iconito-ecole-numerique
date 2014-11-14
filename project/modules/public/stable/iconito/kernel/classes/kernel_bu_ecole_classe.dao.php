@@ -1,6 +1,9 @@
 <?php
 
-class DAORecordKernel_bu_ecole_classe
+use \ActivityStream\Client\Model\Resource;
+use \ActivityStream\Client\Model\ResourceInterface;
+
+class DAORecordKernel_bu_ecole_classe implements ResourceInterface
 {
   protected $_levels = null;
   protected $_school = null;
@@ -8,6 +11,38 @@ class DAORecordKernel_bu_ecole_classe
   public function __toString ()
   {
     return $this->nom.' ('.implode(' - ', $this->getLevels ()->fetchAll ()).')';
+  }
+
+  /**
+   * Return a resource from the current Object
+   *
+   * @return Resource
+   */
+  public function toResource()
+  {
+    $resource = new EcoleNumeriqueActivityStreamResource(
+      $this->nom,
+      get_class($this),
+      $this->id
+    );
+
+    $attributes = array(
+      'ecole',
+      'annee_scol',
+      'is_validee',
+      'is_supprimee',
+      '_levels',
+      '_school',
+    );
+
+    $attributesValues = array();
+    foreach ($attributes as $attribute) {
+      $attributesValues[$attribute] = $this->$attribute;
+    }
+
+    $resource->setAttributes($attributesValues);
+
+    return $resource;
   }
 
   public function getSchool ()
@@ -97,7 +132,7 @@ class DAOKernel_bu_ecole_classe
      * @param array $groups   Groupes
      * @param int   $grade    Année scolaire
      * @param int   $levelId  Niveau
-   *
+     *
      * @return CopixDAORecordIterator
      */
     public function findBySchoolIdAndUserGroups ($schoolId, $groups, $grade = null, $levelId = null)
@@ -144,5 +179,33 @@ class DAOKernel_bu_ecole_classe
         $sql .= ' ORDER BY kernel_bu_ecole_classe_niveau.niveau, kernel_bu_ecole_classe.nom';
 
     return new CopixDAORecordIterator (_doQuery ($sql), $this->getDAOId ());
+    }
+
+    /**
+     * Retourne la classe en fonction du quiz
+     *
+     * @param $idQuiz L'identifiant du quiz
+     *
+     * @return mixed
+     */
+    public function getForQuiz($idQuiz)
+    {
+        $sql = <<<SQL
+          SELECT kbec.*
+            FROM kernel_bu_ecole_classe kbec
+            INNER JOIN kernel_mod_enabled kme ON (kme.node_type = 'BU_CLASSE' AND kme.node_id = kbec.id)
+            INNER JOIN module_quiz_quiz mqq ON (kme.module_type = 'MOD_QUIZ' AND kme.module_id = mqq.gr_id)
+            WHERE mqq.id = :quizz_id
+SQL;
+
+        $classes = new CopixDAORecordIterator(_doQuery($sql, array(
+            'quizz_id' => $idQuiz
+        )), $this->getDAOId());
+
+        if (count($classes)) {
+            return $classes[0];
+        }
+
+        return null;
     }
 }

@@ -69,8 +69,8 @@
 	</td>
 	
 	{if $canViewDelai}
-	<td class="right">
-	<div class="right">
+	<td class="txtright">
+	<div class="txtright">
 		<div class="lib">Responsable(s) du suivi :</div>
 		{foreach from=$rFiche->tabResponsables item=pers}
 			{user fromLogin=$pers dispMail=1}<br/>

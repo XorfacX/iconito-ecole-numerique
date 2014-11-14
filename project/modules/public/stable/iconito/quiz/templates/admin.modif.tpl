@@ -28,7 +28,6 @@
 
 <form id="quiz-form" class="quiz" method="post" action="{$ppo->action}">
 
-	<input type="hidden" name="qf-optshow" value="never" />
 	<input type="hidden" name="check" value="1" />
 	<input type="hidden" name="quizId" value="{$ppo->quiz.id}" />
 
@@ -37,7 +36,7 @@
 			<label>{i18n key="quiz.form.publishState" noEscape=1}</label>
 			<select name="qf-lock" class="qf-publish">
 				<option value="0">{i18n key="quiz.form.published" noEscape=1}</option>
-				<option value="1" {if $ppo->quiz.lock == 1}selected="selected" {/if}>{i18n key="quiz.form.unpublished" noEscape=1}</option>
+				<option value="1" {if $ppo->quiz.is_locked == 1}selected="selected" {/if}>{i18n key="quiz.form.unpublished" noEscape=1}</option>
 			</select>
 
 			<label>{i18n key="quiz.form.datestart" noEscape=1}</label>
@@ -53,21 +52,21 @@
 	
 	<div class="col-main">
 		<div class="content-panel content-panel-edit qf-head">
-			<input type="text" class="qf-title" name="qf-title" value="{$ppo->quiz.name}" />
+			<input type="text" class="qf-title" name="qf-title" value="{$ppo->quiz.name|escape}" />
 			<textarea id="qf-description" class="qf-description" name="qf-description">{$ppo->quiz.description}</textarea>
 		</div>
 		<div class="content-panel">
 			<label><a href="" id="qf-opt-show" >{i18n key="quiz.form.help" noEscape=1}</a></label>
 			<div id="qf-opt-hide"><textarea id="qf-help" name="qf-help">{$ppo->quiz.help}</textarea></div>
 		</div>
-<!--
+
 		<div class="content-panel">
 			<span class="qf-label">{i18n key="quiz.form.optshow" noEscape=1}</span>
-			<input type="radio" name="qf-optshow" value="never"><label for="qf-optshow">{i18n key="quiz.form.optshowNever" noEscape=1}</label>
-			<input type="radio" name="qf-optshow" value="each"><label for="qf-optshow">{i18n key="quiz.form.optshowEach" noEscape=1}</label>
-			<input type="radio" name="qf-optshow" value="endquiz"><label for="qf-optshow">{i18n key="quiz.form.optshowEndquiz" noEscape=1}</label>
+			<input type="radio" name="qf-optshow" id="qf-optshow-never" value="never" {if $ppo->quiz.opt_show_results == 'never'}checked{/if}><label for="qf-optshow-never">{i18n key="quiz.form.optshowNever" noEscape=1}</label>
+			<input type="radio" name="qf-optshow" id="qf-optshow-each" value="each" {if $ppo->quiz.opt_show_results == 'each' || !$ppo->quiz.opt_show_results}checked{/if}><label for="qf-optshow-each">{i18n key="quiz.form.optshowEach" noEscape=1}</label>
+			{*<input type="radio" name="qf-optshow" value="endquiz"><label for="qf-optshow">{i18n key="quiz.form.optshowEndquiz" noEscape=1}</label>*}
 		</div>
--->
+
 		
 	</div>
 
@@ -92,9 +91,7 @@
 						{$question.respNum} {i18n key="quiz.question.answersCount" noEscape=1}
 					</td>
 					<td class="quiz-col80">
-						<a href="{copixurl dest="quiz|admin|delAnsw"}" id="a-suppr" class="button button-delete">
-						{i18n key="quiz.question.delete" noEscape=1}&nbsp;&nbsp;&nbsp;
-						</a>
+						<a href="{copixurl dest="quiz|admin|delAnsw"}" id="a-suppr" class="button button-delete">{i18n key="quiz.question.delete" noEscape=1}</a>
 					</td>
 				</tr>
 			{/foreach}

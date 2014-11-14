@@ -33,6 +33,13 @@
       <label for="size-large"><img src="{copixurl}themes/default/images/icon-16/resize-big.png" alt="{i18n key="classeur.popup.size_large"}" title="{i18n key="classeur.popup.size_large"}" /></label>
       <input id="size-original" type="radio" name="size" value="original" />
       <label for="size-original"><img src="{copixurl}themes/default/images/icon-16/resize-no.png" alt="{i18n key="classeur.popup.size_original"}" title="{i18n key="classeur.popup.size_original"}" /></label>
+       &nbsp;&nbsp;|&nbsp;&nbsp;
+    </span>
+
+    <span>
+      <strong>{i18n key="classeur.popup.zoom"}</strong>
+      <input id="zoom-yes" type="checkbox" name="zoom" value="yes" />
+      <label for="zoom-yes"><img src="{copixurl}themes/default/images/icon-16/zoom.png" alt="{i18n key="classeur.popup.zoom_available"}" /></label>
     </span>
   </form>
   
@@ -152,7 +159,7 @@
   {if $ppo->format neq "id"}
     <form name="form" id="options">
       {i18n key="classeur.message.mode"}
-      <input id="mode-view" type="radio" name="mode" value="view" checked /><label for="mode-view">{i18n key="classeur.message.modeView"}</label>
+      <input id="mode-view" type="radio" name="mode" value="view" checked /><label for="mode-view">{i18n key="classeur.message.modeView"}</label>&nbsp;&nbsp;
       <input id="mode-download" type="radio" name="mode" value="download" /><label for="mode-download">{i18n key="classeur.message.modeDownload"}</label>
     </form>
   {/if}
@@ -206,7 +213,10 @@ jQuery(document).ready(function($){
   	if($('#size-small').is(':checked')) size='_s64';
   	if($('#size-medium').is(':checked')) size='_240';
   	if($('#size-large').is(':checked')) size='_480';
-  	
+	
+	var zoom = 0;
+	if ($('#zoom-yes').is(':checked')) zoom = 1;
+	
 	  var domode = $('#options input[name="mode"]:checked').val();
 		$('#folder-content :checked').each( function() {
 		  
@@ -222,8 +232,9 @@ jQuery(document).ready(function($){
 			doextension = $(this).parent('.check-file').children('input[name="item-ext"]').val();
 			doalign = align;
 			dosize = size;
+			dozoom = zoom;
 			//console.log("---" + dofile + "," + dofield + "," + doformat + "," + dodurl + "," + dovurl + "," + doerr);
-			insertDocument (domode, dofile, doimage, dofield, doformat, dodurl, dovurl, doerr, doid, doname, doextension, doalign, dosize);
+			insertDocument (domode, dofile, doimage, dofield, doformat, dodurl, dovurl, doerr, doid, doname, doextension, doalign, dosize, dozoom);
 		});
 		parent.jQuery.fancybox.close();
 	});

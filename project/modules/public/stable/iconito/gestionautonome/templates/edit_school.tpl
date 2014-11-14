@@ -34,17 +34,17 @@
   	</select>
     
     <div class="field">
-      <label for="nom" class="form_libelle"> Nom</label>
+      <label for="nom" class="form_libelle">Nom <img src="{copixresource path="img/red-star.png"}" alt="{i18n key='kernel|kernel.required'}"/></label>
       <input class="form" type="text" name="nom" id="nom" value="{$ppo->school->nom|escape}" required autofocus />
     </div>
     
     <div class="field">
-      <label for="uai" class="form_libelle"> Numéro UAI/RNE</label>
-      <input class="form" type="text" name="uai" id="uai" value="{$ppo->school->uai|escape}" />
+      <label for="uai" class="form_libelle">Numéro UAI/RNE {if $ppo->uaiRequired}<img src="{copixresource path="img/red-star.png"}" alt="{i18n key='kernel|kernel.required'}"/>{/if}</label>
+      <input class="form" type="text" name="uai" id="uai"{if $ppo->uaiRequired} required{/if} value="{$ppo->school->uai|escape}" />
     </div>
     <div class="field">
-      <label for="siret" class="form_libelle">Numéro SIRET</label>
-      <input class="form" type="text" name="siret" id="siret" value="{$ppo->school->siret|escape}" />
+      <label for="siret" class="form_libelle">Numéro SIRET {if $ppo->siretRequired}<img src="{copixresource path="img/red-star.png"}" alt="{i18n key='kernel|kernel.required'}"/>{/if}</label>
+      <input class="form" type="text" name="siret" id="siret" {if $ppo->siretRequired} required{/if} value="{$ppo->school->siret|escape}" />
     </div>
     </fieldset>
     
@@ -70,6 +70,10 @@
     <div class="field">
       <label for="tel" class="form_libelle"> Téléphone</label>
       <input class="form" type="text" name="tel" id="tel" value="{$ppo->school->tel|escape}" />
+    </div>
+    <div class="field">
+      <label for="mail" class="form_libelle"> E-mail</label>
+      <input class="form text" type="email" name="mail" id="mail" value="{$ppo->school->mail|escape}" />
     </div>
   </fieldset>
   

@@ -326,12 +326,12 @@ INSERT INTO `module_rightmatrix` (`id`, `user_type_in`, `user_type_out`, `right`
 (52, 'USER_ATI', 'USER_DIR', 'COMM', 'ROOT'),
 (53, 'USER_ATI', 'USER_ENS', 'VOIR', 'ROOT'),
 (54, 'USER_ATI', 'USER_ENS', 'COMM', 'ROOT'),
-(60, 'USER_ATI', 'USER_ATI', 'VOIR', 'ROOT'),
-(55, 'USER_ATI', 'USER_ATI', 'COMM', 'ROOT'),
-(56, 'USER_ATI', 'USER_EXT', 'VOIR', 'ROOT'),
-(57, 'USER_ATI', 'USER_EXT', 'COMM', 'ROOT'),
-(58, 'USER_EXT', 'USER_EXT', 'VOIR', 'ROOT'),
-(59, 'USER_EXT', 'USER_EXT', 'COMM', 'ROOT');
+(55, 'USER_ATI', 'USER_ATI', 'VOIR', 'ROOT'),
+(56, 'USER_ATI', 'USER_ATI', 'COMM', 'ROOT'),
+(57, 'USER_ATI', 'USER_EXT', 'VOIR', 'ROOT'),
+(58, 'USER_ATI', 'USER_EXT', 'COMM', 'ROOT'),
+(59, 'USER_EXT', 'USER_EXT', 'VOIR', 'ROOT'),
+(60, 'USER_EXT', 'USER_EXT', 'COMM', 'ROOT');
 
 --
 -- Contenu de la table `module_teleprocedure_statu`

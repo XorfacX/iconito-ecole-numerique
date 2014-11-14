@@ -15,7 +15,7 @@
                 <property name="txt" fieldname="txt" pk="no" type="string" required="no" table="quiz_responses" />
 
                 <property name="id_quiz" fieldname="id_quiz" pk="no" type="integer" table="quiz_questions" required="no" />
-                <property name="order" fieldname="order" pk="no" type="integer" table="quiz_questions" required="no" />
+                <property name="position" pk="no" type="integer" table="quiz_questions" required="no" />
         </properties>
         <methods>
             <method name="getResponsesFromUser" type="select">
@@ -28,7 +28,7 @@
                     <condition property="id_quiz" value="$qId" operator="=" />
                 </conditions>
                 <order>
-                    <orderitem property="order" way="asc" />
+                    <orderitem property="position" way="asc" />
                 </order>
             </method>
             <method name="getResponsesByQuiz" type="select">
@@ -39,7 +39,7 @@
                     <condition property="id_quiz" value="$qId" operator="=" />
                 </conditions>
                 <order>
-                    <orderitem property="order" way="asc" />
+                    <orderitem property="position" way="asc" />
                 </order>
             </method>
         </methods>

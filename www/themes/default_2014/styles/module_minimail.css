@@ -1,0 +1,76 @@
+
+div.minimail_message {
+	clear:both;
+    margin-top:1em; padding:0.4em;
+	border-radius: 6px;
+	background-color: #FFFFFF;
+	
+}
+div.minimail_message div.render a {
+  text-decoration:underline;
+}
+div.minimail_message div.render a:hover {
+  color:#000;
+}
+
+.minimail_navig {
+    padding:0.3em;
+    overflow:hidden;
+	font-size:0.9em;
+	border-radius: 6px;
+	color: #DDDDDD;
+
+}
+.minimail_header {
+	margin-bottom:0.5em; border-bottom:1px solid #999;
+    overflow:hidden;
+}
+
+div.minimail_attachment {
+	float: left;
+	width: 220px;
+	background-color: #FFF;
+	border: solid 1px #EEE;
+	font-size: 11px;
+	border-radius: 6px;
+	-moz-border-radius: 6px;
+	padding: 5px;
+	margin: 5px;
+	text-align: center;
+}
+#minimail form .form_saisie em.legendDescription {font-size:0.9em;}
+
+textarea#dest {
+    height:3em;
+}
+#minimail table {
+	border:0;
+	width:100%;
+	border-collapse:collapse;
+    font-size:1em;
+}
+
+/* Téléchargement des PJ vers un classeur */
+
+ul.attachmentsToClasseur {
+    float:right;
+    list-style:none;
+	min-width:50%;
+}
+ul.attachmentsToClasseur li {
+    padding:5px;
+}
+ul.attachmentsToClasseur li input {float:left;}
+ul.attachmentsToClasseur li + li {
+    border-top:1px solid #ddd;
+}
+
+ul.attachmentsToClasseur label {
+    display:inline;
+}
+ul.attachmentsToClasseur img {
+    margin-left:20px;
+}
+
+/* Fin téléchargement des PJ vers un classeur */
+

@@ -3,14 +3,14 @@
 * @package  Iconito
 * @subpackage Comptes
 * @version   $Id: ien.actiongroup.php,v 1.1 2009-08-31 10:00:17 fmossmann Exp $
-* @author   Frédéric Mossmann
+* @author   FrÃ©dÃ©ric Mossmann
 * @copyright 2012 CAP-TIC
 * @link      http://www.cap-tic.fr
 * @licence  http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public Licence, see LICENCE file
 */
 
 /**
- * @author	Frédéric Mossmann
+ * @author	FrÃ©dÃ©ric Mossmann
  */
 class ActionGroupIen extends enicActionGroup
 {
@@ -43,23 +43,22 @@ class ActionGroupIen extends enicActionGroup
     /**
      * list
      *
-     * Affiche le formulaire de modification d'un utilisateur extérieur
+     * Affiche le formulaire de modification d'un utilisateur extÃ©rieur
      *
      * @package	Comptes
-     * @author	Frédéric Mossmann <fmossmann@cap-tic.fr>
+     * @author	FrÃ©dÃ©ric Mossmann <fmossmann@cap-tic.fr>
      */
     public function getList()
     {
         if( !Kernel::isAdmin() )
             return new CopixActionReturn (COPIX_AR_REDIRECT, CopixUrl::get ('||' ) );
 
-        CopixHTMLHeader::addCSSLink (_resource("styles/module_comptes.css"));
-
         $tpl = new CopixTpl ();
         $tplIen = new CopixTpl ();
 
         $ien_dao = & CopixDAOFactory::create("kernel|kernel_ien");
         $iens = $ien_dao->findAll();
+        $ppo = new CopixPPO();
         $ppo->iens = array();
 
         foreach( $iens AS $ien ) {
@@ -129,8 +128,6 @@ class ActionGroupIen extends enicActionGroup
         if( !Kernel::isAdmin() )
             return new CopixActionReturn (COPIX_AR_REDIRECT, CopixUrl::get ('||' ) );
 
-        CopixHTMLHeader::addCSSLink (_resource("styles/module_comptes.css"));
-
         $tpl = new CopixTpl ();
         $tplIen = new CopixTpl ();
 
@@ -144,6 +141,7 @@ class ActionGroupIen extends enicActionGroup
 
         $user = Kernel::getUserInfo();
 
+        $ppo = new CopixPPO();
         $ppo->pouvoirs = array(
             array('id'=>'can_connect',        'nom'=>'Se connecter en tant qu\'un enseignant/directeur' ),
             array('id'=>'can_tableaubord',    'nom'=>'Tableau de bord des usages'),
@@ -256,13 +254,12 @@ class ActionGroupIen extends enicActionGroup
         if( !Kernel::isAdmin() )
             return new CopixActionReturn (COPIX_AR_REDIRECT, CopixUrl::get ('||' ) );
 
-        CopixHTMLHeader::addCSSLink (_resource("styles/module_comptes.css"));
-
         $tpl = new CopixTpl ();
         $tplIen = new CopixTpl ();
 
         $ien_dao = _dao("kernel|kernel_ien");
         $ien = $ien_dao->findAll();
+        $ppo = new CopixPPO();
         $ppo->ien = array();
 
         foreach( $ien AS $ien ) {
@@ -279,7 +276,7 @@ class ActionGroupIen extends enicActionGroup
         }
         foreach( $ppo->userext AS $user_key => $user_val ) {
             if( isset($ppo->ien["USER_EXT-".$user_val->ext_id]) ) {
-                // Si la personne est déjà ien
+                // Si la personne est dÃ©jÃ  ien
                 unset($ppo->userext[$user_key]);
             } else {
                 $ppo->userext[$user_key]->user_infos = Kernel::getUserInfo( 'USER_EXT', $user_val->ext_id );

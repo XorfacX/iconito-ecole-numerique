@@ -1,84 +1,145 @@
-
 {if !empty($ppo->help)}
     <div id="help-data" title="{i18n key="quiz.msg.info" noEscape=1}">{$ppo->help}</div>
 {/if}
-<form action="{copixurl dest="quiz|default|save" id=$ppo->question.id_quiz qId=$ppo->question.id}" method="post">
-<div id="quiz-do">
+
+{if $ppo->quiz.opt_show_results == 'each' && !$ppo->alreadyShowRes}
+    <form action="{copixurl dest="quiz|default|saveAndGetAnswer" id=$ppo->question.id_quiz qId=$ppo->question.id}" method="post">
+{else}
+    <form action="{copixurl dest="quiz|default|save" id=$ppo->question.id_quiz qId=$ppo->question.id}" method="post">
+{/if}
+    <div id="quiz-do">
 	<div class="content-panel qd-header">
 		<div class="qd-author">
-		{i18n key="quiz.msg.author" noEscape=1}<br/>
-		{$ppo->surname} {$ppo->nameAuthor}<br /><br />
-		{if !empty($ppo->help)}
-                    <div id="qd-help" class="button button-info">{i18n key="quiz.msg.info" noEscape=1}</div>
-		{/if}
+                    {i18n key="quiz.msg.author" noEscape=1}<br/>
+                    {$ppo->surname} {$ppo->nameAuthor}<br /><br />
+                    {if !empty($ppo->help)}
+                        <div id="qd-help" class="button button-info">{i18n key="quiz.msg.info" noEscape=1}</div>
+                    {/if}
 		</div>
 		<div class="qd-title">
-		{$ppo->name|utf8_decode}
+                    {$ppo->name|utf8_decode}
 		</div>
 		{if $ppo->description != null}
-		<div class="qd-description">
-		{$ppo->description|utf8_decode}
-		</div>
+                    <div class="qd-description">
+                        {$ppo->description|utf8_decode}
+                    </div>
 		{/if}
 	</div>
 
 	<table class="qd-table">
 	<tr>
 	<td class="qd-button-cell">
-		<a class="qd-button qd-button-back" href="{copixurl dest="quiz|default|question" id=$ppo->question->id_quiz qId=$ppo->prev}"></a>
+            <a class="qd-button qd-button-back" href="{copixurl dest="quiz|default|question" id=$ppo->question.id_quiz qId=$ppo->prev}"></a>
 	</td>
 	<td class="content-panel">
-		<div class="qd-badges center">
-                    {foreach from=$ppo->questionTpl item=curQuestId key=curQuestNum}
-                        {if $curQuestId != 'current' }
-                            <span class="badge badge-off"><a href="{copixurl dest="quiz|default|question" id=$ppo->question->id_quiz qId=$curQuestId}">{$curQuestNum}</a></span>
+            <div class="qd-badges center">
+            {foreach from=$ppo->questionTpl item=curQuestId key=curQuestNum}
+                {if $curQuestId != 'current' }
+                    <span class="badge badge-off"><a href="{copixurl dest="quiz|default|question" id=$ppo->question.id_quiz qId=$curQuestId}">{$curQuestNum}</a></span>
+                {else}
+                    <span class="badge badge-current">{$curQuestNum}</span>
+                {/if}
+            {/foreach}
+            </div>
+
+            {if $ppo->alreadyShowRes}
+                {if $ppo->wrong}
+                    <div class="qd-usererror">
+                        {$ppo->wrong}
+                    </div>
+                {else}
+                    <div class="qd-usermsg">
+                        {i18n key="quiz.msg.congrats" noEscape=1}
+                    </div>
+                {/if}
+            {/if}
+        
+            {if !$ppo->quiz.alreadyShowRes && $ppo->error}
+                <div class="qd-usererror">
+                    {$ppo->error}
+                </div>
+            {/if}
+
+            {if !$ppo->quiz.alreadyShowRes && $ppo->userResp}
+                <div class="qd-usermsg">
+                    {i18n key="quiz.msg.alreadyResp" noEscape=1}
+                </div>
+            {/if}
+
+            <div class="qd-question">
+                <div class="qd-title">{$ppo->question.name}</div>
+                {$ppo->question.content}
+
+                {if $ppo->type == radio}
+                    <ul class="qd-propositions">
+                        {foreach from=$ppo->choices item=choice}
+                        <li>
+                            <input type="{$ppo->select}" name="response[]" id="id{$choice.id}" value="{$choice.id}" {if $choice.user}checked="checked"{/if} {if $ppo->alreadyShowRes}disabled{/if} />
+                            {if $ppo->alreadyShowRes}
+                                <label for="id{$choice.id}" {if $choice.correct}class="quiz-user-right"{elseif $ppo->wrong}class="quiz-user-wrong"{/if}>{$choice.ct}</label>
+                            {else}
+                                <label for="id{$choice.id}" >{$choice.ct}</label>					
+                            {/if}
+                        </li>
+                        {/foreach}
+                    </ul>
+                {else}
+                    {i18n key="quiz.msg.response" noEscape=1} : <input type="text" name="response" id="response" />
+                {/if}
+                {if $ppo->alreadyShowRes}
+                    {$ppo->question.answer_detail}
+                    
+                    <div class="quiz-user-legend">
+                        <h2>{i18n key="quiz.msg.legend" noEscape=1}</h2>
+                        <p class="quiz-user-right">
+                        {if $ppo->respCorrect > 1}
+                            {i18n key="quiz.msg.legendGoodAnswers" noEscape=1}
                         {else}
-                            <span class="badge badge-current">{$curQuestNum}</span>
+                            {i18n key="quiz.msg.legendGoodAnswer" noEscape=1}
                         {/if}
-                    {/foreach}
-		</div>
-		
-		{if $ppo->userResp || $ppo->error}
-		<div class="qd-usermsg">
-		{/if}
-		{if $ppo->userResp}
-		{i18n key="quiz.msg.alreadyResp" noEscape=1}
-		{/if}
-		{if $ppo->error}
-		{$ppo->error}
-		{/if}
-		{if $ppo->userResp || $ppo->error}
-		</div>
-		{/if}
-
-
-		<div class="qd-question">
-			<div class="qd-title">{$ppo->question.name}</div>
-			{$ppo->question.content}
-	
-			{if $ppo->type == radio}
-			<ul class="qd-propositions">
-				{foreach from=$ppo->choices item=choice}
-				<li>
-					<input type="{$ppo->select}" name="response[]" id="id{$choice.id}" value="{$choice.id}" {if $choice.user}checked="checked"{/if} />
-					<label for="id{$choice.id}">{$choice.ct}</label>
-				</li>
-				{/foreach}
-			</ul>
-			{else}
-			{i18n key="quiz.msg.response" noEscape=1} : <input type="text" name="response" id="response" />
-			{/if}
-		</div>
+                        </p>
+                        
+                        {if $ppo->wrong}
+                            <p class="quiz-user-wrong">
+                            {if $ppo->respWrong > 1}
+                                {i18n key="quiz.msg.legendWrongAnswers" noEscape=1}
+                            {else}
+                                {i18n key="quiz.msg.legendWrongAnswer" noEscape=1}
+                            {/if}
+                            </p> 
+                        {/if}
+                    </div>
+                {/if}
+            </div>
 	</td>
 	<td class="qd-button-cell">
-		<input class="qd-button qd-button-next" type="submit" value="">
+        {if !$ppo->next }
+            <a class="qd-button qd-button-next" href="{copixurl dest="quiz|default|endQuestions" id=$ppo->question.id_quiz qId=$ppo->next}"></a>
+        {else}
+            <a class="qd-button qd-button-next" href="{copixurl dest="quiz|default|question" id=$ppo->question.id_quiz qId=$ppo->next}"></a>
+        {/if}
 	</td>
 	</tr>
 	</table>
 	<div class="content-panel center">
-		<a class="button button-cancel" href="{copixurl dest="quiz|default|default"}">{i18n key="quiz.msg.stop" noEscape=1}</a>
-                <input class="button button-continue" type="submit" value="{if $ppo->next === false}{i18n key="quiz.msg.endQuestion" noEscape=1}{else}{i18n key="quiz.msg.nextQuestion" noEscape=1}{/if}">
-	</div>
-	
+            <a class="button button-cancel" href="{copixurl dest="quiz|default|default"}">{i18n key="quiz.msg.stop" noEscape=1}</a>
+        {if $ppo->quiz.opt_show_results == 'each'}
+            {if $ppo->alreadyShowRes }
+                {if !$ppo->next }
+                    <a class="button button-continue" href="{copixurl dest="quiz|default|endQuestions" id=$ppo->question.id_quiz qId=$ppo->next}">
+                        {i18n key="quiz.msg.endQuestion" noEscape=1}
+                    </a>
+                {else}
+                    <a class="button button-continue" href="{copixurl dest="quiz|default|question" id=$ppo->question.id_quiz qId=$ppo->next}">
+                        {i18n key="quiz.msg.nextQuestion" noEscape=1}
+                    </a>
+                {/if}
+            {else}
+                <input class="button button-continue" type="submit" value="{i18n key="quiz.msg.answer" noEscape=1}">
+            {/if}
+        {else}
+            <input class="button button-continue" type="submit" value="{if $ppo->next === false}{i18n key="quiz.msg.endQuestion" noEscape=1}{else}{i18n key="quiz.msg.nextQuestion" noEscape=1}{/if}">
+        {/if}
+    </div>
 </div>
 </form>

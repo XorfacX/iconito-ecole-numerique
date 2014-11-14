@@ -46,12 +46,38 @@ class accountservice extends enicService
                 )
         );
     }
+    
+    /**
+     * Activate coreprim for a specific class 
+     * 
+     * @param type $class_id
+     */
+    public function activateCoreprim($class_id)
+    {
+        $sql='SELECT id_class_EN FROM module_account_class WHERE id_class_SUB=(?)';
+        $class_id_en = _doQuery($sql, array($class_id));
+        $query = 'INSERT INTO module_coreprim_access (classroom_id) VALUE (?)';
+        _doQuery($query, array($class_id_en[0]->id_class_EN));
+    }
 
+    /**
+     * Disable coreprim for a specific class 
+     * 
+     * @param type $class_id
+     */
+    public function disableCoreprim($class_id)
+    {
+        $sql='SELECT id_class_EN FROM module_account_class WHERE id_class_SUB=(?)';
+        $class_id_en = _doQuery($sql, array($class_id));
+        $query = 'DELETE FROM module_coreprim_access WHERE classroom_id = (?)';
+        _doQuery($query, array($class_id_en[0]->id_class_EN));
+    }
+    
     public function cityDatasProxy($soapCity)
     {
         $city = new stdClass();
-        $city->nom = utf8_decode($soapCity);
-        $city->nomCanonique = Kernel::createCanon($city->nom);
+        $city->nom = $soapCity;
+        $city->nomCanonique = Kernel::createCanon($city->nom, true);
 
         return $city;
     }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<moduledefinition>
+    <general>
+        <default name="statistiques" descriptioni18n="statistiques.moduleDescription"/>
+        <package name="copixdivers" version="2.2" />
+    </general>
+
+    <parameters>
+        <parameter name="enabled" captioni18n="statistiques.parameter.enabled" default="0" />
+        <parameter name="apiQueryUrl" captioni18n="statistiques.parameter.apiQueryUrl" default="http://api-stats.iconito.fr/api/query.json" />
+        <parameter name="moduleTitle" captioni18n="statistiques.parameter.moduleTitle" default="Statistiques" />
+    </parameters>
+</moduledefinition>

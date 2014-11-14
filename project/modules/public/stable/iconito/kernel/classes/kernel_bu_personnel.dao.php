@@ -1,5 +1,8 @@
 <?php
 
+use ActivityStream\Client\Model\ResourceInterface;
+_classInclude('activitystream|ecolenumeriqueactivitystreamresource');
+
 /**
  * Surcharge de la DAO Kernel_bu_personnel
  *
@@ -614,4 +617,52 @@ class DAOKernel_bu_personnel
 
         return $ids;
     }
+}
+
+class DAORecordKernel_bu_personnel implements ResourceInterface
+{
+  /**
+   * Return an resource from the current Object
+   *
+   * @return Resource
+   */
+  public function toResource()
+  {
+    $resource = new EcoleNumeriqueActivityStreamResource(
+      'Personnel',
+      get_class($this),
+      $this->pers_numero
+    );
+
+    $attributes = array(
+      'pers_nom',
+      'pers_nom_jf',
+      'pers_prenom1',
+      'pers_civilite',
+      'pers_id_sexe',
+      'pers_date_nais',
+      'pers_cle_privee',
+      'pers_profession',
+      'pers_tel_dom',
+      'pers_tel_gsm',
+      'pers_tel_pro',
+      'pers_mel',
+      'pers_num_rue',
+      'pers_num_seq',
+      'pers_adresse1',
+      'pers_adresse2',
+      'pers_code_postal',
+      'pers_commune',
+      'pers_id_ville'
+    );
+
+    $attributesValues = array();
+    foreach ($attributes as $attribute) {
+      $attributesValues[$attribute] = $this->$attribute;
+    }
+
+    $resource->setAttributes($attributesValues);
+
+    return $resource;
+  }
 }

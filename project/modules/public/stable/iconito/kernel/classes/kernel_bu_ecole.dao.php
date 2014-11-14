@@ -1,8 +1,12 @@
 <?php
 
-class DAORecordKernel_bu_ecole {
+use \ActivityStream\Client\Model\Resource;
+use \ActivityStream\Client\Model\ResourceInterface;
 
+class DAORecordKernel_bu_ecole implements ResourceInterface
+{
     protected $_city = null;
+    protected $groupementsEcoles;
 
     public function __toString() {
         return $this->nom;
@@ -19,6 +23,7 @@ class DAORecordKernel_bu_ecole {
         return $this->_city;
     }
 
+
     /**
      * Determine si l'ecole a une adresse renseignee ou non
      *
@@ -34,6 +39,56 @@ class DAORecordKernel_bu_ecole {
         return $oHas;
     }
 
+    /**
+     * Retourne les groupements d'écoles
+     *
+     * @return array
+     */
+    public function getGroupementsEcoles()
+    {
+        if (null === $this->groupementsEcoles) {
+            $this->groupementsEcoles = _ioDAO('regroupements|grecoles')->getGroupementByEcole($this);
+        }
+
+        return $this->groupementsEcoles;
+    }
+
+    /**
+     * Return a resource from the current Object
+     *
+     * @return Resource
+     */
+    public function toResource()
+    {
+        $resource = new EcoleNumeriqueActivityStreamResource(
+            $this->nom,
+            get_class($this),
+            $this->numero
+        );
+
+        $attributes = array(
+            'type',
+            'num_rue',
+            'num_seq',
+            'adresse1',
+            'adresse2',
+            'code_postal',
+            'commune',
+            'tel',
+            'id_ville',
+            'num_plan_interactif',
+            'mail',
+        );
+
+        $attributesValues = array();
+        foreach ($attributes as $attribute) {
+            $attributesValues[$attribute] = $this->$attribute;
+        }
+
+        $resource->setAttributes($attributesValues);
+
+        return $resource;
+    }
 
     /**
      * L'adresse de l'ecole en une ligne
@@ -43,8 +98,8 @@ class DAORecordKernel_bu_ecole {
      * @return string L'adresse
      */
     public function getFullAddress() {
-      $address = AnnuaireService::googleMapsFormatAdresse('ecole', $this);
-      return $address;
+        $address = AnnuaireService::googleMapsFormatAdresse('ecole', $this);
+        return $address;
     }
 
     /**
@@ -66,10 +121,24 @@ class DAORecordKernel_bu_ecole {
 
 class DAOKernel_bu_ecole extends enicService {
 
+    protected $errorsMessages;
+
     public function __construct() {
         parent::__construct();
         $this->db = & enic::get('model');
     }
+
+    /**
+     * Récupérer le(s) message(s) d'erreurs
+     *
+     * @author Philippe ROSER <proser@cap-tic.fr>
+     * @since 2012/12/06
+     * @return array
+     */
+    public function getErrorsMessages() {
+        return $this->errorsMessages;
+    }
+
 
     /**
      * Retourne les classes pour une ville donnée
@@ -151,18 +220,6 @@ class DAOKernel_bu_ecole extends enicService {
         return new CopixDAORecordIterator(_doQuery($sql), $this->getDAOId());
     }
 
-    protected $errorsMessages;
-
-    /**
-     * Récupérer le(s) message(s) d'erreurs
-     *
-     * @author Philippe ROSER <proser@cap-tic.fr>
-     * @since 2012/12/06
-     * @return array
-     */
-    public function getErrorsMessages() {
-        return $this->errorsMessages;
-    }
 
     /**
      * Vérifier la conformité d'un élément de l'école
@@ -172,8 +229,8 @@ class DAOKernel_bu_ecole extends enicService {
      * @return boolean
      */
     public function validate($schoolDatas) {
-
-        $validationEntries = array('siret', 'uai');
+        
+        $validationEntries = array('siret', 'uai', 'mail');
 
         $noError = true;
         foreach ($validationEntries as $validationEntry) {
@@ -215,6 +272,16 @@ class DAOKernel_bu_ecole extends enicService {
         }
         $this->errorsMessages[] = 'Votre numéro UAI n\'est pas conforme';
         return false;
+    }
+    
+    protected function validateMAIL($entry = null, $id = null) {
+        if(!filter_var($entry, FILTER_VALIDATE_EMAIL)){
+            $this->errorsMessages[] = "Cette adresse email n'est pas valide";
+            return false;
+        }
+        else{
+            return true;
+        }
     }
 
     /**
@@ -259,6 +326,31 @@ class DAOKernel_bu_ecole extends enicService {
             ($l == ($i % 2)) ? (($s[$i] > 4) ? ($sum+=($s[$i] - 9)) : ($sum+=$s[$i])) : false;
         }
         return (0 == ($sum % 10));
+    }
+
+    /**
+     * Retourne l'école en fonction de la classe
+     *
+     * @param $idClasse L'identifiant de la classe
+     */
+    public function findByClassroom ($idClasse)
+    {
+        $sql = <<<SQL
+          SELECT *
+          FROM kernel_bu_ecole kbe
+          INNER JOIN kernel_bu_ecole_classe kbec ON kbec.ecole = kbe.numero
+          WHERE kbec.id = :id_classe
+SQL;
+
+        $ecoles = new CopixDAORecordIterator (_doQuery($sql, array(
+            'id_classe' => $idClasse
+        )), $this->getDAOId ());
+
+        if (count($ecoles)) {
+            return $ecoles[0];
+        }
+
+        return null;
     }
 
 }

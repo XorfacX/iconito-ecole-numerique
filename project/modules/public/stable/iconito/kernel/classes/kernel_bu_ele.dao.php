@@ -1,5 +1,8 @@
 <?php
 
+_classInclude('activitystream|ecolenumeriqueactivitystreamresource');
+use ActivityStream\Client\Model\ResourceInterface;
+
 /**
  * Surcharge de la DAO Kernel_bu_ele
  *
@@ -423,7 +426,7 @@ class DAOKernel_bu_ele
 
     return _doQuery($sql);
     }
-    
+
     /**
      * Retourne les élèves avec ou sans affectations pour une année donnée
      *
@@ -450,20 +453,20 @@ class DAOKernel_bu_ele
             .'LEFT JOIN kernel_bu_groupe_villes GV ON GV.id_grv=V.id_grville '
             .'LEFT JOIN kernel_bu_eleve_affectation EA2 ON (EA2.eleve=E.idEleve AND EA2.annee_scol = '.$grade.') '
             .'WHERE LI.bu_type="USER_ELE" ';
-    
+
         if (null !== $lastname) {
           $sql .= ' AND E.nom LIKE \''.$lastname.'%\'';
         }
         if (null !== $firstname) {
           $sql .= ' AND E.prenom1 LIKE \''.$firstname.'%\'';
         }
-    
+
         $sql .= ' GROUP BY E.idEleve, EA.id HAVING EA.id = max_ea_id';
         $sql .= ' ORDER BY CN.id_n, EC.nom, E.nom, E.prenom1';
-    
+
         return _doQuery($sql);
     }
-    
+
     /**
      * Retourne les élèves à assigner (manageAssignments)
      *
@@ -491,17 +494,98 @@ class DAOKernel_bu_ele
             .'LEFT JOIN kernel_bu_eleve_affectation EA_dest ON (EA_dest.eleve=E.idEleve AND EA_dest.current = 1 AND EA_dest.annee_scol='.$destinationGrade.') '
             .'WHERE  LI.bu_type="USER_ELE" '
             .'AND EA_dest.eleve IS NULL';
-      
+
         if (null !== $lastname) {
             $sql .= ' AND E.nom LIKE \''.$lastname.'%\'';
         }
         if (null !== $firstname) {
             $sql .= ' AND E.prenom1 LIKE \''.$firstname.'%\'';
         }
-      
+
         $sql .= ' GROUP BY E.idEleve, EA.id HAVING EA.id = max_ea_id'
             . ' ORDER BY CN.id_n, EC.nom, E.nom, E.prenom1';
 
         return _doQuery($sql);
     }
+
+  /**
+   * Retourne vrai si un élève accède à un module via une de ses classes
+   * Cible la table kernel_mod_enabled
+   * On se base sur les affectations courantes de l'élève
+   *
+   * @param string $moduleName Nom du Module
+   * @param int $studentId ID de l'élève
+   *
+   * @return bool
+   */
+  public function isAuthorizedToAccessModuleByClassroom($moduleName, $studentId)
+  {
+    $sql = <<<SQL
+            SELECT COUNT(*) AS nbAuthorizations
+            FROM kernel_bu_ecole_classe kbec
+            INNER JOIN kernel_mod_enabled kme ON kbec.id = kme.node_id
+            INNER JOIN kernel_bu_eleve_affectation kbea ON kbea.classe = kbec.id
+            INNER JOIN kernel_bu_annee_scolaire kbas ON kbea.annee_scol = kbas.id_as
+            WHERE kme.module_type = :moduleName
+            AND kme.node_type = 'BU_CLASSE'
+            AND kbea.current = 1
+            AND kbas.current = 1
+            AND kbea.eleve = :studentId;
+SQL;
+
+    $result = _doQuery($sql, array(
+      'moduleName' => $moduleName,
+      'studentId' => $studentId
+    ));
+
+    return ($result !== false) && ($result[0]->nbAuthorizations > 0);
+  }
+}
+
+class DAORecordKernel_bu_ele implements ResourceInterface
+{
+  /**
+   * Return an resource from the current Object
+   *
+   * @return Resource
+   */
+  public function toResource()
+  {
+    $resource = new EcoleNumeriqueActivityStreamResource(
+      'Eleve',
+      get_class($this),
+      $this->ele_idEleve
+    );
+
+    $attributes = array(
+      'ele_numero',
+      'ele_INE',
+      'ele_nom',
+      'ele_nom_jf',
+      'ele_prenom1',
+      'ele_prenom2',
+      'ele_prenom3',
+      'ele_civilite',
+      'ele_id_sexe',
+      'ele_pays_nais',
+      'ele_dep_nais',
+      'ele_com_nais',
+      'ele_date_nais',
+      'ele_num_rue',
+      'ele_num_seq',
+      'ele_adresse1',
+      'ele_adresse2',
+      'ele_code_postal',
+      'ele_commune'
+    );
+
+    $attributesValues = array();
+    foreach ($attributes as $attribute) {
+      $attributesValues[$attribute] = $this->$attribute;
+    }
+
+    $resource->setAttributes($attributesValues);
+
+    return $resource;
+  }
 }

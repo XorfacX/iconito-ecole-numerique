@@ -50,7 +50,7 @@
                         <table>
                             <tr>
                                 <td>{i18n key="fichesecoles.fields.direction"}</td>
-                                <td class="right">{foreach from=$rEcole->directeur item=directeur}
+                                <td class="txtright">{foreach from=$rEcole->directeur item=directeur}
                                     {assign var=nom value=$directeur.prenom|cat:" "|cat:$directeur.nom}
                                     {if $canViewDir}
                                     {user label=$nom|escape userType=$directeur.type userId=$directeur.id login=$directeur.login dispMail=$canWriteDir escape=1}
@@ -65,7 +65,7 @@
                             {if $arClasses}
                             {foreach from=$arClasses item=class}
                             <tr>
-                                <td class="left">
+                                <td class="txtleft">
                                     {assign var=sep value=""}
                                     {foreach from=$class.niveaux item=niveau}
                                     {$sep}
@@ -75,7 +75,7 @@
                                     {$class.nom|escape}
                                     {/foreach}
                                 </td>
-                                <td class="right">
+                                <td class="txtright">
                                     {if $class.enseignant}
                                     <div class="ecole_classe_enseignant">
                                         {assign var=sep value=""}

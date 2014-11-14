@@ -1,0 +1,36 @@
+{
+  "name": "cap-tic/EcoleNumerique",
+  "description": "Ecole numérique",
+
+  "autoload": {
+    "psr-0": {
+      "ActivityStream": "utils/alviss/activity-stream-client/"
+    }
+  },
+
+  "config": {
+    "vendor-dir": "utils/"
+  },
+
+  "require": {
+    "php":                           ">=5.3.3",
+    "symfony/event-dispatcher":      "v2.3.1",
+    "alviss/activity-stream-client": "dev-master"
+  },
+
+  "repositories": [
+    {
+      "type": "vcs",
+      "url":  "git@git.cap-tic.fr:alviss/activity-stream-client.git"
+    }
+  ],
+
+  "scripts": {
+    "post-install-cmd": [],
+    "post-update-cmd": []
+  },
+
+  "extra": {},
+
+  "require-dev": {}
+}

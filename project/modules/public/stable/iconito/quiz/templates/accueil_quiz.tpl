@@ -26,7 +26,7 @@
 	</ul>
 
 
-	<div class="content-panel right qd-msg">
+	<div class="content-panel txtright qd-msg">
 	{if $ppo->uResp}
 		<div class="qd-alert">
 		{if $ppo->uEnd}

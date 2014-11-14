@@ -18,7 +18,7 @@ function ficheViewBlogs (ecoleId, annee) {
 
 	if (!$('#ficheblogs').html() || annee!='close') 
 	{
-    	$('#ficheblogs').html('<div align="center"><img src="'+getRessourcePathImg+'ajax-loader.gif" width="24" height="24" border="0" vspace="3" alt="loading" /></div>');
+    	$('#ficheblogs').html('<div align="center"><img src="'+getRessourcePathImg+'ajax-loader-mini.gif" width="24" height="24" border="0" vspace="3" alt="loading" /></div>');
 		$('#ficheblogs').show();
 		
 		var url = getActionURL('fichesecoles|default|blogs');

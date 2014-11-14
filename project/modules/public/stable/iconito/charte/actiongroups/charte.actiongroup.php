@@ -27,7 +27,7 @@ class ActionGroupCharte extends enicActionGroup
     public function processRedirect()
     {
         $accept = ($this->request('typeAction') == 'accept') ? true : false ;
-
+	
         CopixHTMLHeader::addCSSLink (_resource("styles/module_charte.css"));
         if($accept){
             $typeUser = (isset($this->flash->userType)) ? $this->flash->userType : 'USER_ALL';

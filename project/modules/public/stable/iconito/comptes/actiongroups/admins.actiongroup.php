@@ -31,7 +31,6 @@ class ActionGroupAdmins extends enicActionGroup
             $this->menu[] = array( 'txt' => CopixI18N::get('comptes|comptes.menu.getRoles'), 'url' => CopixUrl::get ('comptes||getRoles'), 'type'=> 'acl', 'current'=>'current');
             $this->menu[] = array( 'txt' => CopixI18N::get('comptes|comptes.menu.manageGrades'), 'url' => CopixUrl::get ('gestionautonome||manageGrades'), 'type'=>'agendalist');
         }
-        //CopixHTMLHeader::addCSSLink (_resource("styles/module_comptes.css"));
     }
 
     /**

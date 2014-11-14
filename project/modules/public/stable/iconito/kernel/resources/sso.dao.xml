@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<daodefinition>
+  <datasource>
+    <tables>
+      <table name="sso" tablename="module_sso" primary="yes" />
+    </tables>
+  </datasource>
+  <properties>
+    <property name="id" fieldname="id" pk="yes" type="autoincrement" required="yes" captioni18n="dao.sso.fields.id" />
+    <property name="id_externe" fieldname="id_externe" pk="no" type="string" required="yes" captioni18n="dao.sso.fields.id_externe" />
+    <property name="id_ecolenumerique" fieldname="id_ecolenumerique" pk="no" type="integer" required="yes" captioni18n="dao.sso.fields.id_ecolenumerique" />
+    <property name="createdAt" fieldname="createdAt" pk="no" type="datetime" required="no" captioni18n="dao.sso.fields.createdAt" />
+    <property name="lastAccess" fieldname="lastAccess" pk="no" type="datetime" required="no" captioni18n="dao.sso.fields.lastAccess" />
+  </properties>
+
+  <methods>
+  </methods>
+
+</daodefinition>

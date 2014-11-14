@@ -22,7 +22,7 @@
             </a>
         </td>
         <td class="quiz-col80 center">
-            {if $quiz.lock == 0}
+            {if $quiz.is_locked == 0}
             <a class="quiz-published"></a>
 			{else}
             <a class="quiz-unpublished"></a>

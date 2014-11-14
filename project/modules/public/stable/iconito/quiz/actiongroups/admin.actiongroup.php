@@ -8,7 +8,6 @@ class ActionGroupAdmin extends enicActionGroup
 
     public function processList()
     {
-        $this->addCss("styles/module_quiz.css");
 
         //get the active quiz liste
         $action = $this->request('qaction', 'str');
@@ -31,6 +30,9 @@ class ActionGroupAdmin extends enicActionGroup
         $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.new'),
                             'type' => 'create',
                             'url' => $this->url('quiz|admin|modif', array('qaction' => 'new')));
+        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.import'),
+                             'type' => 'copy',
+                             'url' => $this->url('quiz|admin|import'));
 
         return _arPPO($ppo, 'admin.list.tpl');
     }
@@ -60,6 +62,9 @@ class ActionGroupAdmin extends enicActionGroup
         $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.new'),
                             'type' => 'create',
                             'url' => $this->url('quiz|admin|modif', array('qaction' => 'new')));
+        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.import'),
+                             'type' => 'copy',
+                             'url' => $this->url('quiz|admin|import'));
         return _arPPO($ppo, 'admin.quiz.tpl');
     }
 
@@ -137,7 +142,6 @@ class ActionGroupAdmin extends enicActionGroup
         $this->js->inputPreFilled('.qf-description', 'quiz.admin.setDescription');
 
 
-        $this->addCss('styles/module_quiz.css');
         $ppo->success = (isset($this->flash->success)) ? $this->flash->success : null;
         $ppo->quiz = $quizDatas;
         $ppo->questions = $questionsDatas;
@@ -248,7 +252,7 @@ class ActionGroupAdmin extends enicActionGroup
         $form['description']       = $this->request('qf-description');
         $form['help']       = $this->request('qf-help');
         $form['optshow']    = $this->request('qf-optshow');
-        $form['lock']       = $this->request('qf-lock');
+        $form['is_locked']       = $this->request('qf-lock');
         $form['id']         = $this->request('quizId');
         $form['date_start']  = $this->request('qf-datestart');
         $form['date_end']    = $this->request('qf-dateend');
@@ -286,6 +290,7 @@ class ActionGroupAdmin extends enicActionGroup
 
     public function processQuestions()
     {
+
         if(!isset($this->flash->quizId))
             return $this->error('quiz.admin.noRight');
 
@@ -332,19 +337,21 @@ class ActionGroupAdmin extends enicActionGroup
             $responsesDatas = $this->service('QuizService')->getChoices($answId);
         }
 
-        //if errors
+        // Texte affiché après réponse
+        $answerDetail  = $answerDatas['answer_detail'];
+
+        // if errors
         if ($error) {
             //if is datas in responses :
             if(isset($this->flash->respDatas)){
                 $responsesDatas = $this->flash->respDatas;
-
             //if is datas in answ
             }elseif(isset($this->flash->answDatas)){
                 $answerDatas = $this->flash->answDatas;
-
             }
-
             $errorDatas = $this->flash->errorMsg;
+
+            $answerDetail = $this->flash->answerDetail;
         }
 
         /*
@@ -370,14 +377,13 @@ class ActionGroupAdmin extends enicActionGroup
             $tabDatas = '';
         }
 
-
-
-        $this->addCss('styles/module_quiz.css');
-
         $this->js->wysiwyg('#aw-content');
+        $this->js->wysiwyg('#answer-detail');
         $this->js->confirm('#a-suppr', 'quiz.confirm.delAnsw');
 
-        $ppo             = new CopixPPO();
+        $ppo = new CopixPPO();
+
+        $ppo->answerDetail  = $answerDetail;
         $ppo->question  = $answerDatas;
         $ppo->addPicPopup = CopixZone::process ('kernel|wikibuttons', array('field'=>'aw-content', 'format'=>'ckeditor', 'object'=>array('type'=>'MOD_QUIZ', 'id'=>$id_gr_quiz), 'height'=>290));
         $ppo->tabsSelect = $tabDatas;
@@ -389,18 +395,8 @@ class ActionGroupAdmin extends enicActionGroup
         $ppo->actionAnsw = ($modifAction == 'modif') ? $this->url('quiz|admin|updateAnsw') : $this->url('quiz|admin|newAnsw');
         $ppo->actionResp = ($modifAction == 'modif') ? $this->url('quiz|admin|updateResp') : '#';
         $ppo->new = ($modifAction == 'modif') ? false : true;
+        $ppo->quiz = $quizDatas;
 
-/*
-        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.listActive'),
-                            'type' => 'list-active',
-                            'url' => $this->url('quiz|default|default', array('qaction' => 'list')));
-        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.listAll'),
-                            'type' => 'list',
-                            'url' => $this->url('quiz|admin|list'));
-        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.new'),
-                            'type' => 'create',
-                            'url' => $this->url('quiz|admin|modif', array('qaction' => 'new')));
-*/
         return _arPPO($ppo, 'admin.question.tpl');
     }
 
@@ -524,7 +520,7 @@ class ActionGroupAdmin extends enicActionGroup
             $responses[$key]['id_question'] = $answId;
             $responses[$key]['content'] = $responseDatas[0];
             $responses[$key]['correct'] = $responseDatas[1];
-            $responses[$key]['order'] = $responseDatas[2];
+            $responses[$key]['position'] = $responseDatas[2];
         }
 
         //build global flash
@@ -533,14 +529,39 @@ class ActionGroupAdmin extends enicActionGroup
         $this->flash->typeAction = 'modif';
         $this->flash->modifAction = 'modif';
 
-        //check error :
+        //check errors :
         $valid = $this->service('QuizService')->validResp($responses);
-        if($valid[0] == false){
+
+        // Texte affiché après réponse
+        // 1) Récupération de la question et du quizz
+        $question = $this->service('QuizService')->getQuestion($answId);
+        $quiz = $this->service('QuizService')->getQuizDatas($question['id_quiz']);
+
+        // 2) Récupération de la valeur saisie
+        $answerDetail = _request('answer-detail', '');
+
+        // Contrôle de la valeur saisie
+        $answerDetailValidation = $this->service('QuizService')->validAnswerDetail($quiz, $answerDetail);
+
+        if ($valid[0] == false || $answerDetailValidation[0] == false){
             $this->flash->error = true;
-            $this->flash->errorMsg = $valid[1];
             $this->flash->respDatas = $responses;
+
+            $this->flash->answerDetail = $answerDetail;
+
+            if ($valid[0] == false) {
+                $this->flash->errorMsg = $valid[1];
+            }
+            elseif ($answerDetailValidation[0] == false) {
+                $this->flash->errorMsg = $answerDetailValidation[1];
+            }
+
             return $this->go('quiz|admin|questions', array('tabs' => 1));
         }
+
+        // Sauvegarde de la question (texte affiché après réponse)
+        $question['answer_detail'] = $answerDetail;
+        $this->service('QuizService')->updateAnsw($question);
 
         //deletes previous question :
         $this->service('QuizService')->delResp($answId);
@@ -548,6 +569,7 @@ class ActionGroupAdmin extends enicActionGroup
         $this->service('QuizService')->newResp($responses);
 
         $this->flash->success = $this->i18n('quiz.question.answersSuccess');
+
         return $this->go('quiz|admin|questions', array('tabs' => 1));
     }
 
@@ -666,7 +688,6 @@ class ActionGroupAdmin extends enicActionGroup
                         }
         }
 
-                $this->addCss("styles/module_quiz.css");
         $this->addCss("styles/datatable.css");
 
         $this->addJs('js/datatable/jquery.dataTables.min.js');
@@ -687,7 +708,122 @@ class ActionGroupAdmin extends enicActionGroup
         $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.new'),
                             'type' => 'create',
                             'url' => $this->url('quiz|admin|modif', array('qaction' => 'new')));
+        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.import'),
+                             'type' => 'copy',
+                             'url' => $this->url('quiz|admin|import'));
         return _arPPO($ppo, 'admin.allresults.tpl');
     }
 
+    /**
+     * Import des quiz des années précédentes
+     */
+    public function processImport()
+    {
+        // On contrôle que l'utilisateur est un enseignant
+        if(_currentUser()->getExtra('type') !== 'USER_ENS') {
+            return $this->error('quiz.admin.noRight');
+        }
+
+        $classInfos = CopixSession::get('myNode');
+        if ($classInfos['type'] !== 'BU_CLASSE') {
+            return $this->error('quiz.errors.badOperation');
+        }
+
+        CopixHtmlHeader::addJSLink(CopixUrl::get().'js/iconito/module_quiz.js');
+
+        $ecoleClasseDAO = _ioDAO ('kernel|kernel_bu_ecole_classe');
+        $classe = $ecoleClasseDAO->get($classInfos['id']);
+        $ecole = $classe->getSchool();
+
+        $ppo = new CopixPPO();
+
+        // On récupère toutes les années scolaires
+        $grades = $this->service('QuizService')->getGradesForFilters();
+
+        $ppo->gradesIds = array_keys($grades);
+        $ppo->gradesNames = array_values($grades);
+        $ppo->selectedGrade = reset($ppo->gradesIds);
+
+        // L'année scolaire de la requête
+        $grade = array_search(_request('grade'), $ppo->gradesIds);
+        if (false === $grade) {
+            $grade = array_search($this->service('QuizService')->getDefaultGradeForFilters(), $ppo->gradesIds);
+        }
+
+        // Si on a un résultat pour l'année scolaire sélectionnée, on la donne à la vue
+        if (false !== $grade) {
+            $ppo->selectedGrade = $ppo->gradesIds[$grade];
+        }
+
+        // On s'occupe ensuite des classes
+        $ppo->classrooms = $this->service('QuizService')->getClassroomsForYears($ecole, $ppo->gradesIds);
+        $classroomsChoices = array('' => 'Toutes les classes') + array_map(function($classroom) {
+            return $classroom->nom;
+        }, $ppo->classrooms);
+
+        $ppo->classroomsIds = array_keys($classroomsChoices);
+        $ppo->classroomsValues = array_values($classroomsChoices);
+
+        $ppo->classroomsMapByYears = array();
+        foreach ($ppo->classrooms as $classroom) {
+            if (!isset($ppo->classroomsMapByYears[$classroom->annee_scol])) {
+                $ppo->classroomsMapByYears[$classroom->annee_scol] = array();
+            }
+
+            $ppo->classroomsMapByYears[$classroom->annee_scol][] = $classroom->id;
+        }
+
+        // L'année scolaire de la requête
+        $ppo->selectedClassroom = isset($ppo->classrooms[_request('classroom')]) ? $ppo->classrooms[_request('classroom')] : null;
+
+        if ($this->flash->has('successMessage')) {
+            $ppo->successMessage = $this->flash->successMessage;
+        }
+
+        // Récupération de tous les quiz que l'on peut importer
+        $quizDao = _ioDAO('quiz|quiz_quiz');
+
+        $ppo->quizList = $quizDao->findForImport($ecole, $ppo->selectedGrade, $ppo->selectedClassroom);
+
+        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.listActive'),
+                             'type' => 'list-active',
+                             'url' => $this->url('quiz|default|default', array('qaction' => 'list')));
+        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.listAll'),
+                             'type' => 'list',
+                             'url' => $this->url('quiz|admin|list'));
+        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.new'),
+                             'type' => 'create',
+                             'url' => $this->url('quiz|admin|modif', array('qaction' => 'new')));
+        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.import'),
+                             'type' => 'copy',
+                             'url' => $this->url('quiz|admin|import'));
+
+        return _arPPO($ppo, 'admin.import.tpl');
+    }
+
+    /**
+     * Effectue l'import d'un quiz
+     */
+    public function processProcessImport()
+    {
+        $quizId = _request('id');
+
+        // On contrôle que le quiz existe
+        $quizDatas = $this->service('QuizService')->getQuizDatas($quizId);
+        if (empty($quizDatas)) {
+            return $this->error('quiz.errors.inexistant');
+        }
+
+        // On contrôle que l'utilisateur est un enseignant
+        if (_currentUser()->getExtra('type') !== 'USER_ENS') {
+            return $this->error('quiz.admin.noRight');
+        }
+
+        // On copie le quiz
+        $this->service('QuizService')->importQuiz($quizId);
+
+        $this->flash->successMessage = 'Le quiz "' . $quizDatas['name'] . '" a été importé';
+
+        return $this->go('quiz|admin|import');
+    }
 }

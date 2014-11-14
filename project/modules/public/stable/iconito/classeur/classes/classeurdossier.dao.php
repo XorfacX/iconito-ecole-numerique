@@ -1,11 +1,14 @@
 <?php
 
+use \ActivityStream\Client\Model\Resource;
+use \ActivityStream\Client\Model\ResourceInterface;
+
 /**
 * @package    Iconito
 * @subpackage Classeur
 */
 
-class DAORecordClasseurDossier
+class DAORecordClasseurDossier implements ResourceInterface
 {
   public function __toString ()
   {
@@ -65,6 +68,44 @@ class DAORecordClasseurDossier
     {
       return $this->casier && $this->parent_id == 0;
     }
+
+  /**
+   * Return a resource from the current Object
+   *
+   * @return Resource
+   */
+  public function toResource()
+  {
+    $resource = new EcoleNumeriqueActivityStreamResource(
+      $this->nom,
+      get_class($this),
+      $this->id
+    );
+
+    $attributes = array(
+      'classeur_id',
+      'parent_id',
+      'nb_dossiers',
+      'nb_fichiers',
+      'cle',
+      'casier',
+      'taille',
+      'date_creation',
+      'user_type',
+      'user_id',
+      'date_publication',
+      'public',
+    );
+
+    $attributesValues = array();
+    foreach ($attributes as $attribute) {
+      $attributesValues[$attribute] = $this->$attribute;
+    }
+
+    $resource->setAttributes($attributesValues);
+
+    return $resource;
+  }
 }
 
 class DAOClasseurDossier

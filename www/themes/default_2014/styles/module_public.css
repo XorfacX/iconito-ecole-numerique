@@ -1,0 +1,131 @@
+
+
+/* =================================
+	Liste des blogs
+	================================= */
+.welcome_blogsloader {
+    display: none;
+    }
+
+#blogs {
+	float: right;
+	width: 50%;
+}
+
+/* Corps */
+#blogs DIV.blogBody {
+	clear: both;
+	margin: 5px;
+}
+/* Titre */
+#blogs DIV.blogBody A.title {
+	font-weight: bold;
+	text-decoration: none;
+	border-bottom: dotted 1px #555;
+	color: #111;
+}
+#blogs DIV.blogBody IMG.logo {
+	background: #eee;
+	padding: 2px;
+	border-radius: 2px;
+}
+
+/* Type + parent */
+#blogs DIV.blogType {
+	margin-top: 5px;
+	font-size: 95%;
+}
+/* Stats */
+#blogs DIV.blogStats {
+	margin-top: 3px;
+	color: #222;
+}
+#blogs DIV.blogStats a {
+	color: #222;
+}
+
+#blogs_ecoles {
+	float: left;
+	width: 50%;
+}
+
+#blogs_ecoles DIV.ville {
+	margin: 12px 0px 5px 0px;
+}
+#blogs_ecoles DIV.ville DIV.nom {
+	font-size: 1.25em;
+	font-weight: bold;
+	border-bottom: solid 1px #fff;
+	margin-bottom: 3px;
+}
+
+
+/* =================================
+	Page A propos...
+	================================= */
+#apropos a {
+	font-weight: bold;
+}
+
+#apropos DIV.sig {
+	font-style: italic;
+}
+
+#apropos DIV.legal {
+	font-size: 0.8em;
+	padding-top: 2em;
+	padding-bottom: 1em;
+}
+
+/* Liste des ecoles */
+
+.welcome_ecoles ul {
+  margin: 0;
+  padding-left: 12px;
+  list-style-type: disc;
+  list-style-position: outside;
+}
+.welcome_ecoles ul li {
+	margin-bottom: 3px;
+}
+.welcome_ecoles ul li.type {
+	list-style-type: none;
+	text-transform: uppercase;
+	font-weight: bold;
+	color: #dd8210;
+  padding-top:5px;
+}
+
+.welcome_ecoles h3 {
+color:#DD8210;
+font-weight:bold;
+list-style-type:none;
+padding-top:5px;
+text-transform:uppercase;
+}
+
+.welcome_ecoles .listEcoles li{
+    float: left;
+    width:25%;
+    font-size: 14px;
+    line-height: 22px;
+    list-style-position:inside;
+}
+.welcome_ecoles .listEcoles li:nth-child(5) {
+    clear:left;
+}
+
+.welcome_ecoles hr{
+    width: 80%;
+    text-align: center;
+    border-color:#DD8210;
+    margin-bottom: 25px;
+    margin-top: 5px;
+}
+
+
+/* Fix Public ? */
+#blogs .block {
+	border:2px solid #0097ba;
+}
+.contentBox .right {float:none;}

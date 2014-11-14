@@ -14,7 +14,7 @@
 class Admin
 {
     /**
-     * Détermine si l'usager courant peut accéder à la rubrique d'administration
+     * DÃ©termine si l'usager courant peut accÃ©der Ã  la rubrique d'administration
      *
      * @author Christophe Beyer <cbeyer@cap-tic.fr>
      * @since 2006/12/05
@@ -51,9 +51,18 @@ class Admin
             'url' => CopixUrl::get ('sysutils|cache|'),
             'current' => ($iCurrentTab == 'cache'),
         );
+      
+        $userType = _currentUser()->getExtra("type");
+        $groupsDenied = array("USER_ELE", "USER_RES", "USER_EXT");
+        // Si le module de statistiques est activÃ© et que l'utilisateur a les droits d'accÃ¨s, on rend le template
+        if ((bool)CopixConfig::get('statistiques|enabled') &&  (!in_array($userType, $groupsDenied) || Kernel::isAdmin() || $animateur || $inspecteur) ) {
+            $url = 'statistiques||';
+        } else {
+            $url = 'sysutils|stats|';
+        }
         $menu[] = array(
             'txt' => CopixI18N::get ('sysutils|admin.menu.stats'),
-            'url' => CopixUrl::get ('sysutils|stats|'),
+            'url' => CopixUrl::get ($url),
             'current' => ($iCurrentTab == 'stats'),
         );
         if (Kernel::isSuperAdmin()) {

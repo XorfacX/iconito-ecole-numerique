@@ -94,7 +94,14 @@ input[type="password"] {
     width: 48px;
     padding-left: 2px;
     }
-    
+/* Login SAML */
+.userlogged {
+    margin:9px;
+}
+.userlogon a {
+    padding:6px 6px 6px 28px;
+    font-size:1.2em;
+}
 /************************************************
  * USERMENU
  ***********************************************/
@@ -289,7 +296,7 @@ div.legals a {
  * JQueryUI HACKS
  ***********************************************/
 img.ui-datepicker-trigger {
-	vertical-align: bottom;
+	vertical-align:middle;
 	}
 	
 p.ui-state-error {
@@ -565,7 +572,7 @@ input[required] {
 	font-size:0px;
 	vertical-align:top;
 }
-form .format {
+form .format, form .ui-datepicker-append {
 	padding:0 0 0 .5em;
 	color:#777;
 	font-size:0.85em; font-style:italic;

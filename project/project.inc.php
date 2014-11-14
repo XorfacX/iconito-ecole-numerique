@@ -10,6 +10,9 @@
 
 require_once(dirname (__FILE__).'/project.path.inc.php');
 
+// Chargement de l'autoload Composer
+require_once COPIX_PROJECT_PATH.'../utils/autoload.php';
+
 /**
  * Contrôller du projet
  * @package		copix

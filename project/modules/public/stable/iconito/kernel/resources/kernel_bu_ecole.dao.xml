@@ -21,6 +21,7 @@
 		<property name="num_plan_interactif"     fieldname="num_plan_interactif"     type="integer"  table="kernel_bu_ecole" pk="no"/>
                 <property name="uai"     fieldname="RNE"     type="string"  table="kernel_bu_ecole" pk="no"/>
                 <property name="siret"     fieldname="siret"     type="string"  table="kernel_bu_ecole" pk="no"/>
+                <property name="mail"     fieldname="mail"     type="string"  table="kernel_bu_ecole" pk="no"/>
 	</properties>
 	<methods>
 	</methods>

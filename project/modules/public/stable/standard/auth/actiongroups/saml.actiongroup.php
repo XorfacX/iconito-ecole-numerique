@@ -31,6 +31,8 @@ class ActionGroupSaml extends EnicActionGroup {
 		$ppo->user = _currentUser();
 		if($ppo->user->isConnected()){
 			$url_return = CopixUrl::get ('kernel||doSelectHome');
+            CopixEventNotifier::notify ('login', array ());
+
 			/*
 			 * PATCH FOR CHARTE
 			 */
@@ -46,12 +48,6 @@ class ActionGroupSaml extends EnicActionGroup {
 			$as->requireAuth();
 			
 			$attributes = $as->getAttributes();
-			
-			/*
-			echo "<pre>";
-			print_r($attributes);
-			die();
-			*/
 			
 			$uidAttribute = 'login_dbuser';
 			if (CopixConfig::exists('default|conf_Saml_uidAttribute') && CopixConfig::get('default|conf_Saml_uidAttribute')) {
@@ -82,30 +78,6 @@ class ActionGroupSaml extends EnicActionGroup {
 				}
 			}
 		}
-		
-
-
-
-		// $as->getLoginURL();
-		
-		/*
-		if (!$as->isAuthenticated()) {
-			$url = SimpleSAML_Module::getModuleURL('core/authenticate.php', array('as' => $asId));
-			$params = array(
-				'ErrorURL' => CopixUrl::get ('auth|saml|test_error'),
-				'ReturnTo' => CopixUrl::get ('auth|saml|test_ok'),
-			);
-			$as->login($params);
-		}
-		*/
-		
-		/*
-		$attributes = $as->getAttributes();
-		
-		echo "<pre>";
-		print_r($attributes);
-		die();
-		*/
 	}
 	
 	public function processLogout (){
@@ -127,8 +99,6 @@ class ActionGroupSaml extends EnicActionGroup {
 		}
 
 		$as->logout(_url ().'simplesaml/saml2/idp/initSLO.php?RelayState='.urlencode(_url('auth|saml|logout_cas')));
-		// $as->logout(_url ().'simplesaml/saml2/idp/initSLO.php?RelayState='.urlencode(_url() . 'logout.php'));
-
 		
 	}
 	

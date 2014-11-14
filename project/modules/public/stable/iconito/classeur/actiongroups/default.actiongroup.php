@@ -542,7 +542,7 @@ class ActionGroupDefault extends enicActionGroup
                         $ppo->fichier->fichier = $ppo->fichier->titre.'_'.$user['prenom'].'_'.$user['nom'].$extension;
                     }
                 }
-                
+
                 // Mise à jour de l'enregistrement fichier
                 $fichierDAO->update($ppo->fichier);
                 $confirmMessage = CopixI18N::get ('classeur|classeur.message.confirmUpdate');
@@ -576,7 +576,7 @@ class ActionGroupDefault extends enicActionGroup
                 if (!file_exists($dir)) {
                     mkdir($dir, 0755, true);
                 }
-                
+
                 // Traitement de l'upload multiple (prédomine sur l'upload simple)
                 if (!empty($uploadedFiles)) {
                     foreach ($uploadedFiles as $folder) {
@@ -641,7 +641,7 @@ class ActionGroupDefault extends enicActionGroup
                                         $fichier->user_id       = _currentUser()->getExtra('id');
                                         
                                         $fichierDAO->insert($fichier);
-                                        
+
                                         if (isset($correspondanceDossiers[$dossierParent])) {
                                             classeurService::updateFolderInfos($correspondanceDossiers[$dossierParent]);
                                         }
@@ -1953,6 +1953,7 @@ class ActionGroupDefault extends enicActionGroup
   public function processGetClasseurPopup ()
   {
     $classeurDAO = _ioDAO('classeur|classeur');
+      $ppo = new CopixPPO ();
     if (is_null($ppo->classeur = $classeurDAO->get(_request ('classeurId', null)))) {
 
       return CopixActionGroup::process ('generictools|Messages::getError',

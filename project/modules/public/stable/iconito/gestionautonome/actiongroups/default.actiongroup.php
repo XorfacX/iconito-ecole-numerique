@@ -785,7 +785,10 @@ class ActionGroupDefault extends enicActionGroup
         _currentUser()->assertCredential('module:city|'.$ppo->parentId.'|school|create@gestionautonome');
 
         $ppo->types = array('Maternelle', 'Elémentaire', 'Primaire');
-
+        
+        $ppo->uaiRequired = $this->isUaiRequired();
+        $ppo->siretRequired = $this->isSiretRequired();
+        
         // Breadcrumbs
         $breadcrumbs = array();
         $breadcrumbs[] = array('txt' => 'Gestion de la structure scolaire', 'url' => CopixUrl::get('gestionautonome||showTree'));
@@ -840,6 +843,7 @@ class ActionGroupDefault extends enicActionGroup
         $ppo->school->tel = _request('tel', null);
         $ppo->school->uai = _request('uai', null);
         $ppo->school->siret = _request('siret', null);
+        $ppo->school->mail = _request('mail', null);
 
         // Traitement des erreurs
         $ppo->errors = array();
@@ -850,8 +854,18 @@ class ActionGroupDefault extends enicActionGroup
         }
         
         if (!$ppo->school->nom) {
-
-            $ppo->errors[] = 'Saisissez un nom';
+            $ppo->errors[] = CopixI18N::get('gestionautonome|gestionautonome.message.required.nom');;
+        }
+        
+        $ppo->uaiRequired = $this->isUaiRequired();
+        $ppo->siretRequired = $this->isSiretRequired();
+        
+        if($ppo->uaiRequired && !$ppo->school->uai){
+            $ppo->errors[] = CopixI18N::get('gestionautonome|gestionautonome.message.required.uai');
+        }
+        
+        if($ppo->siretRequired && !$ppo->school->siret){
+            $ppo->errors[] = CopixI18N::get('gestionautonome|gestionautonome.message.required.siret');
         }
 
         if (!empty($ppo->errors)) {
@@ -890,7 +904,7 @@ class ActionGroupDefault extends enicActionGroup
     public function processUpdateSchool()
     {
         $ppo = new CopixPPO ();
-
+        
         // Récupération des paramètres
         $ppo->nodeId = _request('nodeId', null);
         if (is_null($ppo->nodeId)) {
@@ -903,7 +917,6 @@ class ActionGroupDefault extends enicActionGroup
 
             return CopixActionGroup::process('generictools|Messages::getError', array('message' => "Une erreur est survenue.", 'back' => CopixUrl::get('gestionautonome||showTree')));
         }
-        
         _currentUser()->assertCredential('module:school|'.$ppo->school->numero.'|school|update@gestionautonome');
 
         // Mise en session du noeud courant
@@ -929,10 +942,39 @@ class ActionGroupDefault extends enicActionGroup
         // Get vocabulary catalog to use
         $nodeVocabularyCatalogDAO = _ioDAO('kernel|kernel_i18n_node_vocabularycatalog');
         $ppo->vocabularyCatalog = $nodeVocabularyCatalogDAO->getCatalogForNode('BU_ECOLE', $ppo->nodeId);
+        
 
+        $ppo->uaiRequired = $this->isUaiRequired();
+        $ppo->siretRequired = $this->isSiretRequired();
+        
         return _arPPO($ppo, 'edit_school.tpl');
     }
 
+    /**
+     * Check in config if UAI is a required field
+     * 
+     * Default false
+     * 
+     * @return boolean
+     */
+    public function isUaiRequired(){
+        if (CopixConfig::exists('|school_uai_rne_required'))
+            return CopixConfig::get('|school_uai_rne_required');
+        return false;
+    }
+    
+    /**
+     * Check in config if SIRET is a required field
+     * 
+     * Default false
+     * 
+     * @return boolean
+     */
+    public function isSiretRequired(){
+        if (CopixConfig::exists('|school_siret_required'))
+            return CopixConfig::get('|school_siret_required');
+        return false;
+    }
     /**
      * validateSchoolUpdate
      *
@@ -972,6 +1014,7 @@ class ActionGroupDefault extends enicActionGroup
         $ppo->school->tel = _request('tel', null);
         $ppo->school->uai = _request('uai', null);
         $ppo->school->siret = _request('siret', null);
+        $ppo->school->mail = _request('mail', null);
         
         // Traitement des erreurs
         $ppo->errors = array();
@@ -980,13 +1023,21 @@ class ActionGroupDefault extends enicActionGroup
             $ppo->errors = $schoolDAO->getErrorsMessages();
         }
         
-        
-    
         if (!$ppo->school->nom) {
-
-            $ppo->errors[] = 'Saisissez un nom';
+            $ppo->errors[] = CopixI18N::get('gestionautonome|gestionautonome.message.required.nom');;
         }
-
+        
+        $ppo->uaiRequired = $this->isUaiRequired();
+        $ppo->siretRequired = $this->isSiretRequired();
+        
+        if($ppo->uaiRequired && !$ppo->school->uai){
+            $ppo->errors[] = CopixI18N::get('gestionautonome|gestionautonome.message.required.uai');
+        }
+        
+        if($ppo->siretRequired && !$ppo->school->siret){
+            $ppo->errors[] = CopixI18N::get('gestionautonome|gestionautonome.message.required.siret');
+        }
+    
         if (!empty($ppo->errors)) {
 
             $cityDAO = _ioDAO('kernel|kernel_bu_ville');
@@ -1586,8 +1637,12 @@ class ActionGroupDefault extends enicActionGroup
                     _currentUser()->assertCredential('module:school|'.$ppo->nodeId.'|administration_staff|create@gestionautonome');
                     break;
                 } else {
-
-                    _currentUser()->assertCredential('module:school|'.$ppo->nodeId.'|principal|create@gestionautonome');
+                    // Si les droits Copix sont donnés pour qu'un directeur puisse ajouter un personnel administratif, il faut tester le type d'ajout
+                    if ($ppo->role == 3) {
+                        _currentUser()->assertCredential('module:school|'.$ppo->nodeId.'|administration_staff|create@gestionautonome');
+                    } else {
+                        _currentUser()->assertCredential('module:school|'.$ppo->nodeId.'|principal|create@gestionautonome');
+                    }
                     break;
                 }
             case 'BU_CLASSE':
@@ -1647,7 +1702,7 @@ class ActionGroupDefault extends enicActionGroup
                 $id_ville = $ppo->nodeId;
                 break;
             case 'BU_ECOLE':
-                if ($ppo->type == 'USER_ADM') {
+                if ($ppo->type == 'USER_ADM' || $ppo->role == "3") {
 
                     _currentUser()->assertCredential('module:school|'.$ppo->nodeId.'|administration_staff|create@gestionautonome');
                 } else {
@@ -3499,6 +3554,7 @@ class ActionGroupDefault extends enicActionGroup
      */
     public function processPersonInChargeCreation()
     {
+        $ppo = new CopixPPO ();
         $ppo->nodeId = _request('nodeId', null);
         $ppo->nodeType = _request('nodeType', null);
         $ppo->studentId = _request('studentId', false);

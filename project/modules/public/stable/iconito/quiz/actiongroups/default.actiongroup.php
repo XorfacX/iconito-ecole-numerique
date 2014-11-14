@@ -39,11 +39,10 @@ class ActionGroupDefault extends enicActionGroup
                                             WHERE
                                             ((`date_start` < '.time().' AND `date_end` > '.time().') OR
                                             (`date_start` = 0 OR `date_end` = 0)) AND
-                                            `lock` = 0 AND gr_id = '.$idGrQuiz.'
+                                            `is_locked` = 0 AND gr_id = '.$idGrQuiz.'
                                             ORDER BY date_end DESC')
                                     ->toArray();
 
-        $this->addCss('styles/module_quiz.css');
         $this->js->button('.button');
 
         $ppo = new CopixPPO();
@@ -60,6 +59,9 @@ class ActionGroupDefault extends enicActionGroup
         $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.new'),
                             'type' => 'create',
                             'url' => $this->url('quiz|admin|modif', array('qaction' => 'new')));
+        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.import'),
+                            'type' => 'copy',
+                            'url' => $this->url('quiz|admin|import'));
         }
         return _arPPO($ppo, 'quiz.tpl');
     }
@@ -92,7 +94,7 @@ class ActionGroupDefault extends enicActionGroup
             //description
             $desc = ($quizData->description == null) ? null : $quizData->description;
 
-            if($quizData->lock == 1)
+            if($quizData->is_locked == 1)
                 return CopixActionGroup::process('genericTools|Messages::getError', array ('message'=>CopixI18N::get ('quiz.errors.lock'), 'back'=>CopixUrl::get('quiz||')));
 
 //time test :
@@ -165,8 +167,6 @@ class ActionGroupDefault extends enicActionGroup
 
         //var_dump($questionsReturn);
         //start TPL
-        $this->addCss('styles/module_quiz.css');
-//        $this->js->button('.button');
         $ppo = new CopixPPO();
         //global data for quiz
         $ppo->name = $quizData->name;
@@ -194,6 +194,9 @@ class ActionGroupDefault extends enicActionGroup
         $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.new'),
                             'type' => 'create',
                             'url' => $this->url('quiz|admin|modif', array('qaction' => 'new')));
+        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.import'),
+                             'type' => 'copy',
+                             'url' => $this->url('quiz|admin|import'));
         }
 
         return _arPPO($ppo, 'accueil_quiz.tpl');
@@ -223,6 +226,7 @@ class ActionGroupDefault extends enicActionGroup
         //get params
         $pId = CopixRequest::getInt('id', false);
         $pQId = CopixRequest::getInt('qId', false);
+        $pSRes = CopixRequest::getInt('sRes', false);
 
         if(empty($pId) || !$this->session->exists('questions'))
             $this->error ('quiz.errors.badOperation');
@@ -244,8 +248,14 @@ class ActionGroupDefault extends enicActionGroup
         //get responses from users :
         $responsesDatas = $this->service('QuizService')->getResponses($pQId, $this->user->id);
 
-        //check if user as already respond to the question
-        $uResp = (!empty($responsesDatas)) ? true : false;
+        $quiz = $this->service('QuizService')->getQuizDatas($pId);
+        
+        // showing answers when it is not allowed
+        if($pSRes && $quiz['opt_show_results'] == 'never')
+            return $this->error('quiz.errors.badOperation');        	
+
+        //check if user has already respond to the question
+        $uResp = (!$pSRes && !empty($responsesDatas)) ? true : false;
 
         //get choices for question
         $choicesDatas = $this->service('QuizService')->getChoices($pQId);
@@ -256,23 +266,37 @@ class ActionGroupDefault extends enicActionGroup
         //data preparation
         $i=0;
         $correct = 0;
+        $respWrong = 0;
 
         $choiceReturn = array();
+        $wrongAnswer = false;
         foreach($choicesDatas as $choice){
 
             $choiceReturn[$i]['ct'] = $choice['content'];
             $choiceReturn[$i]['id'] = $choice['id'];
+            if($pSRes)
+            	$choiceReturn[$i]['correct'] = $choice['correct'];
             $choiceReturn[$i]['user'] = false;
 
             if($choice['correct'] == 1)
                 $correct++;
-
+            else
+            	$respWrong++;
+                
             foreach($responsesDatas as $response){
                 if((int)$response['id_choice'] == (int)$choice['id']){
                     $choiceReturn[$i]['user'] = true;
-                }
+                    $userCorrect++;
+                	if($choice['correct'] != 1)
+                		$wrongAnswer = true;                }
             }
-
+            
+            // if the user needs to answers all the right choices, not only one
+            /*
+            if($userCorrect != $correct)
+                $wrongAnswer = true;
+			*/
+			
             $i++;
         }
 
@@ -295,11 +319,13 @@ class ActionGroupDefault extends enicActionGroup
         $this->flash->typeAnsw = $questionDatas['opt_type'];
 
         //build tpl
-        CopixHTMLHeader::addCSSLink (_resource("styles/module_quiz.css"));
         CopixHTMLHeader::addCSSLink (_resource("styles/jquery.fancybox-1.3.4.css"));
-//        $this->js->button('.button');
         $ppo = new CopixPPO();
         $ppo->error =  ($this->flash->has('error')) ? $this->flash->error : null;
+		if($pSRes && $wrongAnswer){
+				$ppo->wrong = CopixI18N::get('quiz.errors.wrongAnswer');
+		}
+
         $ppo->userResp = $uResp;
         $ppo->choices = $choiceReturn;
         $ppo->prev = $prev;
@@ -312,8 +338,14 @@ class ActionGroupDefault extends enicActionGroup
         $ppo->help = qSession('help');
         $ppo->name = qSession('name');
         $ppo->next = $next;
+        $ppo->quiz = $quiz;
+        if($pSRes) {
+        	$ppo->alreadyShowRes = true;
+        	$ppo->respCorrect = $correct;
+        	$ppo->respWrong = $respWrong;
+        }
 
-         if(Kernel::getLevel( 'MOD_QUIZ', $pId) >= PROFILE_CCV_ADMIN){
+        if(Kernel::getLevel( 'MOD_QUIZ', $pId) >= PROFILE_CCV_ADMIN){
 
         $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.listActive'),
                             'type' => 'list-active',
@@ -324,6 +356,9 @@ class ActionGroupDefault extends enicActionGroup
         $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.new'),
                             'type' => 'create',
                             'url' => $this->url('quiz|admin|modif', array('qaction' => 'new')));
+        $ppo->MENU[] = array('txt' => $this->i18n('quiz.admin.import'),
+                             'type' => 'copy',
+                             'url' => $this->url('quiz|admin|import'));
         }
         $this->js->dialog('#qd-help', '#help-data');
         return _arPPO($ppo, 'question.tpl');
@@ -332,59 +367,41 @@ class ActionGroupDefault extends enicActionGroup
 
     public function processSave()
     {
-        if(!$this->flash->has('nextAnsw'))
+        if (!$this->flash->has('nextAnsw'))
             return $this->error('quiz.errors.badOperation');
 
-        if(is_null(qSession('id')))
-            return CopixActionGroup::process('quiz|default::Quiz', array ('id' => false));
+        // Récupération du quiz
+        $quizData = $this->service('QuizService')->getQuizFromQSession('id');
+        if ($quizData->opt_show_results != 'never') {
+            return CopixActionGroup::process('genericTools|Messages::getError', array ('message'=>CopixI18N::get ('quiz.errors.badOperation'), 'back'=>CopixUrl::get('quiz||')));
+        }
 
-        //get url's answ id
-        $qId = $this->request('qId')*1;
+        // Test de la validité : la question doit être la question courante
+        $qId = (int)$this->request('qId');
+        if ($qId != $this->flash->currentAnsw) {
+            return $this->error('quiz.errors.badOperation');
+        }
 
-        //test id validity
-        if($qId != $this->flash->currentAnsw)
-           return $this->error('quiz.errors.badOperation');
-
-        //get responses form datas
+        // Récupération des réponses
         $pResponse = CopixRequest::get('response', false);
-
-        if(!$pResponse){
+        if (!$pResponse) {
             $this->flash->error = $this->i18n('quiz.errors.emptyResponse');
+
             return $this->go('quiz|default|question', array ('id' => qSession('id'), 'qId' => $this->flash->currentAnsw));
         }
 
-        $optType = ($this->flash->typeAnsw == 'choice') ? 'radio' : 'txt';
-        $userId = $this->user->id;
+        // Sauvegarde des réponses
+        $this->service('QuizService')->save(
+            $pResponse,
+            $this->flash->currentAnsw,
+            $this->flash->typeAnsw,
+            $this->user
+        );
 
-        //delete previous info
-        $criteres = _daoSp()->addCondition('id_user', '=', $userId)
-                            ->addCondition('id_question', '=', $this->flash->currentAnsw, 'and');
-
-        _dao('quiz_response_insert')->deleteBy($criteres);
-
-        if($optType == 'radio'){
-
-            $i=0;
-
-            foreach($pResponse as $response){
-                $record = _record('quiz_response_insert');
-                $record->id_user = $userId;
-                $record->id_choice = $response+0;
-                $record->id_question = $this->flash->currentAnsw;
-                $record->date = time();
-                $responses[] = $response+0;
-                _dao('quiz_response_insert')->insert($record);
-                $i++;
-            }
-
-        }else{
-            //cas du submit txt
-        }
-
-        //lock test
-        $quizData = _dao('quiz_quiz')->get(qSession('id'));
-        if($quizData->lock == 1)
+        // lock test
+        if ($quizData->is_locked == 1) {
             return CopixActionGroup::process('genericTools|Messages::getError', array ('message'=>CopixI18N::get ('quiz.errors.lock'), 'back'=>CopixUrl::get('quiz||')));
+        }
 
         $nextQ = $this->flash->nextAnsw;
 
@@ -395,6 +412,50 @@ class ActionGroupDefault extends enicActionGroup
         return _arRedirect(_url('quiz|default|question', array ('id' => qSession('id'), 'qId' => $nextQ)));
     }
 
+    /**
+     * Sauvegarde les réponses à un quiz et affiche la bonne réponse
+     *
+     * @return CopixActionReturn
+     */
+    public function processSaveAndGetAnswer()
+    {
+    	if (!$this->flash->has('nextAnsw')) {
+            return $this->error('quiz.errors.badOperation');            
+        }
+
+        // Récupération du quiz
+        $quizData = $this->service('QuizService')->getQuizFromQSession('id');
+
+        // Test de la validité : la question doit être la question courante
+        $qId = (int)$this->request('qId');
+        if ($qId != $this->flash->currentAnsw) {
+            return $this->error('quiz.errors.badOperation');
+        }
+
+        // Récupération des réponses
+        $pResponse = CopixRequest::get('response', false);
+        if (!$pResponse) {
+            $this->flash->error = $this->i18n('quiz.errors.emptyResponse');
+
+            return $this->go('quiz|default|question', array ('id' => qSession('id'), 'qId' => $this->flash->currentAnsw));
+        }
+
+        // Sauvegarde des réponses
+        $this->service('QuizService')->save(
+            $pResponse,
+            $this->flash->currentAnsw,
+            $this->flash->typeAnsw,
+            $this->user
+        );
+
+        // lock test
+        if ($quizData->is_locked == 1) {
+            return CopixActionGroup::process('genericTools|Messages::getError', array ('message'=>CopixI18N::get ('quiz.errors.lock'), 'back'=>CopixUrl::get('quiz||')));
+        }
+
+        return _arRedirect(_url('quiz|default|question', array ('id' => qSession('id'), 'qId' => $qId, 'sRes' => 1)));
+    }
+    
     public function processEndQuestions()
     {
         $pId = CopixRequest::getInt('id', false);
@@ -402,10 +463,8 @@ class ActionGroupDefault extends enicActionGroup
             return CopixActionGroup::process('quiz|default::Quiz', array ('id' => $pId));
         }
         $ppo = new CopixPPO();
-        CopixHTMLHeader::addCSSLink (_resource("styles/module_quiz.css"));
         return _arPPO($ppo, 'end_questions.tpl');
     }
-
 }
 
 

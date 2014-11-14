@@ -103,6 +103,24 @@ class soapserverservice
     }
 
     /**
+     * Activate Coreprim for a class
+     * 
+     * @param int $class_id
+     */
+    public function activateCoreprim($class_id){
+        $this->accountService->activateCoreprim($class_id);
+    }
+    
+    /**
+     * Disable Coreprim
+     * 
+     * @param int $class_id
+     */
+    public function disableCoreprim($class_id){
+        $this->accountService->disableCoreprim($class_id);
+    }
+    
+    /**
      * Activate class (remove trial period)
      * 
      * @param soapClassModel $class

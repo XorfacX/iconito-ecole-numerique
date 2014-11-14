@@ -1,0 +1,1 @@
+ALTER TABLE `kernel_limits_urls` ADD `base_theme` VARCHAR(50) NULL AFTER `theme`;

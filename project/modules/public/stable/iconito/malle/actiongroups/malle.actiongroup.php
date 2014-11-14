@@ -178,7 +178,7 @@ class ActionGroupMalle extends CopixActionGroup
         $ppo->id = $this->getRequest ('id', null);
         $ppo->folder = $this->getRequest ('folder', 0);
         $ppo->uploadMaxSize = CopixConfig::get ('malle|uploadMaxSize');
-        return _arPPO ($ppo, array ('template'=>'popup_addfile.tpl', 'mainTemplate'=>'main|main_fancy.php'));
+        return _arPPO ($ppo, array ('template'=>'popup_addfile.tpl', 'mainTemplate'=>'main|main_popup.php'));
     }
 
     // POPUP D'AJOUT DE DOSSIER SUR BOUTON DE MENU
@@ -188,7 +188,7 @@ class ActionGroupMalle extends CopixActionGroup
         $ppo = new CopixPPO ();
         $ppo->id = $this->getRequest ('id', null);
         $ppo->folder = $this->getRequest ('folder', 0);
-        return _arPPO ($ppo, array ('template'=>'popup_addfolder.tpl', 'mainTemplate'=>'main|main_fancy.php'));
+        return _arPPO ($ppo, array ('template'=>'popup_addfolder.tpl', 'mainTemplate'=>'main|main_popup.php'));
     }
 
     // POPUP DE COPIE SUR BOUTON DE MENU
@@ -199,7 +199,7 @@ class ActionGroupMalle extends CopixActionGroup
         $ppo->id = $this->getRequest ('id', null);
         $ppo->folder = $this->getRequest ('folder', 0);
         $ppo->combofoldersdest = CopixZone::process ('malle|combofolders', array('malle'=>$ppo->id, 'folder'=>$ppo->folder, 'fieldName'=>'folderDest', 'attribs'=>'multiple size="6" style="width: 100%;"'));
-        return _arPPO ($ppo, array ('template'=>'popup_copyitems.tpl', 'mainTemplate'=>'main|main_fancy.php'));
+        return _arPPO ($ppo, array ('template'=>'popup_copyitems.tpl', 'mainTemplate'=>'main|main_popup.php'));
     }
 
     // POPUP DE DEPLACEMENT SUR BOUTON DE MENU
@@ -210,7 +210,7 @@ class ActionGroupMalle extends CopixActionGroup
         $ppo->id = $this->getRequest ('id', null);
         $ppo->folder = $this->getRequest ('folder', 0);
         $ppo->combofoldersdest = CopixZone::process ('malle|combofolders', array('malle'=>$ppo->id, 'folder'=>$ppo->folder, 'fieldName'=>'folderDest', 'attribs'=>'multiple size="6" style="width: 100%;"'));
-        return _arPPO ($ppo, array ('template'=>'popup_moveitems.tpl', 'mainTemplate'=>'main|main_fancy.php'));
+        return _arPPO ($ppo, array ('template'=>'popup_moveitems.tpl', 'mainTemplate'=>'main|main_popup.php'));
     }
 
     // POPUP DE SUPPRESSION SUR BOUTON DE MENU
@@ -220,7 +220,7 @@ class ActionGroupMalle extends CopixActionGroup
         $ppo = new CopixPPO ();
         $ppo->id = $this->getRequest ('id', null);
         $ppo->folder = $this->getRequest ('folder', 0);
-        return _arPPO ($ppo, array ('template'=>'popup_deleteitems.tpl', 'mainTemplate'=>'main|main_fancy.php'));
+        return _arPPO ($ppo, array ('template'=>'popup_deleteitems.tpl', 'mainTemplate'=>'main|main_popup.php'));
     }
 
    /**
@@ -239,7 +239,7 @@ class ActionGroupMalle extends CopixActionGroup
         $ppo = new CopixPPO ();
         $ppo->id = $this->getRequest ('id', null);
         $ppo->folder = $this->getRequest ('folder', 0);
-        return _arPPO ($ppo, array ('template'=>'popup_deleteitems.tpl', 'mainTemplate'=>'main|main_fancy.php'));
+        return _arPPO ($ppo, array ('template'=>'popup_deleteitems.tpl', 'mainTemplate'=>'main|main_popup.php'));
     }
 
 
@@ -1685,7 +1685,7 @@ class ActionGroupMalle extends CopixActionGroup
 
     $ppo->rForm = new CopixPPO ();
     $ppo->rForm->url = 'http://';
-    return _arPPO ($ppo, array ('template'=>'popup_addweb.tpl', 'mainTemplate'=>'main|main_fancy.php'));
+    return _arPPO ($ppo, array ('template'=>'popup_addweb.tpl', 'mainTemplate'=>'main|main_popup.php'));
   }
 
 

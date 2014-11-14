@@ -32,16 +32,6 @@ class ZoneGetBlogCss extends CopixZone
                     $file = $hisFile;
                 } else {	// CSS de base
                     //$file = COPIX_WWW_PATH.CopixConfig::get ('blog|cssPath').$blog->logo_blog;
-
-                    $parent = Kernel::getModParentInfo( "MOD_BLOG", $blog->id_blog);
-                    //print_r($parent);
-                    switch ($parent['type']) {
-                        case 'BU_CLASSE' : 	$file = 'styles/module_blog_classe.css'; break;
-                        case 'BU_VILLE' : 	$file = 'styles/module_blog_ville.css'; break;
-                        case 'BU_ECOLE' : 	$file = 'styles/module_blog_ecole.css'; break;
-                        case 'BU_GRVILLE' : $file = 'styles/module_blog_grville.css'; break;
-                        default : 					$file = 'styles/module_blog_groupe.css'; break;
-                    }
                 }
                 //print_r("file=$file");
                 if (file_exists($file)) {

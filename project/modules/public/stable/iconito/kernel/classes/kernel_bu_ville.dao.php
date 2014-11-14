@@ -1,9 +1,21 @@
 <?php
 
-class DAORecordKernel_bu_ville
+use \ActivityStream\Client\Model\Resource;
+use \ActivityStream\Client\Model\ResourceInterface;
+
+class DAORecordKernel_bu_ville implements ResourceInterface
 {
+  /** @var array Groupes de villes, à ne pas confondre avec les groupements de villes */
   protected $_citiesGroup = null;
 
+  /** @var array les groupements de villes (notion en dehors de l'arbre des ressources) */
+  protected $groupementsVilles = null;
+
+  /**
+   * Retoune les groupes de villes pour la ville courante
+   *
+   * @return array
+   */
   public function getCitiesGroup ()
   {
     if (is_null($this->_citiesGroup)) {
@@ -14,6 +26,49 @@ class DAORecordKernel_bu_ville
     }
 
     return $this->_citiesGroup;
+  }
+
+  /**
+   * Retourne les groupements de villes
+   *
+   * @return array
+   */
+  public function getGroupementsVilles()
+  {
+    if (null === $this->groupementsVilles) {
+      $this->groupementsVilles = _ioDAO('regroupements|grvilles')->getGroupementByVille($this);
+    }
+
+    return $this->groupementsVilles;
+  }
+
+  /**
+   * Return a resource from the current Object
+   *
+   * @return Resource
+   */
+  public function toResource()
+  {
+    $resource = new EcoleNumeriqueActivityStreamResource(
+      $this->nom,
+      get_class($this),
+      $this->id_vi
+    );
+
+    $attributes = array(
+      'date_creation',
+      'id_grville',
+      'canon',
+    );
+
+    $attributesValues = array();
+    foreach ($attributes as $attribute) {
+      $attributesValues[$attribute] = $this->$attribute;
+    }
+
+    $resource->setAttributes($attributesValues);
+
+    return $resource;
   }
 }
 

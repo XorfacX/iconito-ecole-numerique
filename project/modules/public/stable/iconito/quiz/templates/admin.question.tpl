@@ -3,19 +3,33 @@
 jQuery(document).ready(function($){
                 // SORTABLE ANSWERS
         $("#qf-answers").sortable();
-        $("#qf-answers").disableSelection();
+//        $("#qf-answers").disableSelection();
 
-        $(".button-drag").hover(function(){
+        var addHoverHandlerEvents = function(handlers) {
+            handlers.hover(function(){
                 $(this).parent(".qf-answer").addClass('drag-on');
-        }, function(){
+            }, function(){
                 $(this).parent(".qf-answer").removeClass('drag-on');
-        });
+            });
+        }
+
+        addHoverHandlerEvents($(".button-drag"));
 
                 // ADD NEW ANSWER ITEM
         $("#qf-addanswer").click(function(){
-                        $("#qf-answers .qf-answer:last").after($("#qf-answer-tpl").html());
-                        $("#qf-answers .qf-answer:last .qf-content").focus();
-                        return false;
+            // Création de la nouvelle ligne
+            var newLine = $($("#qf-answer-tpl").html());
+
+            // Insertion de cette nouvelle ligne après toutes les autres
+            $("#qf-answers .qf-answer:last").after(newLine);
+
+            // Ajout des évènement de hover
+            addHoverHandlerEvents(newLine.find('.button-drag'));
+
+            //Focus sur le champ de la dernière ligne ajoutée
+            newLine.find('.qf-content').focus();
+
+            return false;
         });
 
                 // DELETE ANSWER ITEM
@@ -30,9 +44,9 @@ jQuery(document).ready(function($){
             $("#qf-answers li").each(function(){
                 //get the values :
                 var mainct = $(this).children(".qf-content").val();
-                var order = $(this).index("#qf-answers li");
+                var position = $(this).index("#qf-answers li");
                 var correct = ($(this).children(".qf-correct").is(":checked")) ? 1 : 0;
-                var finalValue = mainct+'###'+correct+'###'+order;
+                var finalValue = mainct+'###'+correct+'###'+position;
                 $(this).children(".qf-content").val(finalValue);
                 return true;
             });
@@ -45,7 +59,7 @@ jQuery(document).ready(function($){
     <li class="sb-step-first">
         <a href="{copixurl dest="quiz|admin|list"}" class="sb-list"></a>
     </li>
-    <li class="sb-step"><a href="{copixurl dest="quiz|admin|modif" id=$quiz.id qaction="modif"}">{i18n key="quiz.form.edit" noEscape=1}</a></li>
+    <li class="sb-step"><a href="{copixurl dest="quiz|admin|modif" id=$ppo->quiz.id qaction="modif"}">{i18n key="quiz.form.edit" noEscape=1}</a></li>
     <li class="sb-step-active">{i18n key="quiz.question.edit" noEscape=1}</li>
     <li class="sb-message">
 		{if !empty($ppo->success)}
@@ -66,13 +80,14 @@ jQuery(document).ready(function($){
     <ul>
 	{* $ppo->error|@print_r *} 
 	{if isset($ppo->error.name)}<li>{$ppo->error.name}</li>{/if}
+	{if isset($ppo->error.answer_detail)}<li>{$ppo->error.answer_detail}</li>{/if}
 	{if isset($ppo->error.resp.content)}<li>{$ppo->error.resp.content}</li>{/if}
 	{if isset($ppo->error.resp.correct)}<li>{$ppo->error.resp.correct}</li>{/if}
     </ul>
 </div>
 {/if}
 <div class="content-panel content-info">
-    <a href="{copixurl dest="quiz|admin|modif" id=$quiz.id qaction="modif"}" class="button-reload">
+    <a href="{copixurl dest="quiz|admin|modif" id=$ppo->quiz.id qaction="modif"}" class="button-reload">
         <strong>{i18n key="quiz.admin.goBackToQuiz" noEscape=1} </strong>
     </a>({i18n key="quiz.form.editmsg" noEscape=1})
 </div>
@@ -80,14 +95,14 @@ jQuery(document).ready(function($){
     <div class="content-panel content-panel-edit">
         <span class="quiz-itemlist">{i18n key="quiz.question.question" noEscape=1}</span><br/>
         <label for="aw-name">{i18n key="quiz.question.title" noEscape=1}</label>
-        <input type="text" class="qf-title" id="aw-name" name="aw-name" value="{$ppo->question.name}"/><br />
+        <input type="text" class="qf-title" id="aw-name" name="aw-name" value="{$ppo->question.name|escape}"/><br />
         <label for="aw-content">{i18n key="quiz.question.detail" noEscape=1}</label>
         <textarea class="qf-description" id="aw-content" name="aw-content">{$ppo->question.content}</textarea>
-                {$ppo->addPicPopup}
+        {$ppo->addPicPopup}
         <!-- process data's, integrity check by server side sessions storage -->
         <input type="hidden" name="aw-id" value="{$ppo->id}" />
     </div>
-    <div class="content-panel right">
+    <div class="content-panel txtright">
         <input type="submit" class="button button-save" value="{i18n key="quiz.question.save" noEscape=1}"/>
     </div>
 </form>
@@ -111,7 +126,8 @@ jQuery(document).ready(function($){
 
         <div>
 		{i18n key="quiz.question.answersSort" noEscape=1}<br/>
-		{i18n key="quiz.question.answersChoose" noEscape=1}<br/><br/>
+		{i18n key="quiz.question.answersChoose" noEscape=1}<br/>
+		<p class="mesgInfo">{i18n key="quiz.question.answersChooseWarning" noEscape=1}</p>
         </div>
 
         <ul id="qf-answers">
@@ -123,12 +139,12 @@ jQuery(document).ready(function($){
             <li class="qf-answer">
                 <a class="button-drag"></a>
                 <input type="checkbox" class="qf-correct" name="qf-correct" {if $resp.correct == 1} checked="checked" {/if} />
-                <input type="text" class="qf-content" name="qf-content[]" value="{$resp.content}"/>
+                <input type="text" class="qf-content" name="qf-content[]" value="{$resp.content|escape}"/>
                 <button class="qf-delanswer button button-delete">{i18n key="quiz.question.answersDelete" noEscape=1}</button>
             </li>
 			{/foreach}
 		{else}
-		{* No Answer defined *}	
+		{* No Answer defined *}
             <li class="qf-answer">
                 <a class="button-drag"></a>
                 <input type="checkbox" class="qf-correct" name="qf-correct" />
@@ -138,11 +154,19 @@ jQuery(document).ready(function($){
 		{/if}
 
         </ul>
-        <div class="left">
+        <div class="txtleft">
             <button id="qf-addanswer" class="button button-add">{i18n key="quiz.question.answersAdd" noEscape=1}</button>
         </div>
     </div>
-    <div class="content-panel right">
+
+    {if $ppo->quiz.opt_show_results == 'each'}
+        <div class="content-panel content-panel-edit">
+            <label class="quiz-itemlist" for="aw-content">{i18n key="quiz.question.answerDetail" noEscape=1}</label> 
+            <em>{i18n key="quiz.question.answerInformation" noEscape=1}</em>
+            <textarea class="qf-description" id="answer-detail" name="answer-detail">{$ppo->answerDetail}</textarea>
+        </div>
+    {/if}
+    <div class="content-panel txtright">
         <input type="submit" class="qf-submit button button-save" value="{i18n key="quiz.question.answersSave" noEscape=1}"/>
     </div>
 </form>

@@ -1,0 +1,441 @@
+/**
+ * module_gestionautonome.css
+ * Module de Gestion des usagers
+ *
+ * @package		EN2011
+ * @cdate 		21.12.2010
+ * @mdate		16.08.2011
+ * @author		Philippe Roser <proser@cap-tic.fr>
+ */
+
+
+/******************************************************************************/
+/* Global */
+p.items-count {font-weight:bold;}
+.hidden {display:none;}
+.contentLinked{
+	float:right;
+	margin:10px; padding:10px; border:2px solid #fff; border-radius:8px;
+	width:45%; min-height:187px;
+	font-size:0.9em;
+}
+.contentLinked h3 {margin-top:0;}
+#gestionautonome #submenu .menuitems ul li a {width:125px;}
+/* End Global */
+/******************************************************************************/
+
+
+
+fieldset.leftfield {
+  margin-right: 3em;
+  border:1px solid #DDD;
+  -moz-border-radius:6px 6px 6px 6px;
+}
+
+/*
+p.breadcrumbs {
+  font-size:0.8em;
+} 
+*/
+
+
+/******************************************************************************/
+/* Forms */
+div.submit {
+	clear:both;
+	margin:10px 0;
+	text-align:center;
+}
+div.submit input, div.submit a.button {margin:0 5px 0 0;}
+input.short-text {width:30px;}
+input.long-text {width:240px;}
+form .formExample {
+	padding:0 0 0 5px;
+	font-size:0.8em; font-style:italic;
+}
+form fieldset {
+	margin:5px 0; border:2px solid #fff; border-radius:8px;
+}
+
+/* New styles */
+#edit_class .field {
+	clear:both;
+	margin:0 0 2px;
+}
+#edit_class .field label, .contentLinked .field .label {
+	display:block;
+	float:left;
+	margin:0;
+	width:29%;
+}
+#edit_class .field label {width:19%;}
+#edit_class .field p.input, .contentLinked .field .input {margin:0 0 0 19%;}
+#edit_class .field p.input label, 
+#edit_class .field p.input label {
+	display:inline;
+	float:none;
+	padding:0 10px 0 0;
+	width:auto;
+}
+#new-password-link {margin:5px 0 5px 150px;}
+/* Old styles */
+label.form_libelle {
+  font-size:12px;
+  font-weight:bold;
+  vertical-align:top;
+  float: left;
+  width: 145px;
+}
+
+div.field {
+	clear:both;
+  padding-bottom: 2px;
+}
+
+input.short-text {
+  width: 30px;
+}
+
+input.text {
+  width: 200px;
+}
+
+input.long-text {
+  width: 240px;
+}
+#withPersonInCharge +label {font-weight:bold;}
+/* End Forms */
+/******************************************************************************/
+
+
+
+/******************************************************************************/
+/* Tree */
+#tree {
+  float:left;
+  width:43%;
+  margin:1px; padding:5px;
+}
+#tree #treeView {
+    margin:10px 0; padding:5px; border:3px solid #ddd; border-radius:8px;
+    background:#fff;
+	font-size:0.9em;
+}
+#tree #treeView > ul {
+	margin:0; padding:0;
+}
+#tree ul {
+    padding-left:20px;
+    list-style-type: none;
+}
+#treeView li {line-height:2em;}
+#treeView li a {padding:2px 4px;}
+#treeView li a.node {
+	border:2px solid #fff; border-radius:6px;
+}
+#treeView li a.current {
+	background:#fff; color:#000;
+	border:2px solid #BAD521; border-radius:6px;
+}
+#treeView li a.node:hover {
+	border:2px solid #ddd; border-radius:6px;
+}
+#tree li.collapsed ul {
+  display:none;
+}
+ul.tree a.toggle-node span {
+  left:-5000px;
+  position:absolute;
+}
+ul.tree a.toggle-node { 
+  position: absolute;
+  display:block;
+  float:left;
+  height:20px;
+  width:14px;
+  background:url(../../../themes/default/images/sort_right_off.png) no-repeat scroll left center transparent; 
+}
+ul.tree a.expand{
+  background:url(../../../themes/default/images/sort_down_off.png) no-repeat scroll left center transparent;
+}
+ul.tree a.after-expand {
+  margin-left: 18px;
+}
+ul.tree a.classroom {
+  margin-left:10px;
+}
+/* End Tree */
+/******************************************************************************/
+
+
+/******************************************************************************/
+/* Data */
+#column-data {
+	float:right;
+	padding:6px;
+	width:52%;
+}
+
+
+
+
+.column-left {
+  float: left;
+  width: 50%;
+}            
+
+.column-right {
+  float: right;
+  width: 50%; 
+}
+/*
+#person-link div.field {
+  clear: both;
+}
+
+#person-link div.person-login label {
+  width: 300px;
+}
+
+#person-link div.agreement-check {
+  margin: 0 50px 0 300px;
+}
+
+#person-link div.agreement-check input {
+  margin-right: 10px;
+}
+
+#person-link div.student-datas {
+  margin: 20px 0;
+}
+
+#person-link div.student-datas label.form_libelle {
+  font-weight: normal;
+}
+
+#person-link div.student-datas div.label {
+  float: left;
+  width: 300px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+#person-link div.student-datas div.datas {
+  float: left;
+}
+
+#person-link div.student-datas hr.clear {
+  visibility: hidden;
+  clear: both;
+  margin: 0;
+  padding: 0;
+}
+/* End Data */
+/******************************************************************************/
+
+
+/******************************************************************************/
+/* Tabs */
+#tabs .ui-tabs-nav li {font-size:1em;}
+#tabs .ui-tabs-nav li.ui-tabs-selected {
+	border:5px solid #fff;
+	font-weight:bold;
+	line-height:0.9;
+}
+#tabs .ui-tabs-nav li.ui-tabs-selected span {color:#333;}
+#column-data .ui-tabs {margin:0 0 10px 0;}
+#column-data .ui-tabs .ui-tabs-panel {
+	padding:1em 0.4em 0.5em;
+	background:#fff;
+}
+/* End tabs */
+/******************************************************************************/
+
+
+/******************************************************************************/
+/* Persons Data */
+#gestionautonome table {
+	border:1px solid #ddd; border-radius:8px;
+	width:100%;
+	background:#fff; color:#333;
+	table-layout:fixed;
+}
+#gestionautonome #column-data > table {
+	margin:0 0 10px;
+	font-size:0.9em;
+}
+#gestionautonome table th {
+	padding:2px;
+	background:#eee;
+	text-align:center;
+}
+#gestionautonome table td {padding:2px; word-wrap:break-word;}
+#gestionautonome table tr.odd { background:#efefef;}
+#gestionautonome table .sexe {width:35px; text-align:center;}
+#gestionautonome table td.actions {text-align:center;}
+/* End Persons Data */
+/******************************************************************************/
+
+
+/******************************************************************************/
+/* Actions */
+#treeActions a, #personsActions a {
+	margin:0 5px 5px 0;
+}
+#personsActions h3 {
+	margin:1em 0 0.5em;
+	font-size:1em;
+}
+#search-form input[type="text"] {min-width:170px;}
+/* End Actions */
+/******************************************************************************/
+
+
+/******************************************************************************/
+/* Affect */
+#origin .ui-tabs-nav li {font-size:1em;}
+#origin.ui-widget input, 
+#origin.ui-widget select, 
+#origin.ui-widget textarea, 
+#origin.ui-widget button {font-size:0.9em; font-family:inherit;}
+#origin .ui-tabs-nav li.ui-tabs-selected {
+	border:2px solid white;
+	font-weight:bold; line-height:1.1;
+}
+.ui-widget-content {color:inherit;}
+#origin.ui-tabs .ui-tabs-panel {padding:.5em 0.4em;}
+#filter-form {
+	margin-top:5px;
+	min-height:160px;
+	background:url(../../../themes/default/images/icon-128/action-next.png) no-repeat 50% 100%;
+}
+#filter-form .mesgInfo {
+	float:right;
+	width:306px;
+}
+.filterClass {
+  float:left;
+  margin:0 0 10px 0; padding:5px; border:3px solid #ddd; border-radius:8px;
+  width:40%;
+  background:#fff;
+}
+#destination {float:right;}
+.filterClass .field label {
+	width:30%;
+}
+.filterClass h3 {margin:.2em 0 .3em;}
+.filterClass dl {margin:10px 0 5px;}
+.filterClass dl dt {
+	clear:both; float:left;
+	color:#333;
+}
+.filterClass dl dd {margin:0 0 0px 35%;}
+.filterClass dl dd, .filterClass dl dt {line-height:1.6em;}
+
+#assignments {
+	clear:both;
+	overflow:hidden;
+}
+#persons-to-assign {
+  float: left;
+  width: 45%;
+}
+#persons-to-assign ul, #assigned-persons ul {
+	padding:0; margin:0;
+	list-style:none;
+}
+#assigned-persons {
+	width:45%;
+  margin-left: 55%;
+}
+.classroom {
+	margin:0 0 1em 0; padding:5px; border:3px solid #ddd; border-radius:8px;
+	background:#fff;
+}
+.classroom h3 {
+	margin:0; padding:0;
+	font-size:1em;
+}
+.classroom h3 a {
+	padding:0 0 0 18px;
+	background:url(../images/sort_right_off.png) no-repeat 0 50%;
+	cursor:move;
+}
+.classroom h3 a span.level {
+	color:#354E81;
+}
+.classroom h3 a span.count {
+	color:#777;
+	font-weight:normal; font-size:0.85em;
+}
+.classroom a.classroomOpen {
+	background-image:url(../images/sort_down_off.png);
+}
+.class-box {
+    margin:0 0 10px 10px;
+}
+.class-box li {
+	margin:3px 0 0; padding:2px 5px;
+	background:#fff;
+	list-style:inside circle;
+}
+#persons-to-assign .class-box li {
+	border:1px solid #ddd; border-radius:8px;
+}
+#persons-to-assign .class-box li:hover {
+	cursor:move;
+}
+
+/* End Affect */
+/******************************************************************************/
+
+
+/******************************************************************************/
+/* Import */
+#student_creation_data textarea {
+	width:99%; height:300px;
+	line-height:1.4;
+}
+#import-csv {
+	float:right;
+	margin:-5px 0 5px;
+}
+#gestionautonome .submit .button-previous {background-color:#f9f9f9;}
+.ui-widget #import-dialog input,
+.ui-widget #import-dialog select,
+.ui-widget #import-dialog textarea,
+.ui-widget #import-dialog button {
+	font-size:1.22em;
+}
+/* End Import */
+/******************************************************************************/
+
+
+/******************************************************************************/
+/* Help */
+#gestionautonome .help {
+	margin:0 0 25px; padding:5px 5px 5px 28px; border:2px solid #49BFCD; border-radius:10px;
+	background:#fff url(../../../themes/default/images/button-action/action_info.png) no-repeat 5px 5%; color:#444;
+	font-size:0.95em;
+}
+#gestionautonome .help pre {
+	margin:10px; padding:4px 8px; border:1px solid #ddd; border-radius:10px;
+}
+#gestionautonome .help code {
+	color:#111;
+	font-family:"Lucida Console", Monaco, monospace; font-size:0.9em;
+}
+#gestionautonome .help .optionnal {
+	color:#09C;
+	font-weight:bold; font-size:1.4em;
+}
+#gestionautonome .help a:link {border-bottom:1px dotted;}
+#gestionautonome .help a:visited {border-bottom:1px dotted #ddd;}
+#gestionautonome .help a:hover {border-bottom:1px solid #49BFCD;}
+#gestionautonome .help a:active {border-bottom:1px dotted;}
+#gestionautonome #accounts-info .help a:link {border:1px solid #49BFCD;}
+#gestionautonome #accounts-info .help a:visited {border:1px solid #ddd;}
+#gestionautonome #accounts-info .help a:hover {border:1px solid #BAD521;}
+#gestionautonome #accounts-info .help a:active {border:1px solid #BAD521;}
+/* End help */
+/******************************************************************************/

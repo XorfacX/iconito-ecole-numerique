@@ -1,5 +1,8 @@
 <?php
 
+_classInclude('activitystream|ecolenumeriqueactivitystreamresource');
+use ActivityStream\Client\Model\ResourceInterface;
+
 /**
  * Surcharge de la DAO Kernel_bu_res
  *
@@ -7,9 +10,54 @@
  * @subpackage Kernel
  */
 
-class DAORecordKernel_bu_res
+class DAORecordKernel_bu_res implements ResourceInterface
 {
   protected $_loginAccount = null;
+
+  /**
+   * Return an resource from the current Object
+   *
+   * @return Resource
+   */
+  public function toResource()
+  {
+    $resource = new EcoleNumeriqueActivityStreamResource(
+      'Responsable',
+      get_class($this),
+      $this->res_numero
+    );
+
+    $attributes = array(
+      'res_numero',
+      'res_nom',
+      'res_nom_jf',
+      'res_prenom1',
+      'res_civilite',
+      'res_id_sexe',
+      'res_id_pcs',
+      'res_profession',
+      'res_id_fam',
+      'res_tel_dom',
+      'res_tel_gsm',
+      'res_tel_pro',
+      'res_mel',
+      'res_num_rue',
+      'res_num_seq',
+      'res_adresse1',
+      'res_adresse2',
+      'res_code_postal',
+      'res_commune'
+    );
+
+    $attributesValues = array();
+    foreach ($attributes as $attribute) {
+      $attributesValues[$attribute] = $this->$attribute;
+    }
+
+    $resource->setAttributes($attributesValues);
+
+    return $resource;
+  }
 
   public function getLoginAccount ()
   {
@@ -36,6 +84,16 @@ class DAOKernel_bu_res
     public function getParentsInClasse ($classe)
     {
       $query = "SELECT DISTINCT(R.numero) AS id, R.nom, R.prenom1 AS prenom, U.login_dbuser AS login, LI.bu_type, LI.bu_id, R.id_sexe AS sexe FROM kernel_bu_responsable R, kernel_bu_sexe S, kernel_bu_responsables RE, kernel_bu_eleve_affectation EA, kernel_link_bu2user LI, dbuser U WHERE R.id_sexe=S.id_s AND R.numero=RE.id_responsable AND RE.type='responsable' AND RE.id_beneficiaire=EA.eleve AND RE.type_beneficiaire='eleve' AND LI.user_id=U.id_dbuser AND LI.bu_type='USER_RES' AND LI.bu_id=R.numero AND EA.classe=".$classe." AND EA.current = 1 ORDER BY R.nom, R.prenom1";
+      $query = "
+        SELECT DISTINCT(R.numero) AS id, R.nom, R.prenom1 AS prenom, U.login_dbuser AS login, LI.bu_type, LI.bu_id, R.id_sexe AS sexe
+        FROM kernel_bu_responsable R
+        JOIN kernel_bu_sexe S ON R.id_sexe=S.id_s
+        JOIN kernel_bu_responsables RE ON R.numero=RE.id_responsable AND RE.type='responsable' AND RE.type_beneficiaire='eleve'
+        JOIN kernel_bu_eleve_affectation EA ON RE.id_beneficiaire=EA.eleve AND EA.current=1
+        JOIN kernel_link_bu2user LI ON LI.bu_type='USER_RES' AND LI.bu_id=R.numero
+        JOIN dbuser U ON LI.user_id=U.id_dbuser
+        WHERE EA.classe=".$classe."
+        ORDER BY R.nom, R.prenom1";
         return _doQuery($query);
     }
 
@@ -50,6 +108,17 @@ class DAOKernel_bu_res
     public function getParentsInEcole ($ecole)
     {
       $query = "SELECT DISTINCT(R.numero) AS id, R.nom, R.prenom1 AS prenom, U.login_dbuser AS login, LI.bu_type, LI.bu_id FROM kernel_bu_responsable R, kernel_bu_sexe S, kernel_bu_responsables RE, kernel_bu_eleve_admission EA, kernel_link_bu2user LI, dbuser U WHERE R.id_sexe=S.id_s AND R.numero=RE.id_responsable AND RE.type='responsable' AND RE.id_beneficiaire=EA.eleve AND RE.type_beneficiaire='eleve' AND LI.user_id=U.id_dbuser AND LI.bu_type='USER_RES' AND LI.bu_id=R.numero AND EA.etablissement=".$ecole." ORDER BY R.nom, R.prenom1";
+      $query = "
+        SELECT DISTINCT(R.numero) AS id, R.nom, R.prenom1 AS prenom, U.login_dbuser AS login, LI.bu_type, LI.bu_id, R.id_sexe AS sexe
+        FROM kernel_bu_responsable R
+        JOIN kernel_bu_sexe S ON R.id_sexe=S.id_s
+        JOIN kernel_bu_responsables RE ON R.numero=RE.id_responsable AND RE.type='responsable' AND RE.type_beneficiaire='eleve'
+        JOIN kernel_bu_eleve_affectation EA ON RE.id_beneficiaire=EA.eleve AND EA.current=1
+        JOIN kernel_bu_ecole_classe EC ON EC.id=EA.classe
+        JOIN kernel_link_bu2user LI ON LI.bu_type='USER_RES' AND LI.bu_id=R.numero
+        JOIN dbuser U ON LI.user_id=U.id_dbuser
+        WHERE EC.ecole=".$ecole."
+        ORDER BY R.nom, R.prenom1";
         return _doQuery($query);
     }
 

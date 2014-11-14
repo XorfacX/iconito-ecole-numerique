@@ -36,8 +36,8 @@
 {if 0 && $ecole.ALL->eco_web}
 <a target="_blank" href="{$ecole.ALL->eco_web}" title="{$ecole.ALL->eco_web}">{$ecole.ALL->eco_web|truncate:43:"...":true}</a><br />
 {/if}
-{if $ecole.blog}<a title="{i18n key="annuaire.blog"}" href="{$ecole.blog}">{i18n key="annuaire.blog"}</a><a href="{$ecole.blog}" target="_blank"><img alt="{i18n key="public|public.openNewWindow"}" title="{i18n key="public|public.openNewWindow"}" width="12" height="12" src="{copixresource path="img/public/open_window.png"}" /></a><br />{/if}
-<a title="{i18n key="annuaire.fiche"}" href="{copixurl dest="fichesecoles||fiche" id=$ecole.id}">{i18n key="annuaire.fiche"}</a><a class="fancybox" href="{copixurl dest="fichesecoles||fiche" id=$ecole.id popup=1}"><img alt="{i18n key="public|public.openPopup"}" title="{i18n key="public|public.openPopup"}" width="12" height="12" src="{copixresource path="img/public/open_popup.png"}" /></a><br />
+{if $ecole.blog}<a title="{i18n key="annuaire.blog"}" href="{$ecole.blog}">{i18n key="annuaire.blog"}</a><br />{/if}
+<a title="{i18n key="annuaire.fiche"}" href="{copixurl dest="fichesecoles||fiche" id=$ecole.id}">{i18n key="annuaire.fiche"}</a><br />
 
 { if $ecole.directeur }
 <h2>{i18n key="annuaire.directeur"}</h2>

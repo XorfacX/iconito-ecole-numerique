@@ -430,7 +430,7 @@ class ActionGroupAlbum extends CopixActionGroup
         $ppo->file_size_photo = CopixConfig::get ('album|file_size_photo');
 
         // $result = $tplAddPhoto->fetch("addphoto.tpl");
-        return _arPPO ($ppo, array ('template'=>'addphoto.tpl', 'mainTemplate'=>'main|main_fancy.php'));
+        return _arPPO ($ppo, array ('template'=>'addphoto.tpl', 'mainTemplate'=>'main|main_popup.php'));
 
         $tpl->assign ('MAIN', $result);
         $tpl->assign ('TITLE_PAGE', CopixI18N::get ('album.menu.addphoto'));
@@ -447,7 +447,7 @@ class ActionGroupAlbum extends CopixActionGroup
         );
         $tpl->assign ('MENU', $menu );
 
-        // TODO : return _arPPO ($ppo, array ('template'=>'addphoto.tpl', 'mainTemplate'=>'main|main_fancy.php'));
+        // TODO : return _arPPO ($ppo, array ('template'=>'addphoto.tpl', 'mainTemplate'=>'main|main_popup.php'));
         return new CopixActionReturn (COPIX_AR_DISPLAY, $tpl);
     }
 
@@ -511,7 +511,7 @@ class ActionGroupAlbum extends CopixActionGroup
                             'field'=>$ppo->popup_field,
                             'format'=>$ppo->popup_format
                 ) );
-                return _arPPO ($ppo, array ('template'=>'popup_error.tpl', 'mainTemplate'=>'main|main_fancy.php'));
+                return _arPPO ($ppo, array ('template'=>'popup_error.tpl', 'mainTemplate'=>'main|main_popup.php'));
             } else {
                 return CopixActionGroup::process ('genericTools|Messages::getError',
                     array (
@@ -546,7 +546,7 @@ class ActionGroupAlbum extends CopixActionGroup
                 if($ppo->display_mode=='popup') {
                     $ppo->message = CopixI18N::get ('album|album.error.filetype', $_FILES['fichier']['type']);
                     $ppo->back = CopixUrl::get ('album|default|getpopup', array('album_id'=>_request("album_id"), 'mode'=>$ppo->display_mode, 'field'=>$ppo->popup_field, 'format'=>$ppo->popup_format));
-                    return _arPPO ($ppo, array ('template'=>'popup_error.tpl', 'mainTemplate'=>'main|main_fancy.php'));
+                    return _arPPO ($ppo, array ('template'=>'popup_error.tpl', 'mainTemplate'=>'main|main_popup.php'));
                 } else {
                     return CopixActionGroup::process ('genericTools|Messages::getError',
                         array ('message'=>CopixI18N::get ('album|album.error.filetype', $_FILES['fichier']['type']),
@@ -907,7 +907,7 @@ class ActionGroupAlbum extends CopixActionGroup
         CopixHTMLHeader::addCSSLink (_resource("styles/module_album.css"));
         CopixHTMLHeader::addCSSLink (_resource("styles/module_album_popup.css"));
 
-        return _arPPO ($ppo, array ('template'=>'popup_ppo.tpl', 'mainTemplate'=>'default|main_popup.php'));
+        return _arPPO ($ppo, array ('template'=>'popup_ppo.tpl', 'mainTemplate'=>'main|main_popup.php'));
 
     }
 
@@ -1001,7 +1001,7 @@ class ActionGroupAlbum extends CopixActionGroup
             CopixHTMLHeader::addOthers ('<meta HTTP-EQUIV="REFRESH" content="0; url='.CopixUrl::get ('album||vignettes', array('album'=>$pAlbum, 'dossier'=>$pDossier, 'key'=>$pKey)).'"');
 
         $ppo->CAN_CLOSE = false;
-        return _arPPO ($ppo, array ('template'=>'vignettes_ppo.tpl', 'mainTemplate'=>'default|main_popup.php'));
+        return _arPPO ($ppo, array ('template'=>'vignettes_ppo.tpl', 'mainTemplate'=>'main|main_popup.php'));
 
         //return new CopixActionReturn (COPIX_AR_DISPLAY_IN, $tpl, "album|vignettes.tpl" );
     }
@@ -1215,7 +1215,7 @@ class ActionGroupAlbum extends CopixActionGroup
         $ppo->file_size_zip = CopixConfig::get ('album|file_size_zip');
 
         // $result = $tplAddPhoto->fetch("addzip.tpl");
-        return _arPPO ($ppo, array ('template'=>'addzip.tpl', 'mainTemplate'=>'main|main_fancy.php'));
+        return _arPPO ($ppo, array ('template'=>'addzip.tpl', 'mainTemplate'=>'main|main_popup.php'));
 
         $tpl->assign ('MAIN', $result);
         $tpl->assign ('TITLE_PAGE', CopixI18N::get ('album.title.addzip'));

@@ -155,7 +155,7 @@ function viewUserXY (type, id, i18nwaiting, x, y ) {
   wWindow = ($.browser.msie) ? $(window).width() : window.innerWidth;
   hWindow = ($.browser.msie) ? $(window).height() : window.innerHeight;
   $('#divUserProfil').css('width', '50px');
-  $('#divUserProfil').html('<DIV ALIGN="CENTER"><IMG SRC="'+getRessourcePathImg+'annuaire/spinner.gif" WIDTH="16" HEIGHT="16" BORDER="0" /></DIV>');
+  $('#divUserProfil').html('<div class="center><img src="'+getRessourcePathImg+'annuaire/spinner.gif" width="16" height="16" border="0" /></div>');
   $.ajax({
     url: getActionURL('annuaire|default|getUserProfil'),
     data: 'type='+type+'&id='+id,

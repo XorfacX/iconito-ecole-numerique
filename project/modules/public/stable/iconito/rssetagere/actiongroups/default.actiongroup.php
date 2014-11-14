@@ -20,8 +20,15 @@
 
         public function processDefault()
         {
+            _classInclude('sysutils|coreprimService');
+            $node = _sessionGet('myNode');
+            $coreprim = new coreprimService();
+            if($coreprim->classHasAccess($node['id']) == 0){
+                return CopixActionGroup::process('genericTools|Messages::getError', array('message' => CopixI18N::get('kernel|kernel.error.noRights'), 'back' => CopixUrl::get()));
+            }
+            
             $ppo = new CopixPPO();
-
+            
             if(!$this->service->loadxml()){
                 return $this->error('rssetagere.notfound', true, '||');
             }

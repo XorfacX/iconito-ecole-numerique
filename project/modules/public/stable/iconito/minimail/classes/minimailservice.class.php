@@ -39,6 +39,8 @@ class MinimailService
         $newMp->is_deleted = 0;
         $DAOminimail_from->insert ($newMp);
 
+        $sender = Kernel::getUserInfo("ID", $from_id, array('strict' => true));
+
         if ($newMp->id!==NULL) {
             //print_r($newMp);
             // On parcourt chaque destinataire
@@ -52,6 +54,14 @@ class MinimailService
                 $newDest->is_replied = 0;
                 $newDest->is_deleted = 0;
                 $DAOminimail_to->insert ($newDest);
+
+                $recipient = Kernel::getUserInfo("ID", $to_id, array('strict' => true));
+
+                CopixEventNotifier::notify('sendMinimail', array(
+                    'minimail' => $newDest,
+                    'recipient' => $recipient,
+                    'sender' => $sender
+                ));
 
                 // ======= Alerte mail ===============
                 // On vérifie que l'envoi de mails est activé, qu'un serveur SMTP est configuré, que le destinataire a coché l'option "etre prêvenu par mail" et qu'il a renseigné un mail
@@ -72,6 +82,7 @@ class MinimailService
                     }
                 }
                 // ======= Fin alerte mail ===============
+
             }
             $res = $newMp->id;
             if ($res) {
@@ -209,21 +220,6 @@ class MinimailService
         return array("title"=>$title, "message"=>$message);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     /**
      * D�termine si la pr�visualisation d'une pi�ce jointe est possible (cas des images)
      *
@@ -258,7 +254,24 @@ class MinimailService
         return $res;
     }
 
+    /**
+     * Retourne vrai si l'utilisateur connecté peut accéder fonctions sécurisées du minimail
+     * @author Jérémy Hubert <jeremy.hubert@isics.fr>
+     * @author Sébastien Cas <sebastien.cas@isics.fr>
+     *
+     * @return bool
+     */
+    public static function hasUserAccess()
+    {
+        // Accès restreint uniquement pour les élèves
+        if (!Kernel::isEleve()) {
+            return true;
+        }
 
+        $daoEleve = _ioDAO('kernel|kernel_bu_ele');
+
+        return $daoEleve->isAuthorizedToAccessModuleByClassroom('MOD_MINIMAIL', _currentUser()->getExtra('id'));
+    }
 }
 
 

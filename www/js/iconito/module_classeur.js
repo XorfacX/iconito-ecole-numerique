@@ -276,7 +276,7 @@ jQuery(document).ready(function($){
   });
 });
 
-function insertDocument (mode, url, image, field, format, htmlDownload, htmlView, i18n_unsupportedFormat, idFile, nomFile, extension, align, size) {
+function insertDocument (mode, url, image, field, format, htmlDownload, htmlView, i18n_unsupportedFormat, idFile, nomFile, extension, align, size, zoom) {
   
   var popup = false;
   var html = '';
@@ -302,10 +302,15 @@ function insertDocument (mode, url, image, field, format, htmlDownload, htmlView
       
       if (jQuery.inArray(extension, pictureTypes) > -1 && mode == 'view') {
         
-        var html = '<img alt="'+nomFile+'" border="0" src="'+image+size+'.'+extension+'"';
-  			  if 			(align == 'L')	html += ' align="left"';
-  			  else if (align == 'R')	html += ' align="right"';
-  			  html += '/>';
+        var html = '';
+		if (zoom == 1)
+			html += '<a href="'+image+'.'+extension+'" class="fancybox">';
+		html += '<img alt="'+nomFile+'" border="0" src="'+image+size+'.'+extension+'"';
+  		if (align == 'L')	html += ' align="left"';
+  		else if (align == 'R')	html += ' align="right"';
+  		html += '/>';
+		if (zoom == 1)
+			html += '</a>';
       }
       
       if (align == 'C') html = '<p style="text-align: center">'+html+'</p>';

@@ -85,8 +85,6 @@ form {
 table.liste {
 	width: 98%;
 	background-color: #FFFFFF;
-	-moz-border-radius: 6px;
-	-webkit-border-radius: 6px;
 	border-radius: 6px;
 }
 tr.liste_footer {
@@ -104,8 +102,6 @@ tr.list_line0 { background-color: #FFFFFF; }
 
 
 div.block {
-	-moz-border-radius: 6px;
-	-webkit-border-radius: 6px;
 	border-radius: 6px;
   background-color:#fff;
   border:1px solid #999;
@@ -128,14 +124,17 @@ div.block hr {
 	padding: 4px;
 	display: none;
 	font-size: 80%;
-	-moz-border-radius: 6px;
-	-webkit-border-radius: 6px;
 	border-radius: 6px;
 	filter: alpha(opacity=97);
 	-moz-opacity: 0.97;
 	opacity: 0.97;
 	width: 150px;
 	z-index:22999;
+}
+#divUserProfil h1 {
+    clear:both;
+    margin-top:0; border:0;
+    font-size:1.5em;
 }
 
 /************************************************

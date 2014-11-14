@@ -1,0 +1,319 @@
+/**
+ * THEMES - module_kernel.css
+ * Mise en forme dashboard/kernel
+ *
+ * @package	Iconito 2010
+ * @cdate 25.01.2010
+ * @mdate 25.01.2010
+ * @author	Stephane Holtz <sholtz@cap-tic.fr>
+ */
+
+
+#kernel {
+	margin-right:250px;
+}
+@media (max-width: 768px) {
+    #kernel {margin-right:0;}
+}
+	
+
+.dashboard-item {
+    padding:5px;
+    overflow:hidden;
+    list-style-position:inside;
+}
+.dashboard-item li {
+	float: left;
+	width: 50%;
+}
+.dashboard-zone-img{
+    float: left;
+    margin: 5px 20px 5px 5px;
+}
+#admindash_lower {
+    font-size: 0.8em;
+    padding: 0.5em;
+}
+.modif_dash{
+    clear:both;
+    float:right;
+	margin:.8em 0 0;
+}
+.socialMedia {
+	float:right;
+	width:45%;
+	border-radius:5px;
+}
+
+a.dashclose {
+	position:absolute; top:5px; right:5px;
+    display:block;
+	width:30px;	height:30px;
+	}
+	
+div.dashboard {
+	position: relative;
+	margin:0; padding:0;
+	}
+
+div.dashpanel {
+	position: relative;
+	padding: 0px;
+	margin: 0px;
+	margin-bottom: 10px;
+	padding: 0px 0px 12px 0px;
+	}
+
+div.dashpanel div.title, div.dashpanel h1.title {
+	position:relative;
+	margin:0; padding:4px 4px 2px 8px; border:0;
+	font-size:1em;
+	background:#E1DCD7;
+	}
+div.dashpanel .title span {
+	font-size: 160%;
+	text-transform:uppercase;
+	}
+
+.kernel div.dashpanel div.content {
+    position:static;
+}
+div.dashpanel div.content {
+	position: relative;
+    overflow: hidden;
+	font-size: 120%;
+	padding: 10px;
+	margin: 0px;
+	background: #f7f7f7;
+	border:2px solid #E1DCD7;
+	border-top:none;
+	min-height: 160px; box-shadow:1px 1px 5px #ddd;
+	}
+
+div.dashpanel div.toolset {
+	float:right;
+	margin: 0px;
+	top: 0px;
+	right:-36px;
+	border:1px solid transparent;
+	background: #E1DCD7;
+	z-index: 999;
+	width: 36px;
+	overflow: hidden;
+	padding:2px 1px 2px 1px;
+	}
+
+div.dashpanel div.toolset-expand {
+	width: 160px;
+	z-index: 999;
+}
+div.tools_left div.dashpanel div.toolset-expand {
+	right:-160px;
+	}
+
+div.dashpanel div.toolset ul {
+	list-style-type: none;
+	list-style-position: outside;
+	list-style-image: none;
+	margin:0;
+	padding:0;
+	opacity:1;
+    text-align:right;
+	}
+
+div.dashpanel div.toolset ul li {
+	position:relative;
+    display: block;
+	white-space: nowrap;
+	margin: 0px;
+	padding: 0px;
+	line-height:1em;
+	}
+	
+div.dashpanel div.toolset ul li.highlight {
+	background: #e1dcd7;
+	}
+	
+div.dashpanel div.toolset ul li.selected {
+	background:#888;
+    border-radius:5px;
+	}
+	
+div.dashpanel div.toolset ul li a {
+	display: block;
+	overflow: hidden;
+	white-space: nowrap;
+	height: 32px;
+/*	min-height: 32px;*/
+	padding: 2px 32px 2px 0;
+	margin: 0px;
+	text-decoration:none;
+	}
+
+div.dashpanel div.toolset ul li a span {
+	display: inline-block;
+	position: relative;
+	vertical-align: middle;
+	white-space: normal;
+	font-size: 110%;
+	}
+	
+div.dashpanel div.toolset ul li a span.label {
+	display: none;
+	}
+	
+div.dashpanel div.toolset-expand ul li a span.label {
+	display: inline-block;
+	}
+
+
+
+
+
+/* CASE DASHBOARD CONTEXT */
+div.tools_left {
+	}
+
+div.tools_left div.dashpanel {
+	width: 94%;
+    overflow:hidden;
+	}
+/* Admin Dashboard min-height */
+div.tools_left .root .content {height:130px;}
+
+/*div.tools_left div.dashpanel div.toolset ul li a {*/
+	/*background-position: 2px 50%;*/
+/*	background-repeat: no-repeat;
+	padding-left: 34px;
+	}*/
+.toolset a:link, .toolset a:visited {color:#fff;}
+.toolset a:hover {color:#333;}
+.toolset a:active {color:#000;}
+
+/* CASE MODULE CONTEXT */
+div.tools_right {
+	}
+div.tools_right div.dashpanel div.toolset {
+    position:absolute; top:42px;
+    float:none;
+	padding:4px 1px 2px 0px;
+}
+/*div.tools_right div.dashpanel div.toolset-expand ul li {
+	text-align: left;
+	}
+*/
+div.tools_right div.dashpanel {
+	width: 96%;
+	}
+	
+/*div.tools_right div.dashpanel div.groupname {
+	float: left;
+	}
+
+div.tools_right div.dashpanel div.mcontrol {
+	float: right;
+	}
+
+div.tools_right div.dashpanel div.wcontrol {
+	float: right;
+	}*/
+
+div.tools_right div.dashpanel .title {
+	padding: 4px 4px;
+	margin: 0px;
+	text-align: center;
+	}
+
+div.tools_right div.dashpanel div.content {
+	border-top: 0px;
+	}
+
+div.tools_right div.dashpanel .title .groupname {
+	padding-top: 2px;
+	font-size: 110%;
+	line-height: 85%;
+	text-transform:uppercase;
+	width: 200px;
+	margin-right: -200px;
+	text-align: left;
+	}
+
+/*div.tools_right div.dashpanel .title div.mcontrol {
+	width: 25px;
+	margin-right: 32px;
+	}
+
+div.tools_right div.dashpanel .title div.wcontrol {
+	width: 25px;
+	margin-left: -25px;
+	}
+
+div.tools_right div.dashpanel div.toolset ul li {
+	text-align: right;
+	}
+*/
+
+/* CASE MODULE IN DASHBOARD CONTEXT */
+.module_dash {
+    overflow:hidden;
+}
+
+/*
+div.tools_right div.dashpanel div.toolset ul li a {
+	background-repeat: no-repeat;
+	padding-right: 32px;
+	}
+div.tools_right div.dashpanel div.toolset-expand ul li a {
+    background-position:99% inherit;
+    -webkit-transition-duration:0;
+    transition-duration:0;
+}
+/* SET GROUPTYPES CONTEXT COLORS */
+	/* Magenta background:#0097ba;
+	/* Jaune background:#FCCD01;
+	/* Vert clair background:#a3c300; 
+	/* Rouge background:#E0002C;
+	/* Vert foncé background:#74A82F;
+	/* Bleu background:#3578A3;
+	/* Gris background:#746970;
+	/* Orange groupes  background:#ffb94e; 
+	/* Orange fourni  background:#f29400;
+	/* Cyan  background:#009EE0; */
+div.dashboard div.bu_classe .title	{ background: #0097ba; color:#fff; }
+/*div.dashboard div.bu_classe div.content	{ border: 2px solid #0097ba; }*/
+div.dashboard div.bu_classe div.toolset	{ background: #0097ba; }
+
+div.dashboard div.bu_ecole .title 	{ background: #a3c300; color:#fff; }
+/*div.dashboard div.bu_ecole div.content 	{ border: 2px solid #a3c300; }*/
+div.dashboard div.bu_ecole div.toolset 	{ background: #a3c300; }
+
+div.dashboard div.club .title	{ background: #f29400; color:#fff; }
+/*div.dashboard div.club div.content	{ border: 2px solid #f29400; }*/
+div.dashboard div.club div.toolset	{ background: #f29400; }
+
+div.dashboard div.user_ele .title	{ background: #0097ba; }
+/*div.dashboard div.user_ele div.content	{ border: 2px solid #009EE0; }*/
+div.dashboard div.user_ele div.toolset	{ background: #0097ba; }
+
+/*div#kernel div.dashpanel div.toolset a.counter span.counter-text {
+    color: #333333;
+    display: block;
+    font-size: 8.5px;
+    font-weight: bold;
+    letter-spacing: -0.1em;
+    padding-top: 3px;
+    text-align: center;
+    width: 18px;
+}
+
+
+div#kernel div.dashpanel div.toolset a.counter {
+    background: url("../../../themes/default/images/mod_user_mail_badge.png") no-repeat scroll 0 0 transparent;
+    display: block;
+    height: 20px;
+    margin: 4px 0 0 4px;
+    padding: 12px 0 0 12px;
+    position: absolute;
+    width: 20px;
+}*/
+

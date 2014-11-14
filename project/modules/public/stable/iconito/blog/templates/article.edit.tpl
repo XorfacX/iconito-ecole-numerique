@@ -13,9 +13,6 @@ function doUrl (pUrl) {
 {/literal}
 
 {if $kind eq "0"}
-
-	
-	
   
 {if $preview}
 <div class="forum_message_preview">
@@ -39,7 +36,7 @@ function doUrl (pUrl) {
 	{ulli values=$errors}
 	</div>
 	{/if}
-	<form name="articleEdit" action="{copixurl dest="blog|admin|validArticle" kind=$kind}" method="post" class="copixForm">
+	<form name="articleEdit" action="{copixurl dest="blog|admin|validArticle" kind=$kind backMinimail=$backMinimail}" method="post" class="copixForm">
 <input type="hidden" name="go" value="preview" />
 	<p class="center">{i18n key='kernel|kernel.fields.oblig' noEscape=1}</p>
 	<table class="editItems">
@@ -73,8 +70,7 @@ function doUrl (pUrl) {
         {inputtext class="datepicker" name="date_bact" value=$article->date_bact|datei18n}
         
         &nbsp;&nbsp;<input type="text" size="5" id="time_bact" name="time_bact" value="{$article->time_bact|escape}" /> {i18n key="blog.get.edit.article.heure_help"}
-<br/>
-{i18n key="blog.get.edit.article.date_help"}
+		{i18n key="blog.get.edit.article.date_help"}
 
 </td>
 	   </tr>
@@ -99,8 +95,12 @@ function doUrl (pUrl) {
 	<input type="hidden" name="id_bact" value="{$article->id_bact}" />
 	<input type="hidden" name="id_blog" value="{$id_blog}" />
 	<input type="submit" class="button button-view" value="{i18n key='blog.button.previsu'}" onClick="goBlog(this.form, 'preview');" />
-	<input type="button" class="button button-cancel" value="{i18n key="copix:common.buttons.cancel"}" onclick="javascript:window.location='{copixurl dest="blog|admin|showBlog" id_blog=$id_blog kind=$kind}'" />
-	<input type="submit" class="button button-confirm" value="{i18n key="copix:common.buttons.ok"}"  onClick="goBlog(this.form, 'save');" />
+        {if $backMinimail eq "1"}
+            <input type="button" class="button button-cancel" value="{i18n key="copix:common.buttons.cancel"}" onclick="javascript:window.location='{copixurl dest="minimail||getListRecv"}'" />
+	{else}
+            <input type="button" class="button button-cancel" value="{i18n key="copix:common.buttons.cancel"}" onclick="javascript:window.location='{copixurl dest="blog|admin|showBlog" id_blog=$id_blog kind=$kind}'" />
+	{/if}
+        <input type="submit" class="button button-confirm" value="{i18n key="copix:common.buttons.ok"}"  onClick="goBlog(this.form, 'save');" />
 		</td></tr>
 	</table>
 	</form>

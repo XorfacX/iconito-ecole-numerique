@@ -1,5 +1,8 @@
 <?php
 
+use ActivityStream\Client\Model\ResourceInterface;
+_classInclude('activitystream|ecolenumeriqueactivitystreamresource');
+
 class DAOGroupe
 {
     /**
@@ -81,6 +84,39 @@ class DAOGroupe
         return $results;
     }
 
+}
+
+class DAORecordGroupe implements ResourceInterface
+{
+    /**
+     * Return an resource from the current Object
+     *
+     * @return Resource
+     */
+    public function toResource()
+    {
+        $resource = new EcoleNumeriqueActivityStreamResource(
+            $this->titre,
+            get_class($this),
+            $this->id
+        );
+
+        $attributes = array(
+            'description',
+            'is_open',
+            'createur',
+            'date_creation'
+        );
+
+        $attributesValues = array();
+        foreach ($attributes as $attribute) {
+            $attributesValues[$attribute] = $this->$attribute;
+        }
+
+        $resource->setAttributes($attributesValues);
+
+        return $resource;
+    }
 }
 
 

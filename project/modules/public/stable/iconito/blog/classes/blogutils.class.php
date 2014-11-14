@@ -169,6 +169,7 @@ function returnAllBlogFunctions()
     $results = array();
     $arMaj = array ('article_bfct', 'archive_bfct', 'find_bfct', 'link_bfct', 'rss_bfct', 'photo_bfct', 'option_bfct');
     foreach ($arMaj as $var){
+        $function = new stdClass();
         $function->value  = $var;
         //$function->text = 'blog|dao.blogfunctions.fields.'.$var;
         $function->text = CopixI18N::get('blog|dao.blogfunctions.fields.'.$var);
@@ -232,4 +233,124 @@ function create_blog_object ($id_blog)
     return $blog;
 }
 
+/**
+ * Envoie un minimail de demande de publication aux propriétaires et à tout les modérateurs du blog
+ * 
+ * @author Aless <agiuliani@cap-tic.fr>
+ * @param integer $id_blog Id du blog
+ * @param integer $id_bact Id de l'article
+ * @param integer $fromId Id du rédacteur
+ * @param string $articleUrl Url de l'article
+ */
+function sendArticleNotif($id_blog, $id_bact, $fromId, $articleUrl)
+{
+    $articleDAO = CopixDAOFactory::create('blog|blogarticle');
+    
+    $userInfo = Kernel::getUserInfo();
+    $auteur = $userInfo["prenom"] . " " . $userInfo["nom"] . " (" . $userInfo["login"] . ")";
+    $title = CopixI18N::get('blog|blog.moderation.mailTitle');
+    $categories = "";
+    $nbCat = 0;
+    foreach($articleDAO->findCategoriesForArticle($id_bact) as $cat) {
+        $nbCat++;
+        if($nbCat > 1) {
+            $categories .= ", ";
+        }
+        $categories .= $cat->name_bacg;
+    }          
+    $message = CopixI18N::get('blog|blog.moderation.mailContent', array($auteur, _ioDAO('blog|blog')->getBlogById($id_blog)->name_blog, $categories, $articleUrl));
+    
+    $tabDest = getModeratorList($id_blog, PROFILE_CCV_MODERATE);
+    
+    $minimailService = & CopixClassesFactory::Create ('minimail|minimailService');
+    return $minimailService->sendMinimail($title, $message, $fromId, $tabDest, CopixConfig::get('minimail|default_format'));
+}
 
+/**
+ * Renvoie la liste des propriétaires et modérateurs du blog
+ * 
+ * @author Aless <agiuliani@cap-tic.fr>
+ * @param integer $id_blog Id du blog
+ * @param string $right le niveau de droit (PROFILE_CCV_MODERATE = 60)
+ */
+function getModeratorList($id_blog, $right)
+{
+    $sql = 'SELECT klb2u.user_id
+            FROM kernel_link_bu2user klb2u
+            JOIN kernel_link_user2node klu2n
+                ON klu2n.user_id = klb2u.bu_id
+                AND klu2n.user_type = klb2u.bu_type
+            JOIN module_blog mb
+                ON mb.id_blog = klu2n.node_id
+            WHERE klu2n.droit >= :right
+            AND mb.id_blog = :blogId';
+    
+    $destList = _doQuery($sql, array(':right' => $right, ':blogId' => $id_blog));
+    $tabDest = array();
+    foreach($destList as $dest) {
+        $tabDest[$dest->user_id] = $dest->user_id;
+    }
+    
+    $bNode = Kernel::getContextParent('MOD_BLOG', $id_blog);
+    $nType = $bNode['type'];
+    $nId = $bNode['id'];
+    
+    $annuaireService = & CopixClassesFactory::Create ('annuaire|AnnuaireService');
+    
+    switch ($nType) {
+        case "BU_CLASSE" :
+            $owners = $annuaireService->getEnseignantInClasse($nId);
+            foreach($owners as $owner) {
+                $user_infos = Kernel::getUserInfo('USER_ENS', $owner['id']);
+                $user_id = $user_infos['user_id'];
+                $tabDest[$user_id] = $user_id;
+            }
+            break;
+        case "BU_ECOLE" :
+            $owners = $annuaireService->getDirecteurInEcole($nId);
+            foreach($owners as $owner) {
+                $user_infos = Kernel::getUserInfo('USER_ENS', $owner['id']);
+                $user_id = $user_infos['user_id'];
+                $tabDest[$user_id] = $user_id;
+            }
+            break;
+        case "CLUB" :
+            $kernelService = & CopixClassesFactory::Create ('kernel|kernel');
+            $owners = $kernelService->getNodeChilds( "CLUB", $nId );
+            foreach($owners as $owner) {
+                if($owner['droit'] >= PROFILE_CCV_ADMIN)
+                {
+                    $user_infos = Kernel::getUserInfo($owner['type'], $owner['id']);
+                    $user_id = $user_infos['user_id'];
+                    $tabDest[$user_id] = $user_id;
+                }
+            }
+            break;
+        case "BU_VILLE" :
+            $kernelService = & CopixClassesFactory::Create ('kernel|kernel');
+            $owners = $kernelService->getNodeChilds( "BU_VILLE", $nId );
+            foreach($owners as $owner) {
+                if($owner['type']== 'USER_VIL')
+                {
+                    $user_infos = Kernel::getUserInfo($owner['type'], $owner['id']);
+                    $user_id = $user_infos['user_id'];
+                    $tabDest[$user_id] = $user_id;
+                }
+            }
+            break;
+        case "BU_GRVILLE" :
+            $kernelService = & CopixClassesFactory::Create ('kernel|kernel');
+            $owners = $kernelService->getNodeChilds( "BU_GRVILLE", $nId );
+            foreach($owners as $owner) {
+                if($owner['type']== 'USER_VIL')
+                {
+                    $user_infos = Kernel::getUserInfo($owner['type'], $owner['id']);
+                    $user_id = $user_infos['user_id'];
+                    $tabDest[$user_id] = $user_id;
+                }
+            }
+            break;
+    }
+    
+    return $tabDest;
+}
