@@ -3,36 +3,36 @@
 * @package   copix
 * @subpackage generaltools
 * @version   $Id: CopixUtils.lib.php,v 1.4 2006-10-04 16:21:18 fmossmann Exp $
-* @author   Croes Gérald, Jouanneau Laurent
+* @author   Croes GÃ©rald, Jouanneau Laurent
 *           see copix.aston.fr for other contributors.
 * @copyright 2001-2005 CopixTeam
 * @link      http://copix.org
 * @licence  http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public Licence, see LICENCE file
 */
 /**
-*  Valide une chaine représentant un email.
-* contrôle de la forme uniquement.
-* @param chaine - la chaine à valider.
+*  Valide une chaine reprÃ©sentant un email.
+* contrÃ´le de la forme uniquement.
+* @param chaine - la chaine Ã  valider.
 * @return si oui ou non la chaine est un email valide.
 */
 function validateEMail($chaine)
 {
-    return ereg('^[-!#$%&\'*+\\./0-9=?A-Z^_`a-z{|}~]+'.
+    return preg_match('|^[-!#$%&\'*+\\./0-9=?A-Z^_`a-z{\|}~]+'.
     '@'.
-    '[-!#$%&\'*+\\/0-9=?A-Z^_`a-z{|}~]+\.'.
-    '[-!#$%&\'*+\\./0-9=?A-Z^_`a-z{|}~]+$',
+    '[-!#$%&\'*+\\/0-9=?A-Z^_`a-z{\|}~]+\.'.
+    '[-!#$%&\'*+\\./0-9=?A-Z^_`a-z{\|}~]+$|',
     $chaine);
 }
 /**
-* construction d'une chaine de paramètres URL.
-* modif automatique des caractères spéciaux.
-* @param array $Params tableau associatif contenant les noms des paramètres et leurs valeurs. de la forme Tab[NomParametre]=valeurParam.
-* @return string la chaine de paramètres.
+* construction d'une chaine de paramÃ¨tres URL.
+* modif automatique des caractÃ¨res spÃ©ciaux.
+* @param array $Params tableau associatif contenant les noms des paramÃ¨tres et leurs valeurs. de la forme Tab[NomParametre]=valeurParam.
+* @return string la chaine de paramÃ¨tres.
 */
 function urlParams ($params, $forhtml=true)
 {
     $stringparam = "";
-    $first = true;//Premier paramètre ?
+    $first = true;//Premier paramÃ¨tre ?
     if (!is_array ($params)){
         return "";
     }
@@ -42,16 +42,16 @@ function urlParams ($params, $forhtml=true)
 
     foreach ($params as $key=>$elem) {
         if (!$first) {
-            //Si pas le premier, ajoute un et commercial pour séparer
+            //Si pas le premier, ajoute un et commercial pour sÃ©parer
             $stringparam .= ($forhtml?'&amp;':'&');
         }
         $first = false;
-        $stringparam .= $key.'='.urlencode($elem);//Ajout du paramète.
+        $stringparam .= $key.'='.urlencode($elem);//Ajout du paramÃ¨te.
     }
     return $stringparam;
 }
 /**
-* retourne un booléen de format divers sous forme de chaine de caractère
+* retourne un boolÃ©en de format divers sous forme de chaine de caractÃ¨re
 * @param  string $param    chaine representant un boolean
 * @return boolean
 */
@@ -88,9 +88,9 @@ function getUrlParams ()
     return urlParams (getUrlTab ());
 }
 /**
-* Capitalisation d'une chaine de caractère
+* Capitalisation d'une chaine de caractÃ¨re
 * @param string $string  la chaine a capitaliser.
-* @return string la chaine transformée.
+* @return string la chaine transformÃ©e.
 */
 function capitalizeString ($string)
 {
@@ -98,13 +98,13 @@ function capitalizeString ($string)
     return strtoupper ($string{0}) . strtolower (substr ($string, 1));
 }
 /**
-* filtre les données d'un tableau d'objets, retourne le tableau filtré.
+* filtre les donnÃ©es d'un tableau d'objets, retourne le tableau filtrÃ©.
 *
 * $tabCriteres['champ'] = array ('extact'/'approx'/'inf_eg'/'sup_eg', 'value')
 * @param   array   $tab   liste d'objets
 * @param   array   $tabCriteres   liste de critere de filtrage
 * @param    string    $sortByField le nom du champ parlequel on souhaite trier les infos.
-* @return   array   tableau filtré
+* @return   array   tableau filtrÃ©
 */
 function tabOfObjectFilter ($tab, $tabCriteres, $sortByField = null)
 {
@@ -127,12 +127,12 @@ function tabOfObjectFilter ($tab, $tabCriteres, $sortByField = null)
                         $include = false;
                     }
                 }else if ($whatToCheck[0] == 'sup_eg'){
-                    //doit être supérieur..... donc échec si inférieur
+                    //doit Ãªtre supÃ©rieur..... donc Ã©chec si infÃ©rieur
                     if ($obj->$fieldToCheck <= $whatToCheck[1]){
                         $include = false;
                     }
                 }else if ($whatToCheck[0] == 'inf_eg'){
-                    //doit être supérieur à fournit, donc échec si sup.
+                    //doit Ãªtre supÃ©rieur Ã  fournit, donc Ã©chec si sup.
                     if ($obj->$fieldToCheck >= $whatToCheck[1]){
                         $include = false;
                     }
@@ -152,7 +152,7 @@ function tabOfObjectFilter ($tab, $tabCriteres, $sortByField = null)
         }
         asort ($tmpTabTri);
 
-        //on a les clefs triées dans l'ordre souhaité, on remplit maintenant le
+        //on a les clefs triÃ©es dans l'ordre souhaitÃ©, on remplit maintenant le
         //tableau de retour
         foreach ($tmpTabTri as $key=>$elem){
             $toReturn[$key] = $tmpFilter[$key];
@@ -165,11 +165,11 @@ function tabOfObjectFilter ($tab, $tabCriteres, $sortByField = null)
     return $toReturn;
 }
 /**
-* kills the french chars é, à, ... with their internationnal équivalent (e, a, ...)
+* kills the french chars Ã©, Ã , ... with their internationnal Ã©quivalent (e, a, ...)
 * @param string $string the string to kill french chars from
-* @return   string    la chaine filtrée
+* @return   string    la chaine filtrÃ©e
 */
 function killFrenchChars ($string)
 {
-    return strtr($string,'àâäéèêëîïÿôöùüçñn','aaaeeeeiiyoouucnn');
+    return strtr($string,'Ã Ã¢Ã¤Ã©Ã¨ÃªÃ«Ã®Ã¯Ã¿Ã´Ã¶Ã¹Ã¼Ã§Ã±n','aaaeeeeiiyoouucnn');
 }
