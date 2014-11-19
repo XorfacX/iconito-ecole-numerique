@@ -414,8 +414,16 @@ function add_photo_fckeditor (field, txt) {
 }
 
 function add_photo_ckeditor (field, txt) {
-	if (oEditor = CKEDITOR.instances[field])
-		oEditor.insertHtml(txt);
+	if (oEditor = CKEDITOR.instances[field]) {
+        //console.log('Insertion dans '+ field + ' de '+txt);
+        //console.log('Contenu actuel : '+ oEditor.getData());
+
+        // La création d'un élément ne fonctionne pas avec createFromHtml() pour les fichiers mp3, on passe donc par un <p> intermédiaire
+        var newElement = new CKEDITOR.dom.element( 'p' );
+        newElement.setHtml(txt);
+        
+        oEditor.insertElement( newElement );
+    }
 }
 
 
