@@ -254,6 +254,9 @@
 #article div.postSummary a:hover, #article div.postContent a:hover {
 	text-decoration:none;
 }
+/* Styles prédéfinis dans l'éditeur */
+.marker {background:yellow;}
+
 
 
 /* =================================
