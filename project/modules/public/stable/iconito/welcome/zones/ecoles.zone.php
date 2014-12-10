@@ -144,6 +144,7 @@ class ZoneEcoles extends enicZone
         $tpl->assign('dispType', $pDispType);
         $tpl->assign('dispFilter', $pDispFilter);
         $tpl->assign('dispHeader', $pDispHeader);
+        $tpl->assign('colonnes', $colonnes);
         $searchInputValue = (empty($search)) ? $this->i18n('welcome.ecoles.search') : $search;
         $tpl->assign('searchInputValue', $searchInputValue);
 
