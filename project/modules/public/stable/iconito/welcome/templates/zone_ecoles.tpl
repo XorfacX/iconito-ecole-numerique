@@ -35,77 +35,96 @@
 </div>
 {/if}
 <div class="content-panel">
+
+<!-- Tri par ville / type -->
 {if $list && $groupBy != 'villeType'}
 
-  {foreach from=$list item=ecole}
+    {assign var=currentCity value=''}
+    {assign var=currentType value=''}
+    
+    {foreach from=$list item=ecole}
 
+        {if $ecole.id>0}
 
-
-  	{if $ecole.id>0}
-
-      {if $parCols>=1}
+        {if $colonnes > 1}
   			{if $i%$parCols eq 0}
-  				{if $i>0}</ul></div>{/if}		
-<div style="float:left;width:{$widthColonne};">
-    <ul>
+  				{if $i > 0}</ul></div>{/if}		
+                <div style="float:left;width:{$widthColonne};">
+                {assign var=currentCity value=''}
+                {assign var=currentType value=''}
   			{/if}
   		{/if}
 
-  		{if $groupBy eq 'type' && $ecole.type neq $lastType}
-        <li class="type">
-  			{if $ecole.type eq 'Elémentaire' || $ecole.type eq 'Elémentaire'}{i18n key="welcome|welcome.ecoles.type.elem"}
-  			{elseif $ecole.type eq 'Primaire'}{i18n key="welcome|welcome.ecoles.type.prim"}
-  			{elseif $ecole.type eq 'Maternelle'}{i18n key="welcome|welcome.ecoles.type.mat"}
-  			{elseif $ecole.type eq 'Centre de Loisirs'}{i18n key="welcome|welcome.ecoles.type.lois"}
-  			{elseif $ecole.type}{$ecole.type|escape}
-  			{/if}
-        </li>
-  		{elseif $groupBy eq 'ville' && $ecole.ville neq $lastVille && $dispHeader}
-        <li class="type">
-  			{$ecole.ville_nom|escape}
-        </li>
-  		{/if}
-
+        {if $groupBy eq 'ville' && $currentCity neq $ecole.ville}
+            {if $currentCity neq ''}</ul>{/if}
+            {if $groupBy eq 'ville' && $ecole.ville neq $lastVille && $dispHeader}
+                <h3>{$ecole.ville_nom|escape}</h3>
+            {/if}
+            <ul>
+            {assign var=currentCity value=$ecole.ville}
+        {/if}
+        
+        {if $groupBy eq 'type' && $currentType neq $ecole.type}
+            {if $currentType neq ''}</ul>{/if}
+            {if $groupBy eq 'type' && $ecole.type neq $lastType && $dispHeader}
+                <h3>{if $ecole.type eq 'Elémentaire' || $ecole.type eq 'Elémentaire'}{i18n key="welcome|welcome.ecoles.type.elem"}
+                {elseif $ecole.type eq 'Primaire'}{i18n key="welcome|welcome.ecoles.type.prim"}
+                {elseif $ecole.type eq 'Maternelle'}{i18n key="welcome|welcome.ecoles.type.mat"}
+                {elseif $ecole.type eq 'Centre de Loisirs'}{i18n key="welcome|welcome.ecoles.type.lois"}
+                {elseif $ecole.type}{$ecole.type|escape}
+                {/if}</h3>
+            {/if}
+            <ul>
+            {assign var=currentType value=$ecole.type}
+        {/if}
+        
         <li>
-  		{if $ajaxpopup}
-            <a class="fancyframe fancyframe-wfixed" href="{copixurl dest="fichesecoles||fiche" id=$ecole.id popup=1}">{$ecole.nom|escape}</a>
-  		{else}
-            <a href="{copixurl dest="fichesecoles||fiche" id=$ecole.id}">{$ecole.nom|escape}</a>
-  		{/if}
-  		{if $dispType && $ecole.type} ({$ecole.type|escape}) {/if}
+            {if $ajaxpopup}
+                <a class="fancyframe fancyframe-wfixed" href="{copixurl dest="fichesecoles||fiche" id=$ecole.id popup=1}">{$ecole.nom|escape}</a>
+            {else}
+                <a href="{copixurl dest="fichesecoles||fiche" id=$ecole.id}">{$ecole.nom|escape}</a>
+            {/if}
+            {if $dispType && $ecole.type} <em>({$ecole.type|escape})</em> {/if}
         </li>
 
   		{assign var=i value=$i+1}
-  		{assign var=lastType value=$ecole.type}
-  		{assign var=lastVille value=$ecole.ville}
 
-  	{/if}
-  {/foreach}
-  {if $parCols>=1 && $i>0}</ul></div>{/if}
-	{if $parCols>=1 }
-<br clear="left" />
-	{/if}
-{elseif $list && $groupBy == 'villeType'}
-    {foreach from=$list item=type key=ville}
-<h3>{$ville}</h3>
-                {foreach from=$type item=ecoleCollection key=nomType}
-<h4>{$nomType}</h4>
-<ul class="listEcoles">
-                    {foreach from=$ecoleCollection item=ecole}
-    <li>
-                            {if $ajaxpopup}
-        <a class="fancybox" href="{copixurl dest="fichesecoles||fiche" id=$ecole.id popup=1}">{$ecole.nom|escape}</a>
-                            {else}
-        <a href="{copixurl dest="fichesecoles||fiche" id=$ecole.id}">{$ecole.nom|escape}</a>
-                            {/if}
-    </li>
-                    {/foreach}
-</ul>
-<div style="clear:both; width:100%"></div>
-                {/foreach}
-<hr />
+        {/if}
     {/foreach}
+  
+    {if $i > 0}
+        </ul>
+        {if $colonnes > 1}
+            </div>
+            <div class="clear"></div>
+        {/if}
+    {/if}
+
+	
+<!-- Tri par type de ville -->	
+{elseif $list && $groupBy == 'villeType'}
+   
+    {foreach from=$list item=type key=ville}
+        <h3>{$ville}</h3>
+        {foreach from=$type item=ecoleCollection key=nomType}
+            <h4>{$nomType}</h4>
+            <ul class="listEcoles">
+                {foreach from=$ecoleCollection item=ecole}
+                <li>
+                    {if $ajaxpopup}
+                        <a class="fancybox" href="{copixurl dest="fichesecoles||fiche" id=$ecole.id popup=1}">{$ecole.nom|escape}</a>
+                    {else}
+                        <a href="{copixurl dest="fichesecoles||fiche" id=$ecole.id}">{$ecole.nom|escape}</a>
+                    {/if}
+                </li>
+        {/foreach}
+            </ul>
+        <div class="clear"></div>
+        {/foreach}
+    <hr />
+    {/foreach}
+    
 {else}
-<p>{i18n key=welcome.ecoles.aucune}</p>
+    <p>{i18n key=welcome.ecoles.aucune}</p>
 {/if}
 </div>

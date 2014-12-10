@@ -220,15 +220,23 @@ div.welcome .welcome_hr {
 
 .welcome_ecoles ul li {
 	font-size: 110%;
-	margin-bottom: 4px;
 	}
 
-.welcome_ecoles ul li.type {
+.welcome_ecoles h3 {
+    margin-bottom:0.3em;
 	list-style-type: none;
 	text-transform: uppercase;
 	font-weight: bold;
 	color: #dd8210;
 	}
+
+.welcome_ecoles h4 {margin:1em 0 0.3em;}
+
+.welcome_ecoles hr {
+    margin-top:1em; border:0;
+    width:70%; height:1px;
+    background:#9dd3e0;
+}
 
 .ecoles_title {
 	font-size: 120%;
