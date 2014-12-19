@@ -690,6 +690,13 @@ class ActionGroupAnnuaire extends EnicActionGroup
         $tplListe->assign('profil', $profil);
         $tplListe->assign('users', $users);
         $tplListe->assign('right', $right);
+        if( CopixConfig::exists('|can_annuaire_menu') && !CopixConfig::get('|can_annuaire_menu') ) {
+            $tplListe->assign('can_annuaire_menu', 'hiddenClean');
+        }
+        else {
+            $tplListe->assign('can_annuaire_menu', '');
+        }
+            
         $result = $tplListe->fetch('getpopup.tpl');
 
         $ppo = new CopixPPO ();
