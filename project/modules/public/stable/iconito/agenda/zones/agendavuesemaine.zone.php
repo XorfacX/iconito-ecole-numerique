@@ -89,7 +89,7 @@ class ZoneAgendaVueSemaine extends CopixZone
         //on construit un tableau de droits pour chaque agenda affiché
         $arDroits = array();
         foreach($this->getParam('elementsSemaineAffichee')->agendas as $id_agenda){
-
+            $arDroits[$id_agenda] = new stdClass(); 
             if($serviceAuth->getCapability($id_agenda) >= $serviceAuth->getRead()){
                 $arDroits[$id_agenda]->canRead = true;
             } else{
