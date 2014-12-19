@@ -22,8 +22,8 @@
 <div class="annu_popup_zone">
 <b>{i18n key="annuaire.popup.browse"}</b> : <br/>
 <span id="select-grvilles" class="hiddenClean">{i18n key="annuaire.grville"} : {$combogrvilles}<br/></span>
-<span class="hiddenClean">{i18n key="annuaire.ville"} : {$combovilles}<br/></span>
-<span class="hiddenClean">{if !$profil || $profil!='USER_VIL'}{i18n key="annuaire.ecole"} : {$comboecoles}<br/>{/if}</span>
+<span class="{$can_annuaire_menu}">{i18n key="annuaire.ville"} : {$combovilles}<br/></span>
+<span class="{$can_annuaire_menu}">{if !$profil || $profil!='USER_VIL'}{i18n key="annuaire.ecole"} : {$comboecoles}<br/>{/if}</span>
 {if !$profil || $profil!='USER_VIL'}{i18n key="annuaire.classe"} : {$comboclasses}<br/>{/if}
 {if $profil}<input type="submit" value="{i18n key="annuaire.btn.display"}" class="button button-confirm" /><br />{/if}
 </div>
