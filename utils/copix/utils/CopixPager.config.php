@@ -26,9 +26,9 @@
 
  * Fichier de configuration de la classe CopixPager pour un projet entier
 
- * Ce fichier sert de valeurs par défaut pour un projet entier, mais rien n'empêche de les paramétrer directement
+ * Ce fichier sert de valeurs par dÃ©faut pour un projet entier, mais rien n'empÃªche de les paramÃ©trer directement
 
- * lors de la création d'un objet Multipage
+ * lors de la crÃ©ation d'un objet Multipage
 
  *
 
@@ -44,7 +44,7 @@
 
 /**************************************
 
- * Paramètrage global du multipage
+ * ParamÃ¨trage global du multipage
 
  **************************************/
 
@@ -52,15 +52,15 @@
 
 $options['PAGER'] = Array(
 
-    'perPage'        => 10,                 // Nombre de résultats par page
+    'perPage'        => 10,                 // Nombre de rÃ©sultats par page
 
-    'delta'          => 5,                  // Le nombre de liens maximum souhaité dans le multipage (0 = tous les liens)
+    'delta'          => 5,                  // Le nombre de liens maximum souhaitÃ© dans le multipage (0 = tous les liens)
 
-    'alwaysShow'     => true,               // Que faire si le multipage n'est pas nécessaire? L'afficher ou non?
+    'alwaysShow'     => true,               // Que faire si le multipage n'est pas nÃ©cessaire? L'afficher ou non?
 
-    'toHtmlEntities' => false,              // Positionné à true, les caractères spéciaux des libellés seront traduits en leur entité HTML
+    'toHtmlEntities' => false,              // PositionnÃ© Ã  true, les caractÃ¨res spÃ©ciaux des libellÃ©s seront traduits en leur entitÃ© HTML
 
-    'encodeVarUrl'   => false,              // Positionné à true, les paramètres passés par Url seront encodés
+    'encodeVarUrl'   => false,              // PositionnÃ© Ã  true, les paramÃ¨tres passÃ©s par Url seront encodÃ©s
 
     'display'        => 'sliding'           // 'sliding' || 'jumping'
 
@@ -74,7 +74,7 @@ $options['PAGER'] = Array(
 
 /****************************
 
- * Paramètrage divers
+ * ParamÃ¨trage divers
 
  ****************************/
 
@@ -82,21 +82,21 @@ $options['PAGER'] = Array(
 
 $options['PARAMS'] = Array(
 
-    'nextPage'        => '<img src="'._resource('images/icon-16/pager-next.png').'" alt="next"/>&nbsp;',         // libellé lien vers la page suivante
+    'nextPage'        => '<img src="'._resource('img/pager-next.png').'" alt="next"/>&nbsp;',         // libellÃ© lien vers la page suivante
 
-    'previousPage'    => '<img src="'._resource('images/icon-16/pager-previous.png').'" alt="previous"/>&nbsp;',       // libellé lien vers la page précédente
+    'previousPage'    => '<img src="'._resource('img/pager-previous.png').'" alt="previous"/>&nbsp;',       // libellÃ© lien vers la page prÃ©cÃ©dente
 
-    'lastPage'        => '<img src="'._resource('images/icon-16/pager-last.png').'" alt="last"/>',              // libellé lien vers la dernière page
+    'lastPage'        => '<img src="'._resource('img/pager-last.png').'" alt="last"/>',              // libellÃ© lien vers la derniÃ¨re page
 
-    'firstPage'       => '<img src="'._resource('images/icon-16/pager-first.png').'" alt="first"/>&nbsp;',              // libellé lien vers la première page
+    'firstPage'       => '<img src="'._resource('img/pager-first.png').'" alt="first"/>&nbsp;',              // libellÃ© lien vers la premiÃ¨re page
 
-    'separator'       => '&nbsp;-&nbsp;',   // Séparateur de page
+    'separator'       => '&nbsp;-&nbsp;',   // SÃ©parateur de page
 
-    'curPageSpanPre'  => '<strong>',          // Chaine préfixant la page courante
+    'curPageSpanPre'  => '<strong>',          // Chaine prÃ©fixant la page courante
 
     'curPageSpanPost' => '</strong>',        // Chaine suffixant la page courante
 
-    'linkClass'       => 'multipage'    // Classe CSS à ajouter aux liens
+    'linkClass'       => 'multipage'    // Classe CSS Ã  ajouter aux liens
 
 );
 
@@ -106,7 +106,7 @@ $options['PARAMS'] = Array(
 
 /**************************************************************************************************
 
- * Configuration avancée (optionnel, vous pouvez laisser les paramètres par défaut.
+ * Configuration avancÃ©e (optionnel, vous pouvez laisser les paramÃ¨tres par dÃ©faut.
 
  * C'est uniquement pour ceux qui aiment bidouiller.)
 
@@ -116,7 +116,7 @@ $options['PARAMS'] = Array(
 
 $options['ADVANCED'] = Array(
 
-    'varUrl'             => 'p',            // Nom de la variable dans l'url servant à indiquer la page en cours
+    'varUrl'             => 'p',            // Nom de la variable dans l'url servant Ã  indiquer la page en cours
 
 );
 
