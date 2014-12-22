@@ -53,6 +53,9 @@
 .ecoles ul li {
     margin-bottom:0.3em;
 }
+.ecoles h3 {
+    font-size:1.2em;
+}
 
 /* bloc "slideshow" */
 .nav-hp .slideshow {
