@@ -178,7 +178,7 @@ class CopixList
                 }
                 $this->_nextButton = true;
                 if ($pContent == null) {
-                    $pContent = '<img src="'._resource('images/icon-16/pager-next.png').'" />';
+                    $pContent = '<img src="'._resource('img/pager-next.png').'" />';
                 }
                 return '<span class="next_'.$this->_id.'" >'.$pContent.'</span>';
             case 'previous':
@@ -187,7 +187,7 @@ class CopixList
                 }
                 $this->_previousButton = true;
                 if ($pContent == null) {
-                    $pContent = '<img src="'._resource('images/icon-16/pager-previous.png').'" />';
+                    $pContent = '<img src="'._resource('img/pager-previous.png').'" />';
                 }
                 return '<span class="previous_'.$this->_id.'" >'.$pContent.'</span>';
             case 'first':
@@ -196,7 +196,7 @@ class CopixList
                 }
                 $this->_firstButton = true;
                 if ($pContent == null) {
-                    $pContent = '<img src="'._resource('images/icon-16/pager-first.png').'" />';
+                    $pContent = '<img src="'._resource('img/pager-first.png').'" />';
                 }
                 return '<span class="first_'.$this->_id.'" >'.$pContent.'</span>';
             case 'last':
@@ -205,7 +205,7 @@ class CopixList
                 }
                 $this->_lastButton = true;
                 if ($pContent == null) {
-                    $pContent = '<img src="'._resource('images/icon-16/pager-last.png').'" />';
+                    $pContent = '<img src="'._resource('img/pager-last.png').'" />';
                 }
                 return '<span class="last_'.$this->_id.'" >'.$pContent.'</span>';
             default:
