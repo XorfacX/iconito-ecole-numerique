@@ -63,7 +63,7 @@
         
         <div class="field" id="new-password"{if $ppo->errors.password_invalid eq null} style="display: none"{/if}>
             <label for="password" class="form_libelle"> Mot de passe :</label>
-            <input class="form" type="text" name="password" id="password" value="{$ppo->password|escape}" /> (<a href="#" id="generate-password">Générer</a>)
+            <input class="medium-text" type="text" name="password" id="password" value="{$ppo->password|escape}" /> (<a href="#" id="generate-password">Générer</a>)
         </div>
 	{else}
         <div class="field">
@@ -79,12 +79,12 @@
         <fieldset><legend>Connexion</legend>
         <div class="field">
             <label for="login" class="form_libelle"> Identifiant :</label>
-            <input class="form" type="text" name="login" id="login" value="{$ppo->login|escape}" /> (<a href="#" id="generate-login">Générer</a>)
+            <input class="medium-text" type="text" name="login" id="login" value="{$ppo->login|escape}" /> (<a href="#" id="generate-login">Générer</a>)
         </div>
         
         <div class="field">
             <label for="password" class="form_libelle"> Mot de passe :</label>
-            <input class="form" type="text" name="password" id="password" value="{$ppo->password|escape}" /> (<a href="#" id="generate-password">Générer</a>)
+            <input class="medium-text" type="text" name="password" id="password" value="{$ppo->password|escape}" /> (<a href="#" id="generate-password">Générer</a>)
             <span class="format">{i18n key="gestionautonome.info.formatPassword"}</span>
         </div>
       

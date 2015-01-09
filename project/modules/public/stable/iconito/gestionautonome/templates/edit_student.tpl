@@ -121,7 +121,7 @@
     
       <div class="field" id="new-password"{if $ppo->errors.password_invalid eq null} style="display: none"{/if}>
         <label for="student-password" class="form_libelle"> Mot de passe :</label>
-        <input class="form" type="text" name="student_password" id="student_password" value="{$ppo->password|escape}" /> (<a href="#" id="generate-student-password">Générer</a>)
+        <input class="medium-text" type="text" name="student_password" id="student_password" value="{$ppo->password|escape}" /> (<a href="#" id="generate-student-password">Générer</a>)
       </div>
     {else}
       </fieldset>
@@ -130,12 +130,12 @@
       <legend>Connexion</legend>
       <div class="field">
         <label for="student_login" class="form_libelle"> Identifiant :</label>
-        <input class="form" type="text" name="student_login" id="student_login" value="{$ppo->login|escape}" /> (<a href="#" id="generate-student-login">Générer</a>)
+        <input class="medium-text" type="text" name="student_login" id="student_login" value="{$ppo->login|escape}" /> (<a href="#" id="generate-student-login">Générer</a>)
       </div>
 
       <div class="field">
         <label for="student_password" class="form_libelle"> Mot de passe :</label>
-        <input class="form" type="text" name="student_password" id="student_password" value="{$ppo->password|escape}" /> (<a href="#" id="generate-student-password">Générer</a>)
+        <input class="medium-text" type="text" name="student_password" id="student_password" value="{$ppo->password|escape}" /> (<a href="#" id="generate-student-password">Générer</a>)
       </div>
     {/if}
   </fieldset>
