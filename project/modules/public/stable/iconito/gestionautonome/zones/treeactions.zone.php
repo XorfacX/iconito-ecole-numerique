@@ -15,6 +15,12 @@ class ZoneTreeActions extends CopixZone
         // Récupération des paramètres
         $ppo->nodeId = $this->getParam('node_id');
         $ppo->nodeType = $this->getParam('node_type');
+        
+        if( CopixConfig::exists('|restricted_rights') && CopixConfig::get('|restricted_rights') ) {
+            $ppo->restricted_rights = true;
+        } else {
+            $ppo->restricted_rights = false;
+        }
 
         $ppo->user = _currentUser();
 
