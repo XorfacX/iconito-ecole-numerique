@@ -84,14 +84,14 @@
     <fieldset><legend>Connexion</legend>
     <div class="field">
       <label for="login" class="form_libelle"> Identifiant :</label>
-      <span class="form" name="login" id="login"><strong>{$ppo->account->login_dbuser|escape}</strong></span>
+      <span class="medium-text" name="login" id="login"><strong>{$ppo->account->login_dbuser|escape}</strong></span>
     </div>  
     
     <div class="field"><a href="#" class="button button-update" id="new-password-link">Modifier le mot de passe</a></div>
     
     <div class="field" id="new-password"{if $ppo->errors.password_invalid eq null} style="display: none"{/if}>
       <label for="password" class="form_libelle"> Mot de passe :</label>
-      <input class="form" type="text" name="password" id="password" value="{$ppo->password|escape}" /> (<a href="#" id="generate-password">Générer</a>)
+      <input class="medium-text" type="text" name="password" id="password" value="{$ppo->password|escape}" /> (<a href="#" id="generate-password">Générer</a>)
     </div>
   </fieldset>
   

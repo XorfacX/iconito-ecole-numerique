@@ -138,12 +138,12 @@
       <fieldset><legend>Connexion</legend>
       <div class="field">
           <label for="login" class="form_libelle"> Identifiant :</label>
-          <input class="form" type="text" name="login" id="login" value="{$ppo->account->login|escape}" /> (<a href="#" id="generate-login">Générer</a>)
+          <input class="medium-text" type="text" name="login" id="login" value="{$ppo->account->login|escape}" /> (<a href="#" id="generate-login">Générer</a>)
         </div>
     
         <div class="field">
           <label for="password" class="form_libelle"> Mot de passe :</label>
-          <input class="form" type="text" name="password" id="password" value="{$ppo->account->password|escape}" /> (<a href="#" id="generate-password">Générer</a>)
+          <input class="medium-text" type="text" name="password" id="password" value="{$ppo->account->password|escape}" /> (<a href="#" id="generate-password">Générer</a>)
         </div>
     	</fieldset>
         

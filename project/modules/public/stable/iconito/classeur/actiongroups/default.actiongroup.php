@@ -1225,6 +1225,7 @@ class ActionGroupDefault extends enicActionGroup
            } else {
 
              $nomsContenus[] = $dossier->nom;
+             $ppo->dossierIds = implode($dossierIds, ',');
            }
       } else {
 
@@ -1279,7 +1280,7 @@ class ActionGroupDefault extends enicActionGroup
       _classInclude('classeur|classeurservice');
 
       $arFichierIds       = !is_null(_request('fichiers', null)) ? explode (',', _request('fichiers')) : array();
-      $arDossierIds       = !is_null(_request('dossiers', null)) ? explode (',', _request('dossiers')) : array();
+      $arDossierIds       = !is_null($dossierIds) ? explode (',', $dossierIds) : array();
 
       if (!is_null($destination = _request('destination', null))) {
 
@@ -1324,7 +1325,7 @@ class ActionGroupDefault extends enicActionGroup
             || $destinationType == 'classeur') {
 
             // On ne copie que les dossiers pouvant l'être
-            if ($dossier = $dossierDAO->get($arDossierId) && !$dossier->casier) {
+            if (!$dossier->casier) {
 
               // En cas de copie, le copieur devient le propriétaire de la copie
               $dossier->user_type = _currentUser()->getExtra('type');

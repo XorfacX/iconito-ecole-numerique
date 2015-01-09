@@ -47,8 +47,9 @@ div.submit {
 	text-align:center;
 }
 div.submit input, div.submit a.button {margin:0 5px 0 0;}
-input.short-text {width:30px;}
-input.long-text {width:240px;}
+form input.short-text {width:30px; min-width:0;}
+form input.medium-text {width:100px; min-width:0;}
+form input.long-text {width:240px;}
 form .formExample {
 	padding:0 0 0 5px;
 	font-size:0.8em; font-style:italic;
