@@ -37,7 +37,7 @@ $module = CopixRequest::get ('module');?>
 </head>
    
     <!-- MAIN -->
-    <body class="">
+    <body class="" <?php if (isset($BODY_ON_LOAD) && $BODY_ON_LOAD) echo ' onLoad="'.$BODY_ON_LOAD.'"'; if (isset($BODY_ON_UNLOAD) && $BODY_ON_UNLOAD) echo ' onUnLoad="'.$BODY_ON_UNLOAD.'"'; ?>>
         <!-- skip links for accessibility -->
         <ul class="skip-links">
             <li><a href="#navigation">Aller au menu</a></li>
