@@ -12,8 +12,7 @@
 
 <form action="{copixurl dest="gestionautonome||filterAndDisplayAssignments"}" method="post" id="filter-form">
     <div id="origin" class="filterClass">
-        
-        {if $can_search_by_name}
+        {if $ppo->can_search_by_name}
             <ul class="originTab">
                 <li><a href="#originStructure">{i18n key="gestionautonome|gestionautonome.message.searchByStructure}</a></li>
                 <li><a href="#originName">{i18n key="gestionautonome|gestionautonome.message.searchByName}</a></li>
@@ -87,7 +86,7 @@
         </div>
         
         {assign var='hasCredentialTeacherUpdate' value=$ppo->user->testCredential("module:school|`$ppo->filters.originSchool`|teacher|update@gestionautonome")}
-        {if $can_search_by_name}
+        {if $ppo->can_search_by_name}
             <div id="originName">
                 <h3>{i18n key="gestionautonome|gestionautonome.message.origin}</h3>
                 <div class="field" id="origin-usertype-search">
