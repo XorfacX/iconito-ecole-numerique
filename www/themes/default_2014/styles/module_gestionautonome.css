@@ -359,7 +359,7 @@ ul.tree a.classroom {
 }
 .classroom h3 a {
 	padding:0 0 0 18px;
-	background:url(../images/sort_right_off.png) no-repeat 0 50%;
+	background:url(../../../themes/default/images/sort_right_off.png) no-repeat 0 50%;
 	cursor:move;
 }
 .classroom h3 a span.level {

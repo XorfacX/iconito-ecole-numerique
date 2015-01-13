@@ -5540,6 +5540,11 @@ class ActionGroupDefault extends enicActionGroup
         $ppo->filters['mode'] = 'manageAssignments';
         _sessionSet('gestionautonome|assignments_management_filters', $ppo->filters);
         
+        if (CopixConfig::exists('|can_search_by_name') && CopixConfig::get('|can_search_by_name')) {
+            $ppo->can_search_by_name = true;
+        } else {
+            $ppo->can_search_by_name = false;
+        }
         return _arPPO($ppo, 'manage_assignments.tpl');
     }
 
@@ -5560,7 +5565,11 @@ class ActionGroupDefault extends enicActionGroup
         $ppo->filters['mode'] = 'changeClassroom';
 
         _sessionSet('gestionautonome|assignments_management_filters', $ppo->filters);
-
+        if (CopixConfig::exists('|can_search_by_name') && CopixConfig::get('|can_search_by_name')) {
+            $ppo->can_search_by_name = true;
+        } else {
+            $ppo->can_search_by_name = false;
+        }
         return _arPPO($ppo, 'manage_assignments.tpl');
     }
 
