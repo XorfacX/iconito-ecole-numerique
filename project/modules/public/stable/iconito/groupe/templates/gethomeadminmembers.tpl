@@ -67,7 +67,7 @@
             </tr>
         {/foreach}
         </table>
-        <p><a class="button button-delete" href="javascript:deleteMembres();">{i18n key="groupe.btn.deleteRightsSelection"}</a></p>
+        <p><a class="button button-delete massAction" href="#">{i18n key="groupe.btn.deleteRightsSelection"}</a></p>
         
 		</form>
 		
