@@ -65,6 +65,9 @@
 }
 
 /* @NOTE : slider */
+@media (max-width: 958px) {
+    .photos {display:none;}
+}
 #slider_photos {
     position:relative; 
     width: 268px;

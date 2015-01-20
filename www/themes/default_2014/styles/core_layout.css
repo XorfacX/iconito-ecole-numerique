@@ -71,6 +71,12 @@ a img {border:0;}
 .wrapper-expander 	{ clear: both; position: relative; width: 200%; }
 .wrapper-shifter 	{ position: relative; float: left; left: 50%; width: 50%; }
 
+@media (max-width: 958px) {
+    .w960p {
+        margin:0 1em;
+        width:auto;
+    }
+}
 
 .skip-links a:link, .skip-links a:visited {
 	color:#fff;
