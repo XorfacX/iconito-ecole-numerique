@@ -227,7 +227,9 @@
 .ie67 #submenu .menuitems ul li a span,
 .ie67 div.dashpanel div.toolset ul li a span.label {line-height:1.2;}
 #submenu .menuitems ul li.newGroupItems {margin-left:50px;}
-
+@media (max-width: 958px) {
+    #submenu .menuitems ul li.newGroupItems {margin-left:0;}
+}
 span.valign {
 	height: 100%;
 	}

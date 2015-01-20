@@ -12,8 +12,9 @@
 #kernel {
 	margin-right:250px;
 }
-@media (max-width: 768px) {
+@media (max-width: 958px) {
     #kernel {margin-right:0;}
+    #kernel .dashboard .font_cursive {display:none;}
 }
 	
 
