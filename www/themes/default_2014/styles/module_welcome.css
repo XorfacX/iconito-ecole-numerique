@@ -64,6 +64,11 @@
     clear: left;
 }
 
+/* Edito */
+.edito {
+    overflow:hidden;
+}
+
 /* @NOTE : slider */
 @media (max-width: 958px) {
     .photos {display:none;}
