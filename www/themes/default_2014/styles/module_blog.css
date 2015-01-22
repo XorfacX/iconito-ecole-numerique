@@ -81,8 +81,9 @@
 	G�n�ral
 	================================= */
 
-
-
+@media (max-width: 958px) {
+    #blog .menuitems a {width:auto !important;}
+}
 
 #mainBlog {
 }
