@@ -191,8 +191,8 @@
 	text-decoration:none;
 }
 #listArticles DIV.postContent .suite {
-	padding-left: 20px;
-	background: transparent url(../images/suite.gif) no-repeat left top;
+	padding-left: 22px;
+	background: transparent url(../img/action_next.png) no-repeat left center;
 }
 /* Liste des pages */
 #listArticles P.pager {
