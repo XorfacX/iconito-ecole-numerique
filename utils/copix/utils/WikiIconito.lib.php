@@ -123,12 +123,10 @@ function iconito_multimedia ($contents, $attr)
                 $width = 480;
                 $height = 385;
                 $ret = '
-<p id="player-'.$rand.'"><a href="http://www.macromedia.com/go/getflashplayer">Get the Flash Player</a> to see this player.</p>
-<script type="text/javascript">
-        var FU = { movie:"'.CopixUrl::getRequestedScriptPath().'flvplayer/flvplayer.swf",width:"'.$width.'",height:"'.$height.'",majorversion:"7",build:"0",bgcolor:"#FFFFFF",
-                                flashvars:"file='.(!preg_match("/^https?:\/\//",$file)?CopixUrl::get():"").$file.'&showdigits=true&autostart=false" };
-        UFO.create(FU, "player-'.$rand.'");
-</script>';
+                <object type="application/x-shockwave-flash" data="'.CopixUrl::getRequestedScriptPath().'dewtube/dewtube.swf" width="'.$width.'" height="'.$height.'">
+<param name="movie" value="'.CopixUrl::getRequestedScriptPath().'dewtube/dewtube.swf" />
+<param name="flashvars" value="movie='.(!preg_match("/^https?:\/\//",$file)?CopixUrl::get():"").$file.'&width='.$width.'&height='.$height.'" />
+            </object>';
             } elseif ($mode == 'youtube') {
                 if (preg_match("/^([a-zA-Z0-9_-]+)$/", $file))
                     $id = $file;
