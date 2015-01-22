@@ -425,7 +425,6 @@ a.usr-newaccount {
  
 #stepbar .sb-message {
 	position: relative;
-	float: left;
 	display: block;
 	padding: 14px 6px 6px 6px;
 	font-style: italic;

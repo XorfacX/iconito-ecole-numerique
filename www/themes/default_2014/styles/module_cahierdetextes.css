@@ -266,6 +266,9 @@ div.dashboard div.content {
 
 /* Navigation */
 #cahierdetextes #submenu .menuitems ul li a {width:65px;}
+@media (max-width: 958px) {
+    #cahierdetextes #submenu .menuitems ul li a {width:auto;}
+}
 #cahierdetextes #submenu .menuitems ul li a:hover {text-decoration:none;}
 #cahierdetextes #submenu .menuitems ul li a span.memos-count {
 	position:absolute; top:3px; left:-27px;
