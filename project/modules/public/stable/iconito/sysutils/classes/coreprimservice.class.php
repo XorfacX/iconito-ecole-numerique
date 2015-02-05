@@ -30,8 +30,14 @@ class coreprimService
     
     public function classHasAccess($classId)
     {
-        $return = _doQuery('SELECT COUNT(*) AS enable FROM module_coreprim_access WHERE classroom_id = ?', array($classId));
-        return $return[0]->enable;
+        if CopixConfig::exists('default|rssEtagereFilterClassEnabled') && CopixConfig::get('default|rssEtagereFilterClassEnabled')) {            
+            $return = _doQuery('SELECT COUNT(*) AS enable FROM module_coreprim_access WHERE classroom_id = ?', array($classId));
+            $hasAccess = $return[0]->enable;
+        } else {
+            $hasAccess = 1;
+        }
+        
+        return $hasAccess;
     }
     
     public function save($classroomsId)
