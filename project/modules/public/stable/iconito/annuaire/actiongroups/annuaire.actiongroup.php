@@ -357,7 +357,6 @@ class ActionGroupAnnuaire extends EnicActionGroup
     {
         if (!Kernel::is_connected())
             return CopixActionGroup::process('genericTools|Messages::getError', array('message' => CopixI18N::get('annuaire|annuaire.error.noLogged'), 'back' => CopixUrl::get('||')));
-
         CopixHTMLHeader::addJSLink(_resource("js/iconito/module_annuaire_popup.js"));
         CopixHTMLHeader::addJSLink(_resource("js/jquery/jquery.tablesorter.min.js"));
         CopixHTMLHeader::addJSLink(_resource("js/jquery/jquery.metadata.js"));
@@ -670,8 +669,18 @@ class ActionGroupAnnuaire extends EnicActionGroup
             }
         }
         */
-
         usort($users, array('ActionGroupAnnuaire', '_usortPopup'));
+
+        // Filtre les personnes avec qui l'utilisateur ne peux pas communiquer
+        $res = array();
+        foreach($users as $user){
+            $userinfos = Kernel::getUserInfo("LOGIN", $user->login, array('strict' => true));
+            $droits = Kernel::getUserInfoMatrix($userinfos);
+            if ($droits['communiquer']) {
+                $res [] = $user;
+            }
+        }
+        $users = $res;
 
         $tplListe->assign('field', $field);
         $tplListe->assign('grville', $grville);
