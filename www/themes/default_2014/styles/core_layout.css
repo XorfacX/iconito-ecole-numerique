@@ -55,6 +55,11 @@ body.nodebug .debug, body.nodebug .debug a, body.nodebug .debug a:visited  {
 .floatleft 	{ float: left; }
 .floatright { float: right; }
 
+hr {
+    margin:0 auto; border:1px solid #bbb;
+    width:75%;
+}
+
 a img {border:0;}
 
 .opacity100 {

@@ -203,7 +203,6 @@
 	background-repeat: no-repeat;
 	border: solid 1px #f0f4f0;
 	border-radius: 6px;
-    -moz-box-sizing: content-box;
     box-sizing: content-box;
 }
 #submenu .menuitems a:link, #submenu .menuitems a:visited {
@@ -321,8 +320,10 @@ a.menu-ressource              { background-position:100% -1020px; }
 a.MOD_RESSOURCE:hover,
 a.MOD_RSSETAGERE:hover,
 a.menu-ressource:hover        { background-position:100% -1050px; }
+
+a.MOD_TELEPROCEDURES	      { background-position:100% -1260px; }
+a.MOD_TELEPROCEDURES:hover    { background-position:100% -1290px; }
 /*a.MOD_SSOGAEL			      { background-position:100% -px; }
-a.MOD_TELEPROCEDURES	      { background-position:100% -px; }
 a.MOD_MAGICMAIL			      { background-position:100% -px; }*/
 a.MOD_GESTIONAUTONOME	      { background-position:100% -180px; }
 a.MOD_GESTIONAUTONOME:hover	  { background-position:100% -210px; }

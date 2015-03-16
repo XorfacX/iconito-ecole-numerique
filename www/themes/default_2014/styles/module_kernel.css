@@ -98,7 +98,7 @@ div.dashpanel div.toolset {
 	right:-36px;
 	border:1px solid transparent;
 	background: #E1DCD7;
-	z-index: 999;
+	z-index:1;
 	width: 36px;
 	overflow: hidden;
 	padding:2px 1px 2px 1px;

@@ -16,7 +16,7 @@
                             {$rEcole->num_rue|escape} {$rEcole->num_seq|escape} {$rEcole->adresse1|escape} {if $rEcole->adresse2}<br/>{$rEcole->adresse2|escape}{/if}<br/>{$rEcole->code_postal|escape} {$rEcole->commune|escape}<br />
                         {/if}
                         {if $rEcole->tel}
-                            <img width="11" height="9" src="{copixresource path="img/annuaire/icon_tel.gif"}" alt="{i18n key="annuaire|annuaire.telephone"}" title="{i18n key="annuaire|annuaire.telephone"}" border="0" hspace="1" /> {$rEcole->tel|escape}<br />
+                            <img width="11" height="9" src="{copixresource path="img/fichesecoles/icon_tel.gif"}" alt="{i18n key="annuaire|annuaire.telephone"}" title="{i18n key="annuaire|annuaire.telephone"}" border="0" hspace="1" /> {$rEcole->tel|escape}<br />
                         {/if}
                     </div>
                 {/if}

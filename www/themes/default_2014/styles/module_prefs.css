@@ -33,15 +33,6 @@ DIV.prefs TABLE.prefs TH {
 	white-space : nowrap;
 }
 
-DIV.prefs HR {
-	background-color: #C1CF4D;
-	color: red;
-	height: 2px;
-	border: 0px;
-}
-
-
-
 DIV.prefs TABLE.msg {
 	padding: 10px;
 	margin: 10px;
