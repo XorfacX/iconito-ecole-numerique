@@ -104,13 +104,10 @@ jQuery(document).ready(function($){
      */
     $('.enSelect').click(function(e){
         e.preventDefault();
-        if ($(this).data('all'))
-        {
+        if ($(this).data('all')) {
             $('.enUser').attr('checked', 'checked').change();
-        }
-        else
-        {
-            $('.enUser').attr('checked', '').change();
+        } else {
+            $('.enUser').attr('checked', false).change();
         }    
     });
 

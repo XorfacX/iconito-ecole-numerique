@@ -638,7 +638,6 @@ class ActionGroupAnnuaire extends EnicActionGroup
             'checkAll' => $annuaireService->canMakeInAnnuaire('POPUP_CHECK_ALL'),
         );
 
-
         $users = array();
 
         foreach ($eleves as $user) {
@@ -675,8 +674,8 @@ class ActionGroupAnnuaire extends EnicActionGroup
         $res = array();
         foreach($users as $user){
             $userinfos = Kernel::getUserInfo("LOGIN", $user->login, array('strict' => true));
-            $droits = Kernel::getUserInfoMatrix($userinfos);
-            if ($droits['communiquer']) {
+            $droitsMatrix = Kernel::getUserInfoMatrix($userinfos);
+            if ($droitsMatrix['communiquer']) {
                 $res [] = $user;
             }
         }
