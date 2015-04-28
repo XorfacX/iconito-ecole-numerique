@@ -283,6 +283,7 @@ function getModeratorList($id_blog, $right)
             JOIN module_blog mb
                 ON mb.id_blog = klu2n.node_id
             WHERE klu2n.droit >= :right
+            AND klu2n.node_type = "MOD_BLOG"
             AND mb.id_blog = :blogId';
     
     $destList = _doQuery($sql, array(':right' => $right, ':blogId' => $id_blog));
