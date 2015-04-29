@@ -11,6 +11,7 @@
 	<properties>
 		<!-- Ecoles -->
 		<property name="eco_numero"   fieldname="numero"   type="integer" table="kernel_bu_ecole" pk="yes"/>
+		<property name="eco_rne"   fieldname="RNE"   type="string" table="kernel_bu_ecole" pk="no"/>
 		<property name="eco_type"     fieldname="type"     type="string"  table="kernel_bu_ecole" pk="no"/>
 		<property name="eco_nom"      fieldname="nom"      type="string"  table="kernel_bu_ecole" pk="no"/>
 		<property name="eco_num_rue"  fieldname="num_rue"      type="string"  table="kernel_bu_ecole" pk="no"/>

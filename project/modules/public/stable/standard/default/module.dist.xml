@@ -86,6 +86,8 @@
 			<parameter name="ssoTimeout" caption="Timeout valabilité lien (minutes)" default="30" />
 			<parameter name="school_uai_rne_required"  caption="parameter.school_uai_rne_required"  default="0" />
 			<parameter name="school_siret_required"  caption="parameter.school_siret_required"  default="0" />
+
+            <parameter name="conf_edumedia_rne" captioni18n="parameter.conf_edumedia_rne"  default="" />
 		</group>
 	</parameters>
 </moduledefinition>

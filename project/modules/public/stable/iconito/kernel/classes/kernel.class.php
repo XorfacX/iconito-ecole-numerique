@@ -1061,6 +1061,7 @@ class Kernel
                         $return["type"] = $type;
                         $return["id"]   = $id;
                         $return["nom"]  = $result->eco_nom;
+                        $return["rne"]  = $result->eco_rne;
                         $return["ALL"]  = $result;
                         //if( $result->eco_type ) $return["desc"] = CopixI18N::get ('kernel|kernel.message.ecole')." ".$result->eco_type;
                         $return["desc"] = ($result->eco_type) ? $result->eco_type : null;
