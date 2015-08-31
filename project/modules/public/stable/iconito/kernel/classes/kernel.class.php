@@ -1835,7 +1835,11 @@ class Kernel
         } // Rustine CB 05/02/2010 pour les droits des agents de ville dans les teleprocedures
         elseif (isset($mod_parents[0]) && $mod_parents[0]->node_type == 'MOD_TELEPROCEDURES' && $user_type == 'USER_VIL') {
             return Kernel::getModRight($mod_parents[0]->node_type, $mod_parents[0]->node_id, $user_type, $user_id);
+        } // Rustine pour les droits des agents de ville qui doivent accéder au classeur de l'école (édition d'une fiche de l'école)
+        elseif (isset($mod_parents[0]) && $mod_parents[0]->node_type == 'BU_ECOLE' && $mod_type == 'MOD_CLASSEUR' && $user_type == 'USER_VIL') {
+            return PROFILE_CCV_READ;
         }
+        
 
         foreach ($mod_parents AS $mod_key => $mod_val) {
 
