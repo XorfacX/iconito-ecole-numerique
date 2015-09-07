@@ -3582,11 +3582,13 @@ class ActionGroupDefault extends enicActionGroup
         $ppo->isNewParent = _request('isNewParent', null);
 
         // Paramètres nouveau parent
+        $ppo->person = new stdClass();
         $ppo->person->nom = _request('nom', null);
         $ppo->person->prenom1 = _request('prenom1', null);
         $ppo->person->id_sexe = _request('gender', 1);
         $ppo->person->id_par = _request('parId', null);
 
+        $ppo->account = new stdClass();
         $ppo->account->login = _request('login', null);
         $ppo->account->password = _request('password', null);
         $ppo->agreement = _request('agreement', false);
