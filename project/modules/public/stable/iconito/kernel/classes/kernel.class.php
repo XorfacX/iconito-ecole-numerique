@@ -423,8 +423,9 @@ class Kernel
 
             case "USER_ELE":
                 // Eleve --(n)--> Classes
+                $grade = is_null(Kernel::getAnneeScolaireCourante()) ? null : Kernel::getAnneeScolaireCourante()->id_as;
                 $dao = _dao("kernel|kernel_bu_ele_affect");
-                $res = $dao->getByEleve($id);
+                $res = $dao->getByStudent($id, $grade);
                 foreach ($res AS $key => $val) {
                     $return[] = array("type" => "BU_CLASSE", "id" => $val->affect_classe, "droit" => PROFILE_CCV_WRITE);
                 }
