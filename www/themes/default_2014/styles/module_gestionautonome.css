@@ -370,7 +370,7 @@ ul.tree a.classroom {
 	font-weight:normal; font-size:0.85em;
 }
 .classroom a.classroomOpen {
-	background-image:url(../images/sort_down_off.png);
+	background-image:url(../../../themes/default/images/sort_down_off.png);
 }
 .class-box {
     margin:0 0 10px 10px;
