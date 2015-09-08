@@ -36,17 +36,21 @@ class DAOKernel_bu_ele_affect
      *
      * @param int     $studentId  Identifiant d'un élève
      * @param string  $grade      Année scolaire
+     * @param boolean $current    Affectation en cours
      *
      * @return CopixDAORecordIterator
      */
-    public function getByStudent ($studentId, $grade = null)
+    public function getByStudent ($studentId, $grade = null, $current = false)
     {
         $criteria = _daoSp ();
         $criteria->addCondition ('affect_eleve', '=', $studentId);
 
         if (!is_null ($grade)) {
-
-          $criteria->addCondition ('affect_annee_scol', '=', $grade);
+            $criteria->addCondition ('affect_annee_scol', '=', $grade);
+        }
+        
+        if ($current) {
+            $criteria->addCondition ('affect_current', '=', 1);
         }
 
         return $this->findBy ($criteria);
