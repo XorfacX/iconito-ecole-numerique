@@ -424,7 +424,7 @@ class Kernel
             case "USER_ELE":
                 // Eleve --(n)--> Classes
                 $dao = _dao("kernel|kernel_bu_ele_affect");
-                $grade = null;
+                $grade = is_null(Kernel::getAnneeScolaireCourante()) ? null : Kernel::getAnneeScolaireCourante()->id_as;
                 $current_affect = true;
                 $res = $dao->getByStudent($id, $grade, $current_affect);
                 foreach ($res AS $key => $val) {
