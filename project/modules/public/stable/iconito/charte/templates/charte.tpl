@@ -3,8 +3,8 @@
 <div class="content-info">
 	{i18n key="charte.read" noEscape=1}
 </div>
-<div class="loading-button">
-	<a class="button button-charte fancyframe" href="{$ppo->url}">
+<div class="loading-button txtcenter">
+	<a class=" button-charte " href="{$ppo->url}">
 		{i18n key="charte.view" noEscape=1}
 	</a>
 </div>
