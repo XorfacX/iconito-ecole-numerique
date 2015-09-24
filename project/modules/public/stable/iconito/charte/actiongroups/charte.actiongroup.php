@@ -19,7 +19,7 @@ class ActionGroupCharte extends enicActionGroup
         if(empty($ppo->url))
             return $this->go('auth|log|out');
 
-        CopixHTMLHeader::addCSSLink (_resource("styles/module_charte.css"));
+        
 
         return _arPPO($ppo, 'charte.tpl');
     }
@@ -28,7 +28,7 @@ class ActionGroupCharte extends enicActionGroup
     {
         $accept = ($this->request('typeAction') == 'accept') ? true : false ;
 	
-        CopixHTMLHeader::addCSSLink (_resource("styles/module_charte.css"));
+        
         if($accept){
             $typeUser = (isset($this->flash->userType)) ? $this->flash->userType : 'USER_ALL';
             $this->service ('CharteService')->addUserValidation($typeUser);
@@ -95,7 +95,7 @@ class ActionGroupCharte extends enicActionGroup
           }
         }
 
-        CopixHTMLHeader::addCSSLink (_resource("styles/module_charte.css"));
+        
 
         return _arPPO($ppo, 'charte.admin.tpl');
 
