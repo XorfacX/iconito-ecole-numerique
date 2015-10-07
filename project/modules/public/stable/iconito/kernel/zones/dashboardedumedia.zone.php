@@ -28,9 +28,8 @@ class ZoneDashboardEdumedia extends CopixZone
         $ecole = array_shift($nodes['BU_ECOLE']);
         $ecoleInfo = Kernel::getNodeInfo('BU_ECOLE', $ecole['id'], false);
         $confRNE = CopixConfig::get ('default|conf_edumedia_rne');
-        $explodedRNE = explode(',', $confRNE);
-
-        if (!in_array($ecoleInfo['rne'], $explodedRNE)) {
+        
+        if (! $confRNE || !isset($ecoleInfo['rne'])) {
             $toReturn = "";
             return true;
         }
