@@ -19,5 +19,21 @@
 /www/upload/.htdigest
 /project/themes/*
 /www/themes/*
-!/project/themes/default
-!/www/themes/default
+!/project/themes/default/
+!/www/themes/default/
+!/project/themes/default_2014/
+!/www/themes/default_2014/
+!/project/themes/iconitoplus/
+!/www/themes/iconitoplus/
+!/project/themes/iconitoclic/
+!/www/themes/iconitoclic/
+/utils/simplesamlphp/config/authsources.php
+.DS_Store
+
+# Les fichiers inclus via composer
+/utils/alviss/*
+/utils/symfony/*
+/utils/composer/*
+/utils/autoload.php
+
+.idea/
