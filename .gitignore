@@ -35,3 +35,6 @@
 /utils/symfony/*
 /utils/composer/*
 /utils/autoload.php
+||||||| merged common ancestors
+!/project/themes/default
+!/www/themes/default

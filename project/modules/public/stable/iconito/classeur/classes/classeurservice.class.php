@@ -1,177 +1,177 @@
 <?php
 
 /**
-* @package    Iconito
-* @subpackage Classeur
-* @author     Jérémy FOURNAISE
-*/
+ * @package    Iconito
+ * @subpackage Classeur
+ * @author     Jérémy FOURNAISE
+ */
 
 class ClasseurService
 {
-  /**
-   * Retourne l'ID du classeur personnel
-   *
-   * @return int ou false si classeur perso non récupéré
-   */
-  public static function getClasseurPersonnelId ()
-  {
-    $nodes = Kernel::getMyNodes (_currentUser()->getExtra('type'), _currentUser()->getExtra('id'));
-    foreach ($nodes as $node) {
+    /**
+     * Retourne l'ID du classeur personnel
+     *
+     * @return int ou false si classeur perso non récupéré
+     */
+    public static function getClasseurPersonnelId ()
+    {
+        $nodes = Kernel::getMyNodes (_currentUser()->getExtra('type'), _currentUser()->getExtra('id'));
+        foreach ($nodes as $node) {
 
-      $modules = Kernel::getModEnabled($node->type, $node->id, _currentUser()->getExtra('type'), _currentUser()->getExtra('id'));
-      foreach ($modules as $module) {
+            $modules = Kernel::getModEnabled($node->type, $node->id, _currentUser()->getExtra('type'), _currentUser()->getExtra('id'));
+            foreach ($modules as $module) {
 
-        if ($module->module_type == "MOD_CLASSEUR") {
-          // Identification du classeur personnel de l'utilisateur
-          if (strpos($module->node_type, 'USER_') !== false
-            && ($module->node_type == _currentUser()->getExtra('type') && $module->node_id == _currentUser()->getExtra('id'))) {
+                if ($module->module_type == "MOD_CLASSEUR") {
+                    // Identification du classeur personnel de l'utilisateur
+                    if (strpos($module->node_type, 'USER_') !== false
+                        && ($module->node_type == _currentUser()->getExtra('type') && $module->node_id == _currentUser()->getExtra('id'))) {
 
-            return $module->module_id;
-          }
-        }
-      }
-    }
-
-    return false;
-  }
-
-  /**
-   * Méthode de génération d'une clé utilisée pour les dossiers et fichiers du classeur
-   *
-   * @return string
-   */
-  public static function createKey ()
-  {
-      return substr(md5(microtime()), 0, 10);
-  }
-
-  /**
-   * Stock l'état de l'arbre des noeuds classeurs
-   *
-   * @param int $id ID du noeud de classeur
-   */
-  public static function setClasseursTreeState ($id)
-  {
-    $state = _sessionGet ('classeur|classeurs_tree_state');
-
-    if (isset ($state[$id])) {
-
-      unset ($state[$id]);
-    } else {
-
-      $state[$id] = 1;
-    }
-
-    _sessionSet ('classeur|classeurs_tree_state', $state);
-  }
-
-  /**
-   * Retourne l'état de l'arbre des noeuds classeurs
-   *
-   * @return array
-   */
-  public static function getClasseursTreeState ()
-  {
-    $treeState = _sessionGet ('classeur|classeurs_tree_state');
-    if (!isset($treeState) || !is_array($treeState)) {
-
-      return array();
-    }
-
-    return $treeState;
-  }
-
-  /**
-   * Stock l'état de l'arbre des noeuds dossiers
-   *
-   * @param int $id ID du noeud de dossier
-   */
-  public static function setFoldersTreeState ($id)
-  {
-    $state = _sessionGet ('classeur|folders_tree_state');
-
-    if (isset ($state[$id])) {
-
-      unset ($state[$id]);
-    } else {
-
-      $state[$id] = 1;
-    }
-
-    _sessionSet ('classeur|folders_tree_state', $state);
-  }
-
-  /**
-   * Retourne l'état de l'arbre des noeuds dossiers
-   *
-   * @return array
-   */
-  public static function getFoldersTreeState ()
-  {
-    $treeState = _sessionGet ('classeur|folders_tree_state');
-    if (!isset($treeState) || !is_array($treeState)) {
-
-      return array();
-    }
-
-    return $treeState;
-  }
-
-  /**
-   * Ouvre l'arborescence des classeurs / dossiers
-   */
-  public static function openTree($classeurId, $folderId)
-  {
-    $folderDAO = _ioDAO('classeur|classeurdossier');
-      $folder = $folderDAO->get($folderId);
-
-      $openFolders = classeurService::getFoldersTreeState ();
-      if (!in_array($folder->id, array_keys($openFolders))) {
-
-          classeurService::setFoldersTreeState ($folder->id);
+                        return $module->module_id;
+                    }
+                }
+            }
         }
 
-      while ($folder->parent_id != 0) {
-
-
-          if (!in_array($folder->parent_id, array_keys($openFolders))) {
-
-            classeurService::setFoldersTreeState ($folder->parent_id);
-          }
-          $folder = $folderDAO->get($folder->parent_id);
-      }
-
-      $openClasseurs = classeurService::getClasseursTreeState ();
-      if (!in_array($classeurId, array_keys($openClasseurs))) {
-
-        classeurService::setClasseursTreeState ($classeurId);
-      }
-  }
-
-  /**
-  * Renvoie le type MIME d'un fichier
-  *
-  * @param  string $filename Nom du fichier
-  *
-  * @return string
-  */
-  public static function getMimeType ($filename)
-  {
-    $point = strrpos ($filename, '.');
-
-    if ($point !== false) {
-
-      $ext = substr($filename, $point+1);
-      $ext = strtolower($ext);
-    } else {
-
-      $ext = $filename;
+        return false;
     }
 
-    return CopixMIMETypes::getFromExtension ($ext);
-  }
+    /**
+     * Méthode de génération d'une clé utilisée pour les dossiers et fichiers du classeur
+     *
+     * @return string
+     */
+    public static function createKey ()
+    {
+        return substr(md5(microtime()), 0, 10);
+    }
 
-  /**
+    /**
+     * Stock l'état de l'arbre des noeuds classeurs
+     *
+     * @param int $id ID du noeud de classeur
+     */
+    public static function setClasseursTreeState ($id)
+    {
+        $state = _sessionGet ('classeur|classeurs_tree_state');
+
+        if (isset ($state[$id])) {
+
+            unset ($state[$id]);
+        } else {
+
+            $state[$id] = 1;
+        }
+
+        _sessionSet ('classeur|classeurs_tree_state', $state);
+    }
+
+    /**
+     * Retourne l'état de l'arbre des noeuds classeurs
+     *
+     * @return array
+     */
+    public static function getClasseursTreeState ()
+    {
+        $treeState = _sessionGet ('classeur|classeurs_tree_state');
+        if (!isset($treeState) || !is_array($treeState)) {
+
+            return array();
+        }
+
+        return $treeState;
+    }
+
+    /**
+     * Stock l'état de l'arbre des noeuds dossiers
+     *
+     * @param int $id ID du noeud de dossier
+     */
+    public static function setFoldersTreeState ($id)
+    {
+        $state = _sessionGet ('classeur|folders_tree_state');
+
+        if (isset ($state[$id])) {
+
+            unset ($state[$id]);
+        } else {
+
+            $state[$id] = 1;
+        }
+
+        _sessionSet ('classeur|folders_tree_state', $state);
+    }
+
+    /**
+     * Retourne l'état de l'arbre des noeuds dossiers
+     *
+     * @return array
+     */
+    public static function getFoldersTreeState ()
+    {
+        $treeState = _sessionGet ('classeur|folders_tree_state');
+        if (!isset($treeState) || !is_array($treeState)) {
+
+            return array();
+        }
+
+        return $treeState;
+    }
+
+    /**
+     * Ouvre l'arborescence des classeurs / dossiers
+     */
+    public static function openTree($classeurId, $folderId)
+    {
+        $folderDAO = _ioDAO('classeur|classeurdossier');
+        $folder = $folderDAO->get($folderId);
+
+        $openFolders = classeurService::getFoldersTreeState ();
+        if (!in_array($folder->id, array_keys($openFolders))) {
+
+            classeurService::setFoldersTreeState ($folder->id);
+        }
+
+        while ($folder->parent_id != 0) {
+
+
+            if (!in_array($folder->parent_id, array_keys($openFolders))) {
+
+                classeurService::setFoldersTreeState ($folder->parent_id);
+            }
+            $folder = $folderDAO->get($folder->parent_id);
+        }
+
+        $openClasseurs = classeurService::getClasseursTreeState ();
+        if (!in_array($classeurId, array_keys($openClasseurs))) {
+
+            classeurService::setClasseursTreeState ($classeurId);
+        }
+    }
+
+    /**
+     * Renvoie le type MIME d'un fichier
+     *
+     * @param  string $filename Nom du fichier
+     *
+     * @return string
+     */
+    public static function getMimeType ($filename)
+    {
+        $point = strrpos ($filename, '.');
+
+        if ($point !== false) {
+
+            $ext = substr($filename, $point+1);
+            $ext = strtolower($ext);
+        } else {
+
+            $ext = $filename;
+        }
+
+        return CopixMIMETypes::getFromExtension ($ext);
+    }
+
+    /**
      * Suppression d'un dossier
      *
      * @param DAORecordClasseurDossier $folder      Dossier à supprimer
@@ -188,19 +188,19 @@ class ClasseurService
         // Si les fichiers du dossier doivent être supprimés
         if ($withFiles) {
 
-          $fileDAO = _ioDAO('classeur|classeurfichier');
-          $files = $fileDAO->getParDossier ($classeur->id, $folder->id);
-          foreach ($files as $file) {
+            $fileDAO = _ioDAO('classeur|classeurfichier');
+            $files = $fileDAO->getParDossier ($classeur->id, $folder->id);
+            foreach ($files as $file) {
 
-            self::deleteFile($file);
-          }
+                self::deleteFile($file);
+            }
         }
 
         // Pour chaque sous dossiers on rappelle la méthode
         $subfolders = $folderDAO->getEnfantsDirects ($classeur->id, $folder->id);
         foreach ($subfolders as $subfolder) {
 
-          self::deleteFolder ($subfolder, true);
+            self::deleteFolder ($subfolder, true);
         }
 
         // On supprime le dossier
@@ -208,7 +208,7 @@ class ClasseurService
     }
 
 
-  /**
+    /**
      * Suppression d'un fichier
      *
      * @param DAORecordClasseurFichier $file  Fichier à supprimer
@@ -228,7 +228,7 @@ class ClasseurService
 
         if (file_exists($filepath)) {
 
-          unlink ($filepath);
+            unlink ($filepath);
         }
 
         $fileDAO->delete ($file->id);
@@ -370,51 +370,51 @@ class ClasseurService
      */
     public static function copyFolder (DAORecordClasseurDossier $folder, $targetType, $targetId, $withFiles = true)
     {
-      $folderDAO    = _ioDAO('classeur|classeurdossier');
-    $fileDAO      = _ioDAO('classeur|classeurfichier');
+        $folderDAO    = _ioDAO('classeur|classeurdossier');
+        $fileDAO      = _ioDAO('classeur|classeurfichier');
 
         // Copie du dossier
-    if ($targetType == 'dossier') {
+        if ($targetType == 'dossier') {
 
-      $targetFolder = $folderDAO->get($targetId);
+            $targetFolder = $folderDAO->get($targetId);
 
-      $clone = clone $folder;
-      $clone->classeur_id = $targetFolder->classeur_id;
-      $clone->parent_id   = $targetId;
-    } else {
+            $clone = clone $folder;
+            $clone->classeur_id = $targetFolder->classeur_id;
+            $clone->parent_id   = $targetId;
+        } else {
 
-      $clone = clone $folder;
-      $clone->classeur_id = $targetId;
-      $clone->parent_id   = 0;
-    }
+            $clone = clone $folder;
+            $clone->classeur_id = $targetId;
+            $clone->parent_id   = 0;
+        }
 
-    // Insertion du nouveau dossier
-    $folderDAO->insert($clone);
+        // Insertion du nouveau dossier
+        $folderDAO->insert($clone);
 
         // Pour chaque sous dossiers on rappelle la méthode
         $subfolders = $folderDAO->getEnfantsDirects ($folder->classeur_id, $folder->id);
         foreach ($subfolders as $subfolder) {
 
-          // En cas de copie, le copieur devient le propriétaire de la copie
-          $subfolder->user_type = $folder->user_type;
-          $subfolder->user_id   = $folder->user_id;
+            // En cas de copie, le copieur devient le propriétaire de la copie
+            $subfolder->user_type = $folder->user_type;
+            $subfolder->user_id   = $folder->user_id;
 
-          self::copyFolder ($subfolder, 'dossier', $clone->id);
+            self::copyFolder ($subfolder, 'dossier', $clone->id);
         }
 
-    // Récupération des fichiers du dossier pour la copie
-    if ($withFiles) {
+        // Récupération des fichiers du dossier pour la copie
+        if ($withFiles) {
 
-          $files = $fileDAO->getParDossier ($folder->classeur_id, $folder->id);
-          foreach($files as $file) {
+            $files = $fileDAO->getParDossier ($folder->classeur_id, $folder->id);
+            foreach($files as $file) {
 
-            // En cas de copie, le copieur devient le propriétaire de la copie
-            $file->user_type = $folder->user_type;
-            $file->user_id   = $folder->user_id;
+                // En cas de copie, le copieur devient le propriétaire de la copie
+                $file->user_type = $folder->user_type;
+                $file->user_id   = $folder->user_id;
 
-            self::copyFile ($file, 'dossier', $clone->id);
-          }
-    }
+                self::copyFile ($file, 'dossier', $clone->id);
+            }
+        }
     }
 
     /**
@@ -426,51 +426,51 @@ class ClasseurService
      */
     public static function copyFile (DAORecordClasseurFichier $file, $targetType, $targetId)
     {
-      $classeurDAO  = _ioDAO('classeur|classeur');
-      $folderDAO    = _ioDAO('classeur|classeurdossier');
-    $fileDAO      = _ioDAO('classeur|classeurfichier');
+        $classeurDAO  = _ioDAO('classeur|classeur');
+        $folderDAO    = _ioDAO('classeur|classeurdossier');
+        $fileDAO      = _ioDAO('classeur|classeurfichier');
 
-    // Récupération du classeur
-    $oldClasseur  = $classeurDAO->get($file->classeur_id);
-    $old_dir      = realpath('./static/classeur').'/'.$oldClasseur->id.'-'.$oldClasseur->cle.'/';
-    $extension    = strtolower(strrchr($file->fichier, '.'));
+        // Récupération du classeur
+        $oldClasseur  = $classeurDAO->get($file->classeur_id);
+        $old_dir      = realpath('./static/classeur').'/'.$oldClasseur->id.'-'.$oldClasseur->cle.'/';
+        $extension    = strtolower(strrchr($file->fichier, '.'));
 
-    // Copie du fichier uniquement s'il existe bien
-    if (file_exists($old_dir.$file->id.'-'.$file->cle.$extension)) {
+        // Copie du fichier uniquement s'il existe bien
+        if (file_exists($old_dir.$file->id.'-'.$file->cle.$extension)) {
 
-      // Copie de l'enregistrement fichier
-      $clone = clone $file;
-      $clone->cle = self::createKey();
+            // Copie de l'enregistrement fichier
+            $clone = clone $file;
+            $clone->cle = self::createKey();
 
-      if ($targetType == 'dossier') {
+            if ($targetType == 'dossier') {
 
-        $targetFolder = $folderDAO->get($targetId);
-        $newClasseur  = $classeurDAO->get($targetFolder->classeur_id);
+                $targetFolder = $folderDAO->get($targetId);
+                $newClasseur  = $classeurDAO->get($targetFolder->classeur_id);
 
-        $clone->classeur_id = $targetFolder->classeur_id;
-        $clone->dossier_id  = $targetFolder->id;
-      } else {
+                $clone->classeur_id = $targetFolder->classeur_id;
+                $clone->dossier_id  = $targetFolder->id;
+            } else {
 
-        $newClasseur  = $classeurDAO->get($targetId);
+                $newClasseur  = $classeurDAO->get($targetId);
 
-        $clone->classeur_id  = $targetId;
-        $clone->dossier_id   = 0;
-      }
+                $clone->classeur_id  = $targetId;
+                $clone->dossier_id   = 0;
+            }
 
-      // Insertion du nouveau fichier
-      $fileDAO->insert($clone);
+            // Insertion du nouveau fichier
+            $fileDAO->insert($clone);
 
-      // Copie physique du fichier
+            // Copie physique du fichier
 
-      $new_dir = realpath('./static/classeur').'/'.$newClasseur->id.'-'.$newClasseur->cle.'/';
+            $new_dir = realpath('./static/classeur').'/'.$newClasseur->id.'-'.$newClasseur->cle.'/';
 
-      if (!file_exists($new_dir)) {
+            if (!file_exists($new_dir)) {
 
-        mkdir($new_dir, 0755, true);
-      }
+                mkdir($new_dir, 0755, true);
+            }
 
-      copy($old_dir.$file->id.'-'.$file->cle.$extension, $new_dir.$clone->id.'-'.$clone->cle.$extension);
-    }
+            copy($old_dir.$file->id.'-'.$file->cle.$extension, $new_dir.$clone->id.'-'.$clone->cle.$extension);
+        }
     }
 
     /**
@@ -481,28 +481,28 @@ class ClasseurService
      */
     public static function addFolderToZip (DAORecordClasseurDossier $folder, $zip)
     {
-    $folderDAO = _ioDAO('classeur|classeurdossier');
-    $fileDAO   = _ioDAO('classeur|classeurfichier');
+        $folderDAO = _ioDAO('classeur|classeurdossier');
+        $fileDAO   = _ioDAO('classeur|classeurfichier');
 
-    $zip->addEmptyDir(substr($folder->getPath(true), 1));
-    $files = $fileDAO->getParDossier ($folder->classeur_id, $folder->id);
+        $zip->addEmptyDir(substr($folder->getPath(true), 1));
+        $files = $fileDAO->getParDossier ($folder->classeur_id, $folder->id);
         foreach($files as $file) {
 
-      if (!$file->estUnFavori()) {
+            if (!$file->estUnFavori()) {
 
-        self::addFileToZip ($file, $zip);
-      }
+                self::addFileToZip ($file, $zip);
+            }
         }
 
-    // Pour chaque sous dossiers on rappelle la méthode
+        // Pour chaque sous dossiers on rappelle la méthode
         $subfolders = $folderDAO->getEnfantsDirects ($folder->classeur_id, $folder->id);
         foreach ($subfolders as $subfolder) {
 
-          self::addFolderToZip ($subfolder, $zip);
+            self::addFolderToZip ($subfolder, $zip);
         }
-  }
+    }
 
-  /**
+    /**
      * Ajoute un fichier dans une archive ZIP
      *
      * @param DAORecordClasseurFichier $file        Fichier à ajouter
@@ -510,22 +510,22 @@ class ClasseurService
      */
     public static function addFileToZip (DAORecordClasseurFichier $file, $zip)
     {
-    // Récupération du classeur nécessaire pour déterminer le chemin du fichier
-    $classeurDAO = _ioDAO('classeur|classeur');
-    $classeur = $classeurDAO->get($file->classeur_id);
+        // Récupération du classeur nécessaire pour déterminer le chemin du fichier
+        $classeurDAO = _ioDAO('classeur|classeur');
+        $classeur = $classeurDAO->get($file->classeur_id);
 
-    // Path du fichier
-    $dir        = realpath('./static/classeur').'/'.$classeur->id.'-'.$classeur->cle.'/';
-    $extension  = strtolower(strrchr($file->fichier, '.'));
+        // Path du fichier
+        $dir        = realpath('./static/classeur').'/'.$classeur->id.'-'.$classeur->cle.'/';
+        $extension  = strtolower(strrchr($file->fichier, '.'));
 
-    $pathfile = $dir.$file->id.'-'.$file->cle.$extension;
+        $pathfile = $dir.$file->id.'-'.$file->cle.$extension;
 
-    if (file_exists($pathfile)) {
+        if (file_exists($pathfile)) {
 
-      $filename = substr($file->fichier, 0, strrpos($file->fichier, '.'));
-      $zip->addFile($pathfile, substr($file->getPath(true), 1).$file->id.'-'.$file->fichier);
+            $filename = substr($file->fichier, 0, strrpos($file->fichier, '.'));
+            $zip->addFile($pathfile, substr($file->getPath(true), 1).$file->id.'-'.$file->fichier);
+        }
     }
-  }
 
     /**
      * Récupération du contenu du dossier temporaire (utilisé pour les archives ZIP)
@@ -596,11 +596,11 @@ class ClasseurService
         $dossierDAO = _ioDAO('classeur|classeurdossier');
         CopixEventNotifier::notify('createFile', array('file'=>$fichier, 'folder'=>$dossier));
         if ($dossier) {
-          while ($dossier->parent) {
-            $dossier = $dossierDAO->get($dossier->parent_id);
-          }
+            while ($dossier->parent) {
+                $dossier = $dossierDAO->get($dossier->parent_id);
+            }
         } else {
-          $dossier = null;
+            $dossier = null;
         }
 
         CopixEventNotifier::notify('createFile', array('file'=>$fichier, 'folder'=>$dossier));
@@ -612,72 +612,72 @@ class ClasseurService
         return $fichier;
     }
 
-  /**
-   * Correction de l'orientation des photos jpeg sur les appareils gérant l'orientation.
-   *
-   * Le fichier JPEG est souvent enregistré dans le sens de l'appareil photo et l'orientation
-   * de l'appareil (à l'endroit, 90°, -90° ou à l'envers) est précisée en métadonnée
-   * du jpeg (EXIF) pour que l'affichage soit dans le bon sens. Ceci n'est pas pris
-   * en compte par les navigateurs web. La correction de l'image doit donc être manuelle.
-   *
-   * @param string  $filename   Nom du fichier
-   * @param string  $extension  Extension du fichier (exemple ".jpg")
-   */
-  public function doAutoRotateJpegByOrientation( $filename, $extension ) {
+    /**
+     * Correction de l'orientation des photos jpeg sur les appareils gérant l'orientation.
+     *
+     * Le fichier JPEG est souvent enregistré dans le sens de l'appareil photo et l'orientation
+     * de l'appareil (à l'endroit, 90°, -90° ou à l'envers) est précisée en métadonnée
+     * du jpeg (EXIF) pour que l'affichage soit dans le bon sens. Ceci n'est pas pris
+     * en compte par les navigateurs web. La correction de l'image doit donc être manuelle.
+     *
+     * @param string  $filename   Nom du fichier
+     * @param string  $extension  Extension du fichier (exemple ".jpg")
+     */
+    public function doAutoRotateJpegByOrientation( $filename, $extension ) {
 
-    // Si la fonction "exif_read_data" n'existe pas, il faut recompiler PHP avec l'option "--enable-exif"
-    if(!function_exists('exif_read_data')) return;
+        // Si la fonction "exif_read_data" n'existe pas, il faut recompiler PHP avec l'option "--enable-exif"
+        if(!function_exists('exif_read_data')) return;
 
-    // Si le fichier est un jpeg avec des informations EXIF...
-    if( in_array(strtolower($extension), array('.jpg', '.jpeg', '.jpe')) && $exif = exif_read_data($filename) ) {
+        // Si le fichier est un jpeg avec des informations EXIF...
+        if( in_array(strtolower($extension), array('.jpg', '.jpeg', '.jpe')) && $exif = exif_read_data($filename) ) {
 
-      // Récupération de l'orientation de la photo
-      $ort = $exif['Orientation'];
+            // Récupération de l'orientation de la photo
+            $ort = $exif['Orientation'];
 
-      // Seulement si l'orientation nécessite une rotation de l'image...
-      if($ort==3 || $ort==6 || $ort==8) {
+            // Seulement si l'orientation nécessite une rotation de l'image...
+            if($ort==3 || $ort==6 || $ort==8) {
 
-        // Ouverture de l'image
-        $image_rotate   = imagecreatefromjpeg($filename);
+                // Ouverture de l'image
+                $image_rotate   = imagecreatefromjpeg($filename);
 
-        // Rotation en fonction de l'angle donné en EXIF
-        switch($ort)
-        {
-          case 3: // 180 rotate left
-            $image_rotate = imagerotate($image_rotate, 180, 0);
-            break;
-         case 6: // 90 rotate right
-            $image_rotate = imagerotate($image_rotate, -90, 0);
-            break;
-         case 8:    // 90 rotate left
-            $image_rotate = imagerotate($image_rotate, 90, 0);
-            break;
+                // Rotation en fonction de l'angle donné en EXIF
+                switch($ort)
+                {
+                    case 3: // 180 rotate left
+                        $image_rotate = imagerotate($image_rotate, 180, 0);
+                        break;
+                    case 6: // 90 rotate right
+                        $image_rotate = imagerotate($image_rotate, -90, 0);
+                        break;
+                    case 8:    // 90 rotate left
+                        $image_rotate = imagerotate($image_rotate, 90, 0);
+                        break;
+                }
+
+                // Enregistrement de l'image (pleine qualité)
+                imagejpeg($image_rotate, $filename, 100);
+            }
         }
 
-        // Enregistrement de l'image (pleine qualité)
-        imagejpeg($image_rotate, $filename, 100);
-      }
     }
 
-  }
 
-
-  /**
+    /**
      * Minimail de confirmation de l'upload dans le cas d'un envoie dans un casier
      *
      * @param string  $filename   Nom du fichier
      */
-  public static function sendLockerUploadConfirmation ($fileName)
-  {
-    _classInclude('minimail|minimailService');
+    public static function sendLockerUploadConfirmation ($fileName)
+    {
+        _classInclude('minimail|minimailService');
 
-    $msg_title    = CopixI18N::get ('classeur|classeur.message.confirmUploadLockerTitle', date('d/m/Y'));
-    $msg_body     = CopixI18N::get ('classeur|classeur.message.confirmUploadLockerBody', array(date('d/m/Y'), $fileName));
+        $msg_title    = CopixI18N::get ('classeur|classeur.message.confirmUploadLockerTitle', date('d/m/Y'));
+        $msg_body     = CopixI18N::get ('classeur|classeur.message.confirmUploadLockerBody', array(date('d/m/Y'), $fileName));
 
-    MinimailService::sendMinimail ($msg_title, $msg_body, CopixConfig::get('minimail|system_sender_id'), array(_currentUser ()->getId() => 1), CopixConfig::get ('minimail|default_format'));
-  }
+        MinimailService::sendMinimail ($msg_title, $msg_body, CopixConfig::get('minimail|system_sender_id'), array(_currentUser ()->getId() => 1), CopixConfig::get ('minimail|default_format'));
+    }
 
-  /**
+    /**
      * Teste si le folder1 est un descendant du folder2
      *
      * @param DAORecordClasseurDossier  $folder1     Dossier 1
@@ -685,29 +685,29 @@ class ClasseurService
      *
      * @return bool True si le folder1 est un descendant du folder2
      */
-  public static function isDescendantOf ($folder1, $folder2)
-  {
-    $folderDAO = _ioDAO('classeur|classeurdossier');
+    public static function isDescendantOf ($folder1, $folder2)
+    {
+        $folderDAO = _ioDAO('classeur|classeurdossier');
 
         if ($folder1 == $folder2) {
 
-          return true;
+            return true;
         }
 
         while ($folder1->parent_id != 0) {
 
             if ($folder1->parent_id == $folder2->id) {
 
-              return true;
+                return true;
             }
 
             $folder1 = $folderDAO->get($folder1->parent_id);
         }
 
         return false;
-  }
+    }
 
-  /**
+    /**
      * Met à jour les informations d'un dossier (nb_dossiers / nb_fichiers & taille)
      *
      * @param DAORecordClasseurDossier $folder      Dossier à mettre à jour
@@ -718,10 +718,10 @@ class ClasseurService
 
         if ($folder->parent_id != 0) {
 
-        while ($folder->parent_id != 0) {
+            while ($folder->parent_id != 0) {
 
                 $folder = $folderDAO->get ($folder->parent_id);
-        }
+            }
 
             self::updateFolderInfosWithDescendants ($folder);
         }
@@ -778,29 +778,29 @@ class ClasseurService
      */
     public static function getFilesInFolder($classeurId, $folderId = null, $files = array(), $withSubfolders = true)
     {
-      $fileDAO   = _ioDAO('classeur|classeurfichier');
+        $fileDAO   = _ioDAO('classeur|classeurfichier');
         $folderDAO = _ioDAO('classeur|classeurdossier');
 
         // Récupération des fichiers du dossier et ajout au tableau $files
-      $folderFiles = $fileDAO->getParDossier ($classeurId, $folderId);
-      $folderFiles_array = array();
-      foreach ($folderFiles as $file) $folderFiles_array[] = $file;
+        $folderFiles = $fileDAO->getParDossier ($classeurId, $folderId);
+        $folderFiles_array = array();
+        foreach ($folderFiles as $file) $folderFiles_array[] = $file;
 
-      uasort( $folderFiles_array, array('self', 'getFilesInFolder_sort') );
+        uasort( $folderFiles_array, array('self', 'getFilesInFolder_sort') );
         foreach ($folderFiles_array as $file) {
 
-          $files[] = $file;
+            $files[] = $file;
         }
 
-    // Pour chaque sous dossiers on rappelle la méthode
-    if ($withSubfolders && !is_null($folderId)) {
+        // Pour chaque sous dossiers on rappelle la méthode
+        if ($withSubfolders && !is_null($folderId)) {
 
-      $subfolders = $folderDAO->getEnfantsDirects ($classeurId, $folderId);
-          foreach ($subfolders as $subfolder) {
+            $subfolders = $folderDAO->getEnfantsDirects ($classeurId, $folderId);
+            foreach ($subfolders as $subfolder) {
 
-            $files = self::getFilesInFolder($classeurId, $subfolder->id, $files);
-          }
-    }
+                $files = self::getFilesInFolder($classeurId, $subfolder->id, $files);
+            }
+        }
 
         return $files;
     }
@@ -811,7 +811,7 @@ class ClasseurService
         $sort_config = classeurService::getContentSort();
         //     [colonne] => titre
         //     [direction] => ASC
-		switch($sort_config['colonne'])
+        switch($sort_config['colonne'])
         {
             case 'date':
                 if($doc1->date_upload < $doc2->date_upload) $sort=-1;
@@ -836,196 +836,301 @@ class ClasseurService
     }
 
     /**
-   * Stock en session le tri pour l'affichage des contenus du classeur
-   *
-   * @param string $folderColumn   Colonne sur laquelle trier le contenu
-   * @param string $triDirection  Direction du tri
-   */
+     * Stock en session le tri pour l'affichage des contenus du classeur
+     *
+     * @param string $folderColumn   Colonne sur laquelle trier le contenu
+     * @param string $triDirection  Direction du tri
+     */
     public static function setContentSort ($column, $direction)
     {
-    $validSorts = array ('titre', 'origine', 'type', 'date', 'taille');
+        $validSorts = array ('titre', 'origine', 'type', 'date', 'taille');
 
-    if (!in_array($column, $validSorts)) {
+        if (!in_array($column, $validSorts)) {
 
-      $column = 'titre';
+            $column = 'titre';
+        }
+
+        _sessionSet ('classeur|tri_affichage_contenu', array ('colonne' => $column, 'direction' => $direction));
     }
 
-    _sessionSet ('classeur|tri_affichage_contenu', array ('colonne' => $column, 'direction' => $direction));
-  }
-
-  /**
-   * Retourne le tri pour l'affichage des contenus du classeur
-   *
-   * @return array
-   */
+    /**
+     * Retourne le tri pour l'affichage des contenus du classeur
+     *
+     * @return array
+     */
     public static function getContentSort ()
     {
-      $sort = _sessionGet ('classeur|tri_affichage_contenu');
-    if (is_null($sort)) {
+        $sort = _sessionGet ('classeur|tri_affichage_contenu');
+        if (is_null($sort)) {
 
-      return array ('colonne' => 'titre', 'direction' => 'ASC');
-    }
+            return array ('colonne' => 'titre', 'direction' => 'ASC');
+        }
 
-    return $sort;
+        return $sort;
     }
 
     /**
-   * Récupère l'adresse web d'un favori - Fonction raccourcie
-   *
-   * @return string
-   */
+     * Récupère l'adresse web d'un favori - Fonction raccourcie
+     *
+     * @return string
+     */
     public static function getFavoriteLink ($fileId)
     {
-      $fileDAO = _ioDAO('classeur|classeurfichier');
-      $file = $fileDAO->get ($fileId);
+        $fileDAO = _ioDAO('classeur|classeurfichier');
+        $file = $fileDAO->get ($fileId);
 
-      if ($file) {
+        if ($file) {
 
-        return self::getUrlOfFavorite($file);
-      }
+            return self::getUrlOfFavorite($file);
+        }
 
-      return null;
-  }
+        return null;
+    }
 
     /**
-   * Récupère l'adresse web d'un favori
-   *
-   * @param DAORecordClasseurFichier $file
-   *
-   * @return string
-   */
+     * Récupère l'adresse web d'un favori
+     *
+     * @param DAORecordClasseurFichier $file
+     *
+     * @return string
+     */
     public static function getUrlOfFavorite (DAORecordClasseurFichier $file)
     {
-      $classeurDAO = _ioDAO('classeur|classeur');
-      $classeur = $classeurDAO->get($file->classeur_id);
+        $classeurDAO = _ioDAO('classeur|classeur');
+        $classeur = $classeurDAO->get($file->classeur_id);
 
-      $extension  = strtolower(strrchr($file->fichier, '.'));
-    $nomFichier = $file->id.'-'.$file->cle.$extension;
+        $extension  = strtolower(strrchr($file->fichier, '.'));
+        $nomFichier = $file->id.'-'.$file->cle.$extension;
 
-    $pathFichier = realpath('./static/classeur').'/'.$classeur->id.'-'.$classeur->cle.'/'.($nomFichier);
-      if (file_exists($pathFichier)) {
+        $pathFichier = realpath('./static/classeur').'/'.$classeur->id.'-'.$classeur->cle.'/'.($nomFichier);
+        if (file_exists($pathFichier)) {
 
-      $regExp =     '@^(http[s]?:\/\/)([_a-zA-Z0-9-.?%#&=\/]+)@i';
-      $regExpURL =  '@^(URL=)(http[s]?:\/\/)([_a-zA-Z0-9-.?%#&=\/]+)@i';
+            $regExp =     '@^(http[s]?:\/\/)([_a-zA-Z0-9-.?%#&=\/]+)@i';
+            $regExpURL =  '@^(URL=)(http[s]?:\/\/)([_a-zA-Z0-9-.?%#&=\/]+)@i';
 
-      $content = file_get_contents ($pathFichier);
+            $content = file_get_contents ($pathFichier);
 
-      $lines = explode ("\n",$content);
+            $lines = explode ("\n",$content);
 
-      $firstLine = (isset($lines[0])) ? $lines[0] : '';
-      $firstLine9 = strtolower(substr($firstLine,0,9));
+            $firstLine = (isset($lines[0])) ? $lines[0] : '';
+            $firstLine9 = strtolower(substr($firstLine,0,9));
 
-      if ($firstLine9 == '[internet') {
+            if ($firstLine9 == '[internet') {
 
-        $line = (isset($lines[1])) ? $lines[1] : '';
-        if ($line) {
+                $line = (isset($lines[1])) ? $lines[1] : '';
+                if ($line) {
 
-          if (preg_match($regExpURL, $line, $regs)) {
+                    if (preg_match($regExpURL, $line, $regs)) {
 
-            return $regs[2].$regs[3];
-          }
-        }
-      } else {
+                        return $regs[2].$regs[3];
+                    }
+                }
+            } else {
 
-        if ($firstLine9 == '[default]') {
+                if ($firstLine9 == '[default]') {
 
-          $line = (isset($lines[3])) ? $lines[3] : '';
-          if ($line) {
+                    $line = (isset($lines[3])) ? $lines[3] : '';
+                    if ($line) {
 
-            if (preg_match($regExpURL, $line, $regs)) {
+                        if (preg_match($regExpURL, $line, $regs)) {
 
-              return $regs[2].$regs[3];
+                            return $regs[2].$regs[3];
+                        }
+                    }
+                } else {
+
+                    $line = (isset($lines[0])) ? $lines[0] : '';
+                    if (preg_match($regExp, $line, $regs)) {
+
+                        return $regs[1].$regs[2];
+                    }
+                }
             }
-          }
-        } else {
-
-          $line = (isset($lines[0])) ? $lines[0] : '';
-          if (preg_match($regExp, $line, $regs)) {
-
-            return $regs[1].$regs[2];
-          }
         }
-      }
-      }
     }
 
     /**
-   * Fonction récursive de suppression d'un répertoire
-   *
-   * @param string  $dir  Dossier à vider
-   */
+     * Fonction récursive de suppression d'un répertoire
+     *
+     * @param string  $dir  Dossier à vider
+     */
     public static function rmdir_recursive($dir)
-  {
-      if (file_exists($dir)) {
+    {
+        if (file_exists($dir)) {
 
-      $dir_content = scandir($dir);
+            $dir_content = scandir($dir);
 
-      if ($dir_content !== false) {
+            if ($dir_content !== false) {
 
-        foreach ($dir_content as $entry) {
-          if (!in_array($entry, array('.','..'))) {
-            $entry = $dir . '/' . $entry;
-            if (!is_dir($entry)) {
+                foreach ($dir_content as $entry) {
+                    if (!in_array($entry, array('.','..'))) {
+                        $entry = $dir . '/' . $entry;
+                        if (!is_dir($entry)) {
 
-              unlink($entry);
-            } else {
-              self::rmdir_recursive($entry);
+                            unlink($entry);
+                        } else {
+                            self::rmdir_recursive($entry);
+                        }
+                    }
+                }
             }
-          }
-        }
-      }
 
-      rmdir($dir);
+            rmdir($dir);
+        }
     }
-  }
 
     //////////////////////////////////////////////
     // Récupération de méthodes du module malle //
     //////////////////////////////////////////////
 
     /**
-  * Genere le contenu d'un ficher type .web, contenant un raccourci vers un site
-  *
-  * @author Christophe Beyer <cbeyer@cap-tic.fr>
-  * @since 2010/09/16
-  * @param string $url URL du lien
-  * @link http://www.cyanwerks.com/file-format-url.html
-  */
-  public static function generateWebFile ($url)
-  {
-    $res =
-     "[DEFAULT]\n"
-    ."BASEURL=".$url."\n"
-    ."[InternetShortcut]\n"
-    ."URL=".$url."\n"
-    ."Modified=";
+     * Genere le contenu d'un ficher type .web, contenant un raccourci vers un site
+     *
+     * @author Christophe Beyer <cbeyer@cap-tic.fr>
+     * @since 2010/09/16
+     * @param string $url URL du lien
+     * @link http://www.cyanwerks.com/file-format-url.html
+     */
+    public static function generateWebFile ($url)
+    {
+        $res =
+            "[DEFAULT]\n"
+            ."BASEURL=".$url."\n"
+            ."[InternetShortcut]\n"
+            ."URL=".$url."\n"
+            ."Modified=";
 
-    return $res;
-  }
-
-
-  /**
-  * Renvoit le dossier temporaire a utiliser pour l'upload. A utiliser a la place de sys_get_temp_dir().
-  *
-  * @author Christophe Beyer <cbeyer@cap-tic.fr>
-  * @since 2011/08/17
-  * @return string Chemin absolu vers le dossier temporaire. Finit par un /
-  */
-  public static function getTmpFolder()
-  {
-      if (isset($_ENV['DYLD_LIBRARY_PATH']) && $_ENV['DYLD_LIBRARY_PATH']== '/Applications/MAMP/Library/lib:') // Patch MAMP
-          $dossierTmp = '/tmp';
-      elseif (ini_get('upload_tmp_dir')) {
-          $dossierTmp = ini_get('upload_tmp_dir');
-      } else {
-           $dossierTmp = sys_get_temp_dir();
-      }
-      if (substr($dossierTmp, -1) != '/') {
-          $dossierTmp = $dossierTmp.'/';
-      }
-      return $dossierTmp;
-  }
+        return $res;
+    }
 
 
+    /**
+     * Renvoit le dossier temporaire a utiliser pour l'upload. A utiliser a la place de sys_get_temp_dir().
+     *
+     * @author Christophe Beyer <cbeyer@cap-tic.fr>
+     * @since 2011/08/17
+     * @return string Chemin absolu vers le dossier temporaire. Finit par un /
+     */
+    public static function getTmpFolder()
+    {
+        if (isset($_ENV['DYLD_LIBRARY_PATH']) && $_ENV['DYLD_LIBRARY_PATH']== '/Applications/MAMP/Library/lib:') // Patch MAMP
+            $dossierTmp = '/tmp';
+        elseif (ini_get('upload_tmp_dir')) {
+            $dossierTmp = ini_get('upload_tmp_dir');
+        } else {
+            $dossierTmp = sys_get_temp_dir();
+        }
+        if (substr($dossierTmp, -1) != '/') {
+            $dossierTmp = $dossierTmp.'/';
+        }
+        return $dossierTmp;
+    }
+
+    /**
+     * Renvoie le statut sur l'abonnement d'un utilisateur à un classeur
+     *
+     * @param $type
+     * @param $classeurId
+     * @param $userId
+     */
+    public static function getAbonnementStatus($type, $classeurId, $userId) {
+        $query = '
+          SELECT active
+          FROM abonnement
+          WHERE type = \'' . $type . '\'
+          AND classeur_id = ' . $classeurId . '
+          AND user_id = ' . $userId
+        ;
+
+        $result = _doQuery($query);
+
+        return ($result) ? $result[0]->active : 0;
+    }
+
+    /**
+     * Renvoie les abonnés d'un classeur selon le type d'événement
+     *
+     * @param $type
+     * @param $classeurId
+     * @param $userId
+     */
+    public static function getAbonnementUsers($type, $classeurId) {
+        $query = '
+          SELECT user_id
+          FROM abonnement
+          WHERE type = \'' . $type . '\'
+          AND classeur_id = ' . $classeurId . '
+          AND active = 1'
+        ;
+
+        $results = _doQuery($query);
+
+        $res = array();
+        foreach ($results as $result) {
+            array_push($res, $result->user_id);
+        }
+        return $res;
+    }
+
+    /**
+     * (Dés)abonnement d'un utilisateur à un classeur
+     *
+     * @param $type
+     * @param $classeurId
+     * @param $userId
+     */
+    public static function setAbonnementStatus($type, $classeurId, $userId, $status) {
+        $query = '
+          SELECT active
+          FROM abonnement
+          WHERE type = \'' . $type . '\'
+          AND classeur_id = ' . $classeurId . '
+          AND user_id = ' . $userId
+        ;
+
+        $result = _doQuery($query);
+
+        if($result) { // abonnement existe déjà
+            $query = '
+              UPDATE abonnement
+              SET active = ' . $status . ',
+                modification_date = NOW()
+              WHERE type = \'' . $type . '\'
+              AND classeur_id = ' . $classeurId . '
+              AND user_id = ' . $userId
+            ;
+        } else {
+            $query = '
+              INSERT INTO abonnement
+              VALUES (
+                "' . $type . '",
+                ' . $userId . ',
+                ' . $classeurId . ',
+                NOW(),
+                NOW(),
+                ' . $status . '
+              )'
+            ;
+        }
+        $result = _doQuery($query);
+
+        return true;
+    }
+
+    /**
+     * Minimail de notification pour les abonnés
+     *
+     * @param $title
+     * @param $body
+     * @param $userIds
+     */
+    public static function sendNotifications($title, $body, $userIds)
+    {
+        _classInclude('minimail|minimailService');
+
+        foreach($userIds as $userId) {
+            MinimailService::sendMinimail ($title, $body, CopixConfig::get('minimail|system_sender_id'), array($userId => 1), CopixConfig::get ('minimail|default_format'));
+        }
+    }
 
 }
