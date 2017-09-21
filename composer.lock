@@ -6,12 +6,12 @@
     "hash": "84a9d778638188768332f3dc1c61c72c",
     "packages": [
         {
-            "name": "alviss/activity-stream-client",
-            "version": "dev-master",
+            "name": "cap-tic/activity-stream-client",
+            "version": "master",
             "target-dir": "ActivityStream/Client",
             "source": {
                 "type": "git",
-                "url": "git@git.cap-tic.fr:alviss/activity-stream-client.git",
+                "url": "ssh://git@github.com/cap-tic/activity-stream-client.git",
                 "reference": "2e72389deabfd427a872897133ff56d8ecf9ff0d"
             },
             "require": {
@@ -38,7 +38,7 @@
                 }
             ],
             "description": "Activity Stream client",
-            "time": "2013-10-23 13:12:19"
+            "time": "2017-09-21 18:23:44"
         },
         {
             "name": "symfony/event-dispatcher",
@@ -46,7 +46,7 @@
             "target-dir": "Symfony/Component/EventDispatcher",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symfony/EventDispatcher.git",
+                "url": "ssh://git@github.com/symfony/EventDispatcher.git",
                 "reference": "v2.3.1"
             },
             "dist": {
@@ -103,7 +103,7 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "alviss/activity-stream-client": 20
+        "cap-tic/activity-stream-client": 20
     },
     "platform": {
         "php": ">=5.3.3"

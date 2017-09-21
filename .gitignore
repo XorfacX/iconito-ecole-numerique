@@ -31,7 +31,7 @@
 .DS_Store
 
 # Les fichiers inclus via composer
-/utils/alviss/*
+/utils/cap-tic/*
 /utils/symfony/*
 /utils/composer/*
 /utils/autoload.php
